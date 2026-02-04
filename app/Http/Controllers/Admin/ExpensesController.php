@@ -7,19 +7,56 @@ use Illuminate\Http\Request;
 use App\Models\ExpenseCategory;
 use App\Models\Expense;
 use App\Http\Requests\Admin\ExpenseRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class ExpensesController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_expense',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_expense',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_expense',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_expense',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // খরচ দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_expense')) {
+                    abort(403, 'আপনার খরচ তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // খরচ তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_expense')) {
+                    abort(403, 'আপনার নতুন খরচ যুক্ত করার অনুমতি নেই।');
+                }
+            }
+
+            // খরচ এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_expense')) {
+                    abort(403, 'আপনার খরচের তথ্য এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // খরচ ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_expense')) {
+                    abort(403, 'আপনার খরচের তথ্য মুছে ফেলার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
 

@@ -19,6 +19,23 @@ use Spatie\Activitylog\Models\Activity;
 class IndexController extends Controller
 {
     /**
+     * Dashboard access for admin only
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            
+            // ড্যাশবোর্ড এক্সেস চেক: সুপার এডমিন বা এডমিন গার্ডে লগইন থাকলে এক্সেস পাবে
+            if ($u && ($u->id == 1 || auth()->guard('admin')->check())) {
+                return $next($request);
+            }
+
+            abort(403, 'আপনার ড্যাশবোর্ড দেখার অনুমতি নেই।');
+        });
+    }
+
+    /**
      * admin dashboard
      *
      * @return \Illuminate\Http\Response

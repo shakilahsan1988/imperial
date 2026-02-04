@@ -12,13 +12,38 @@ use App\Models\Culture;
 
 class AccountingController extends Controller
 {
-    /**
-     * assign roles
+     /**
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_accounting_reports',     ['only' => ['index']]);
-        $this->middleware('can:generate_report_accounting',     ['only' => ['generate_report']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // একাউন্টিং রিপোর্ট দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'doctor_report'])) {
+                if (!$u->hasPermission('view_accounting_reports')) {
+                    abort(403, 'আপনার একাউন্টিং রিপোর্ট দেখার অনুমতি নেই।');
+                }
+            }
+
+            // রিপোর্ট জেনারেট করার পারমিশন চেক
+            if (in_array($action, ['generate_report', 'generate_doctor_report'])) {
+                if (!$u->hasPermission('generate_report_accounting')) {
+                    abort(403, 'আপনার রিপোর্ট জেনারেট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
    

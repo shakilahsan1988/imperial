@@ -13,31 +13,34 @@
           <i class="fas fa-map-marked-alt nav-icon"></i>
           {{__('Branches')}}
         </h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
+      </div><div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
           <li class="breadcrumb-item active">{{__('Branches')}}</li>
         </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
+      </div></div></div></div>
 @endsection
 
 @section('content')
+{{-- ইউজার এবং সুপার এডমিন চেক করার জন্য লজিক --}}
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 <div class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">
       {{__('Branches Table')}}
     </h3>
-    @can('create_branch')
+    
+    {{-- @can('create_branch') এর পরিবর্তে আপনার কাস্টম লজিক ব্যবহার করা হলো --}}
+    @if($u && ($isSuper || $u->hasPermission('create_branch')))
     <a href="{{route('admin.branches.create')}}" class="btn btn-primary btn-sm float-right">
         <i class="fa fa-plus"></i> {{__('Create')}}
     </a>
-    @endcan
+    @endif
   </div>
-  <!-- /.card-header -->
   <div class="card-body">
     <div class="row">
       <div class="col-lg-12 table-responsive">
@@ -52,16 +55,16 @@
             </tr>
           </thead>
           <tbody>
-
+              {{-- ডাটা টেবিলের ডাটা JS (branches.js) এর মাধ্যমে লোড হবে --}}
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  <!-- /.card-body -->
-</div>
+  </div>
 
 @endsection
+
 @section('scripts')
   <script src="{{url('js/admin/branches.js')}}"></script>
 @endsection

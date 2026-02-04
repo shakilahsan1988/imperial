@@ -13,31 +13,33 @@
           <i class="fa fa-database nav-icon"></i>
           {{__('ডাটাবেইস ব্যাকআপ')}}
         </h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
+      </div><div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('হোম')}}</a></li>
           <li class="breadcrumb-item active">{{__('ডাটাবেইস ব্যাকআপ সমূহ')}}</li>
         </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
+      </div></div></div></div>
 @endsection
 
 @section('content')
+{{-- ইউজার এবং সুপার এডমিন চেক করার জন্য লজিক --}}
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 <div class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">
       {{__('ব্যাকআপ টেবিল')}}
     </h3>
-    @can('create_backup')
+    {{-- @can('create_backup') এর পরিবর্তে কাস্টম লজিক --}}
+    @if($u && ($isSuper || $u->hasPermission('create_backup')))
     <a href="{{route('admin.backups.create')}}" class="btn btn-primary btn-sm float-right">
-        <i class="fa fa-plus"></i> {{__('ডাটাবেইস ব্যাকআপ ক্রিয়েট করুন')}}
+        <i class="fa fa-plus"></i> {{__('ডাটাবেইস ব্যাকআপ ক্রিয়েট করুন')}}
     </a>
-    @endcan
+    @endif
   </div>
-  <!-- /.card-header -->
   <div class="card-body">
     <div class="row table-responsive">
       <div class="col-12">
@@ -55,13 +57,15 @@
                 <td>{{$backup->getFilename()}}</td>
                 <td>{{date('d-m-Y',$backup->getATime())}}</td>
                 <td>
-                    @can('view_backup')
+                    {{-- ডাউনলোড পারমিশন চেক --}}
+                    @if($u && ($isSuper || $u->hasPermission('view_backup')))
                       <a href="{{route('admin.backups.show',$backup->getFilename())}}" class="btn btn-primary btn-sm">
                         <i class="fa fa-download"></i>
                       </a>
                     @endif
 
-                    @can('delete_backup')
+                    {{-- ডিলিট পারমিশন চেক --}}
+                    @if($u && ($isSuper || $u->hasPermission('delete_backup')))
                       <form action="{{route('admin.backups.destroy',$backup->getFilename())}}" class="d-inline" method="POST">
                         @csrf 
                         @method('delete')
@@ -69,8 +73,7 @@
                           <i class="fa fa-trash"></i>
                         </button>
                       </form>
-                    @endcan
-                   
+                    @endif
                 </td>
               </tr>
               @endforeach
@@ -79,10 +82,9 @@
       </div>
     </div>
   </div>
-  <!-- /.card-body -->
-</div>
-
+  </div>
 @endsection
+
 @section('scripts')
   <script src="{{url('js/admin/backups.js')}}"></script>
 @endsection

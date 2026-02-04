@@ -10,19 +10,57 @@ use App\Http\Requests\Admin\ExcelImportRequest;
 use App\Exports\PatientExport;
 use App\Imports\PatientImport;
 use Str;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 use Excel;
+
 class PatientsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_patient',     ['only' => ['index', 'show', 'ajax']]);
-        $this->middleware('can:create_patient',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_patient',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_patient',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // রোগী দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax', 'export', 'download_template'])) {
+                if (!$u->hasPermission('view_patient')) {
+                    abort(403, 'আপনার রোগী তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // রোগী তৈরি বা ইমপোর্ট করার পারমিশন চেক
+            if (in_array($action, ['create', 'store', 'import'])) {
+                if (!$u->hasPermission('create_patient')) {
+                    abort(403, 'আপনার নতুন রোগী যুক্ত করার অনুমতি নেই।');
+                }
+            }
+
+            // রোগী এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_patient')) {
+                    abort(403, 'আপনার রোগীর তথ্য এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // রোগী ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_patient')) {
+                    abort(403, 'আপনার রোগীর তথ্য মুছে ফেলার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

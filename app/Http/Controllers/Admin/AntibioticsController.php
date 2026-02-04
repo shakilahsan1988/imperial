@@ -6,19 +6,56 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Antibiotic;
 use App\Http\Requests\Admin\AntibioticRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class AntibioticsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_antibiotic',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_antibiotic',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_antibiotic',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_antibiotic',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // Antibiotic দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_antibiotic')) {
+                    abort(403, 'আপনার এন্টিবায়োটিক তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // Antibiotic তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_antibiotic')) {
+                    abort(403, 'আপনার নতুন এন্টিবায়োটিক তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // Antibiotic এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_antibiotic')) {
+                    abort(403, 'আপনার এন্টিবায়োটিক এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // Antibiotic ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_antibiotic')) {
+                    abort(403, 'আপনার এন্টিবায়োটিক ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

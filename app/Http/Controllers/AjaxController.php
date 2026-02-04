@@ -24,7 +24,7 @@ use App\Models\TestOption;
 use App\Models\ExpenseCategory;
 use Yajra\DataTables\Html\Button;
 use App\Mail\PatientCode;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 use Mail;
 use Str;
 use Illuminate\Validation\Rule;

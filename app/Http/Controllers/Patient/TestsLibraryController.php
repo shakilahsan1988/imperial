@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Culture;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class TestsLibraryController extends Controller
 {

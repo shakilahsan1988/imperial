@@ -5,15 +5,41 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Language;
+
 class TranslationsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_translation',     ['only' => ['index', 'show']]);
-        $this->middleware('can:edit_translation',     ['only' => ['edit', 'update']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // ট্রান্সলেশন দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show'])) {
+                if (!$u->hasPermission('view_translation')) {
+                    abort(403, 'আপনার অনুবাদ তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // ট্রান্সলেশন এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_translation')) {
+                    abort(403, 'আপনার অনুবাদ পরিবর্তন করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

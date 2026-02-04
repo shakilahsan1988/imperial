@@ -1,3 +1,8 @@
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 <div class="row">
     <div class="col-lg-12">
         <div class="input-group form-group mb-3">
@@ -6,7 +11,7 @@
                   <i class="fa fa-user"></i>
               </span>
             </div>
-            <input type="text" class="form-control" placeholder="{{__('আপনার নাম')}}" name="name" value="{{auth()->guard('admin')->user()->name}}" required>
+            <input type="text" class="form-control" placeholder="{{__('আপনার নাম')}}" name="name" value="{{$u->name}}" required>
         </div>
     </div>
 </div>
@@ -18,7 +23,7 @@
                     <i class="fa fa-envelope" aria-hidden="true"></i>
               </span>
             </div>
-            <input type="email" class="form-control" placeholder="{{__('ইমেইল এড্রেস')}}" name="email" value="{{auth()->guard('admin')->user()->email}}"  required>
+            <input type="email" class="form-control" placeholder="{{__('ইমেইল এড্রেস')}}" name="email" value="{{$u->email}}"  required>
         </div>
     </div>
 </div>
@@ -30,7 +35,7 @@
                     <i class="fa fa-key" aria-hidden="true"></i>
               </span>
             </div>
-            <input type="password" class="form-control" placeholder="{{__('পাসওয়ার্ড')}}" name="password" id="password">
+            <input type="password" class="form-control" placeholder="{{__('পাসওয়ার্ড')}}" name="password" id="password">
         </div>
     </div>
 </div>
@@ -43,12 +48,13 @@
                     <i class="fa fa-key" aria-hidden="true"></i>
               </span>
             </div>
-            <input type="password" class="form-control" placeholder="{{__('পাসওয়ার্ড কনফার্ম করুন')}}" name="password_confirmation" id="password_confirmation">
+            <input type="password" class="form-control" placeholder="{{__('পাসওয়ার্ড কনফার্ম করুন')}}" name="password_confirmation" id="password_confirmation">
         </div>
     </div>
 </div>
 
-@can('sign_report')
+{{-- রিপোর্টে স্বাক্ষর করার পারমিশন চেক --}}
+@if($u && ($isSuper || $u->hasPermission('sign_report')))
 <div class="row">
     <div class="col-lg-10">
             
@@ -69,13 +75,13 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h5 class="card-title" style="text-align: center!important;float: unset;">
-                    {{__('সিগেচার')}}
+                    {{__('সিগনেচার')}}
                 </h5>
             </div>
             <div class="card-body p-1">
-                <img class="img-thumbnail" src="@if(!empty(auth()->guard('admin')->user()->signature)){{url('uploads/signature/'.auth()->guard('admin')->user()->signature)}} @else {{url('img/no-image.png')}} @endif" alt="{{__('সিগনেচার')}}">
+                <img class="img-thumbnail" src="@if(!empty($u->signature)){{url('uploads/signature/'.$u->signature)}} @else {{url('img/no-image.png')}} @endif" alt="{{__('সিগনেচার')}}">
             </div>
         </div>
     </div>
 </div>
-@endcan
+@endif

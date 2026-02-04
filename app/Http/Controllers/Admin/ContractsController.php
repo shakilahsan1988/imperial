@@ -6,20 +6,57 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Contract;
 use App\Http\Requests\Admin\ContractRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class ContractsController extends Controller
 {
     
      /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_contract',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_contract',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_contract',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_contract',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // কন্ট্রাক্ট দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_contract')) {
+                    abort(403, 'আপনার কন্ট্রাক্ট তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // কন্ট্রাক্ট তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_contract')) {
+                    abort(403, 'আপনার নতুন কন্ট্রাক্ট তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // কন্ট্রাক্ট এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_contract')) {
+                    abort(403, 'আপনার কন্ট্রাক্ট এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // কন্ট্রাক্ট ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_contract')) {
+                    abort(403, 'আপনার কন্ট্রাক্ট ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**
@@ -33,7 +70,7 @@ class ContractsController extends Controller
     }
 
     /**
-    * get antibiotics datatable
+    * get contracts datatable
     *
     * @access public
     * @var  @Request $request
@@ -126,7 +163,7 @@ class ContractsController extends Controller
      */
     public function destroy($id)
     {
-        $contract=Contract::findOrFail($contract);
+        $contract=Contract::findOrFail($id);
         $contract->delete();
 
         session()->flash('success',__('Contract deleted successfully'));

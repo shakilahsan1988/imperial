@@ -6,19 +6,56 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ExpenseCategory;
 use App\Http\Requests\Admin\ExpenseCategoryRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class ExpenseCategoriesController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_expense_category',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_expense_category',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_expense_category',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_expense_category',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // খরচ ক্যাটাগরি দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_expense_category')) {
+                    abort(403, 'আপনার খরচ ক্যাটাগরি দেখার অনুমতি নেই।');
+                }
+            }
+
+            // খরচ ক্যাটাগরি তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_expense_category')) {
+                    abort(403, 'আপনার নতুন খরচ ক্যাটাগরি তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // খরচ ক্যাটাগরি এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_expense_category')) {
+                    abort(403, 'আপনার খরচ ক্যাটাগরি এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // খরচ ক্যাটাগরি ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_expense_category')) {
+                    abort(403, 'আপনার খরচ ক্যাটাগরি ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
     
     /**

@@ -9,20 +9,57 @@ use App\Models\Permission;
 use App\Models\RolePermission;
 use App\Models\Module;
 use App\Http\Requests\Admin\RoleRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 use Gate;
 
 class RolesController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_role',     ['only' => ['index', 'show','view']]);
-        $this->middleware('can:create_role',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_role',     ['only' => ['edit', 'updae']]);
-        $this->middleware('can:delete_role',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // রোল দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_role')) {
+                    abort(403, 'আপনার রোল তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // রোল তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_role')) {
+                    abort(403, 'আপনার নতুন রোল তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // রোল এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_role')) {
+                    abort(403, 'আপনার রোল এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // রোল ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_role')) {
+                    abort(403, 'আপনার রোল ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
 

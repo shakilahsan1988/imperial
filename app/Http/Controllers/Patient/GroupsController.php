@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Http\Requests\Patient\GroupOwnerRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class GroupsController extends Controller
 {

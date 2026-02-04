@@ -13,20 +13,63 @@ use App\Models\Branch;
 use App\Models\Contract;
 use App\Http\Requests\Admin\VisitRequest;
 use Str;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class VisitsController extends Controller
 {
      /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_visit',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_visit',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_visit',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_visit',   ['only' => ['destroy']]);
-        $this->middleware('can:create_group',   ['only' => ['create_tests']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // হোম ভিজিট দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_visit')) {
+                    abort(403, 'আপনার হোম ভিজিট তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // হোম ভিজিট বুকিং করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_visit')) {
+                    abort(403, 'আপনার হোম ভিজিট বুকিং করার অনুমতি নেই।');
+                }
+            }
+
+            // ভিজিট এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_visit')) {
+                    abort(403, 'আপনার হোম ভিজিটের তথ্য পরিবর্তন করার অনুমতি নেই।');
+                }
+            }
+
+            // ভিজিট ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_visit')) {
+                    abort(403, 'আপনার হোম ভিজিট মুছে ফেলার অনুমতি নেই।');
+                }
+            }
+
+            // ভিজিট থেকে ইনভয়েস/গ্রুপ তৈরি করার পারমিশন চেক
+            if ($action == 'create_tests') {
+                if (!$u->hasPermission('create_group')) {
+                    abort(403, 'আপনার ভিজিট থেকে টেস্ট তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**
@@ -139,7 +182,7 @@ class VisitsController extends Controller
      */
     public function show($id)
     {
-        $visit=Visit::find($id);
+        $visit=Visit::findOrFail($id);
 
         $visit->update(['read'=>true]);
 
@@ -154,7 +197,7 @@ class VisitsController extends Controller
      */
     public function edit($id)
     {
-        $visit=Visit::find($id);
+        $visit=Visit::findOrFail($id);
 
         $visit->update(['read'=>true]);
 
@@ -178,7 +221,6 @@ class VisitsController extends Controller
             $attach=$request->file('attach');
             $name=time().'.'.$attach->getClientOriginalExtension();
             $attach->move('uploads/visits',$name);
-            $visit=Visit::find($id);
             $visit->update(['attach'=>$name]);
         }
 
@@ -205,14 +247,14 @@ class VisitsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+    * Create group (tests) from visit
+    *
+    * @param  int  $visit_id
+    * @return \Illuminate\Http\Response
     */
     public function create_tests($visit_id)
     {
-        $visit=Visit::find($visit_id);
+        $visit=Visit::findOrFail($visit_id);
 
         $visit->update([
             'read'=>true,

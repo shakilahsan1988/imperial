@@ -11,35 +11,38 @@
       <div class="col-sm-6">
         <h1 class="m-0 text-dark">
           <i class="nav-icon fas fa-server"></i>   
-          {{__('একটিভিটি লগ')}}
+          {{__('এক্টিভিটি লগ')}}
         </h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
+      </div><div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('হোম')}}</a></li>
           <li class="breadcrumb-item active">{{__('এক্টিভিটি লগ সমূহ')}}</li>
         </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
+      </div></div></div></div>
 @endsection
 
 @section('content')
+{{-- ইউজার এবং সুপার এডমিন চেক করার লজিক --}}
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 <div class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">{{__('এক্টিভিটি লগ টেবিল')}}</h3>
-    @can('clear_activity_log')
+
+    {{-- @can('clear_activity_log') পরিবর্তন করে কাস্টম লজিক ব্যবহার করা হলো --}}
+    @if($u && ($isSuper || $u->hasPermission('clear_activity_log')))
       <form action="{{route('admin.activity_logs.clear')}}" method="POST">
+        @csrf
         <button type="submit" class="btn btn-danger btn-sm float-right">
-          <i class="fa fa-trash"></i> {{__('ক্লিয়ার করুন')}}
+          <i class="fa fa-trash"></i> {{__('ক্লিয়ার করুন')}}
         </button>
       </form>
-    @endcan
+    @endif
   </div>
-  <!-- /.card-header -->
   <div class="card-body">
-    <!-- filter -->
     <div id="accordion">
         <div class="card card-info">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary collapsed" aria-expanded="false">
@@ -64,8 +67,6 @@
           </div>
         </div>
       </div>
-    <!-- \filter -->
-
     <div class="row">
       <div class="col-12 table-responsive">
         <table id="activity_logs_table" class="table table-striped table-hover table-bordered"  width="100%">
@@ -78,16 +79,16 @@
             </tr>
           </thead>
           <tbody>
-
+              {{-- ডাটা টেবিল থেকে ডেটা লোড হবে --}}
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  <!-- /.card-body -->
-</div>
+  </div>
 
 @endsection
+
 @section('scripts')
   <script src="{{url('js/admin/activity_logs.js')}}"></script>
 @endsection

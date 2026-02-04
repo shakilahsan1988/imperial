@@ -9,20 +9,57 @@ use App\Models\Role;
 use App\Models\UserRole;
 use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class UsersController extends Controller
 {
 
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_user',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_user',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_user',     ['only' => ['edit', 'updae']]);
-        $this->middleware('can:delete_user',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // ইউজার তালিকা দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_user')) {
+                    abort(403, 'আপনার ইউজার তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // নতুন ইউজার তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_user')) {
+                    abort(403, 'আপনার নতুন ইউজার তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // ইউজার এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_user')) {
+                    abort(403, 'আপনার ইউজারের তথ্য পরিবর্তন করার অনুমতি নেই।');
+                }
+            }
+
+            // ইউজার ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_user')) {
+                    abort(403, 'আপনার ইউজার মুছে ফেলার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

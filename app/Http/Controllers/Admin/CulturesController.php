@@ -6,20 +6,57 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Culture;
 use App\Http\Requests\Admin\CultureRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class CulturesController extends Controller
 {
 
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_culture',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_culture',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_culture',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_culture',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // কালচার দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_culture')) {
+                    abort(403, 'আপনার কালচার তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_culture')) {
+                    abort(403, 'আপনার নতুন কালচার তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_culture')) {
+                    abort(403, 'আপনার কালচার এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_culture')) {
+                    abort(403, 'আপনার কালচার ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

@@ -7,19 +7,56 @@ use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\TestOption;
 use App\Http\Requests\Admin\TestRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class TestsController extends Controller
 {
      /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_test',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_test',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_test',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_test',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // টেস্ট তালিকা দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_test')) {
+                    abort(403, 'আপনার ল্যাব টেস্ট তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // নতুন টেস্ট তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_test')) {
+                    abort(403, 'আপনার নতুন ল্যাব টেস্ট যুক্ত করার অনুমতি নেই।');
+                }
+            }
+
+            // টেস্ট এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_test')) {
+                    abort(403, 'আপনার ল্যাব টেস্ট এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // টেস্ট ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_test')) {
+                    abort(403, 'আপনার ল্যাব টেস্ট ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

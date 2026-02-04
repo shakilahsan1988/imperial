@@ -16,14 +16,51 @@ use Excel;
 class PricesController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_test_prices',     ['only' => ['analyses']]);
-        $this->middleware('can:update_test_prices',   ['only' => ['analyses_submit']]);
-        $this->middleware('can:view_culture_prices',     ['only' => ['cultures']]);
-        $this->middleware('can:update_culture_prices',   ['only' => ['cultures_submit']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // টেস্ট প্রাইস ভিউ এবং এক্সপোর্ট পারমিশন চেক
+            if (in_array($action, ['tests', 'tests_prices_export'])) {
+                if (!$u->hasPermission('view_test_prices')) {
+                    abort(403, 'আপনার টেস্ট প্রাইস লিস্ট দেখার অনুমতি নেই।');
+                }
+            }
+
+            // টেস্ট প্রাইস আপডেট এবং ইমপোর্ট পারমিশন চেক
+            if (in_array($action, ['tests_submit', 'tests_prices_import'])) {
+                if (!$u->hasPermission('update_test_prices')) {
+                    abort(403, 'আপনার টেস্ট প্রাইস আপডেট করার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার প্রাইস ভিউ এবং এক্সপোর্ট পারমিশন চেক
+            if (in_array($action, ['cultures', 'cultures_prices_export'])) {
+                if (!$u->hasPermission('view_culture_prices')) {
+                    abort(403, 'আপনার কালচার প্রাইস লিস্ট দেখার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার প্রাইস আপডেট এবং ইমপোর্ট পারমিশন চেক
+            if (in_array($action, ['cultures_submit', 'cultures_prices_import'])) {
+                if (!$u->hasPermission('update_culture_prices')) {
+                    abort(403, 'আপনার কালচার প্রাইস আপডেট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

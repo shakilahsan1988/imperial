@@ -1,18 +1,21 @@
 <div class="text-center">
 
-    @can('edit_contract')
+    {{-- কন্ট্রাক্ট এডিট পারমিশন চেক --}}
+    @if($u && ($isSuper || $u->hasPermission('edit_contract')))
         <a href="{{route('admin.contracts.edit',$contract['id'])}}" class="btn btn-primary btn-sm">
             <i class="fa fa-edit"></i>
         </a>
-    @endcan
+    @endif
 
-    @can('delete_contract')
-            <form method="POST" action="{{route('admin.contracts.destroy',$contract['id'])}}" class="d-inline">
-                <input type="hidden" name="_method" value="delete">
-                <button type="submit" class="btn btn-danger btn-sm delete_contract">
-                    <i class="fa fa-trash"></i>
-                </button>
-            </form>
-    @endcan
+    {{-- কন্ট্রাক্ট ডিলিট পারমিশন চেক --}}
+    @if($u && ($isSuper || $u->hasPermission('delete_contract')))
+        <form method="POST" action="{{route('admin.contracts.destroy',$contract['id'])}}" class="d-inline">
+            @csrf
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="btn btn-danger btn-sm delete_contract">
+                <i class="fa fa-trash"></i>
+            </button>
+        </form>
+    @endif
 
 </div>

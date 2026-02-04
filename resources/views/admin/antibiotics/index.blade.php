@@ -13,29 +13,33 @@
           <i class="nav-icon fas fa-capsules"></i>   
           {{__('Antibiotics')}}
         </h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
+      </div><div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
           <li class="breadcrumb-item active">{{__('Antibiotics')}}</li>
         </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
+      </div></div></div></div>
 @endsection
 
 @section('content')
+{{-- ইউজার এবং সুপার এডমিন চেক করার জন্য লজিক --}}
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 <div class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">{{__('Antibiotics Table')}}</h3>
-    @can('create_antibiotic')
+    
+    {{-- @can('create_antibiotic') এর পরিবর্তে কাস্টম লজিক --}}
+    @if($u && ($isSuper || $u->hasPermission('create_antibiotic')))
     <a href="{{route('admin.antibiotics.create')}}" class="btn btn-primary btn-sm float-right">
      <i class="fa fa-plus"></i> {{__('Create')}}
     </a>
-    @endcan
+    @endif
+    
   </div>
-  <!-- /.card-header -->
   <div class="card-body">
     <div class="row table-responsive">
       <div class="col-12">
@@ -50,16 +54,16 @@
             </tr>
           </thead>
           <tbody>
-
+              {{-- ডাটা টেবিলের ডাটা JS এর মাধ্যমে লোড হবে --}}
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  <!-- /.card-body -->
-</div>
+  </div>
 
 @endsection
+
 @section('scripts')
   <script src="{{url('js/admin/antibiotics.js')}}"></script>
 @endsection

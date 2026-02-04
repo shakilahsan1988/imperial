@@ -5,18 +5,56 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CultureOption;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
+
 class CultureOptionsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_culture_option',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_culture_option',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_culture_option',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_culture_option',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // কালচার অপশন দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_culture_option')) {
+                    abort(403, 'আপনার কালচার অপশন দেখার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার অপশন তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_culture_option')) {
+                    abort(403, 'আপনার নতুন কালচার অপশন তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার অপশন এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_culture_option')) {
+                    abort(403, 'আপনার কালচার অপশন এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // কালচার অপশন ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_culture_option')) {
+                    abort(403, 'আপনার কালচার অপশন মুছে ফেলার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**
@@ -81,7 +119,7 @@ class CultureOptionsController extends Controller
       session()->flash('success',__('Culture option created successfully'));
 
       return redirect()->route('admin.culture_options.index');
-       
+        
     }
 
     /**

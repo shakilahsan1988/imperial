@@ -6,8 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UpdateProfileRequest;
 use App\Models\User;
+
 class ProfileController extends Controller
 {
+    /**
+     * Auth check for profile management
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            // প্রোফাইল এডিট করার জন্য শুধুমাত্র এডমিন হিসেবে লগইন থাকা আবশ্যক
+            if (auth()->guard('admin')->check()) {
+                return $next($request);
+            }
+
+            abort(403, 'আপনার প্রোফাইল এডিট করার অনুমতি নেই।');
+        });
+    }
+
     /**
      * Show the form for editing profile
      *
@@ -26,21 +42,21 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request)
     {
-        //update user
+        // update user
         $user=User::findOrFail(auth()->guard('admin')->user()->id);
         $user->name=$request->name;
         $user->email=$request->email;
     
-        //optional updating password
+        // optional updating password
         if(!empty($request['password']))
         {
             $user->password=bcrypt($request->password);
         }
 
-        //signature
+        // signature
         if($request->hasFile('signature'))
         {
-            //upload signature
+            // upload signature
             $signature=$request->file('signature');
             $signature_name=auth()->guard('admin')->user()->id.'.'.$signature->getClientOriginalExtension();
             $signature->move('uploads/signature',$signature_name);

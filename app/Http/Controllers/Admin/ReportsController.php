@@ -17,19 +17,49 @@ use App\Models\Patient;
 use App\Models\TestOption;
 use App\Http\Requests\Admin\UpdateCultureResultRequest;
 use App;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
+
 class ReportsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_report',     ['only' => ['index', 'show']]);
-        $this->middleware('can:create_report',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_report',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_report',   ['only' => ['destroy']]);
-        $this->middleware('can:sign_report',   ['only' => ['sign']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // রিপোর্ট তালিকা দেখা এবং পিডিএফ জেনারেট করার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax', 'pdf'])) {
+                if (!$u->hasPermission('view_report')) {
+                    abort(403, 'আপনার রিপোর্ট তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // রিপোর্ট এডিট এবং কালচার আপডেট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update', 'update_culture'])) {
+                if (!$u->hasPermission('edit_report')) {
+                    abort(403, 'আপনার রিপোর্ট আপডেট করার অনুমতি নেই।');
+                }
+            }
+
+            // রিপোর্ট সাইন করার পারমিশন চেক
+            if ($action == 'sign') {
+                if (!$u->hasPermission('sign_report')) {
+                    abort(403, 'আপনার রিপোর্ট সাইন করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**
@@ -70,7 +100,7 @@ class ReportsController extends Controller
             $to=date('Y-m-d 23:59:59',strtotime($date[1]));
 
             //select groups of date between
-            ($from==$to)?$mode->whereDate('created_at',$from):$model->whereBetween('created_at',[$from,$to]);
+            ($from==$to)?$model->whereDate('created_at',$from):$model->whereBetween('created_at',[$from,$to]);
         }
         
         return DataTables::eloquent($model)
@@ -352,6 +382,4 @@ class ReportsController extends Controller
  
         return redirect()->route('admin.reports.index');
     }
-
-    
 }

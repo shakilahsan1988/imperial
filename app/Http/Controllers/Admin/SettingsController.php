@@ -16,19 +16,25 @@ use App\Http\Requests\Admin\ApiSettingRequest;
 class SettingsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_setting',['only' => [
-                                                            'index',
-                                                            'info_submit',
-                                                            'emails_submit',
-                                                            'reports_submit',
-                                                            'sms_submit',
-                                                            'whatsapp_submit',
-                                                            'api_keys_submit'
-                                                        ]]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // সেটিংস ভিউ এবং সব ধরণের আপডেট সাবমিট করার জন্য view_setting পারমিশন চেক
+            if (!$u->hasPermission('view_setting')) {
+                abort(403, 'আপনার সিস্টেম সেটিংস পরিবর্তন করার অনুমতি নেই।');
+            }
+
+            return $next($request);
+        });
     }
 
     public function index()
@@ -36,7 +42,7 @@ class SettingsController extends Controller
         //general
         $settings=setting('info');
         $currencies=Currency::all();
-       
+        
         //emails
         $emails_settings=setting('emails');
 
@@ -92,10 +98,6 @@ class SettingsController extends Controller
             $logo->move('img','logo.png');
         }
 
-
-
-
-
         //update reports logo
         if($request->hasFile('reports_logo'))
         {
@@ -113,7 +115,7 @@ class SettingsController extends Controller
         $info->update([
             'value'=>json_encode($settings)
         ]);
-       
+        
 
        session()->flash('success',__('Settings Updated successfully'));
 
@@ -157,12 +159,12 @@ class SettingsController extends Controller
         $request['show_header']=($request->has('show_header'))?true:false;
         $request['show_footer']=($request->has('show_footer'))?true:false;
         $request['show_signature']=($request->has('show_signature'))?true:false;
-		        $request['show_header_image']=($request->has('show_header_image'))?true:false;
+        $request['show_header_image']=($request->has('show_header_image'))?true:false;
         $request['show_footer_image']=($request->has('show_footer_image'))?true:false;
         $request['show_background_image']=($request->has('show_background_image'))?true:false;
 
         $settings=json_encode($request->except('_method','_token'));
-		    if($request->hasFile('report_header_image'))
+            if($request->hasFile('report_header_image'))
         {
             $report_header_image=$request->file('report_header_image');
             $report_header_image->move('img','report_header.jpg');

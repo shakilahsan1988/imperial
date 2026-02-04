@@ -6,19 +6,56 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Http\Requests\Admin\BranchRequest;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class BranchesController extends Controller
 {
      /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_branch',     ['only' => ['index', 'show','ajax']]);
-        $this->middleware('can:create_branch',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_branch',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_branch',   ['only' => ['destroy']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // ব্রাঞ্চ দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'show', 'ajax'])) {
+                if (!$u->hasPermission('view_branch')) {
+                    abort(403, 'আপনার ব্রাঞ্চ তালিকা দেখার অনুমতি নেই।');
+                }
+            }
+
+            // ব্রাঞ্চ তৈরি করার পারমিশন চেক
+            if (in_array($action, ['create', 'store'])) {
+                if (!$u->hasPermission('create_branch')) {
+                    abort(403, 'আপনার নতুন ব্রাঞ্চ তৈরি করার অনুমতি নেই।');
+                }
+            }
+
+            // ব্রাঞ্চ এডিট করার পারমিশন চেক
+            if (in_array($action, ['edit', 'update'])) {
+                if (!$u->hasPermission('edit_branch')) {
+                    abort(403, 'আপনার ব্রাঞ্চ এডিট করার অনুমতি নেই।');
+                }
+            }
+
+            // ব্রাঞ্চ ডিলিট করার পারমিশন চেক
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_branch')) {
+                    abort(403, 'আপনার ব্রাঞ্চ ডিলিট করার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
     /**

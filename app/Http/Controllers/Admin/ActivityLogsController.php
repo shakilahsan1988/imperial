@@ -6,17 +6,42 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Activitylog\Models\Activity;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables; 
 
 class ActivityLogsController extends Controller
 {
     /**
-     * assign roles
+     * assign roles with custom permission logic
      */
     public function __construct()
     {
-        $this->middleware('can:view_activity_log',     ['only' => ['index','ajax']]);
-        $this->middleware('can:clear_activity_log',     ['only' => ['clear']]);
+        $this->middleware(function ($request, $next) {
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+
+            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
+            $action = $request->route()->getActionMethod();
+
+            if ($isSuper) {
+                return $next($request);
+            }
+
+            // অ্যাক্টিভিটি লগ দেখার পারমিশন চেক
+            if (in_array($action, ['index', 'ajax'])) {
+                if (!$u->hasPermission('view_activity_log')) {
+                    abort(403, 'আপনার অ্যাক্টিভিটি লগ দেখার অনুমতি নেই।');
+                }
+            }
+
+            // অ্যাক্টিভিটি লগ ক্লিয়ার করার পারমিশন চেক
+            if ($action == 'clear') {
+                if (!$u->hasPermission('clear_activity_log')) {
+                    abort(403, 'আপনার অ্যাক্টিভিটি লগ মুছে ফেলার অনুমতি নেই।');
+                }
+            }
+
+            return $next($request);
+        });
     }
 
 
