@@ -144,8 +144,11 @@ if (!function_exists('setting'))
 {  
     function setting($key)
     {
-        $setting=Setting::where('key',$key)->first();
-        $setting=json_decode($setting['value'],true);
+         $setting=Setting::where('key',$key)->first();
+		 if($setting){
+			  $setting=json_decode($setting['value'],true);
+		 }
+       
 
         return $setting;
     }
