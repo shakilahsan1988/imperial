@@ -1,4 +1,9 @@
-<?php require_once '../includes/header.php'; ?>
+@extends('layouts.front')
+
+@section('title', 'About Us - Imperial Health Bangladesh')
+
+@section('content')
+
 <!-- Community Events Section -->
 <section class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-6">
@@ -271,4 +276,4 @@
         </div>
     </div>
 </section>
-<?php require_once '../includes/footer.php'; ?>
+@endsection

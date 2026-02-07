@@ -1,4 +1,8 @@
-<?php require_once '../includes/header.php'; ?>
+@extends('layouts.front')
+
+@section('title', 'Services - Imperial Health Bangladesh')
+
+@section('content')
 
 <!-- 
   Ensure your tailwind.config.js is exactly as requested:
@@ -342,4 +346,4 @@
 </main>
 <!-- Main Content End -->
 
-<?php require_once '../includes/footer.php'; ?>
+@endsection

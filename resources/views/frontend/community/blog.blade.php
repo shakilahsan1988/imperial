@@ -1,4 +1,9 @@
-<?php require_once '../includes/header.php'; ?>
+@extends('layouts.front')
+
+@section('title', 'About Us - Imperial Health Bangladesh')
+
+@section('content')
+
 <main class="w-full bg-white">
 
     <!-- ==========================================
@@ -384,4 +389,4 @@
 
 </main>
 
-<?php require_once '../includes/footer.php'; ?>
+@endsection

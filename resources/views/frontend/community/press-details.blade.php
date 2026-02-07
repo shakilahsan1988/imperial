@@ -1,4 +1,9 @@
-<?php require_once '../includes/header.php'; ?>
+@extends('layouts.front')
+
+@section('title', 'About Us - Imperial Health Bangladesh')
+
+@section('content')
+
 <!-- Press Release Detail -->
 <article class="w-full bg-white">
     <section class="py-16 lg:py-24">
@@ -49,4 +54,4 @@
         </div>
     </section>
 </article>
-<?php require_once '../includes/footer.php'; ?>
+@endsection

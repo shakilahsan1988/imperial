@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+      
             // 1. Filter Form Handling
             const filterForm = document.getElementById('filterForm');
             if(filterForm) {
@@ -387,3 +387,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+
+  function toggleMegaSubmenu(menuId, button) {
+        const menu = document.getElementById(menuId);
+        const icon = button.querySelector('i');
+
+        // Toggle Visibility
+        menu.classList.toggle('hidden');
+
+        // Rotate Icon
+        if (menu.classList.contains('hidden')) {
+            icon.classList.remove('rotate-180');
+        } else {
+            icon.classList.add('rotate-180');
+        }
+    }

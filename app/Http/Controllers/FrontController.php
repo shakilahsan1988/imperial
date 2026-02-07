@@ -28,6 +28,9 @@ class FrontController extends Controller
     public function video_consultation(){
     	return view('frontend.services.video-consultation');
     }
+     public function beauty(){
+    	return view('frontend.services.beauty');
+    }
     public function about(){
     	return view('frontend.about.about');
     }
@@ -71,21 +74,22 @@ class FrontController extends Controller
     	return view('frontend.doctor.book-doctor');
     }
     public function blog(){
-    	return view('frontend.commnunity.blog');
+    	return view('frontend.community.blog');
     }
     public function blog_details(){
-    	return view('frontend.commnunity.blog-details');
+    	return view('frontend.community.blog-details');
     }
     public function event(){
-    	return view('frontend.commnunity.event');
+    	return view('frontend.community.event');
     }
     public function event_details(){
-    	return view('frontend.commnunity.event-details');
+    	return view('frontend.community.event-details');
     }
     public function press(){
-    	return view('frontend.commnunity.press');
+    	return view('frontend.community.press');
     }
     public function press_details(){
-    	return view('frontend.commnunity.press-details');
+    	return view('frontend.community.press-details');
     }
+
 }

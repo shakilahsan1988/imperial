@@ -1,5 +1,9 @@
- <?php require_once '../includes/header.php'; ?>
-  <main>
+@extends('layouts.front')
+
+@section('title', 'Lab Test - Imperial Health Bangladesh')
+
+@section('content')
+
     <!-- MAIN HEADER SECTION -->
      <!-- HERO -->
         <section class="relative h-[65vh]">
@@ -499,5 +503,4 @@
         </div>
     </section>
 
-  </main>
- <?php require_once '../includes/footer.php'; ?>
+@endsection
