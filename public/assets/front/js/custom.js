@@ -1,3 +1,22 @@
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        imperial: {
+                            primary: '#007caa', /* The primary blue */
+                            dark: '#000000',
+                            light: '#4bb7db',/* The primary light blue */
+                            text: '#282828',
+                            gray: '#646464'                          
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"IBM Plex Sans"', 'sans-serif'],
+                        roboto: ['"Roboto"', 'sans-serif'],
+                    }
+                }
+            }
+    }
 document.addEventListener('DOMContentLoaded', () => {
       
             // 1. Filter Form Handling
