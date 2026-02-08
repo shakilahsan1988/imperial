@@ -53,7 +53,7 @@
     ========================================== -->
     <div class="slide active" data-index="0">
         <!-- Background Image -->
-        <img src="https://images.pexels.com/photos/6129653/pexels-photo-6129653.jpeg" 
+        <img src="{{ asset('assets/front/images/index/slide-1.jpeg') }}" 
              onerror="this.src='https://picsum.photos/seed/health1/1920/1080'"
              class="w-full h-full object-cover absolute top-0 left-0">
         
@@ -78,7 +78,7 @@
     ========================================== -->
     <div class="slide" data-index="1">
         <!-- Background Image -->
-        <img src="https://images.pexels.com/photos/6129502/pexels-photo-6129502.jpeg" 
+        <img src="{{ asset('assets/front/images/index/slide-2.jpeg') }}" 
              onerror="this.src='https://picsum.photos/seed/health2/1920/1080'"
              class="w-full h-full object-cover absolute top-0 left-0">
 
@@ -103,7 +103,7 @@
     ========================================== -->
     <div class="slide" data-index="2">
         <!-- Background Image -->
-        <img src="https://images.pexels.com/photos/6129644/pexels-photo-6129644.jpeg" 
+        <img src="{{ asset('assets/front/images/index/slide-3.jpeg') }}" 
              onerror="this.src='https://picsum.photos/seed/health3/1920/1080'"
              class="w-full h-full object-cover absolute top-0 left-0">
 

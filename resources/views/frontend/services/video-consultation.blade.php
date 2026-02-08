@@ -6,7 +6,7 @@
 
     <!-- HERO SECTION -->
     <section class="relative h-[65vh] z-0">
-        <img src="https://media.istockphoto.com/id/482858629/photo/doctors-hospital-corridor-nurse-pushing-gurney-stretcher-bed.jpg?s=1024x1024&w=is&k=20&c=hla99x9I9ea2sfYNi-ZSQWjjDdfQ0YrcZppZ1jLhde0=" alt="Healthcare Background" class="absolute inset-0 w-full h-full object-cover">
+        <img src="{{ asset('assets/front/images/services/consult.jpg') }}" alt="Healthcare Background" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30"></div>
     </section>
 
@@ -29,7 +29,7 @@
                 <!-- CARD 1: 3 Months -->
                 <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow">
                     <div class="h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="3 Month Plan" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/services/con1.png') }}" alt="3 Month Plan" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
                         <a href="{{ route('membership') }}" class="block mb-2">
@@ -52,7 +52,7 @@
                 <!-- CARD 2: 6 Months -->
                 <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow">
                     <div class="h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/doctors-day-handsome-brunette-cute-guy-medical-gown-with-hands-pocket_140725-162944.jpg" alt="6 Month Plan" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/services/con2.jpg') }}" alt="6 Month Plan" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
                         <a href="{{ route('membership') }}" class="block mb-2">
@@ -75,7 +75,7 @@
                 <!-- CARD 3: 12 Months -->
                 <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow">
                     <div class="h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/premium-photo/portrait-confident-female-doctor-holding-clipboard_107420-19551.jpg" alt="12 Month Plan" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/services/con3.jpeg') }}" alt="12 Month Plan" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
                         <a href="{{ route('membership') }}" class="block mb-2">
@@ -105,7 +105,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <!-- Left: Image -->
                 <div class="order-2 md:order-1">
-                    <img src="https://img.freepik.com/free-photo/doctor-nurses-special-equipment_23-2148980721.jpg" alt="Why Choose Amar Jotno Plan" class="rounded-lg shadow-lg w-full h-auto object-cover">
+                    <img src="{{ asset('assets/front/images/services/con4.jpg') }}" alt="Why Choose Amar Jotno Plan" class="rounded-lg shadow-lg w-full h-auto object-cover">
                 </div>
 
                 <!-- Right: Content -->

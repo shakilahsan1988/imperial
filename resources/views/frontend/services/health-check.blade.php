@@ -1,12 +1,15 @@
-<?php require_once '../includes/header.php'; ?>
+@extends('layouts.front')
 
+@section('title', 'Beauty Wellness - Imperial Health Bangladesh')
+
+@section('content')
 
 <!-- Main Content Start -->
 <main class="font-sans text-imperial-text bg-imperial-light">
 
      <!-- HERO -->
         <section class="relative h-[65vh]">
-            <img src="https://img.freepik.com/free-photo/doctor-with-face-mask-against-covid19-discussing-with-nurse-hospital-waiting-area-disabled-senior-woman-wheelchair-waiting-examination-assistant-working-reception-computer_482257-6055.jpg" class="absolute inset-0 w-full h-full object-cover">
+            <img src="{{ asset('assets/front/images/healthcheck/1.jpg') }}" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/30"></div>
         </section>
 	<!-- INTRO OVERLAP SECTION -->
@@ -30,7 +33,7 @@
                 <!-- Card 1 -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/her-health-check-age-40-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/doctor-discussing-x-ray-ct-scan-patient-cervical-spine-injury-diagnosis-results-treatment-with-nurse-medical-appointment-radiology-medical-exam-sterile-antibacterial-clinic-environment_482257-64621.jpg?t=st=1768970288~exp=1768973888~hmac=9ee28348739430be03503218aa22ed948a76202ebfa2d36ec102c9dafc6e073f&w=1060" alt="Her Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/2.jpg') }}" alt="Her Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -50,7 +53,7 @@
                 <!-- Card 2 -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/her-health-check-age-40-65-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/portrait-young-female-doctor-scrubs-protective-face-mask-preparing-anesthesia-machine-before-operation_657921-1099.jpg" alt="Her Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/3.jpg') }}" alt="Her Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -70,7 +73,7 @@
                 <!-- Card 3 -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/her-health-check-age-65-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/retired-person-using-wheelchair-talking-with-senior-doctor-appointment-while-being-helped-by-professional-nurse-private-clinic-older-man-living-with-disability-busy-hospital-reception_482257-46754.jpg" alt="Her Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/4.jpg') }}" alt="Her Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -99,7 +102,7 @@
                 <!-- Card 1 -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/his-health-check-age-40-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2024/02/21/15/01/doctor-8587851_1280.png" alt="His Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/5.jpg') }}" alt="His Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -119,7 +122,7 @@
                 <!-- Card 2 -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/his-health-check-age-40-65-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2024/04/09/05/38/ai-generated-8685104_1280.jpg" alt="His Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/6.jpg') }}" alt="His Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -139,7 +142,7 @@
                 <!-- Card 3 -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/his-health-check-age-65-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2024/08/13/11/42/ai-generated-8965801_960_720.png" alt="His Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/7.jpg') }}" alt="His Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -168,7 +171,7 @@
                 <!-- Full Body -->
                 <article class=" rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/full-body-health-check/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2019/04/03/03/06/medical-equipment-4099429_1280.jpg" alt="Full Body Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/8.jpg') }}" alt="Full Body Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -188,7 +191,7 @@
                 <!-- Home Health -->
                 <article class=" rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/home-health-check/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2023/12/15/18/40/ai-generated-8451277_960_720.png" alt="Home Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/9.jpg') }}" alt="Home Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -208,7 +211,7 @@
                 <!-- Cardiac -->
                 <article class=" rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/comprehensive-cardiac-and-hypentension-health-check/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2024/09/03/15/21/ai-generated-9019520_1280.png" alt="Cardiac Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/9.jpg') }}" alt="Cardiac Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -228,7 +231,7 @@
                 <!-- Diabetes -->
                 <article class="rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/comprehensive-diabetes-health-check/" class="block h-48 overflow-hidden">
-                        <img src="https://media.istockphoto.com/id/1476261444/photo/young-pharmaceutic-seller-explaining-something-to-doctor-in-hospital.jpg?s=1024x1024&w=is&k=20&c=E91IgF_LF1gbTbok8ddhiMjv6xCbC5fv9jtadlvOw0Y=" alt="Diabetes Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/10.jpg') }}" alt="Diabetes Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -248,7 +251,7 @@
                 <!-- Child Health -->
                 <article class="rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/child-health-check-2-yrs-to-16-yrs/" class="block h-48 overflow-hidden">
-                        <img src="https://cdn.pixabay.com/photo/2014/12/10/21/01/doctor-563429_1280.jpg" alt="Child Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/healthcheck/11.jpg') }}" alt="Child Health Check" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -418,5 +421,4 @@
 
 </main>
 <!-- Main Content End -->
-
-<?php require_once '../includes/footer.php'; ?>
+@endsection

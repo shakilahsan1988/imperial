@@ -1,5 +1,9 @@
-<?php require_once '../includes/header.php'; ?>
-<!-- Updated Founder Section -->
+@extends('layouts.front')
+
+@section('title', 'About Us - Imperial Health Bangladesh')
+
+@section('content')
+
 <article class="w-full bg-white">
     <section class="py-16 lg:py-24">
         <div class="container mx-auto px-6">
@@ -57,4 +61,4 @@
         </div>
     </section>
 </article>
-<?php require_once '../includes/footer.php'; ?>
+@endsection

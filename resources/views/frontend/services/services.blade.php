@@ -6,7 +6,7 @@
 
     <!-- HERO SECTION -->
     <section class="relative h-[65vh] z-0">
-        <img src="https://media.istockphoto.com/id/2154850841/photo/medical-industry-stock-market-graph-chart.jpg?s=1024x1024&w=is&k=20&c=0kbaw7AbtFmEBvicdV-8aYwCA5_R4yhplATOubqvaRU=" alt="Healthcare Background" class="absolute inset-0 w-full h-full object-cover">
+        <img src="{{ asset('assets/front/images/services/services.jpg') }}" alt="Healthcare Background" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30"></div>
     </section>
 

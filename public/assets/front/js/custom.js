@@ -1,5 +1,24 @@
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        imperial: {
+                            primary: '#007caa', /* The primary blue */
+                            dark: '#000000',
+                            light: '#4bb7db',/* The primary light blue */
+                            text: '#282828',
+                            gray: '#646464'                          
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"IBM Plex Sans"', 'sans-serif'],
+                        roboto: ['"Roboto"', 'sans-serif'],
+                    }
+                }
+            }
+    }
 document.addEventListener('DOMContentLoaded', () => {
-    
+      
             // 1. Filter Form Handling
             const filterForm = document.getElementById('filterForm');
             if(filterForm) {
@@ -387,3 +406,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+
+  function toggleMegaSubmenu(menuId, button) {
+        const menu = document.getElementById(menuId);
+        const icon = button.querySelector('i');
+
+        // Toggle Visibility
+        menu.classList.toggle('hidden');
+
+        // Rotate Icon
+        if (menu.classList.contains('hidden')) {
+            icon.classList.remove('rotate-180');
+        } else {
+            icon.classList.add('rotate-180');
+        }
+    }

@@ -21,6 +21,7 @@ Route::prefix('front')->group(function () {
     Route::get('/membership', [FrontController::class, 'membership'])->name('membership');
     Route::get('/lab-test', [FrontController::class, 'lab_test'])->name('lab-test');
     Route::get('/video-consultation', [FrontController::class, 'video_consultation'])->name('video-consultation');
+    Route::get('/beauty', [FrontController::class, 'beauty'])->name('beauty');
     Route::get('/about', [FrontController::class, 'about'])->name('about');
     Route::get('/about-details', [FrontController::class, 'about_details'])->name('about-details');
     Route::get('/bill-of-right', [FrontController::class, 'bill_of_rights'])->name('bill-of-right');
