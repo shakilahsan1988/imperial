@@ -34,7 +34,7 @@
     <section class="relative h-[65vh]">
         <!-- Using the membership image from the original source for better visual consistency, 
              or you can use the picsum link: https://picsum.photos/seed/imperial_hero_about/1920/1080 -->
-        <img src="https://img.freepik.com/free-vector/businessman-choosing-options-computer_1262-19222.jpg" 
+        <img src="{{ asset('assets/front/images/services/con5.jpg') }}" 
              alt="Membership Background" 
              class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30"></div>
@@ -59,7 +59,7 @@
                 <!-- Card 1: Gold -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/imperial-gold-annual-membership-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/premium-vector/airplane-icon-design-illustration-flight-transport-sign-gold-color-style_565585-12199.jpg" alt="imperial Gold" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con6.jpeg') }}" alt="imperial Gold" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -80,7 +80,7 @@
                 <!-- Card 2: Silver -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/imperial-silver-annual-membership-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/premium-vector/silver-vip-cards-with-minimalist-style_23-2147662921.jpg" alt="imperial Silver" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con7.jpeg') }}" alt="imperial Silver" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -101,7 +101,7 @@
                 <!-- Card 3: Platinum -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/imperial-platinum-annual-membership-plan/" class="block h-48 overflow-hidden">
-                        <img src=https://img.freepik.com/free-vector/holographic-silver-gradient-sticker-label-hologram-stickers-gradient-sticker-shinny-tag_40876-4096.jpg" alt="imperial Platinum" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con8.jpg') }}" alt="imperial Platinum" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -131,7 +131,7 @@
                 <!-- Card 1: Prediabetes -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/prediabetes-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="Prediabetes Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con9.jpg') }}" alt="Prediabetes Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -152,7 +152,7 @@
                 <!-- Card 2: Diabetes -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/diabetes-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="Diabetes Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con10.jpg') }}" alt="Diabetes Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -173,7 +173,7 @@
                 <!-- Card 3: Cardiac & Hypertension -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/cardiac-hypertension-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="Cardiac & Hypertension" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/11.jpg') }}" alt="Cardiac & Hypertension" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -194,7 +194,7 @@
                 <!-- Card 4: Maternity -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/maternity-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="Maternity Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con12.jpg') }}" alt="Maternity Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -224,7 +224,7 @@
                 <!-- Card 1: 12 Months -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/12-month-video-consultation-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="12 Month Video Consultation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con13.jpg') }}" alt="12 Month Video Consultation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -245,7 +245,7 @@
                 <!-- Card 2: 6 Months -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/6-month-video-consultation-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="6 Month Video Consultation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con14.jpg') }}" alt="6 Month Video Consultation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">
@@ -266,7 +266,7 @@
                 <!-- Card 3: 3 Months -->
                 <article class="snap-center shrink-0 w-[85vw] md:w-[350px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
                     <a href="/services/3-month-video-consultation-plan/" class="block h-48 overflow-hidden">
-                        <img src="https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?t=st=1768969491~exp=1768973091~hmac=0b80efa6e463a76fba460c81e04ac6daea365c688be9f5a424a45065f1a73ba0&w=1060" alt="3 Month Video Consultation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('assets/front/images/services/con16.jpg') }}" alt="3 Month Video Consultation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </a>
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="mb-4">

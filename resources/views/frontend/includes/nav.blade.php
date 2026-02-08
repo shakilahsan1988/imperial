@@ -64,7 +64,7 @@
                                             </div>
                                         </li>
                                          <li class="border-b">
-                                            <a href="{{ route('membership') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Health Checks and Packages</a>
+                                            <a href="{{ route('health-check') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Health Checks and Packages</a>
                                          </li>
                                          <li class="border-b">
                                             <a href="{{ route('membership') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Membership Plan</a>
