@@ -1,3 +1,9 @@
+@php
+    // ডাটা-টেবিল এরর এড়াতে এবং পারমিশন নিশ্চিত করতে ভেরিয়েবল ডিফাইন করা হলো
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1); // মো: শাকিল আহসান (সুপার এডমিন) চেক
+@endphp
+
 {{-- ইউজার এডিট পারমিশন চেক --}}
 @if($u && ($isSuper || $u->hasPermission('edit_user')))
     <a href="{{route('admin.users.edit',$user['id'])}}" class="btn btn-primary btn-sm">
@@ -7,7 +13,7 @@
 
 {{-- ইউজার ডিলিট পারমিশন চেক --}}
 @if($u && ($isSuper || $u->hasPermission('delete_user')))
-    {{-- নিজের আইডি যেন নিজে ডিলিট করতে না পারে সেই চেক (ঐচ্ছিক কিন্তু নিরাপদ) --}}
+    {{-- নিজের আইডি যেন নিজে ডিলিট করতে না পারে সেই চেক --}}
     @if($u->id != $user['id'])
         <form method="POST" action="{{route('admin.users.destroy',$user['id'])}}" class="d-inline">
             @csrf

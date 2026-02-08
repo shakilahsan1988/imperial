@@ -1,3 +1,9 @@
+@php
+    // ডাটা-টেবিল এরর এড়াতে ব্লেড ফাইলের ভেতরেই ভেরিয়েবল ডিফাইন করা হলো
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1); // মো: শাকিল আহসান (সুপার এডমিন) চেক
+@endphp
+
 {{-- কালচার এডিট পারমিশন চেক --}}
 @if($u && ($isSuper || $u->hasPermission('edit_culture')))
     <a href="{{route('admin.cultures.edit',$culture['id'])}}" class="btn btn-primary btn-sm">
