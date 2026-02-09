@@ -9,7 +9,7 @@
 
         <!-- HERO SECTION -->
         <section class="relative h-[50vh] md:h-[60vh] w-full overflow-hidden">
-            <img src="https://www.praavahealth.com/media-images/z5jPhyJJMyxSGlROQ1ve7B_z04k=/316/fill-1920x634-c0/About_Us.jpg" 
+            <img src="{{ asset('assets/front/images/about/1.jpg') }}" 
                  alt="About Us" 
                  class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/40"></div>
@@ -34,7 +34,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <!-- Image -->
                     <div class="order-2 lg:order-1 rounded-2xl overflow-hidden shadow-lg">
-                        <img src="https://www.praavahealth.com/media-images/7pO_S_1kC8aZAqJPI1fLdEOOG7w=/317/fill-909x681-c0/What_Sets_Us_Apart.jpg" 
+                        <img src="{{ asset('assets/front/images/about/1.jpg') }}" 
                              alt="What Sets Us Apart" 
                              class="w-full h-auto object-cover">
                     </div>
@@ -103,7 +103,7 @@
                     <!-- Card 1 -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/ON4KfIwBrFct6SPXzrCDL_aJGXs=/525/fill-268x358-c0/Sylvana_Quader_Sinha_1.png" 
+                            <img src="{{ asset('assets/front/images/about/2.jpg') }}" 
                                  alt="Sylvana Quader Sinha" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -117,7 +117,7 @@
                     <!-- Card 2 -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/B4A3cAJknolYU3kS-ZESncz1mQs=/546/fill-268x358-c0/Mohammad_Abdul_Matin_Emon_9.jpg" 
+                            <img src="{{ asset('assets/front/images/about/3.jpg') }}" 
                                  alt="Mohammad Abdul Matin Emon" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -131,7 +131,7 @@
                     <!-- Card 3 -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/V18ACOxSxN3fJDK-nKgBNFuzDdY=/362/fill-268x358-c0/Dr._Simeen_Majid_Akhtar_hfVv4Mu.jpg" 
+                            <img src="{{ asset('assets/front/images/about/4.jpg') }}" 
                                  alt="Dr. Simeen M. Akhtar" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -145,7 +145,7 @@
                     <!-- Card 4 -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/8UgtZ3GY46c8IHeJWmRi0pJq4l8=/355/fill-268x358-c0/Dr._Zaheed_Husain_Ph.D_LVLIYCq.jpg" 
+                            <img src="{{ asset('assets/front/images/about/5.jpg') }}" 
                                  alt="Dr. Zaheed Husain, Ph.D." 
                                  class="w-full h-full object-cover">
                         </div>
@@ -159,7 +159,7 @@
                     <!-- Card 5 -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/7hpe-O0NdwhO31s6sUgqiyvFKZI=/358/fill-268x358-c0/Md._Mahbubur_Rahman_OWC3wzV.jpg" 
+                            <img src="{{ asset('assets/front/images/about/6.jpg') }}" 
                                  alt="Md. Mahbubur Rahman" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -173,7 +173,7 @@
                     <!-- Card 6 -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/cLk0PpZsuYip6dwI5e7xOXMHbhI=/552/fill-268x358-c0/Md_Rezaul_Hassan_Sharif.jpg" 
+                            <img src="{{ asset('assets/front/images/about/7.jpg') }}" 
                                  alt="Md. Rezaul Hassan Sharif" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -187,7 +187,7 @@
                      <!-- Card 7 -->
                      <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="https://www.praavahealth.com/media-images/5--L0i9D-2QZ6VjI5IQgK9fy1KA=/550/fill-268x358-c0/Syed_Shourav_Kabir.jpg" 
+                            <img src="{{ asset('assets/front/images/about/8.jpg') }}" 
                                  alt="Syed Shourav Kabir" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -214,40 +214,40 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
                     
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/liMAazUu7oKcAqcQgQxOliS3Vz8=/158/fill-540x292-c0/1.png" alt="Client 1" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/1.webp') }}" alt="Client 1" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/cvUBnLpLRyTOhZyk0BDHomw2P_Y=/159/fill-540x292-c0/2.png" alt="Client 2" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/2.webp') }}" alt="Client 2" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/D6-Q4t7x9d54nsjxsMYXJuuVQDo=/160/fill-540x292-c0/3.png" alt="Client 3" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/3.webp') }}" alt="Client 3" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/j4aW5VCXWXG6NZExpzKcMLPBeVk=/161/fill-540x292-c0/4.png" alt="Client 4" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/5.webp') }}" alt="Client 4" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/FRraavxzXy9luaHQh8ehwpK9h8U=/162/fill-540x292-c0/5.png" alt="Client 5" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/6.webp') }}" alt="Client 5" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/WyrxDaMULjxrXq3o7ZuLg2Dgjjc=/163/fill-540x292-c0/6.png" alt="Client 6" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/7.webp') }}" alt="Client 6" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/5GWamPArp6lMMrqLjBdrqTZaVH4=/237/fill-540x292-c0/7.png" alt="Client 7" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/8.webp') }}" alt="Client 7" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/RubKYZDRxh0r2mxah-uuz9hr0aw=/238/fill-540x292-c0/8.png" alt="Client 8" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/1.webp') }}" alt="Client 8" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/rY4gA9BjZa8W6hP7UKXasi72IWE=/239/fill-540x292-c0/9.png" alt="Client 9" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/2.webp') }}" alt="Client 9" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/FR9_CpzLn4ke4Q1pBrwG0iXS6G0=/240/fill-540x292-c0/10.png" alt="Client 10" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/3.webp') }}" alt="Client 10" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/5eHtA1jogNNRV-qDxZhO1OzuOS4=/241/fill-540x292-c0/11.png" alt="Client 11" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/4.webp') }}" alt="Client 11" class="max-w-full max-h-full object-contain">
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center h-32 hover:shadow-md transition-shadow">
-                        <img src="https://www.praavahealth.com/media-images/UmE8BkGSshEqoTk9vEDspgTg0GY=/242/fill-540x292-c0/12.png" alt="Client 12" class="max-w-full max-h-full object-contain">
+                        <img src="{{ asset('assets/front/images/client/5.webp') }}" alt="Client 12" class="max-w-full max-h-full object-contain">
                     </div>
 
                 </div>

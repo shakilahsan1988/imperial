@@ -44,11 +44,11 @@
                     <!-- Image (Embedded in Left Column) -->
                     <div class="mb-img rounded-xl overflow-hidden shadow-md mb-8 border border-gray-200">
                         <picture class="w-full h-auto block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/tXyUZWB2no5Y9KRMsUOoadjg6Nk=/525/fill-300x400-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/b5HqJqmFJRbyv-aZhLzjQEjXD3g=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/vDPuZvnQTAN0BamqaqepI-y3ZgU=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png">
-                            <source srcset="https://www.praavahealth.com/media-images/vDPuZvnQTAN0BamqaqepI-y3ZgU=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png">
-                            <img src="https://www.praavahealth.com/media-images/b5HqJqmFJRbyv-aZhLzjQEjXD3g=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source srcset="https://www.{{ asset('assets/front/images/management/1.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/1.jpg') }}" 
                                  alt="Sylvana Quader Sinha" 
                                  class="w-full h-auto object-cover">
                         </picture>
@@ -84,12 +84,12 @@
                 <div class="hidden lg:block lg:col-span-4">
                     <div class="dsc-img sticky top-10">
                         <picture class="w-full h-auto block rounded-xl overflow-hidden shadow-lg border border-gray-200">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/tXyUZWB2no5Y9KRMsUOoadjg6Nk=/525/fill-300x400-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/tXyUZWB2no5Y9KRMsUOoadjg6Nk=/525/fill-300x400-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/vDPuZvnQTAN0BamqaqepI-y3ZgU=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/b5HqJqmFJRbyv-aZhLzjQEjXD3g=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png">
-                            <source srcset="https://www.praavahealth.com/media-images/vDPuZvnQTAN0BamqaqepI-y3ZgU=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png">
-                            <img src="https://www.praavahealth.com/media-images/b5HqJqmFJRbyv-aZhLzjQEjXD3g=/525/fill-500x666-c0/Sylvana_Quader_Sinha_1.png" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/1.jpg') }}" 
                                  alt="Sylvana Quader Sinha" 
                                  class="w-full h-auto object-cover">
                         </picture>
