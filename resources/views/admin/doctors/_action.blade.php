@@ -1,3 +1,9 @@
+@php
+    // ডাটা-টেবিল এরর এড়াতে ব্লেড ফাইলের ভেতরেই ভেরিয়েবল ডিফাইন করা হলো
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1); // (সুপার এডমিন) চেক
+@endphp
+
 {{-- ডাক্তার এডিট পারমিশন চেক --}}
 @if($u && ($isSuper || $u->hasPermission('edit_doctor')))
     <a href="{{route('admin.doctors.edit',$doctor['id'])}}" class="btn btn-primary btn-sm">
