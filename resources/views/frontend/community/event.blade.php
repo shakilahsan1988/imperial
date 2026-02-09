@@ -3,7 +3,6 @@
 @section('title', 'About Us - Imperial Health Bangladesh')
 
 @section('content')
-
 <!-- Community Events Section -->
 <section class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-6">
@@ -19,9 +18,9 @@
             
             <!-- Event 1 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/cme-molecular-cancer-diagnostics-cancer-prevention-the-moonshot-program/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/1.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -35,9 +34,9 @@
 
             <!-- Event 2 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/the-journey-of-an-entrepreneur/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/2.webp') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -51,9 +50,9 @@
 
             <!-- Event 3 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/bondhon-an-informal-gathering-to-promote-celebrate-the-power-of-collaboration/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/3.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -67,9 +66,9 @@
 
             <!-- Event 4 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/world-hepatitis-day-awareness-program/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/4.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -83,9 +82,9 @@
 
             <!-- Event 5 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/world-hepatitis-day-awareness-program-primeasia-university/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/5.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -99,9 +98,9 @@
 
             <!-- Event 6 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/praava-health-announces-its-ribbon-cutting-ceremony/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/6.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -115,9 +114,9 @@
 
             <!-- Event 7 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/cme-car-t-cell-therapy-achieving-lasting-remission-in-late-stage-cancer/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/7.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -131,9 +130,9 @@
 
             <!-- Event 8 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/praava-health-at-the-durga-puja-fair/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/8.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -147,9 +146,9 @@
 
             <!-- Event 9 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/cme-with-narayana-health-doctors/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/9.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -163,9 +162,9 @@
 
             <!-- Event 10 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/world-family-doctor-day-rally/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/10.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -179,9 +178,9 @@
 
             <!-- Event 11 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/health-wellness-day/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/11.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -195,9 +194,9 @@
 
             <!-- Event 12 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/bylc-run-running-with-purpose/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/12.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -211,9 +210,9 @@
 
             <!-- Event 13 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/cme-noora-health/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/13.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -227,9 +226,9 @@
 
             <!-- Event 14 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/career-fair-at-bangladesh-university-of-professionals/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/14.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -243,9 +242,9 @@
 
             <!-- Event 15 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/physiotherapy-presentation-at-aisd/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/15.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -259,9 +258,9 @@
 
             <!-- Event 16 -->
             <div class="arcevent-col">
-                <a href="https://cms.beta.praavahealth.com/community/events/workplace-wellness-event-at-dai/" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
+                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="https://www.praavahealth.com/media-images/hP6wFMHTciqtvHeocohs-rBNbW0=/420/fill-529x352-c0%7Cformat-webp/praava.jpeg" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/16.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">

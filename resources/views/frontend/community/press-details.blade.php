@@ -28,7 +28,7 @@
                 <div class="lg:col-span-9 order-1 lg:order-1">
                     <div class="rounded-lg overflow-hidden shadow-xl">
                         <img 
-                            src="https://www.praavahealth.com/media-images/51TnLK3YKg-NPzx1g0g0hSKVW0c=/407/fill-1188x670-c0/praava_health_logo.png" 
+                            src="{{ asset('assets/front/images/event/16.jpg') }}" 
                             alt="Praava Health Logo" 
                             class="w-full h-auto object-cover block"
                             loading="lazy"

@@ -22,10 +22,10 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 
                 <!-- Left Column: Event Image (Span 9) -->
-                <div class="lg:col-span-9 order-1 lg:order-1">
+                <div class="lg:col-span-6 order-1 lg:order-1">
                     <div class="rounded-lg overflow-hidden shadow-xl">
                         <img 
-                            src="https://www.praavahealth.com/media-images/noc-iBymXT2WEt9rMT3QHm8_Cck=/420/fill-1188x670-c0/praava.jpeg" 
+                            src="{{ asset('assets/front/images/event/16.jpg') }}" 
                             alt="Workplace Wellness Event at DAI" 
                             class="w-full h-auto object-cover block"
                             loading="lazy"
@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- Right Column: Event Details (Span 3) -->
-                <div class="lg:col-span-3 order-2 lg:order-2">
+                <div class="lg:col-span-6 order-2 lg:order-2">
                     <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
                         <div class="text-card">
                             <div class="richtext-cont">

@@ -29,9 +29,9 @@
 
             <!-- Item 1: Leadership Transition -->
             <div class="md:col-span-6">
-                <a href="/community/press/praava-health-announces-leadership-transition/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/NQFluTF0UZzV6qRqt7QKUwd6RB4=/538/fill-1280x748-c0/Mohammad_Abdul_Matin_Emon_2.jpg" alt="Mohammad Abdul Matin Emon" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
@@ -44,9 +44,9 @@
 
             <!-- Item 2: Appoints Experts -->
             <div class="md:col-span-6">
-                <a href="/community/press/praava-health-appoints-4-new-industry-experts-to-global-advisory-council/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/jjNjsqLQUKYjitigXkcRlm_cpIU=/424/fill-1280x748-c0/Press_Praava_Health_Appoints.jpg" alt="Press Praava Health Appoints" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
@@ -59,9 +59,9 @@
 
             <!-- Item 3: Bangladesh Finance MoU -->
             <div class="md:col-span-6">
-                <a href="/community/press/bangladesh-finance-praava-health-sign-mou-on-strategic-partnership/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/idrLDKB0gWoFt-vTPRw8bxlMF0k=/405/fill-1280x748-c0/bfl_prava_photo.jpg" alt="bfl prava photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
@@ -74,9 +74,9 @@
 
             <!-- Item 4: Welcomes COO -->
             <div class="md:col-span-6">
-                <a href="/community/press/praava-health-welcomes-mohammad-abdul-matin-emon-as-chief-operating-officer/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/8yO1EgWffIACJgHRBwJr2-jZaLI=/494/fill-1280x748-c0/Website_Image_COO.png" alt="Website Image COO" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
@@ -89,9 +89,9 @@
 
             <!-- Item 5: Partners with PHWC -->
             <div class="md:col-span-6">
-                <a href="/community/press/praava-health-partners-with-psychological-health-and-wellness-clinic/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/NVhkBn59gKZu2-JukCk2M6gQt8s=/406/fill-1280x748-c0/praava-health---press-release-of-partnership-with-phwc.png" alt="Partnership with PHWC" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
@@ -104,9 +104,9 @@
 
             <!-- Item 6: Ghore Lab -->
             <div class="md:col-span-6">
-                <a href="/community/press/praava-health-launches-home-lab-testing-solution-ghore-lab/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/av0d6nOzdyKDVvrOv41sQi6vBac=/363/fill-1280x748-c0/ghorelab.jpg" alt="Ghore Lab" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
@@ -119,9 +119,9 @@
 
             <!-- Item 7: CME Molecular Cancer -->
             <div class="md:col-span-6">
-                <a href="/community/press/cme-molecular-cancer-diagnostics-cancer-prevention-the-moonshot-program/" class="block group">
+                <a href="{{ route('press-details') }}" class="block group">
                     <div class="grid grid-cols-6 gap-4 h-full bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                        <div class="col-span-6 h-48 overflow-hidden">
+                        <div class="col-span-6 h-64 overflow-hidden">
                             <img src="https://www.praavahealth.com/media-images/bGvcjlDB8wRDDTK7tNr13_ooEb0=/425/fill-1280x748-c0/Press__CME_Molecular_Cancer.jpg" alt="CME Molecular Cancer" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                         </div>
                         <div class="col-span-6 p-4 flex flex-col justify-center">
