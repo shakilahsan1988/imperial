@@ -35,10 +35,10 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/DsdlsUYtSCFtpLjqrEp5LB1llDA=/525/fill-168x226-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/ON4KfIwBrFct6SPXzrCDL_aJGXs=/525/fill-268x358-c0/Sylvana_Quader_Sinha_1.png">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/vDPuZvnQTAN0BamqaqepI-y3ZgU=/525/fill-268x358-c0/Sylvana_Quader_Sinha_1.png">
-                            <img src="https://www.praavahealth.com/media-images/ON4KfIwBrFct6SPXzrCDL_aJGXs=/525/fill-268x358-c0/Sylvana_Quader_Sinha_1.png" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/1.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/1.jpg') }}" 
                                  alt="Sylvana Quader Sinha" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>
@@ -58,9 +58,9 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/qFESppC1ecXv6L18ophJa-ykoA0=/546/fill-168x226-c0/Mohammad_Abdul_Matin_Emon_9.jpg">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/B4A3cAJknolYU3kS-ZESncz1mQs=/546/fill-268x358-c0/Mohammad_Abdul_Matin_Emon_9.jpg">
-                            <img src="https://www.praavahealth.com/media-images/B4A3cAJknolYU3kS-ZESncz1mQs=/546/fill-268x358-c0/Mohammad_Abdul_Matin_Emon_9.jpg" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/2.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/2.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/2.jpg') }}" 
                                  alt="Mohammad Abdul Matin Emon" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>
@@ -79,9 +79,9 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/lZ63EcFMK8IOgjRJ6TrpTmIWQkA=/362/fill-168x226-c0/Dr._Simeen_Majid_Akhtar_hfVv4Mu.jpg">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/V18ACOxSxN3fJDK-nKgBNFuzDdY=/362/fill-268x358-c0/Dr._Simeen_Majid_Akhtar_hfVv4Mu.jpg">
-                            <img src="https://www.praavahealth.com/media-images/V18ACOxSxN3fJDK-nKgBNFuzDdY=/362/fill-268x358-c0/Dr._Simeen_Majid_Akhtar_hfVv4Mu.jpg" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/3.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/3.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/3.jpg') }}" 
                                  alt="Dr. Simeen M. Akhtar" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>
@@ -100,9 +100,9 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/pLP0lQPx1f0vCk4E9lSh3YJH87I=/355/fill-168x226-c0/Dr._Zaheed_Husain_Ph.D_LVLIYCq.jpg">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/8UgtZ3GY46c8IHeJWmRi0pJq4l8=/355/fill-268x358-c0/Dr._Zaheed_Husain_Ph.D_LVLIYCq.jpg">
-                            <img src="https://www.praavahealth.com/media-images/8UgtZ3GY46c8IHeJWmRi0pJq4l8=/355/fill-268x358-c0/Dr._Zaheed_Husain_Ph.D_LVLIYCq.jpg" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/4.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/4.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/4.jpg') }}" 
                                  alt="Dr. Zaheed Husain, Ph.D." 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>
@@ -121,9 +121,9 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/WiPYJTRVJqsvCZNOkOd-MeEjZC0=/358/fill-168x226-c0/Md._Mahbubur_Rahman_OWC3wzV.jpg">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/m2h3P08GS4PAr9pwk9gHIaF1RiQ=/358/fill-268x358-c0/Md._Mahbubur_Rahman_OWC3wzV.jpg">
-                            <img src="https://www.praavahealth.com/media-images/m2h3P08GS4PAr9pwk9gHIaF1RiQ=/358/fill-268x358-c0/Md._Mahbubur_Rahman_OWC3wzV.jpg" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/5.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/5.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/5.jpg') }}" 
                                  alt="Md. Mahbubur Rahman" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>
@@ -142,9 +142,9 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/-6iUl_ynfQM9OLn2jEma9s4ZLjk=/552/fill-168x226-c0/Md_Rezaul_Hassan_Sharif.jpg">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/-nSyvhYD7TaQCm8AHIy8CWq0vlo=/552/fill-268x358-c0/Md_Rezaul_Hassan_Sharif.jpg">
-                            <img src="https://www.praavahealth.com/media-images/-nSyvhYD7TaQCm8AHIy8CWq0vlo=/552/fill-268x358-c0/Md_Rezaul_Hassan_Sharif.jpg" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/6.jpg') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/6.jpg') }}">
+                            <img src="{{ asset('assets/front/images/management/6.jpg') }}" 
                                  alt="Md Rezaul Hassan Sharif" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>
@@ -163,9 +163,9 @@
                 <a href="{{ route('management-details') }}" class="group block bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 text-center">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
                         <picture class="w-full h-full block">
-                            <source media="(max-width:480px)" srcset="https://www.praavahealth.com/media-images/GuIy7FaCfjxp0jot9ip94nMqchs=/550/fill-168x226-c0/Syed_Shourav_Kabir.jpg">
-                            <source media="(max-width:1024px)" srcset="https://www.praavahealth.com/media-images/0l_10jnMv7cnbtIlAI4FGy6YMB4=/550/fill-268x358-c0/Syed_Shourav_Kabir.jpg">
-                            <img src="https://www.praavahealth.com/media-images/0l_10jnMv7cnbtIlAI4FGy6YMB4=/550/fill-268x358-c0/Syed_Shourav_Kabir.jpg" 
+                            <source media="(max-width:480px)" srcset="{{ asset('assets/front/images/management/7.png') }}">
+                            <source media="(max-width:1024px)" srcset="{{ asset('assets/front/images/management/7.png') }}">
+                            <img src="{{ asset('assets/front/images/management/7.png') }}" 
                                  alt="Syed Shourav Kabir" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </picture>

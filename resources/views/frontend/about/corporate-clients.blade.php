@@ -30,7 +30,7 @@
                 <!-- CLIENT 1 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/180/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/1.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -42,7 +42,7 @@
                 <!-- CLIENT 2 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/181/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/2.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -54,7 +54,7 @@
                 <!-- CLIENT 3 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/182/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/3.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -66,7 +66,7 @@
                 <!-- CLIENT 4 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/183/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/4.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -78,7 +78,7 @@
                 <!-- CLIENT 5 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/184/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/5.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -90,7 +90,7 @@
                 <!-- CLIENT 6 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/185/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/6.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -102,7 +102,7 @@
                 <!-- CLIENT 7 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/186/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/7.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
@@ -114,7 +114,7 @@
                 <!-- CLIENT 8 -->
                 <a href="#" class="group block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div class="aspect-[3/2] w-full overflow-hidden bg-gray-50 rounded-t-lg flex items-center justify-center relative">
-                        <img src="https://picsum.photos/id/187/400/300" alt="Corporate Client" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/front/images/client/8.webp') }}" alt="Corporate Client" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                     </div>
                     <div class="p-4 text-center">
