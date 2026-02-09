@@ -32,7 +32,7 @@
                         <div class="flex flex-col md:flex-row gap-8">
                             <!-- Doctor Image -->
                             <div class="w-full md:w-48 flex-shrink-0 mx-auto md:mx-0">
-                                <img src="https://www.praavahealth.com/media-images/S5vvz8VMrp494ay1xlabYZhcFUg=/70/fill-500x666-c0/Dr._Ahmed_Farukh.png" 
+                                <img src="{{ asset('assets/front/images/doctor/5.jpg') }}" 
                                      alt="Dr. Ahmed Farukh" 
                                      class="w-full h-auto rounded-lg object-cover shadow-md bg-gray-100">
                             </div>

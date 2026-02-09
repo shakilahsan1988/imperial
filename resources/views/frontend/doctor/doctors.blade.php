@@ -10,7 +10,7 @@
         <!-- HERO SECTION -->
         <section class="relative h-[60vh] md:h-[65vh] w-full overflow-hidden group">
             <!-- Background Image -->
-            <img src="https://media.istockphoto.com/id/482858629/photo/doctors-hospital-corridor-nurse-pushing-gurney-stretcher-bed.jpg?s=1024x1024&w=is&k=20&c=hla99x9I9ea2sfYNi-ZSQWjjDdfQ0YrcZppZ1jLhde0=" 
+            <img src="{{ asset('assets/front/images/doctor/1.jpg') }}" 
                  alt="Healthcare Background" 
                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] ease-linear group-hover:scale-105">
             
@@ -130,7 +130,7 @@
                     <!-- Card 1 -->
                     <a href="{{ route('book-doctor') }}" class="group block bg-white rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-200 relative">
-                            <img src="https://www.praavahealth.com/media-images/S5vvz8VMrp494ay1xlabYZhcFUg=/70/fill-500x666-c0/Dr._Ahmed_Farukh.png" 
+                            <img src="{{ asset('assets/front/images/doctor/2.jpg') }}" 
                                  alt="Dr. Ahmed Farukh" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             <!-- Hover Overlay -->
@@ -159,7 +159,7 @@
                     <!-- Doctor 1 -->
                     <a href="{{ route('book-doctor') }}" class="group block bg-white rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-200 relative">
-                            <img src="https://www.praavahealth.com/media-images/5Ox6ClI-uG2_VdjQt6YeJXjCTJQ=/74/fill-500x666-c0/ahsanullah.png" 
+                            <img src="{{ asset('assets/front/images/doctor/3.jpg') }}" 
                                  alt="Assistant Professor DR. AZM Ahsan Ullah" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </div>
@@ -175,7 +175,7 @@
                     <!-- Doctor 2 -->
                     <a href="{{ route('book-doctor') }}" class="group block bg-white rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-200 relative">
-                            <img src="https://www.praavahealth.com/media-images/aujCR7Us3sqrgvfnvAzQkqGhLuE=/73/fill-500x666-c0/masud_sinha.png" 
+                            <img src="{{ asset('assets/front/images/doctor/4.jpg') }}" 
                                  alt="Dr. AHM Masud Sinha" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </div>
@@ -189,15 +189,14 @@
                     </a>
 
                     <!-- Doctor 3 (Placeholder) -->
-                    <a href="{{ route('book-doctor') }}" class="group block bg-white rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
-                        <div class="aspect-[3/4] overflow-hidden bg-gray-200 relative flex items-center justify-center">
-                            <div class="text-center text-gray-400">
-                                <i class="fa-solid fa-user-doctor text-4xl mb-2"></i>
-                                <p class="text-xs">Image Coming Soon</p>
-                            </div>
+                  <a href="{{ route('book-doctor') }}" class="group block bg-white rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
+                        <div class="aspect-[3/4] overflow-hidden bg-gray-200 relative">
+                            <img src="{{ asset('assets/front/images/doctor/5.jpg') }}" 
+                                 alt="Dr. AHM Masud Sinha" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </div>
                         <div class="p-6 text-center">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 font-sans group-hover:text-imperial-primary transition-colors">Dr. New Specialist</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 font-sans group-hover:text-imperial-primary transition-colors">Dr. AHM Masud Sinha</h3>
                             <p class="text-sm text-imperial-gray mb-4 font-roboto">Consultant - Cardiology</p>
                             <span class="inline-block px-4 py-2 border border-imperial-primary text-imperial-primary font-bold text-xs uppercase tracking-widest rounded hover:bg-imperial-primary hover:text-white transition-colors w-full">
                                 See Details
