@@ -30,7 +30,7 @@
 <div class="row">
     {{-- Admin Reports Section --}}
     <div class="col-lg-2 col-6">
-      <div class="small-box bg-info">
+      <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$tests_count}}</h3>
           <p>{{__('টেস্ট সমূহ')}}</p>
@@ -41,7 +41,7 @@
     </div>
 
     <div class="col-lg-2 col-6">
-      <div class="small-box bg-info">
+      <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$cultures_count}}</h3>
           <p>{{__('কালচার সমূহ')}}</p>
@@ -52,10 +52,10 @@
     </div>
 
     <div class="col-lg-2 col-6">
-      <div class="small-box bg-info">
+      <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$antibiotics_count}}</h3>
-          <p>{{__('এন্টিবায়োটিক')}}</p>
+          <p>{{__('ঔষধ সমূহ')}}</p>
         </div>
         <div class="icon"><i class="fa fa-capsules"></i></div>
         <a href="{{route('admin.antibiotics.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
@@ -63,7 +63,7 @@
     </div>
 
     <div class="col-lg-2 col-6">
-      <div class="small-box bg-info">
+      <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$patients_count}}</h3>
           <p>{{__('রোগী সমূহ')}}</p>
@@ -74,7 +74,7 @@
     </div>
 
     <div class="col-lg-2 col-6">
-      <div class="small-box bg-info">
+      <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$contracts_count}}</h3>
           <p>{{__('চুক্তি')}}</p>
@@ -85,7 +85,7 @@
     </div>
 
     <div class="col-lg-2 col-6">
-      <div class="small-box bg-info">
+      <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$visits_count}}</h3>
           <p>{{__('হোম ভিজিট')}}</p>
@@ -128,7 +128,7 @@
 
     {{-- Status Counts --}}
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="info-box bg-primary">
+      <div class="info-box bgSecondary">
         <span class="info-box-icon"><i class="fa fa-list"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">{{__('টেস্ট সমূহ')}}</span>
@@ -148,7 +148,7 @@
     </div>
 
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="info-box bg-success">
+      <div class="info-box bgSecondary">
         <span class="info-box-icon"><i class="fa fa-check-double"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">{{__('কমপ্লিট টেস্ট সমূহ')}}</span>

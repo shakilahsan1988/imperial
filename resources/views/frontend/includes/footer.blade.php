@@ -8,7 +8,7 @@
             <!-- Brand & Newsletter -->
             <div>
                 <!-- Using Laravel asset() helper for images -->
-                <img src="{{ asset('assets/front/images/logo.jpg') }}" alt="Imperial Health" class="h-8 w-auto mb-6" onerror="this.src='https://placehold.co/150x50/ffffff/333333?text=Imperial+Health'">
+                <img src="{{ asset('assets/front/images/logo.png') }}" alt="Imperial Health" class="footer-logo w-auto mb-6" onerror="this.src='https://placehold.co/150x50/ffffff/333333?text=Imperial+Health'">
                 
                 <h4 class="text-lg font-bold mb-4 text-imperial-text">Keep up with imperial</h4>
                 <p class="text-gray-600 text-sm mb-4">Subscribe to our newsletter for health tips and updates.</p>

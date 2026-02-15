@@ -7,7 +7,7 @@
             
             <!-- Logo -->
             <a href="{{ route('fhome') }}" class="flex-shrink-0 z-50">
-                <img src="{{ asset('assets/front/images/logo.jpg') }}" alt="Imperial Health Logo" class="h-10 w-auto md:h-10" onerror="this.src='https://placehold.co/150x50/8A2061/ffffff?text=Imperial+Health'">
+                <img src="{{ asset('assets/front/images/logo.png') }}" alt="Imperial Health Logo" class="nav-logo w-auto" onerror="this.src='https://placehold.co/150x50/8A2061/ffffff?text=Imperial+Health'">
             </a>
 
             <!-- Desktop Menu -->

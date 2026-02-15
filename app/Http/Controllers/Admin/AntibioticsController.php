@@ -29,28 +29,28 @@ class AntibioticsController extends Controller
             // Antibiotic দেখার পারমিশন চেক
             if (in_array($action, ['index', 'show', 'ajax'])) {
                 if (!$u->hasPermission('view_antibiotic')) {
-                    abort(403, 'আপনার এন্টিবায়োটিক তালিকা দেখার অনুমতি নেই।');
+                    abort(403, 'আপনার ঔষধ সমূহ দেখার অনুমতি নেই।');
                 }
             }
 
             // Antibiotic তৈরি করার পারমিশন চেক
             if (in_array($action, ['create', 'store'])) {
                 if (!$u->hasPermission('create_antibiotic')) {
-                    abort(403, 'আপনার নতুন এন্টিবায়োটিক তৈরি করার অনুমতি নেই।');
+                    abort(403, 'আপনার নতুন ঔষধ তৈরি করার অনুমতি নেই।');
                 }
             }
 
             // Antibiotic এডিট করার পারমিশন চেক
             if (in_array($action, ['edit', 'update'])) {
                 if (!$u->hasPermission('edit_antibiotic')) {
-                    abort(403, 'আপনার এন্টিবায়োটিক এডিট করার অনুমতি নেই।');
+                    abort(403, 'আপনার ঔষধ এডিট করার অনুমতি নেই।');
                 }
             }
 
             // Antibiotic ডিলিট করার পারমিশন চেক
             if ($action == 'destroy') {
                 if (!$u->hasPermission('delete_antibiotic')) {
-                    abort(403, 'আপনার এন্টিবায়োটিক ডিলিট করার অনুমতি নেই।');
+                    abort(403, 'আপনার ঔষধ ডিলিট করার অনুমতি নেই।');
                 }
             }
 

@@ -92,7 +92,7 @@
       <li class="nav-item">
         <a href="{{route('admin.antibiotics.index')}}" class="nav-link" id="antibiotics">
           <i class="nav-icon fas fa-capsules"></i>
-          <p>{{__('এন্টিবায়োটিক')}}</p>
+          <p>{{__('ঔষধ সমূহ')}}</p>
         </a>
       </li>
       @endif

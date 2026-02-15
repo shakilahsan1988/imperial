@@ -55,7 +55,7 @@
     left:45%;
     top:50%;
     border: 10px solid #f3f3f3; /* Light grey */
-    border-top: 10px solid #0F766E; /* Blue */
+    border-top: 10px solid #007caa; /* Blue */
     border-radius: 50%;
     width: 80px;
     height: 80px;
@@ -92,8 +92,8 @@
 
 .btn-primary,.page-item.active .page-link  {
   color: #fff !important;
-  background-color: #0F766E!important;
-  border-color: #0F766E;
+  background-color: #007caa!important;
+  border-color: #007caa;
   box-shadow: 0 10px 20px -10px rgba(27, 85, 226, 0.59);
 }
 
@@ -107,11 +107,11 @@
 
 .card-primary.card-outline {
     border-top:8px solid;
-    border-color:#0F766E!important;
+    border-color:#007caa!important;
 }
 
 .card-primary:not(.card-outline)>.card-header {
-  background-color: #0F766E;
+  background-color: #007caa;
   box-shadow: 0 10px 20px -10px rgba(27, 85, 226, 0.59);
 }
 
@@ -144,7 +144,7 @@
 }
 
 .nav-tabs.flex-column .nav-link.active{
-  background-color:#0F766E!important;
+  background-color:#007caa!important;
 }
 
 
@@ -158,7 +158,7 @@
 }
 
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active{
-  background-color: #0F766E!important;
+  background-color: #007caa!important;
 }
 
 .card-primary:not(.card-outline) .btn-tool{
@@ -193,8 +193,8 @@ table .btn{
 
 .dataTable thead{
   color: #fff !important;
-  background-color: #0F766E!important;
-  border-color: #0F766E;
+  background-color: #007caa!important;
+  border-color: #007caa;
   box-shadow: 0 10px 20px -10px rgba(27, 85, 226, 0.59);
 }
 
@@ -260,3 +260,5 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.bgPrimary {background: #007caa; color:#ffffff;}
+.bgSecondary {background: #61b9e7; color:#000000;}

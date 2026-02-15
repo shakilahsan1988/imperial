@@ -34,3 +34,9 @@
         .faq-item.active .faq-icon {
             transform: rotate(180deg);
         }
+        .nav-logo {
+            max-height: 50px;
+        }
+        .footer-logo {
+            max-height: 50px;
+        }
