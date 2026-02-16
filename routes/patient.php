@@ -23,7 +23,7 @@ Route::group(['prefix' => '/', 'middleware' => 'PatientGuest', 'as' => 'patient.
     Route::post('register_submit', [PatientController::class, 'register_submit'])->name('register_submit');
     
     // Login
-    Route::get('/', [PatientController::class, 'showLoginForm'])->name('login');
+    Route::get('/patient-login', [PatientController::class, 'showLoginForm'])->name('login');
     Route::post('/login_submit', [PatientController::class, 'login_submit'])->name('login_submit');
     
     // Patient Code/Mail

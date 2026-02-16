@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Artisan;
 | Here is where you can register web routes for your application.
 |
 */
-Route::prefix('front')->group(function () {
     Route::get('/', [FrontController::class, 'index'])->name('fhome');
     Route::get('/services', [FrontController::class, 'services'])->name('services');
     Route::get('/service-details', [FrontController::class, 'service_details'])->name('service-details');
@@ -48,7 +47,6 @@ Route::prefix('front')->group(function () {
     Route::get('/press', [FrontController::class, 'press'])->name('press');
     Route::get('/press-details', [FrontController::class, 'press_details'])->name('press-details');
     Route::get('/gallery', [FrontController::class, 'gallery'])->name('gallery');
-});
 
 Route::middleware(['Install', 'Locale'])->group(function () {
     

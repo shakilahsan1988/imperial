@@ -28,7 +28,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TranslationsController;
 
 // Admin Authentication (Guest)
-Route::group(['prefix' => 'admin/auth', 'middleware' => 'AdminGuest', 'as' => 'admin.auth.'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.auth.'], function() {
     Route::get('/login', [AdminController::class, 'login'])->name('login');
     Route::post('/login', [AdminController::class, 'login_submit'])->name('login_submit');
 });
