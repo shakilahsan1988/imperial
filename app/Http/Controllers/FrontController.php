@@ -19,8 +19,14 @@ class FrontController extends Controller
     public function health_check(){
 		return view('frontend.services.health-check');
     }
+    public function package_details(Request $request, $id = null){
+		return view('frontend.services.package-details', compact('id'));
+    }
     public function membership(){
-    	return view('frontend.services.membership-plan');
+     	return view('frontend.services.membership-plan');
+    }
+    public function membership_details(Request $request, $id = null){
+		return view('frontend.services.membership-details', compact('id'));
     }
     public function lab_test(){
     	return view('frontend.services.lab-test');

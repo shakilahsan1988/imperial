@@ -18,7 +18,9 @@ Route::prefix('front')->group(function () {
     Route::get('/services', [FrontController::class, 'services'])->name('services');
     Route::get('/service-details', [FrontController::class, 'service_details'])->name('service-details');
     Route::get('/health-check', [FrontController::class, 'health_check'])->name('health-check');
+    Route::get('/package-details/{id?}', [FrontController::class, 'package_details'])->name('package-details');
     Route::get('/membership', [FrontController::class, 'membership'])->name('membership');
+    Route::get('/membership-details/{id?}', [FrontController::class, 'membership_details'])->name('membership-details');
     Route::get('/lab-test', [FrontController::class, 'lab_test'])->name('lab-test');
     Route::get('/video-consultation', [FrontController::class, 'video_consultation'])->name('video-consultation');
     Route::get('/beauty', [FrontController::class, 'beauty'])->name('beauty');
