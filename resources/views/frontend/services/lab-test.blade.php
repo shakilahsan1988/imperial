@@ -4,503 +4,303 @@
 
 @section('content')
 
-    <!-- MAIN HEADER SECTION -->
-     <!-- HERO -->
-        <section class="relative h-[65vh]">
-            <img src="https://img.freepik.com/free-photo/coronavirus-vaccine-lab-with-samples_23-2148920827.jpg" alt="Healthcare Background" class="absolute inset-0 w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/30"></div>
-        </section>
-	<!-- INTRO OVERLAP SECTION -->
-	<section class="-mt-24 relative z-10">
-	    <div class="max-w-5xl mx-auto bg-white px-10 py-16 text-center shadow-xl">    
-	      <h1 class="text-3xl font-semibold mb-4">Lab Tests & Procedures</h1>
-            <p class="text-gray-600 max-w-3xl mx-auto">
-              Imperial Health’s biggest differentiator from other diagnostics centers is quality. We offer diagnostic labs and a full range of imaging services that are set to international standards (including the first molecular cancer diagnostics lab in Bangladesh). Book any service necessary without any hesitation.
-            </p>
-	    </div>
-	</section>
-	
- <!-- SERVICES TABLE SECTION -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-6">
-            
-            <!-- FILTER & SEARCH BAR GRID -->
-            <!-- Layout: 12 column grid. Search (Left) 4 cols, Filter (Right) 8 cols -->
-            <div class="grid grid-cols-12 gap-x-[60px] items-center mb-10">
+    <!-- HERO SECTION -->
+    <section class="relative h-[50vh] min-h-[350px]">
+        <img src="https://img.freepik.com/free-photo/coronavirus-vaccine-lab-with-samples_23-2148920827.jpg" 
+             alt="Lab Services" 
+             class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40"></div>
+        <div class="absolute inset-0 flex items-center">
+            <div class="container mx-auto px-6">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Lab Tests & Procedures</h1>
+                    <p class="text-lg text-white/90">World-class diagnostic services with international quality standards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURE CARDS -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6 -mt-40 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 
-                <!-- FILTER (Right Side) -->
-                <!-- Using margin logic to push this to the right based on your provided HTML structure -->
-                <div class="col-span-8 ml-[50%_+_30px] hidden md:block">
-                    <div class="grid grid-cols-12 gap-x-2.5 items-center">
-                        <div class="col-span-4 text-right font-semibold text-gray-700">
-                            <label>Filter By:</label>
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 rounded-full bg-imperial-primary/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-award text-imperial-primary text-3xl"></i>
                         </div>
-                        <div class="col-span-8">
-                            <div class="relative">
-                                <select class="w-full border border-gray-300 rounded-md px-4 py-2.5 appearance-none bg-white focus:outline-none focus:border-imperial-primary">
-                                    <option>All</option>
-                                    <option>Lab</option>
-                                    <option>Imaging</option>
-                                    <option>Procedures</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                </div>
-                            </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3 text-xl">Quality Assured</h3>
+                            <p class="text-gray-600 text-base">Laboratories set up according to international standards and protocols</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SEARCH (Left Side) -->
-                <div class="col-span-4 relative">
-                    <div class="relative">
-                        <input type="text" placeholder="Search" class="w-full border border-gray-300 rounded-md px-4 py-2.5 pl-10 focus:outline-none focus:border-imperial-primary">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <!-- Search Icon SVG -->
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 rounded-full bg-imperial-primary/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-bolt text-imperial-primary text-3xl"></i>
                         </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3 text-xl">Quick Results</h3>
+                            <p class="text-gray-600 text-base">Fast turnaround time for most test results</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 rounded-full bg-imperial-primary/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-house-medical text-imperial-primary text-3xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3 text-xl">Home Service</h3>
+                            <p class="text-gray-600 text-base">Sample collection from the comfort of your home</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES LIST SECTION -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            
+            <!-- FILTER & SEARCH -->
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+                <!-- Search -->
+                <div class="relative w-full md:w-80">
+                    <input type="text" 
+                           id="customSearch"
+                           placeholder="Search tests..." 
+                           class="w-full border border-gray-200 rounded-lg px-4 py-3 pl-10 focus:outline-none focus:border-imperial-primary focus:ring-1 focus:ring-imperial-primary transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+
+                <!-- Filter -->
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <span class="text-sm text-gray-600 whitespace-nowrap">Filter by:</span>
+                    <div class="relative">
+                        <select id="categoryFilter" class="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-3 pr-10 focus:outline-none focus:border-imperial-primary cursor-pointer">
+                            <option value="">All Categories</option>
+                            <option value="Lab">Lab</option>
+                            <option value="Imaging">Imaging</option>
+                            <option value="Procedures">Procedures</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
                     </div>
                 </div>
             </div>
 
-            <!-- DATA TABLE -->
-            <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                  <!-- DATA TABLE -->
-            <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-gray-50 border-b border-gray-200">
+            <!-- DataTable -->
+            <div class="table-responsive">
+                <table id="labTestsTable" class="table table-striped table-bordered table-hover" style="width:100%">
+                    <thead>
                         <tr>
-                            <th class="p-4 font-semibold text-gray-700 w-1/2">Name</th>
-                            <th class="p-4 font-semibold text-gray-700 w-1/4 hidden md:table-cell">Category</th>
-                            <th class="p-4 font-semibold text-gray-700 w-1/6">Price</th>
-                            <th class="p-4 font-semibold text-gray-700 w-1/6 text-center">Action</th>
+                            <th class="text-start">Test Name</th>
+                            <th class="text-start" style="width: 140px;">Category</th>
+                            <th class="text-end" style="width: 130px;">Price</th>
+                            <th class="text-center" style="width: 130px;">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <!-- ROW 1 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <!-- Name is no longer a link -->
-                                <h2 >Bite Impression by Dr. Nafees Uddin Chowdhury</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Imaging</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Imaging</td>
-                            <!-- Price Logic: Hidden by default, button toggles visibility -->
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,000</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                    <tbody>
+                        <!-- Row 1 -->
+                        <tr data-category="Imaging">
+                            <td>Bite Impression by Dr. Nafees Uddin Chowdhury</td>
+                            <td><span class="badge bg-primary">Imaging</span></td>
+                            <td class="text-end fw-bold">৳ 1,000</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                        <!-- ROW 2 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >Echocardiogram (2D Mode)</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Imaging</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Imaging</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 2,050</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 2 -->
+                        <tr data-category="Imaging">
+                            <td>Echocardiogram (2D Mode)</td>
+                            <td><span class="badge bg-primary">Imaging</span></td>
+                            <td class="text-end fw-bold">৳ 2,050</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                        <!-- ROW 3 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >Echocardiogram (Color Doppler)</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Imaging</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Imaging</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 2,650</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 3 -->
+                        <tr data-category="Imaging">
+                            <td>Echocardiogram (Color Doppler)</td>
+                            <td><span class="badge bg-primary">Imaging</span></td>
+                            <td class="text-end fw-bold">৳ 2,650</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                        <!-- ROW 4 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >Mammography of Both Breasts</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Imaging</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Imaging</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 3,500</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 4 -->
+                        <tr data-category="Imaging">
+                            <td>Mammography of Both Breasts</td>
+                            <td><span class="badge bg-primary">Imaging</span></td>
+                            <td class="text-end fw-bold">৳ 3,500</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                         <!-- ROW 5 -->
-                         <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >Mammography of Right Breast</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Imaging</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Imaging</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,800</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 5 -->
+                        <tr data-category="Imaging">
+                            <td>Mammography of Right Breast</td>
+                            <td><span class="badge bg-primary">Imaging</span></td>
+                            <td class="text-end fw-bold">৳ 1,800</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                        <!-- ROW 6 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >24 Hours Urinary Cortisol</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,400</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 6 -->
+                        <tr data-category="Lab">
+                            <td>24 Hours Urinary Cortisol</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 1,400</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                         <!-- ROW 7 -->
-                         <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >24 Hours Urine Calcium</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 700</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 7 -->
+                        <tr data-category="Lab">
+                            <td>24 Hours Urine Calcium</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 700</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                        <!-- ROW 8 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >24 Hours Urine Total Protein</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 850</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 8 -->
+                        <tr data-category="Lab">
+                            <td>24 Hours Urine Total Protein</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 850</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                         <!-- ROW 9 -->
-                         <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >24 Hours Urine Uric Acid</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 750</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 9 -->
+                        <tr data-category="Lab">
+                            <td>24 Hours Urine Uric Acid</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 750</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                         <!-- ROW 10 -->
-                         <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >24 Hrs Urine Phosphate</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 900</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 10 -->
+                        <tr data-category="Lab">
+                            <td>24 Hrs Urine Phosphate</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 900</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-                        
-                         <!-- ROW 11 -->
-                         <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="p-4 align-middle">
-                                <h2 >25-OH Vitamin-D</h2>
-                                <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                            </td>
-                            <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                            <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 4,200</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                                </button>
+                        <!-- Row 11 -->
+                        <tr data-category="Lab">
+                            <td>25-OH Vitamin-D</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 4,200</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
                         </tr>
-
-                        <!-- ROW 12 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                           <td class="p-4 align-middle">
-                               <h2 >Activated Partial Thromboplastin Time</h2>
-                               <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                           </td>
-                           <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                           <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,450</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
+                        <!-- Row 12 -->
+                        <tr data-category="Lab">
+                            <td>Activated Partial Thromboplastin Time</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 1,450</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
-                           <td class="p-4 text-center">
-                               <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                   <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                               </button>
-                           </td>
-                       </tr>
-
-                       <!-- ROW 13 -->
-                       <tr class="hover:bg-gray-50 transition-colors">
-                          <td class="p-4 align-middle">
-                              <h2 >A/G Ratio</h2>
-                              <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                          </td>
-                          <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                          <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,500</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
+                        </tr>
+                        <!-- Row 13 -->
+                        <tr data-category="Lab">
+                            <td>A/G Ratio</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 1,500</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
-                          <td class="p-4 text-center">
-                              <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                  <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                              </button>
-                          </td>
-                      </tr>
-
-                      <!-- ROW 14 -->
-                      <tr class="hover:bg-gray-50 transition-colors">
-                         <td class="p-4 align-middle">
-                             <h2 >Alanine Aminotransferase-ALT</h2>
-                             <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                         </td>
-                         <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                         <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 620</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
+                        </tr>
+                        <!-- Row 14 -->
+                        <tr data-category="Lab">
+                            <td>Alanine Aminotransferase-ALT</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 620</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
-                         <td class="p-4 text-center">
-                             <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                 <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                             </button>
-                         </td>
-                     </tr>
-
-                     <!-- ROW 15 -->
-                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="p-4 align-middle">
-                            <h2 >Albumin</h2>
-                            <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                        </td>
-                        <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                        <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 650</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
+                        </tr>
+                        <!-- Row 15 -->
+                        <tr data-category="Lab">
+                            <td>Albumin</td>
+                            <td><span class="badge bg-success">Lab</span></td>
+                            <td class="text-end fw-bold">৳ 650</td>
+                            <td class="text-center">
+                                <button class="btn-add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add</button>
                             </td>
-                        <td class="p-4 text-center">
-                            <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                                <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                            </button>
-                        </td>
-                    </tr>
-
-                    <!-- ROW 16 -->
-                    <tr class="hover:bg-gray-50 transition-colors">
-                       <td class="p-4 align-middle">
-                           <h2 >Albumin Globulin Ratio</h2>
-                           <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                       </td>
-                       <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                       <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,500</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                       <td class="p-4 text-center">
-                           <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                               <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                           </button>
-                       </td>
-                   </tr>
-
-                   <!-- ROW 17 -->
-                   <tr class="hover:bg-gray-50 transition-colors">
-                      <td class="p-4 align-middle">
-                          <h2 >ALK1</h2>
-                          <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                      </td>
-                      <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                      <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 8,000</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                      <td class="p-4 text-center">
-                          <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                              <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                          </button>
-                      </td>
-                  </tr>
-
-                  <!-- ROW 18 -->
-                  <tr class="hover:bg-gray-50 transition-colors">
-                     <td class="p-4 align-middle">
-                         <h2 >Alkaline Phosphatase-ALP</h2>
-                         <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                     </td>
-                     <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                     <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 550</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                     <td class="p-4 text-center">
-                         <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                             <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                         </button>
-                     </td>
-                 </tr>
-
-                 <!-- ROW 19 -->
-                 <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="p-4 align-middle">
-                        <h2 >Alpha Fetoprotein</h2>
-                        <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                    </td>
-                    <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                    <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 2,100</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                    <td class="p-4 text-center">
-                        <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                            <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                        </button>
-                    </td>
-                </tr>
-
-                <!-- ROW 20 -->
-                <tr class="hover:bg-gray-50 transition-colors">
-                   <td class="p-4 align-middle">
-                       <h2 >Amphetamine</h2>
-                       <p class="text-sm text-gray-500 md:hidden">Lab</p>
-                   </td>
-                   <td class="p-4 text-gray-600 hidden md:table-cell">Lab</td>
-                   <td class="p-4 text-gray-700 font-medium align-middle">
-                                <div class="flex items-center gap-2">
-                                    <span class="price-tag hidden text-lg font-medium">৳ 1,500</span>
-                                    <button class="text-sm font-bold text-imperial-primary hover:underline focus:outline-none" onclick="this.classList.add('hidden'); this.previousElementSibling.classList.remove('hidden');">Show Price</button>
-                                </div>
-                            </td>
-                   <td class="p-4 text-center">
-                       <button class="bg-imperial-primary hover:bg-imperial-primary-dark text-white text-xs px-3 py-2 rounded transition-colors flex items-center gap-2 ml-auto">
-                           <i class="fa-solid fa-cart-shopping"></i> Add to Cart
-                       </button>
-                   </td>
-               </tr>
-
+                        </tr>
                     </tbody>
                 </table>
-            </div>
 
-            <!-- PAGINATION -->
-            <div class="flex justify-end items-center mt-8 gap-2">
-                <button class="p-2 rounded-full border border-gray-200 text-gray-400 cursor-not-allowed" disabled>
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <button class="w-8 h-8 rounded bg-imperial-primary text-white flex items-center justify-center text-sm font-medium">1</button>
-                <button class="w-8 h-8 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center text-sm font-medium">2</button>
-                <button class="w-8 h-8 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center text-sm font-medium">3</button>
-                <button class="w-8 h-8 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center text-sm font-medium">4</button>
-                <button class="w-8 h-8 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center text-sm font-medium">5</button>
-                <span class="text-gray-400 mx-1">...</span>
-                <button class="w-8 h-8 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center text-sm font-medium">39</button>
-                <button class="p-2 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
+                <!-- Custom Pagination -->
+                <div class="flex justify-center items-center mt-6 gap-2">
+                    <p class="text-sm text-gray-600 mr-4">Showing 1 to 10 of 15 entries</p>
+                    <button class="w-10 h-10 rounded-lg border border-gray-200 text-gray-400 flex items-center justify-center hover:border-imperial-primary hover:text-imperial-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fa-solid fa-chevron-left text-sm"></i>
+                    </button>
+                    <button class="w-10 h-10 rounded-lg bg-imperial-primary text-white flex items-center justify-center text-sm font-medium">1</button>
+                    <button class="w-10 h-10 rounded-lg border border-gray-200 text-gray-600 flex items-center justify-center text-sm font-medium hover:border-imperial-primary hover:text-imperial-primary transition-colors">2</button>
+                    <button class="w-10 h-10 rounded-lg border border-gray-200 text-gray-600 flex items-center justify-center hover:border-imperial-primary hover:text-imperial-primary transition-colors">
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
             </div>
 
         </div>
     </section>
+
+    <!-- DataTable Initialization Script -->
+    <script>
+        $(document).ready(function() {
+            var table = $('#labTestsTable').DataTable({
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search tests...",
+                    emptyTable: "No tests found",
+                    zeroRecords: "No matching tests found",
+                    paginate: false
+                },
+                paging: false,
+                info: false,
+                ordering: true,
+                responsive: true,
+                autoWidth: false,
+                columnDefs: [
+                    { orderable: false, targets: 2 }
+                ]
+            });
+            
+            // Custom Search
+            $('#customSearch').on('keyup', function() {
+                table.search($(this).val()).draw();
+            });
+            
+            // Category Filter
+            $('#categoryFilter').on('change', function() {
+                var category = $(this).val();
+                if (category) {
+                    table.column(1).search('^' + category + '$', true, false).draw();
+                } else {
+                    table.column(1).search('').draw();
+                }
+            });
+        });
+    </script>
 
 @endsection

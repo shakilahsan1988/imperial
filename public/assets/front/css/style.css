@@ -460,3 +460,189 @@
                 padding: 0 40px;
             }
         }
+
+        /* =========================================
+           DATATABLES CUSTOM STYLING
+        ========================================= */
+        
+        /* Table Container */
+        .table-responsive {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        /* Custom DataTables Styling */
+        #labTestsTable {
+            width: 100% !important;
+            margin: 0 !important;
+            border: none !important;
+        }
+        
+        #labTestsTable thead th {
+            background-color: #f8fafc !important;
+            color: #374151 !important;
+            font-weight: 600 !important;
+            padding: 16px !important;
+            border-bottom: 2px solid #e5e7eb !important;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        #labTestsTable tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        #labTestsTable tbody tr:hover {
+            background-color: #f0f9ff !important;
+        }
+        
+        #labTestsTable tbody td {
+            padding: 16px !important;
+            vertical-align: middle !important;
+            border-bottom: 1px solid #f3f4f6 !important;
+            color: #374151;
+        }
+        
+        /* Badge Styling */
+        .badge {
+            padding: 6px 12px !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            border-radius: 20px !important;
+        }
+        
+        .badge.bg-primary {
+            background-color: #007caa !important;
+            color: white !important;
+        }
+        
+        .badge.bg-success {
+            background-color: #10b981 !important;
+            color: white !important;
+        }
+        
+        /* Button Styling */
+        #labTestsTable .btn {
+            padding: 8px 16px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            border-radius: 8px !important;
+            transition: all 0.2s ease;
+        }
+        
+        #labTestsTable .btn-primary {
+            background-color: #007caa !important;
+            border-color: #007caa !important;
+        }
+        
+        #labTestsTable .btn-primary:hover {
+            background-color: #0e7490 !important;
+            border-color: #0e7490 !important;
+            transform: translateY(-1px);
+        }
+        
+        /* DataTables Controls */
+        .dataTables_wrapper .row {
+            margin-top: 20px !important;
+        }
+        
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 8px !important;
+            padding: 8px 32px 8px 12px !important;
+        }
+        
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 8px !important;
+            padding: 10px 12px !important;
+            width: 250px !important;
+        }
+        
+        .dataTables_wrapper .dataTables_filter input:focus {
+            outline: none !important;
+            border-color: #007caa !important;
+            box-shadow: 0 0 0 3px rgba(0, 122, 170, 0.1) !important;
+        }
+        
+        .dataTables_wrapper .dataTables_info {
+            color: #6b7280 !important;
+            font-size: 14px !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 10px !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 8px 14px !important;
+            margin: 0 2px !important;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 6px !important;
+            color: #374151 !important;
+            background: white !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f3f4f6 !important;
+            border-color: #007caa !important;
+            color: #007caa !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #007caa !important;
+            border-color: #007caa !important;
+            color: white !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: #0e7490 !important;
+            border-color: #0e7490 !important;
+            color: white !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            color: #d1d5db !important;
+            cursor: not-allowed !important;
+        }
+        
+        /* Price column styling */
+        #labTestsTable tbody td:nth-child(3) {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* Add to Cart Button */
+        .btn-add-to-cart {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #007caa 0%, #0e7490 100%);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 122, 170, 0.3);
+            white-space: nowrap;
+        }
+
+        .btn-add-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 122, 170, 0.4);
+            background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+        }
+
+        .btn-add-to-cart i {
+            font-size: 11px;
+        }
+
+        .btn-add-to-cart:active {
+            transform: translateY(0);
+        }

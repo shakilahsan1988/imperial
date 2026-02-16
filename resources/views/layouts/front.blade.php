@@ -15,6 +15,10 @@
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    
     <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
     <!-- Tailwind Config -->
 
@@ -36,6 +40,14 @@
     @include('frontend.includes.footer')
 
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- jQuery (required for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    
     <script type="text/javascript" src="{{ asset('assets/front/js/custom.js') }}"></script>
 
     @stack('scripts')
