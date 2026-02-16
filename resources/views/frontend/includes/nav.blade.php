@@ -40,7 +40,7 @@
                                     <h5 class="text-imperial-primary font-bold mb-4 uppercase text-sm tracking-wider">Services</h5>
 
                                     <ul class="space-y-2 mb-6">
-                                         <li class="border-b"><a href="{{ route('services') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Test & Procedures</a></li>
+                                         <li class="border-b"><a href="{{ route('lab-test') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Test & Procedures</a></li>
                                         <li>
                                              <button  onclick="toggleMegaSubmenu('consultations', this)" 
                                                     class="w-full border-b flex justify-between items-center text-left text-gray-700 hover:text-imperial-primary font-medium py-1 transition-colors focus:outline-none">
@@ -213,8 +213,11 @@
                                             <a href="{{ route('event') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Event </a>
                                         </li>
                                          <li class="border-b">
-                                            <a href="{{ route('press') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Press</a>
-                                        </li>
+                                             <a href="{{ route('press') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Press</a>
+                                         </li>
+                                          <li class="border-b">
+                                             <a href="{{ route('gallery') }}" class="text-gray-700 hover:text-imperial-primary font-medium block py-1">Gallery</a>
+                                         </li>
                                         
                                     </ul>
                                 </div>
@@ -265,6 +268,7 @@
 
         <a href="{{ route('doctor') }}" class="text-lg font-medium text-imperial-text border-b pb-2">Our Doctors</a>
         <a href="{{ route('about') }}" class="text-lg font-medium text-imperial-text border-b pb-2">About</a>
+        <a href="{{ route('gallery') }}" class="text-lg font-medium text-imperial-text border-b pb-2">Gallery</a>
         <a href="{{ route('book-doctor') }}" class="btn-primary text-white text-center py-3 rounded mt-4 font-medium">Book Appointment</a>
     </div>
     

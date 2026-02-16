@@ -91,5 +91,8 @@ class FrontController extends Controller
     public function press_details(){
     	return view('frontend.community.press-details');
     }
+    public function gallery(){
+    	return view('frontend.community.gallery');
+    }
 
 }

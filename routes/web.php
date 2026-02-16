@@ -45,6 +45,7 @@ Route::prefix('front')->group(function () {
     Route::get('/event-details', [FrontController::class, 'event_details'])->name('event-details');
     Route::get('/press', [FrontController::class, 'press'])->name('press');
     Route::get('/press-details', [FrontController::class, 'press_details'])->name('press-details');
+    Route::get('/gallery', [FrontController::class, 'gallery'])->name('gallery');
 });
 
 Route::middleware(['Install', 'Locale'])->group(function () {

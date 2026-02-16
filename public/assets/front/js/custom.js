@@ -600,3 +600,98 @@ document.addEventListener('DOMContentLoaded', () => {
         // Optional: Uncomment to enable parallax
         // initParallax();
     });
+
+    /* =========================================
+       16. LIGHTBOX FUNCTIONALITY
+    ========================================= */
+    let currentImageIndex = 0;
+    const galleryImages = [];
+
+    function initGallery() {
+        const galleryItems = document.querySelectorAll('.gallery-item img');
+        galleryItems.forEach((img, index) => {
+            galleryImages.push({
+                src: img.src,
+                alt: img.alt
+            });
+            img.parentElement.setAttribute('data-index', index);
+        });
+    }
+
+    window.openLightbox = function(element) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        
+        const index = parseInt(element.getAttribute('data-index'));
+        currentImageIndex = index;
+        
+        // Initialize gallery if not done
+        if (galleryImages.length === 0) {
+            initGallery();
+        }
+        
+        updateLightboxImage();
+        
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = function() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    window.navigateLightbox = function(direction) {
+        currentImageIndex += direction;
+        
+        // Loop around
+        if (currentImageIndex >= galleryImages.length) {
+            currentImageIndex = 0;
+        } else if (currentImageIndex < 0) {
+            currentImageIndex = galleryImages.length - 1;
+        }
+        
+        updateLightboxImage();
+    };
+
+    function updateLightboxImage() {
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        
+        if (galleryImages[currentImageIndex]) {
+            lightboxImg.src = galleryImages[currentImageIndex].src;
+            lightboxImg.alt = galleryImages[currentImageIndex].alt;
+            lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+        }
+    }
+
+    // Close lightbox on background click
+    document.addEventListener('DOMContentLoaded', () => {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox) {
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeLightbox();
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                navigateLightbox(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateLightbox(1);
+            }
+        });
+
+        // Initialize gallery
+        initGallery();
+    });
