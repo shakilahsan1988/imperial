@@ -12,6 +12,15 @@
                         primary: '#0e7490', 
                         dark: '#155e75',     
                     }
+                },
+                animation: {
+                    'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                },
+                keyframes: {
+                    fadeInUp: {
+                        '0%': { opacity: '0', transform: 'translateY(30px)' },
+                        '100%': { opacity: '1', transform: 'translateY(0)' },
+                    }
                 }
             }
         }
@@ -37,10 +46,29 @@
         visibility: visible;
     }
 
+    .slide.active .hero-content {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     /* DOT NAVIGATION */
     .carousel-dot.active {
         background-color: white;
         transform: scale(1.2);
+    }
+
+    /* Hero Content Animation */
+    .hero-content {
+        opacity: 0;
+    }
+
+    /* Gradient Overlay */
+    .hero-overlay {
+        background: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,122,170,0.25) 100%);
     }
 </style>
 
@@ -58,16 +86,16 @@
              class="w-full h-full object-cover absolute top-0 left-0">
         
         <!-- Dark Overlay (for contrast) -->
-        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="absolute inset-0 hero-overlay"></div>
 
         <!-- CONTENT CONTAINER (Text & Button) -->
         <div class="absolute inset-0 flex items-center justify-center text-center px-4 z-10">
-            <div class="max-w-4xl text-white">
-                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight drop-shadow-lg">Healthcare Anytime, Anywhere</h1>
-                <p class="text-lg md:text-xl mb-8 opacity-90 drop-shadow-md">Let us take care of your health with world-class facilities.</p>
+            <div class="max-w-4xl text-white hero-content">
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight drop-shadow-lg">Healthcare Anytime, Anywhere</h1>
+                <p class="text-lg md:text-xl mb-8 opacity-90 drop-shadow-md max-w-2xl mx-auto">Let us take care of your health with world-class facilities.</p>
                 
                 <!-- BUTTON -->
-                <a href="#" class="inline-block bg-imperial-primary text-white px-8 py-3 rounded-full font-medium hover:bg-imperial-dark transition shadow-lg">Explore our services</a>
+                <a href="#" class="btn-primary inline-block text-white px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition shadow-lg">Explore our services</a>
             </div>
         </div>
     </div>
@@ -83,16 +111,16 @@
              class="w-full h-full object-cover absolute top-0 left-0">
 
         <!-- Dark Overlay -->
-        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="absolute inset-0 hero-overlay"></div>
 
         <!-- CONTENT CONTAINER (Text & Button) -->
         <div class="absolute inset-0 flex items-center justify-center text-center px-4 z-10">
-            <div class="max-w-4xl text-white">
-                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight drop-shadow-lg">Affordable Health Checks & Packages</h1>
-                <p class="text-lg md:text-xl mb-8 opacity-90 drop-shadow-md">Imperial has designed health checks and packages tailored to your needs, based on age and gender, that fit within your budget.</p>
+            <div class="max-w-4xl text-white hero-content">
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight drop-shadow-lg">Affordable Health Checks & Packages</h1>
+                <p class="text-lg md:text-xl mb-8 opacity-90 drop-shadow-md max-w-2xl mx-auto">Imperial has designed health checks and packages tailored to your needs, based on age and gender, that fit within your budget.</p>
                 
                 <!-- BUTTON -->
-                <a href="#" class="inline-block bg-imperial-primary text-white px-8 py-3 rounded-full font-medium hover:bg-imperial-dark transition shadow-lg">Explore your options</a>
+                <a href="#" class="btn-primary inline-block text-white px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition shadow-lg">Explore your options</a>
             </div>
         </div>
     </div>
@@ -108,16 +136,16 @@
              class="w-full h-full object-cover absolute top-0 left-0">
 
         <!-- Dark Overlay -->
-        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="absolute inset-0 hero-overlay"></div>
 
         <!-- CONTENT CONTAINER (Text & Button) -->
         <div class="absolute inset-0 flex items-center justify-center text-center px-4 z-10">
-            <div class="max-w-4xl text-white">
-                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight drop-shadow-lg">Hassle-Free Lab Tests</h1>
-                <p class="text-lg md:text-xl mb-8 opacity-90 drop-shadow-md">We offer lab tests at home, especially during busy schedules, harsh weather and heavy traffic.</p>
+            <div class="max-w-4xl text-white hero-content">
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight drop-shadow-lg">Hassle-Free Lab Tests</h1>
+                <p class="text-lg md:text-xl mb-8 opacity-90 drop-shadow-md max-w-2xl mx-auto">We offer lab tests at home, especially during busy schedules, harsh weather and heavy traffic.</p>
                 
                 <!-- BUTTON -->
-                <a href="#" class="inline-block bg-imperial-primary text-white px-8 py-3 rounded-full font-medium hover:bg-imperial-dark transition shadow-lg">Book a test</a>
+                <a href="#" class="btn-primary inline-block text-white px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition shadow-lg">Book a test</a>
             </div>
         </div>
     </div>

@@ -231,7 +231,7 @@
                     <!-- Desktop Search Icon Trigger -->
                     <button id="search-trigger-desktop" class="text-imperial-text hover:text-imperial-primary transition"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <!-- Book Appointment -->
-                    <a href="{{ route('book-doctor') }}" class="bg-imperial-primary text-white px-6 py-2.5 rounded-sm font-medium hover:bg-imperial-dark transition">Book Appointment</a>
+                    <a href="{{ route('book-doctor') }}" class="btn-primary text-white px-6 py-2.5 rounded-sm font-medium hover:opacity-90 transition">Book Appointment</a>
                 </div>
             </nav>
 
@@ -265,7 +265,7 @@
 
         <a href="{{ route('doctor') }}" class="text-lg font-medium text-imperial-text border-b pb-2">Our Doctors</a>
         <a href="{{ route('about') }}" class="text-lg font-medium text-imperial-text border-b pb-2">About</a>
-        <a href="{{ route('book-doctor') }}" class="bg-imperial-primary text-white text-center py-3 rounded mt-4 font-medium">Book Appointment</a>
+        <a href="{{ route('book-doctor') }}" class="btn-primary text-white text-center py-3 rounded mt-4 font-medium">Book Appointment</a>
     </div>
     
     <!-- Overlay for mobile menu -->

@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
-  function toggleMegaSubmenu(menuId, button) {
+    function toggleMegaSubmenu(menuId, button) {
         const menu = document.getElementById(menuId);
         const icon = button.querySelector('i');
 
@@ -421,3 +421,182 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.add('rotate-180');
         }
     }
+
+    /* =========================================
+       9. SCROLL REVEAL ANIMATIONS
+    ========================================= */
+    function initScrollReveal() {
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        reveals.forEach(el => observer.observe(el));
+    }
+
+    /* =========================================
+       10. STAT COUNTER ANIMATION
+    ========================================= */
+    function initCounters() {
+        const counters = document.querySelectorAll('.counter');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const duration = 2000;
+                    const increment = target / (duration / 16);
+                    let current = 0;
+
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current < target) {
+                            counter.textContent = Math.floor(current);
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.textContent = target;
+                        }
+                    };
+
+                    updateCounter();
+                    observer.unobserve(counter);
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        counters.forEach(counter => observer.observe(counter));
+    }
+
+    /* =========================================
+       11. NAVBAR SCROLL EFFECT
+    ========================================= */
+    function initNavbarScroll() {
+        const header = document.getElementById('main-header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header?.classList.add('navbar-scroll');
+            } else {
+                header?.classList.remove('navbar-scroll');
+            }
+        });
+    }
+
+    /* =========================================
+       12. SMOOTH SCROLL FOR ANCHOR LINKS
+    ========================================= */
+    function initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    /* =========================================
+       13. IMAGE LAZY LOAD FALLBACK
+    ========================================= */
+    function initImageFallback() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('error', function() {
+                if (this.dataset.fallback) {
+                    this.src = this.dataset.fallback;
+                }
+            });
+        });
+    }
+
+    /* =========================================
+       14. BUTTON RIPPLE EFFECT
+    ========================================= */
+    function initRippleEffect() {
+        document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.4);
+                    transform: translate(-50%, -50%);
+                    animation: ripple-anim 0.6s linear;
+                    left: ${x}px;
+                    top: ${y}px;
+                    pointer-events: none;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    }
+
+    // Add ripple animation keyframes dynamically
+    const rippleStyle = document.createElement('style');
+    rippleStyle.textContent = `
+        @keyframes ripple-anim {
+            0% { width: 0; height: 0; opacity: 0.5; }
+            100% { width: 300px; height: 300px; opacity: 0; }
+        }
+    `;
+    document.head.appendChild(rippleStyle);
+
+    /* =========================================
+       15. PARALLAX EFFECT (Optional)
+    ========================================= */
+    function initParallax() {
+        const parallaxElements = document.querySelectorAll('[data-parallax]');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            parallaxElements.forEach(el => {
+                const speed = parseFloat(el.dataset.parallax) || 0.5;
+                el.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+    }
+
+    /* =========================================
+       INITIALIZE ALL NEW FUNCTIONS
+    ========================================= */
+    document.addEventListener('DOMContentLoaded', () => {
+        initScrollReveal();
+        initCounters();
+        initNavbarScroll();
+        initSmoothScroll();
+        initImageFallback();
+        initRippleEffect();
+        
+        // Optional: Uncomment to enable parallax
+        // initParallax();
+    });
