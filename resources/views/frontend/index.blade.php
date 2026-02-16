@@ -126,33 +126,31 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- SECTION 4: FLOATING LAYOUT                  -->
+    <!-- SECTION 4: FACILITY TOUR SECTION           -->
     <!-- ========================================== -->
-    <section class="py-16 md:py-24 text-white relative overflow-hidden min-h-[400px] flex items-center">
-        <div class="container mx-auto px-4 sm:px-6 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-                
-                <!-- Text Card -->
-                <div class="md:col-span-7 bg-white text-slate-900 p-8 md:p-12 rounded-2xl shadow-2xl relative z-20 w-full mx-auto md:mx-0 reveal-left">
-                    <h4 class="text-xs md:text-sm font-semibold text-imperial-primary tracking-wider uppercase mb-3">Why imperial</h4>
-                    <h2 class="text-2xl md:text-4xl font-bold mb-5 leading-tight">Take A Tour Of Our Facility</h2>
-                    <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-6">Visit us at our flagship facility in Banani, Dhaka, and find out what makes us different.</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#" class="btn-primary text-white px-8 py-3.5 rounded-lg font-bold hover:opacity-90 transition text-center inline-block">Book a guided tour</a>
+    <section class="py-16 md:py-24">
+        <div class="container rounded-2xl mx-auto p-10 bg-[#007caa] border border-[#0f172a]/20 shadow-2xl">
+            <!-- Main Card -->
+            <div class="bg-white rounded-2xl overflow-hidden">
+                <div class="flex flex-col md:flex-row">
+                    
+                    <!-- Left Column: Image -->
+                    <div class="w-full md:w-1/2 h-[300px] md:h-[450px]">
+                        <img src="{{ asset('assets/front/images/index/tour.jpg') }}" 
+                             onerror="this.src='https://picsum.photos/seed/facility/800/600'"
+                             alt="Facility Tour" 
+                             class="w-full h-full object-cover inner-shadow">
                     </div>
-                </div>
 
-                <!-- Spacer (Desktop Only) -->
-                <div class="hidden md:block md:col-span-5"></div>
-            </div>
-
-            <!-- Background Image (Desktop Only) -->
-            <div class="absolute right-0 top-0 h-full w-1/2 z-0 hidden md:block">
-                <div class="img-zoom-container h-full float-animation">
-                    <img src="{{ asset('assets/front/images/index/tour.jpg') }}" 
-                         onerror="this.src='https://picsum.photos/seed/facility/800/600'"
-                         alt="Facility Tour" 
-                         class="w-full h-full object-cover rounded-l-2xl">
+                    <!-- Right Column: Content -->
+                    <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                        <span class="text-[#1089a4] text-xs md:text-sm font-bold uppercase tracking-widest mb-3">Why imperial</span>
+                        <h2 class="text-2xl md:text-4xl font-bold text-slate-900 mb-5 leading-tight">Take A Tour Of Our Facility</h2>
+                        <p class="text-gray-600 leading-relaxed mb-8">Visit us at our flagship facility in Banani, Dhaka, and find out what makes us different. Experience world-class healthcare in a comfortable and modern environment.</p>
+                        <div>
+                            <a href="#" class="inline-block bg-[#1089a4] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#0d768f] transition shadow-lg">Book a guided tour</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

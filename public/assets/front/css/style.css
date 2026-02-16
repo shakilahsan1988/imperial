@@ -316,3 +316,8 @@
             background-image: radial-gradient(rgba(0, 122, 170, 0.15) 1px, transparent 1px);
             background-size: 24px 24px;
         }
+
+        /* Inner Shadow for Image Container */
+        .inner-shadow {
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.15);
+        }
