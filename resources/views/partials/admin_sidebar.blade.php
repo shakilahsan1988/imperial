@@ -9,7 +9,7 @@
       <li class="nav-item">
         <a href="{{route('admin.index')}}" class="nav-link" id="dashboard">
             <i class="nav-icon fas fa-th"></i>
-            <p>{{__('ড্যাশবোর্ড')}}</p>
+            <p>{{__('admin.dashboard')}}</p>
         </a>
       </li>
 
@@ -17,7 +17,7 @@
       <li class="nav-item">
         <a href="{{route('admin.groups.index')}}" class="nav-link" id="groups">
           <i class="nav-icon fas fa-file-invoice"></i>
-          <p>{{__('ইনভোয়েছ অ্যান্ড বিলিং')}}</p>
+          <p>{{__('admin.invoice_and_billing')}}</p>
         </a>
       </li>
       @endif
@@ -26,7 +26,7 @@
       <li class="nav-item">
         <a href="{{route('admin.reports.index')}}" class="nav-link" id="reports">
           <i class="nav-icon fas fa-flag"></i>
-          <p>{{__('রিপোর্ট এন্ট্রি')}}</p>
+          <p>{{__('admin.report_entry')}}</p>
         </a>
       </li>
       @endif
@@ -35,7 +35,7 @@
       <li class="nav-item">
         <a href="{{route('admin.tests.index')}}" class="nav-link" id="tests">
           <i class="nav-icon fas fa-flask"></i>
-          <p>{{__('টেস্ট এর মূল্য ও ফর্মেট ')}}</p>
+          <p>{{__('admin.test_price_format')}}</p>
         </a>
       </li>
       @endif
@@ -44,7 +44,7 @@
       <li class="nav-item">
         <a href="{{route('admin.cultures.index')}}" class="nav-link" id="cultures">
           <i class="nav-icon fas fa-vial"></i>
-          <p>{{__('কালচার এর মূল্য ও ফর্মেট')}}</p>
+          <p>{{__('admin.culture_price_format')}}</p>
         </a>
       </li>
       @endif
@@ -53,7 +53,7 @@
       <li class="nav-item">
         <a href="{{route('admin.culture_options.index')}}" class="nav-link" id="culture_options">
           <i class="nav-icon fas fa-vial"></i>
-          <p>{{__('কালচার এর অপশন')}}</p>
+          <p>{{__('admin.culture_options')}}</p>
         </a>
       </li>
       @endif
@@ -63,7 +63,7 @@
           <a href="#" class="nav-link" id="prices_link">
             <i class="nav-icon fas fa-list"></i>
             <p>
-              {{__('মূল্য তালিকা')}}
+              {{__('admin.price_list')}}
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -72,7 +72,7 @@
             <li class="nav-item">
               <a href="{{route('admin.prices.tests')}}" class="nav-link" id="tests_prices">
                 <i class="far fa-circle nav-icon"></i>
-                <p>{{__('টেস্ট সমূহ')}}</p>
+                <p>{{__('admin.tests')}}</p>
               </a>
             </li>
             @endif
@@ -80,7 +80,7 @@
             <li class="nav-item">
               <a href="{{route('admin.prices.cultures')}}" class="nav-link" id="cultures_prices">
                 <i class="far fa-circle nav-icon"></i>
-                <p>{{__('কালচার সমূহ')}}</p>
+                <p>{{__('admin.cultures')}}</p>
               </a>
             </li>
             @endif
@@ -92,7 +92,7 @@
       <li class="nav-item">
         <a href="{{route('admin.antibiotics.index')}}" class="nav-link" id="antibiotics">
           <i class="nav-icon fas fa-capsules"></i>
-          <p>{{__('ঔষধ সমূহ')}}</p>
+          <p>{{__('admin.medicines')}}</p>
         </a>
       </li>
       @endif
@@ -101,7 +101,7 @@
       <li class="nav-item">
         <a href="{{route('admin.patients.index')}}" class="nav-link" id="patients">
           <i class="nav-icon fas fa-user-injured"></i>
-          <p>{{__('রোগীর তালিকা')}}</p>
+          <p>{{__('admin.patient_list')}}</p>
         </a>
       </li>
       @endif
@@ -110,7 +110,7 @@
       <li class="nav-item">
         <a href="{{route('admin.doctors.index')}}" class="nav-link" id="doctors">
           <i class="nav-icon fa fa-user-md"></i>
-          <p>{{__('ডাক্তারদের তালিকা')}}</p>
+          <p>{{__('admin.doctor_list')}}</p>
         </a>
       </li>
       @endif
@@ -119,7 +119,7 @@
       <li class="nav-item">
         <a href="{{route('admin.visits.index')}}" class="nav-link" id="visits">
           <i class="nav-icon fas fa-home"></i>
-          <p>{{__('হোম ভিজিট সমূহ')}}</p>
+          <p>{{__('admin.home_visits')}}</p>
         </a>
       </li>
       @endif
@@ -128,7 +128,7 @@
       <li class="nav-item">
         <a href="{{route('admin.contracts.index')}}" class="nav-link" id="contracts">
           <i class="fas fa-file-contract nav-icon"></i>
-          <p>{{__('কন্ট্রাক্ট')}}</p>
+          <p>{{__('admin.contract')}}</p>
         </a>
       </li>
       @endif
@@ -137,7 +137,7 @@
       <li class="nav-item">
         <a href="{{route('admin.chat.index')}}" class="nav-link" id="chat">
           <i class="nav-icon far fa-comment-dots"></i>
-          <p>{{__('লাইভ চ্যাট')}}</p>
+          <p>{{__('admin.live_chat')}}</p>
         </a>
       </li>
       @endif
@@ -146,7 +146,7 @@
       <li class="nav-item">
         <a href="{{route('admin.branches.index')}}" class="nav-link" id="branches">
           <i class="fa fa-building nav-icon"></i>
-          <p>{{__('ব্রাঞ্ছ সমূহ')}}</p>
+          <p>{{__('admin.branches')}}</p>
         </a>
       </li>
       @endif
@@ -156,7 +156,7 @@
         <a href="#" class="nav-link" id="accounting_link">
           <i class="nav-icon fas fa-calculator"></i>
           <p>
-            {{__('অফিস একাউন্টিং')}}
+            {{__('admin.office_accounting')}}
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -165,7 +165,7 @@
           <li class="nav-item">
             <a href="{{route('admin.expense_categories.index')}}" class="nav-link" id="expense_categories">
               <i class="far fa-circle nav-icon"></i>
-              <p>{{__('খরচের ক্যাটাগরি')}}</p>
+              <p>{{__('admin.expense_category')}}</p>
             </a>
           </li>
           @endif
@@ -173,7 +173,7 @@
           <li class="nav-item">
             <a href="{{route('admin.expenses.index')}}" class="nav-link" id="expenses">
               <i class="far fa-circle nav-icon"></i>
-              <p>{{__('খরচ সমূহ')}}</p>
+              <p>{{__('admin.expenses')}}</p>
             </a>
           </li>
           @endif
@@ -181,7 +181,7 @@
           <li class="nav-item">
             <a href="{{route('admin.accounting.index')}}" class="nav-link" id="accounting_reports">
               <i class="far fa-circle nav-icon"></i>
-              <p>{{__('একাউন্টিং রিপোর্ট')}}</p>
+              <p>{{__('admin.accounting_report')}}</p>
             </a>
           </li>
           @endif
@@ -194,7 +194,7 @@
           <a href="#" class="nav-link" id="users_roles_link">
             <i class="nav-icon fas fa-user"></i>
             <p>
-              {{__('ইউজার ও পদবী')}}
+              {{__('admin.users_and_roles')}}
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -203,7 +203,7 @@
             <li class="nav-item">
               <a href="{{route('admin.roles.index')}}" class="nav-link" id="roles">
                 <i class="fa fa-window-maximize nav-icon"></i>
-                <p>{{__('পদবী লিস্ট')}}</p>
+                <p>{{__('admin.role_list')}}</p>
               </a>
             </li>
             @endif
@@ -211,14 +211,14 @@
             <li class="nav-item">
               <a href="{{route('admin.users.index')}}" class="nav-link" id="users">
                 <i class="fa fa-users nav-icon"></i>
-                <p>{{__('ইউজার লিস্ট')}}</p>
+                <p>{{__('admin.user_list')}}</p>
               </a>
             </li>
             @endif
             <li class="nav-item">
               <a href="{{route('admin.profile.edit')}}" class="nav-link">
                 <i class="fa fa-key nav-icon"></i>
-                <p>{{__('পাসওয়ার্ড পরিবর্তন')}}</p>
+                <p>{{__('admin.change_password')}}</p>
               </a>
             </li>
           </ul>
@@ -229,7 +229,7 @@
       <li class="nav-item">
         <a href="{{route('admin.settings.index')}}" class="nav-link" id="settings">
           <i class="fa fa-cogs nav-icon"></i>
-          <p>{{__('সফটওয়্যার সেটিং')}}</p>
+          <p>{{__('admin.software_settings')}}</p>
         </a>
       </li>
       @endif
@@ -238,7 +238,7 @@
       <li class="nav-item">
         <a href="{{route('admin.activity_logs.index')}}" class="nav-link" id="activity_logs">
           <i class="fa fa-server nav-icon"></i>
-          <p>{{__('এক্টিভিটি লগ')}}</p>
+          <p>{{__('admin.activity_log')}}</p>
         </a>
       </li>
       @endif
@@ -247,7 +247,7 @@
       <li class="nav-item">
         <a href="{{route('admin.backups.index')}}" class="nav-link" id="backups">
           <i class="fa fa-database nav-icon"></i>
-          <p>{{__('ডাটাবেইস ব্যাক নিন')}}</p>
+          <p>{{__('admin.database_backup')}}</p>
         </a>
       </li>
       @endif

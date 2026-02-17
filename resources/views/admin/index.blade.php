@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-  {{__('ড্যাশবোর্ড')}}
+  {{__('admin.dashboard')}}
 @endsection
 
 @section('css')
@@ -15,17 +15,16 @@
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">
             <i class="nav-icon fas fa-th"></i>
-            {{__('আমার ড্যাশবোর্ড')}}
+            {{__('admin.my_dashboard')}}
           </h1>
         </div><div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active">{{__('ড্যাশবোর্ড')}}</li>
+            <li class="breadcrumb-item active">{{__('admin.dashboard')}}</li>
           </ol>
         </div></div></div></div>
 @endsection
 
 @section('content')
-{{-- সরাসরি গার্ড এবং পারমিশন চেক --}}
 @if(auth()->guard('admin')->check())
 <div class="row">
     {{-- Admin Reports Section --}}
@@ -33,10 +32,10 @@
       <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$tests_count}}</h3>
-          <p>{{__('টেস্ট সমূহ')}}</p>
+          <p>{{__('admin.tests')}}</p>
         </div>
         <div class="icon"><i class="fa fa-flask"></i></div>
-        <a href="{{route('admin.tests.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.tests.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -44,10 +43,10 @@
       <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$cultures_count}}</h3>
-          <p>{{__('কালচার সমূহ')}}</p>
+          <p>{{__('admin.cultures')}}</p>
         </div>
         <div class="icon"><i class="fa fa-vial"></i></div>
-        <a href="{{route('admin.cultures.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.cultures.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -55,10 +54,10 @@
       <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$antibiotics_count}}</h3>
-          <p>{{__('ঔষধ সমূহ')}}</p>
+          <p>{{__('admin.medicines')}}</p>
         </div>
         <div class="icon"><i class="fa fa-capsules"></i></div>
-        <a href="{{route('admin.antibiotics.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.antibiotics.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -66,10 +65,10 @@
       <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$patients_count}}</h3>
-          <p>{{__('রোগী সমূহ')}}</p>
+          <p>{{__('admin.patients')}}</p>
         </div>
         <div class="icon"><i class="fa fa-user-injured"></i></div>
-        <a href="{{route('admin.patients.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.patients.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -77,10 +76,10 @@
       <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$contracts_count}}</h3>
-          <p>{{__('চুক্তি')}}</p>
+          <p>{{__('admin.contracts')}}</p>
         </div>
         <div class="icon"><i class="fas fa-file-contract nav-icon"></i></div>
-        <a href="{{route('admin.contracts.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.contracts.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -88,10 +87,10 @@
       <div class="small-box bgPrimary">
         <div class="inner">
           <h3>{{$visits_count}}</h3>
-          <p>{{__('হোম ভিজিট')}}</p>
+          <p>{{__('admin.home_visits')}}</p>
         </div>
         <div class="icon"><i class="fa fa-home"></i></div>
-        <a href="{{route('admin.visits.index')}}" class="small-box-footer">{{__('বিস্তারিত দেখুন')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.visits.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -100,7 +99,7 @@
       <div class="info-box bg-olive">
         <span class="info-box-icon"><i class="fas fa-money-bill-wave"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">{{__('আজকের আয়ের পরিমাণ')}}</span>
+          <span class="info-box-text">{{__('admin.today_income')}}</span>
           <span class="info-box-number">{{$today_paid}} {{get_currency()}}</span>
         </div>
       </div>
@@ -110,7 +109,7 @@
       <div class="info-box bg-olive">
         <span class="info-box-icon"><i class="fas fa-money-bill-wave"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">{{__('আজকের খরচের পরিমাণ')}}</span>
+          <span class="info-box-text">{{__('admin.today_expense')}}</span>
           <span class="info-box-number">{{$today_total_expense}} {{get_currency()}}</span>
         </div>
       </div>
@@ -120,7 +119,7 @@
       <div class="info-box bg-olive">
         <span class="info-box-icon"><i class="fas fa-money-bill-wave"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">{{__('আজ লাভের পরিমাণ')}}</span>
+          <span class="info-box-text">{{__('admin.today_profit')}}</span>
           <span class="info-box-number">{{$today_profit}} {{get_currency()}}</span>
         </div>
       </div>
@@ -131,7 +130,7 @@
       <div class="info-box bgSecondary">
         <span class="info-box-icon"><i class="fa fa-list"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">{{__('টেস্ট সমূহ')}}</span>
+          <span class="info-box-text">{{__('admin.tests')}}</span>
           <span class="info-box-number">{{$group_tests_count}}</span>
         </div>
       </div>
@@ -141,7 +140,7 @@
       <div class="info-box bg-warning">
         <span class="info-box-icon"><i class="fa fa-pause-circle"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">{{__('পেন্ডিং টেস্ট সমূহ')}}</span>
+          <span class="info-box-text">{{__('admin.pending_tests')}}</span>
           <span class="info-box-number">{{$pending_tests_count}}</span>
         </div>
       </div>
@@ -151,7 +150,7 @@
       <div class="info-box bgSecondary">
         <span class="info-box-icon"><i class="fa fa-check-double"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">{{__('কমপ্লিট টেস্ট সমূহ')}}</span>
+          <span class="info-box-text">{{__('admin.completed_tests')}}</span>
           <span class="info-box-number">{{$done_tests_count}}</span>
         </div>
       </div>
@@ -163,7 +162,7 @@
    <div class="col-lg-12">
     <div class="card card-success">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-wifi"></i> {{__('একটিভ ইউজারগন')}} ( <span class="online_count">0</span> )</h3>
+        <h3 class="card-title"><i class="fas fa-wifi"></i> {{__('admin.active_users')}} ( <span class="online_count">0</span> )</h3>
       </div>
       <div class="card-body pt-0 pb-0">
         <ul class="products-list product-list-in-card pl-2 pr-2 online_list"></ul>
@@ -177,19 +176,19 @@
   <div class="col-lg-12">
       <div class="card card-danger">
         <div class="card-header">
-          <h5 class="card-title"><i class="fas fa-bell"></i> {{__('আজকের হোম ভিজিটের শিডিউল')}} ( {{count($today_visits)}} )</h5>
+          <h5 class="card-title"><i class="fas fa-bell"></i> {{__('admin.today_home_visits')}} ( {{count($today_visits)}} )</h5>
         </div>
         <div class="card-body table-responsive">
           @if(count($today_visits))
           <table class="table table-bordered table-striped">
             <thead>
               <tr>
-                 <th>{{__('Patient Name')}}</th>
-                 <th>{{__('Phone')}}</th>
-                 <th>{{__('Address')}}</th>
-                 <th>{{__('Visit date')}}</th>
-                 <th>{{__('Status')}}</th>
-                 <th>{{__('Action')}}</th>
+                 <th>{{__('admin.patient_name')}}</th>
+                 <th>{{__('admin.phone')}}</th>
+                 <th>{{__('admin.address')}}</th>
+                 <th>{{__('admin.visit_date')}}</th>
+                 <th>{{__('admin.status')}}</th>
+                 <th>{{__('admin.actions')}}</th>
               </tr>
             </thead>
             <tbody>
@@ -200,10 +199,9 @@
                 <td>{{$visit['patient']['address'] ?? ''}}</td>
                 <td>{{$visit['visit_date']}}</td>
                 <td>
-                    <input type="checkbox" id="change_status" visit-id="{{$visit['id']}}" {{ $visit['status'] ? 'checked' : '' }} netliva-switch data-active-text="{{__('Completed')}}" data-passive-text=" {{__('Pending visit')}}"/>
+                    <input type="checkbox" id="change_status" visit-id="{{$visit['id']}}" {{ $visit['status'] ? 'checked' : '' }} netliva-switch data-active-text="{{__('admin.completed')}}" data-passive-text=" {{__('admin.pending')}}"/>
                 </td>
                 <td>
-                  {{-- সুনির্দিষ্ট পারমিশন চেক --}}
                   @if(auth()->guard('admin')->user()->id == 1 || auth()->guard('admin')->user()->hasPermission('view_visit'))
                     <a href="{{route('admin.visits.show',$visit['id'])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                   @endif
@@ -213,7 +211,7 @@
             </tbody>
           </table>
           @else 
-            <p class="text-danger text-center">{{__('কোন তথ্য পাওয়া যায়নি')}}</p>
+            <p class="text-danger text-center">{{__('admin.no_data')}}</p>
           @endif
         </div>
       </div>
