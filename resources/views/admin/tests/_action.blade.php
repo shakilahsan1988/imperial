@@ -21,7 +21,7 @@
 @if($u && ($isSuper || $u->hasPermission('delete_test')))
     <form method="POST" action="{{route('admin.tests.destroy',$test['id'])}}" class="d-inline">
         @csrf
-        <input type="hidden" name="_method" value="delete">
+        @method('delete')
         <button type="submit" class="btn btn-danger btn-sm delete_test">
             <i class="fa fa-trash"></i>
         </button>

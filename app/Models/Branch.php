@@ -13,7 +13,14 @@ class Branch extends Model
 
     protected $table = 'branches'; 
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'code',
+        'phone',
+        'email',
+        'address',
+        'status',
+    ];
 
     /**
      * Activity Log (Spatie v4+)

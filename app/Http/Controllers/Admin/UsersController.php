@@ -111,29 +111,27 @@ class UsersController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        //create new user
-        $user=new User;
-        $user->name=$request->name;
-        $user->email=$request->email;
-        $user->password=bcrypt($request->password);
-        $user->save();
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
 
-        //assign roles to user
-        if($request->has('roles'))
-        {
-            foreach($request['roles'] as $role)
-            {
-                UserRole::firstOrCreate([
-                    'user_id'=>$user['id'],
-                    'role_id'=>$role
-                ]);
-                
+            if ($request->has('roles')) {
+                foreach ($request->roles as $role) {
+                    UserRole::firstOrCreate([
+                        'user_id' => $user->id,
+                        'role_id' => $role,
+                    ]);
+                }
             }
+
+            return to_route('admin.users.index')
+                ->with('success', __('User created successfully'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with('error', __('Failed to create user. Please try again.'));
         }
-
-        session()->flash('success',__('User created successfully'));
-
-        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -170,37 +168,36 @@ class UsersController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        //update user
-        $user=User::findOrFail($id);
-        $user->name=$request->name;
-        $user->email=$request->email;
-       
-        //optional updating password
-        if(!empty($request['password']))
-        {
-            $user->password=bcrypt($request->password);
-        }
-        
-        $user->save();
-
-        //assign roles to user
-        UserRole::where('user_id',$id)->delete();
-
-        if($request->has('roles'))
-        {
-            foreach($request['roles'] as $role)
-            {
-                UserRole::firstOrCreate([
-                    'user_id'=>$id,
-                    'role_id'=>$role
-                ]);
-
+        try {
+            $user = User::findOrFail($id);
+            
+            $user->name = $request->name;
+            $user->email = $request->email;
+           
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->password);
             }
+            
+            $user->save();
+
+            UserRole::where('user_id', $id)->delete();
+
+            if ($request->has('roles')) {
+                foreach ($request->roles as $role) {
+                    UserRole::firstOrCreate([
+                        'user_id' => $id,
+                        'role_id' => $role,
+                    ]);
+                }
+            }
+
+            return to_route('admin.users.index')
+                ->with('success', __('User updated successfully'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', __('User not found.'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with('error', __('Failed to update user. Please try again.'));
         }
-
-        session()->flash('success',__('User updated successfully'));
-
-        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -211,16 +208,18 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $user=User::findorFail($id);
-        
-        //delete assigned roles
-        UserRole::where('user_id',$id)->delete();
+        try {
+            $user = User::findOrFail($id);
+            
+            UserRole::where('user_id', $id)->delete();
+            $user->delete();
 
-        //delete user finally
-        $user->delete();
-
-        session()->flash('success',__('User deleted successfully'));
-
-        return redirect()->route('admin.users.index');
+            return to_route('admin.users.index')
+                ->with('success', __('User deleted successfully'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', __('User not found.'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', __('Failed to delete user. Please try again.'));
+        }
     }
 }

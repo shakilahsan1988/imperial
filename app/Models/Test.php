@@ -12,10 +12,20 @@ class Test extends Model
 {
     use SoftDeletes, LogsActivity;
 
-    /**
-     * The attributes that aren't mass assignable.
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'shortcut',
+        'type',
+        'unit',
+        'reference_range',
+        'price',
+        'precautions',
+        'parent_id',
+        'title',
+        'separated',
+        'status',
+        'sample_type',
+    ];
 
     /**
      * Indicates if the model should be timestamped.

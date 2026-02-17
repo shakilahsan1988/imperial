@@ -15,7 +15,7 @@
 @if($u && ($isSuper || $u->hasPermission('delete_doctor')))
     <form method="POST" action="{{route('admin.doctors.destroy',$doctor['id'])}}" class="d-inline">
         @csrf
-        <input type="hidden" name="_method" value="delete">
+        @method('delete')
         <button type="submit" class="btn btn-danger btn-sm delete_doctor">
             <i class="fa fa-trash"></i>
         </button>

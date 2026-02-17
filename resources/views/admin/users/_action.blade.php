@@ -17,7 +17,7 @@
     @if($u->id != $user['id'])
         <form method="POST" action="{{route('admin.users.destroy',$user['id'])}}" class="d-inline">
             @csrf
-            <input type="hidden" name="_method" value="delete">
+            @method('delete')
             <button type="submit" class="btn btn-danger btn-sm delete_user">
                 <i class="fa fa-trash"></i>
             </button>

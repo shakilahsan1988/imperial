@@ -13,10 +13,14 @@ class Doctor extends Model
 {
     use SoftDeletes, LogsActivity;
 
-    /**
-     * The attributes that aren't mass assignable.
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'commission',
+        'address',
+        'status',
+    ];
 
     /**
      * The accessors to append to the model's array form.

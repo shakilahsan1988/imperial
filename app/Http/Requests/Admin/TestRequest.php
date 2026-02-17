@@ -6,29 +6,27 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TestRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name'=>'required',
-            'shortcut'=>'required',
-            'sample_type'=>'required',
-            'price'=>'required|numeric|min:0',
-            'component'=>'required'
+            'name' => ['required', 'string', 'max:255'],
+            'shortcut' => ['required', 'string', 'max:50'],
+            'sample_type' => ['required', 'string', 'max:100'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'precautions' => ['nullable', 'string'],
+            'component' => ['required', 'array', 'min:1'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'component.required' => __('At least one component is required.'),
         ];
     }
 }

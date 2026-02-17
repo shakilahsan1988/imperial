@@ -111,60 +111,55 @@ class TestsController extends Controller
      */
     public function store(TestRequest $request)
     {
-        $test=Test::create([
-            'name'=>$request['name'],
-            'shortcut'=>$request['shortcut'],
-            'sample_type'=>$request['sample_type'],
-            'price'=>$request['price'],
-            'precautions'=>$request['precautions'],
-            'parent_id'=>0
-        ]);
+        try {
+            $test = Test::create([
+                'name' => $request->name,
+                'shortcut' => $request->shortcut,
+                'sample_type' => $request->sample_type,
+                'price' => $request->price,
+                'precautions' => $request->precautions,
+                'parent_id' => 0,
+            ]);
 
-        //create components
-        if($request->has('component'))
-        {
-            foreach($request->component as $component)
-            {
-                if(isset($component['title']))
-                {
-                    Test::create([
-                        'parent_id'=>$test['id'],
-                        'name'=>$component['name'],
-                        'title'=>true,
-                    ]);
-                }
-                else{
-                    $test_component=Test::create([
-                        'parent_id'=>$test['id'],
-                        'type'=>$component['type'],
-                        'name'=>$component['name'],
-                        'unit'=>(isset($component['unit']))?$component['unit']:'',
-                        'reference_range'=>(isset($component['reference_range']))?$component['reference_range']:'',
-                        'title'=>(isset($component['title']))?true:false,
-                        'separated'=>(isset($component['separated'])),
-                        'price'=>(isset($component['price']))?$component['price']:0,
-                        'status'=>(isset($component['status'])),
-                        'sample_type'=>$test['sample_type']
-                    ]);
+            if ($request->has('component')) {
+                foreach ($request->component as $component) {
+                    if (isset($component['title'])) {
+                        Test::create([
+                            'parent_id' => $test->id,
+                            'name' => $component['name'],
+                            'title' => true,
+                        ]);
+                    } else {
+                        $test_component = Test::create([
+                            'parent_id' => $test->id,
+                            'type' => $component['type'],
+                            'name' => $component['name'],
+                            'unit' => $component['unit'] ?? '',
+                            'reference_range' => $component['reference_range'] ?? '',
+                            'title' => $component['title'] ?? false,
+                            'separated' => $component['separated'] ?? false,
+                            'price' => $component['price'] ?? 0,
+                            'status' => $component['status'] ?? true,
+                            'sample_type' => $test->sample_type,
+                        ]);
      
-                    //assign options to component
-                    if(isset($component['options']))
-                    {
-                        foreach($component['options'] as $option)
-                        {
-                            TestOption::create([
-                                'name'=>$option,
-                                'test_id'=>$test_component['id']
-                            ]);
+                        if (isset($component['options'])) {
+                            foreach ($component['options'] as $option) {
+                                TestOption::create([
+                                    'name' => $option,
+                                    'test_id' => $test_component->id,
+                                ]);
+                            }
                         }
                     }
                 }
             }
-        }
  
-        session()->flash('success',__('Test created successfully'));
-
-        return redirect()->route('admin.tests.index');
+            return to_route('admin.tests.index')
+                ->with('success', __('Test created successfully'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with('error', __('Failed to create test. Please try again.'));
+        }
     }
 
     /**
@@ -199,122 +194,103 @@ class TestsController extends Controller
      */
     public function update(TestRequest $request, $id)
     {
-        $test=Test::findOrFail($id);
+        try {
+            $test = Test::findOrFail($id);
 
-        //update analysis basic info
-        $test->update([
-            'name'=>$request['name'],
-            'shortcut'=>$request['shortcut'],
-            'sample_type'=>$request['sample_type'],
-            'price'=>$request['price'],
-            'precautions'=>$request['precautions'],
-            'parent_id'=>0
-        ]);
+            $test->update([
+                'name' => $request->name,
+                'shortcut' => $request->shortcut,
+                'sample_type' => $request->sample_type,
+                'price' => $request->price,
+                'precautions' => $request->precautions,
+                'parent_id' => 0,
+            ]);
 
-        //components
-        if($request->has('component'))
-        {
-            foreach($request->component as $component)
-            {
-                if(isset($component['title']))
-                {
-                    if(isset($component['id']))
-                    {
-                        Test::where('id',$component['id'])->update([
-                            'name'=>$component['name'],
-                        ]);
-                    }
-                    else{
-                        Test::create([
-                            'parent_id'=>$id,
-                            'name'=>$component['name'],
-                            'title'=>true,
-                        ]);
-                    }
-                }
-                else{
-                    if(isset($component['id']))
-                    {
-                        $test_component=Test::where('id',$component['id'])->first();
-
-                        $test_component->update([
-                            'parent_id'=>$id,
-                            'type'=>$component['type'],
-                            'name'=>$component['name'],
-                            'unit'=>(isset($component['unit']))?$component['unit']:'',
-                            'reference_range'=>(isset($component['reference_range']))?$component['reference_range']:'',
-                            'title'=>(isset($component['title']))?true:false,
-                            'separated'=>(isset($component['separated'])),
-                            'price'=>(isset($component['price']))?$component['price']:0,
-                            'status'=>(isset($component['status'])),
-                            'sample_type'=>$test['sample_type']
-                        ]);
-
-                        //delete options if not select type
-                        if($component['type']!='select')
-                        {
-                            $test_component->options()->delete();
+            if ($request->has('component')) {
+                foreach ($request->component as $component) {
+                    if (isset($component['title'])) {
+                        if (isset($component['id'])) {
+                            Test::where('id', $component['id'])->update([
+                                'name' => $component['name'],
+                            ]);
+                        } else {
+                            Test::create([
+                                'parent_id' => $id,
+                                'name' => $component['name'],
+                                'title' => true,
+                            ]);
                         }
+                    } else {
+                        if (isset($component['id'])) {
+                            $test_component = Test::where('id', $component['id'])->first();
 
-                        //update old options
-                        if(isset($component['old_options']))
-                        {
-                            foreach($component['old_options'] as $option_id=>$option)
-                            {
-                                TestOption::where('id',$option_id)->update([
-                                    'name'=>$option,
-                                ]);
+                            $test_component->update([
+                                'parent_id' => $id,
+                                'type' => $component['type'],
+                                'name' => $component['name'],
+                                'unit' => $component['unit'] ?? '',
+                                'reference_range' => $component['reference_range'] ?? '',
+                                'title' => $component['title'] ?? false,
+                                'separated' => $component['separated'] ?? false,
+                                'price' => $component['price'] ?? 0,
+                                'status' => $component['status'] ?? true,
+                                'sample_type' => $test->sample_type,
+                            ]);
+
+                            if ($component['type'] != 'select') {
+                                $test_component->options()->delete();
                             }
-                        }
+
+                            if (isset($component['old_options'])) {
+                                foreach ($component['old_options'] as $option_id => $option) {
+                                    TestOption::where('id', $option_id)->update([
+                                        'name' => $option,
+                                    ]);
+                                }
+                            }
          
-                        //assign options to component
-                        if(isset($component['options']))
-                        {
-                            foreach($component['options'] as $option)
-                            {
-                                TestOption::create([
-                                    'name'=>$option,
-                                    'test_id'=>$test_component['id']
-                                ]);
+                            if (isset($component['options'])) {
+                                foreach ($component['options'] as $option) {
+                                    TestOption::create([
+                                        'name' => $option,
+                                        'test_id' => $test_component->id,
+                                    ]);
+                                }
                             }
-                        }
-                    }
-                    else{
-
-                        $test_component=Test::create([
-                            'parent_id'=>$id,
-                            'type'=>$component['type'],
-                            'name'=>$component['name'],
-                            'unit'=>(isset($component['unit']))?$component['unit']:'',
-                            'reference_range'=>(isset($component['reference_range']))?$component['reference_range']:'',
-                            'title'=>(isset($component['title']))?true:false,
-                            'separated'=>(isset($component['separated'])),
-                            'price'=>(isset($component['price']))?$component['price']:0,
-                            'status'=>(isset($component['status'])),
-                            'sample_type'=>$test['sample_type']
-                        ]);
+                        } else {
+                            $test_component = Test::create([
+                                'parent_id' => $id,
+                                'type' => $component['type'],
+                                'name' => $component['name'],
+                                'unit' => $component['unit'] ?? '',
+                                'reference_range' => $component['reference_range'] ?? '',
+                                'title' => $component['title'] ?? false,
+                                'separated' => $component['separated'] ?? false,
+                                'price' => $component['price'] ?? 0,
+                                'status' => $component['status'] ?? true,
+                                'sample_type' => $test->sample_type,
+                            ]);
          
-                        //assign options to component
-                        if(isset($component['options']))
-                        {
-                            foreach($component['options'] as $option)
-                            {
-                                TestOption::create([
-                                    'name'=>$option,
-                                    'test_id'=>$test_component['id']
-                                ]);
+                            if (isset($component['options'])) {
+                                foreach ($component['options'] as $option) {
+                                    TestOption::create([
+                                        'name' => $option,
+                                        'test_id' => $test_component->id,
+                                    ]);
+                                }
                             }
                         }
-                        
                     }
-                    
                 }
             }
+
+            return to_route('admin.tests.index')
+                ->with('success', __('Test updated successfully'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', __('Test not found.'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with('error', __('Failed to update test. Please try again.'));
         }
-
-        session()->flash('success',__('Test updated successfully'));
-
-        return redirect()->back();
     }
 
     /**
@@ -325,23 +301,24 @@ class TestsController extends Controller
      */
     public function destroy($id)
     {
-       $test=Test::findOrFail($id);
+        try {
+            $test = Test::findOrFail($id);
 
-       //delete old components
-       $components=Test::where('parent_id',$id)->get();
+            $components = Test::where('parent_id', $id)->get();
+            foreach ($components as $component) {
+                $component->options()->delete();
+                $component->delete();
+            }
 
-       foreach($components as $component)
-       {
-           $component->options()->delete();
-           $component->delete();
-       }
+            $test->options()->delete();
+            $test->delete();
 
-        $test->options()->delete();
-
-        $test->delete();
-
-        session()->flash('success',__('Test deleted successfully'));
-
-        return redirect()->route('admin.tests.index');
+            return to_route('admin.tests.index')
+                ->with('success', __('Test deleted successfully'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', __('Test not found.'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', __('Failed to delete test. Please try again.'));
+        }
     }
 }

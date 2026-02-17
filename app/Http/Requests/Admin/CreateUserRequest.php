@@ -3,31 +3,31 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name'=>'required|unique:users',
-            'email'=>'required|unique:users',
-            'password'=>'required',
-            'roles'=>'required'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+            'roles' => ['required', 'array', 'min:1'],
+            'roles.*' => ['required', 'integer', 'exists:roles,id'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'roles.required' => __('Please assign at least one role.'),
+            'roles.*.exists' => __('Selected role does not exist.'),
         ];
     }
 }

@@ -11,10 +11,13 @@ class Expense extends Model
 {
     use LogsActivity;
 
-    /**
-     * The attributes that aren't mass assignable.
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'amount',
+        'description',
+        'date',
+        'expense_category_id',
+        'doctor_id',
+    ];
 
     /**
      * Get the category associated with the expense.

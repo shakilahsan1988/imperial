@@ -11,10 +11,10 @@ class Role extends Model
 {
     use LogsActivity;
 
-    /**
-     * The attributes that aren't mass assignable.
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     /**
      * Corrected Relationship: Many-to-Many with Permission

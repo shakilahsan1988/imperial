@@ -11,10 +11,10 @@ class ExpenseCategory extends Model
 {
     use SoftDeletes, LogsActivity;
 
-    /**
-     * The attributes that aren't mass assignable.
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     /**
      * Configure the activity log options for Spatie v4.

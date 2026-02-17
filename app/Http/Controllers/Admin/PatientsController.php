@@ -118,22 +118,24 @@ class PatientsController extends Controller
      */
     public function store(PatientRequest $request)
     {
-        $patient=Patient::create([
-            'code'=>patient_code(),
-            'name'=>$request->name,
-            'gender'=>$request->gender,
-            'dob'=>$request->dob,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-            'address'=>$request->address,
-        ]);
+        try {
+            $patient = Patient::create([
+                'code' => patient_code(),
+                'name' => $request->name,
+                'gender' => $request->gender,
+                'dob' => $request->dob,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+            ]);
 
-        //send notification with the patient code
-        send_notification('patient_code',$patient);
+            send_notification('patient_code', $patient);
 
-        session()->flash('success','Patient created successfully');
-
-        return redirect()->route('admin.patients.index');
+            return to_route('admin.patients.index')
+                ->with('success', __('Patient created successfully'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with('error', __('Failed to create patient. Please try again.'));
+        }
     }
 
     /**
@@ -168,23 +170,28 @@ class PatientsController extends Controller
      */
     public function update(PatientRequest $request, $id)
     {
-        $patient=Patient::findOrFail($id);
-        $patient->update([
-            'name'=>$request->name,
-            'gender'=>$request->gender,
-            'dob'=>$request->dob,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-            'address'=>$request->address,
-        ]);
+        try {
+            $patient = Patient::findOrFail($id);
+            
+            $patient->update([
+                'name' => $request->name,
+                'gender' => $request->gender,
+                'dob' => $request->dob,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+            ]);
 
-        //send notification with the patient code
-        $patient=Patient::find($id);
-        send_notification('patient_code',$patient);
+            $patient = Patient::find($id);
+            send_notification('patient_code', $patient);
 
-        session()->flash('success','Patient data updated successfully');
-
-        return redirect()->route('admin.patients.index');
+            return to_route('admin.patients.index')
+                ->with('success', __('Patient updated successfully'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', __('Patient not found.'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with('error', __('Failed to update patient. Please try again.'));
+        }
     }
 
     /**
@@ -195,11 +202,18 @@ class PatientsController extends Controller
      */
     public function destroy($id)
     {
-        $patient=Patient::findOrFail($id);//get patient
-        $patient->groups()->delete();//delete groups
-        $patient->delete();//delete patient
-        session()->flash('success',__('Patient deleted successfully'));
-        return redirect()->route('admin.patients.index');
+        try {
+            $patient = Patient::findOrFail($id);
+            $patient->groups()->delete();
+            $patient->delete();
+
+            return to_route('admin.patients.index')
+                ->with('success', __('Patient deleted successfully'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', __('Patient not found.'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', __('Failed to delete patient. Please try again.'));
+        }
     }
 
     /**
@@ -223,16 +237,17 @@ class PatientsController extends Controller
     */
     public function import(ExcelImportRequest $request)
     {
-        if($request->hasFile('import'))
-        {
-            ob_end_clean(); // this
-            ob_start(); // and this
-            Excel::import(new PatientImport, $request->file('import'));
+        try {
+            if ($request->hasFile('import')) {
+                ob_end_clean();
+                ob_start();
+                Excel::import(new PatientImport, $request->file('import'));
+            }
+
+            return back()->with('success', __('Patients imported successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to import patients. Please check the file format.'));
         }
-
-        session()->flash('success',__('Patients imported successfully'));
-
-        return redirect()->back();
     }
 
     /**

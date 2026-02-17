@@ -13,8 +13,11 @@ class Antibiotic extends Model
 
     protected $table = 'antibiotics'; 
 
-    // guarded 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'description',
+        'status',
+    ];
 
     public $timestamps = false;
     

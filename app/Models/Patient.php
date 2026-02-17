@@ -16,10 +16,15 @@ class Patient extends Authenticatable
 {
     use Notifiable, SoftDeletes, HasApiTokens, LogsActivity;
 
-    /**
-     * The attributes that aren't mass assignable.
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'code',
+        'name',
+        'gender',
+        'dob',
+        'email',
+        'phone',
+        'address',
+    ];
 
     /**
      * The accessors to append to the model's array form.
