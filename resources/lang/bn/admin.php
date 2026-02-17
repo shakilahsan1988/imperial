@@ -129,8 +129,10 @@ return [
     'invoice' => 'ইনভয়েস',
     'invoice_id' => 'ইনভয়েস আইডি',
     'total' => 'মোট',
+    'subtotal' => 'সাবটোটাল',
     'paid' => 'পেইড',
     'due' => 'বাকি',
+    'receipt' => 'রসিদ',
     'discount' => 'ডিসকাউন্ট',
     'result' => 'রেজাল্ট',
     'results' => 'রেজাল্ট সমূহ',
@@ -236,6 +238,9 @@ return [
     'chat' => 'চ্যাট',
     'messages' => 'মেসেজ সমূহ',
     'send_message' => 'মেসেজ পাঠান',
+    'notifications' => 'নোটিফিকেশন',
+    'new_home_visits' => 'নতুন হোম ভিজিট',
+    'new_messages' => 'নতুন মেসেজ',
 
     // Profile
     'profile' => 'প্রোফাইল',

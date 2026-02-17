@@ -15,11 +15,11 @@
       @if($u && ($isSuper || $u->hasPermission('view_visit')))
       <li class="nav-item dropdown visits_notification">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"> {{ __('নোটিফিকেশন') }}</i>
+          <i class="far fa-bell"> {{ __('admin.notifications') }}</i>
           <span class="badge badge-warning navbar-badge visits_count"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header"><span class="visits_count">0</span> {{__('New home visits')}}</span>
+          <span class="dropdown-item dropdown-header"><span class="visits_count">0</span> {{__('admin.new_home_visits')}}</span>
           <div class="dropdown-divider"></div>
           <div class="list_visits"></div>
         </div>
@@ -30,11 +30,11 @@
       @if($u && ($isSuper || $u->hasPermission('view_chat')))
         <li class="nav-item dropdown show messages_notification">
           <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
-            <i class="far fa-comments"> {{ __('ম্যাসেজ') }}</i>
+            <i class="far fa-comments"> {{ __('admin.messages') }}</i>
             <span class="badge badge-danger navbar-badge unread_messages_count">0</span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-            <span class="dropdown-item dropdown-header"><span class="unread_messages_count">0</span> {{__('New messages')}}</span>
+            <span class="dropdown-item dropdown-header"><span class="unread_messages_count">0</span> {{__('admin.new_messages')}}</span>
             <div class="dropdown-divider"></div>
             <div class="list_unread_messages"></div>
           </div>

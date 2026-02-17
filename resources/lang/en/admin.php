@@ -129,8 +129,10 @@ return [
     'invoice' => 'Invoice',
     'invoice_id' => 'Invoice ID',
     'total' => 'Total',
+    'subtotal' => 'Subtotal',
     'paid' => 'Paid',
     'due' => 'Due',
+    'receipt' => 'Receipt',
     'discount' => 'Discount',
     'result' => 'Result',
     'results' => 'Results',
@@ -236,6 +238,9 @@ return [
     'chat' => 'Chat',
     'messages' => 'Messages',
     'send_message' => 'Send Message',
+    'notifications' => 'Notifications',
+    'new_home_visits' => 'New home visits',
+    'new_messages' => 'New messages',
 
     // Profile
     'profile' => 'Profile',
