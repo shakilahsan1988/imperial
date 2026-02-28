@@ -16,18 +16,56 @@ body {
 /* --- Global Colors --- */
 :root {
     --primary: #4f46e5; /* Modern Indigo */
+    --primary-dark: #4338ca;
+    --primary-light: #eef2ff;
     --secondary: #64748b;
     --success: #10b981;
     --info: #0ea5e9;
     --warning: #f59e0b;
     --danger: #ef4444;
     --dark: #1e293b;
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
     --card-bg: #ffffff;
     --border-radius: 12px;
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
-/* --- Cards & Containers --- */
+/* --- Frontend Overrides --- */
+.text-imperial-primary { color: var(--primary) !important; }
+.bg-imperial-primary { background-color: var(--primary) !important; }
+.border-imperial-primary { border-color: var(--primary) !important; }
+
+.btn-primary { 
+    background-color: var(--primary) !important; 
+    border: none !important;
+}
+.btn-primary:hover { 
+    background-color: var(--primary-dark) !important; 
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* No Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- Typography --- */
 .card {
     border: none !important;
     border-radius: var(--border-radius) !important;

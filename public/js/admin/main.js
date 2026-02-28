@@ -216,6 +216,11 @@
       $('.preloader').hide();
       $('.loader').hide();
     });
+
+    // Sign out
+    $(document).on('click', '.sign_out', function() {
+        $('#sign_out').submit();
+    });
 })(jQuery);
 
 //toastr success message

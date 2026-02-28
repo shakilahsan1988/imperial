@@ -1,176 +1,93 @@
 @extends('layouts.front')
 
-@section('title', 'Services - Imperial Health Bangladesh')
+@section('title', 'Our Services - Imperial Health Bangladesh')
 
 @section('content')
 
-    <!-- HERO SECTION -->
-    <section class="relative h-[65vh] z-0">
-        <img src="{{ asset('assets/front/images/services/services.jpg') }}" alt="Healthcare Background" class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/30"></div>
-    </section>
+    <main class="bg-white font-sans">
+        <!-- MODERN HERO SECTION -->
+        <section class="relative py-20 md:py-32 bg-[#1E293B] overflow-hidden">
+            <div class="absolute inset-0 opacity-30">
+                <img src="{{ asset('assets/front/images/services/services.jpg') }}" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
+            
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+                        Comprehensive <span class="text-indigo-400">Healthcare</span> Solutions
+                    </h1>
+                    <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl">
+                        From primary consultations to advanced diagnostics, we provide all your outpatient needs under one professional roof.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <!-- INTRO OVERLAP SECTION -->
-    <section class="-mt-24 relative z-10 mb-16">
-        <div class="max-w-5xl mx-auto bg-white px-10 py-16 text-center shadow-xl">    
-            <h1 class="text-3xl font-semibold mb-4 text-imperial-text">Services</h1>
-            <p class="text-gray-600 max-w-3xl mx-auto">
-              We take care of all your outpatient needs under one roof
-            </p>
-        </div>
-    </section>
-    
-    <!-- 1. CONSULTATIONS -->
-    <section class="border-b border-gray-200 py-16 md:py-20">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Consultations</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial’s caring doctors and healthcare providers take the time to listen and understand your needs and all doctor consultations, in-person or virtual, last for at least 15 minutes. They treat you with the respect and empathy you deserve and have years of local and international experience to give you advice that you can rely on.
-                </p>
+        <!-- SERVICES OVERVIEW -->
+        <section class="container mx-auto px-4 py-24">
+            
+            <!-- Service Block 1: Consultations -->
+            <div class="flex flex-col md:flex-row items-center gap-16 mb-24 reveal">
+                <div class="md:w-1/2">
+                    <div class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-6">Expert Guidance</div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">Personalized Consultations</h2>
+                    <p class="text-lg text-slate-600 leading-relaxed mb-8">
+                        Our caring doctors take the time to listen and understand your needs. All consultations, in-person or virtual, last for at least 15 minutes, ensuring you get the respect and empathy you deserve.
+                    </p>
+                    <a href="{{ route('service-details') }}" class="inline-flex items-center gap-3 text-indigo-600 font-bold group">
+                        Explore Specialities
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                    </a>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://picsum.photos/seed/doc1/800/600" class="rounded-3xl shadow-2xl">
+                </div>
             </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- 2. DIAGNOSTICS -->
-    <section class="border-b border-gray-200 py-16 md:py-20 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Diagnostics</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial’s state-of-the-art diagnostic services consist of seven laboratories including the first Molecular Cancer Diagnostics laboratory in Bangladesh as well as comprehensive imaging exams. Our laboratories received Bangladesh Accreditation Board (BAB) accreditation and ISO 15189-2012 international accreditation. For external validation, Imperial participates in RIQAS, the world’s largest international external quality assessment scheme, and receives 99.9% average monthly accuracy score.
-                </p>
+            <!-- Service Block 2: Diagnostics (Alternating) -->
+            <div class="flex flex-col md:flex-row-reverse items-center gap-16 mb-24 reveal">
+                <div class="md:w-1/2">
+                    <div class="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-6">World Class Tech</div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">Advanced Diagnostics</h2>
+                    <p class="text-lg text-slate-600 leading-relaxed mb-8">
+                        With seven state-of-the-art laboratories and ISO international accreditation, we offer the highest accuracy in Bangladesh. Our average monthly accuracy score is a remarkable 99.9%.
+                    </p>
+                    <a href="{{ route('lab-test') }}" class="btn-primary text-white px-8 py-4 rounded-2xl font-bold inline-block shadow-xl shadow-indigo-200">View Lab Tests</a>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://picsum.photos/seed/lab1/800/600" class="rounded-3xl shadow-2xl">
+                </div>
             </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- 3. PHARMACY + E-PHARMACY -->
-    <section class="border-b border-gray-200 py-16 md:py-20">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Pharmacy + E-Pharmacy</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    At Imperial’s in-house model pharmacy, approved by the Directorate General of Drug Administration (DGDA), medicines are sourced directly from the manufacturers and monitored by Imperial’s Grade A pharmacists to ensure the authenticity and quality of the drugs. You can directly purchase medicines at Imperial and also order online and get your prescription delivered to your doorsteps.
-                </p>
-            </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
+            <!-- Grid Services -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                @php
+                    $services = [
+                        ['title' => 'E-Pharmacy', 'desc' => 'Medicines sourced directly from manufacturers, delivered to your doorstep.', 'icon' => 'fa-pills', 'color' => 'indigo'],
+                        ['title' => 'Health Packages', 'desc' => 'Designed specifically for your age, gender, and unique healthcare needs.', 'icon' => 'fa-heart-pulse', 'color' => 'rose'],
+                        ['title' => 'Membership Plans', 'desc' => 'Ongoing care for your family with unlimited consultations and discounts.', 'icon' => 'fa-id-card', 'color' => 'amber'],
+                        ['title' => 'Vaccination', 'desc' => 'Approved center for EPI and international child/adult vaccinations.', 'icon' => 'fa-syringe', 'color' => 'blue'],
+                        ['title' => 'Home Health', 'desc' => 'Nurses and physiotherapists available for visits in the comfort of your home.', 'icon' => 'fa-house-medical', 'color' => 'emerald'],
+                        ['title' => 'Beauty Wellness', 'desc' => 'Skin, hair, and dental treatments using modern laser and energy technology.', 'icon' => 'fa-spa', 'color' => 'fuchsia'],
+                    ];
+                @endphp
 
-    <!-- 4. HEALTH CHECKS & PACKAGES -->
-    <section class="border-b border-gray-200 py-16 md:py-20 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Health Checks & Packages</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial believes everyone should have access to convenient, affordable, and high-quality healthcare. Our health checks and packages are specifically designed around your needs to help you stay on top of your health, no matter your age, gender, or needs.
-                </p>
+                @foreach($services as $s)
+                <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group">
+                    <div class="w-14 h-14 bg-{{$s['color']}}-100 text-{{$s['color']}}-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid {{$s['icon']}} text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">{{$s['title']}}</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">{{$s['desc']}}</p>
+                    <a href="{{ route('service-details') }}" class="text-xs font-bold uppercase tracking-widest text-indigo-600 flex items-center gap-2">
+                        Read Details <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                    </a>
+                </div>
+                @endforeach
             </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('health-check') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    View Packages
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- 5. MEMBERSHIP PLANS -->
-    <section class="border-b border-gray-200 py-16 md:py-20">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Membership Plans</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial’s membership plans ensure you and your family receive ongoing care throughout the year. Our plans include one health check, unlimited consultations with family doctors, and discounted rates on lab tests and diagnostics to proactively help you manage your health. Plans can be yearly or for a certain duration.
-                </p>
-            </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('membership') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    View Plans
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. VACCINES -->
-    <section class="border-b border-gray-200 py-16 md:py-20 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Vaccines</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial is an approved center for the Expanded Programme on Immunization (EPI) vaccines by the Government of Bangladesh. You can get your children vaccinated against six childhood diseases at Imperial Health. We also offer vaccinations against diseases such as flu, pneumonia, typhoid, hepatitis B, rabies, cholera, and varicella.
-                </p>
-            </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. REMOTE & HOME SERVICES -->
-    <section class="border-b border-gray-200 py-16 md:py-20">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Remote & Home Services</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial values your time and delivers services to cater your needs. You can book appointments for sample collection of any lab tests or home visits by our Family Medicine Doctors, physiotherapists or nurses and avail our services from the comfort of your home.
-                </p>
-            </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. BEAUTY + WELLNESS -->
-    <section class="border-b border-gray-200 py-16 md:py-20 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">Beauty + Wellness</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Look your absolute best with the best skin, hair, and dental treatments at Imperial’s Beauty & Wellness Center. Our experienced dermatologists and dentists offer several treatments that you can choose from to achieve your desired results. Imperial also offers psychologists and psychosocial therapists to help you with stress, depression, and other mental health issues. Imperial’s Beauty & Wellness Center offers treatment ranging from traditional treatments like acupuncture to treatments involving modern technology like laser therapy all under the same roof.
-                </p>
-            </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9. COVID-19 -->
-    <section class="py-16 md:py-20">
-        <div class="max-w-6xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div class="md:w-2/3">
-                <h2 class="text-2xl md:text-3xl font-bold text-imperial-primary mb-4">COVID-19</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Imperial is one of the first private institutions to get approval from the Directorate General of Health Services (DGHS) to test samples for COVID-19. If you or any of your loved ones think you are infected by the coronavirus and want to get tested, you can book an appointment for a home sample collection and we will come to you. You can also get tested if you are traveling abroad and get your reports in the fastest time possible.
-                </p>
-            </div>
-            <div class="md:w-1/3 flex justify-start md:justify-end w-full">
-                <a href="{{ route('service-details') }}" class="inline-flex items-center gap-2 text-imperial-primary font-semibold border-2 border-imperial-primary px-8 py-3 rounded hover:bg-imperial-primary hover:text-white transition-colors">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
 @endsection

@@ -1,196 +1,138 @@
 @extends('layouts.front')
 
-@section('title', 'Contact - Imperial Health Bangladesh')
+@section('title', 'Contact Us - Imperial Health Bangladesh')
 
 @section('content')
-<!-- Main Content Start -->
-<main class="font-sans text-imperial-text bg-white">
-    
-    <!-- 
-       HERO SECTION 
-       Converted from <div class="contact-header ...">
-       Full-width background with overlay, title, and 2x2 contact info grid.
-    -->
-    <section class="relative w-full min-h-[600px] flex items-center overflow-hidden">
-        
-        <!-- Background Image -->
-        <div class="absolute inset-0 z-0">
-            <!-- Using a placeholder image representing doctor/patient interaction -->
-            <img src="https://picsum.photos/id/4/1920/1080" alt="Imperial Health Doctor" class="w-full h-full object-cover">
-            
-            <!-- Dark Overlay -->
-            <div class="absolute inset-0 bg-imperial-primary/90"></div>
-        </div>
 
-        <!-- Content Container -->
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-12">
-            
-            <!-- Title & Description -->
-            <div class="max-w-3xl mb-12">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-                    Get in touch with us
-                </h1>
-                <p class="text-lg md:text-xl font-roboto text-blue-50 leading-relaxed">
-                    Our doctors spend time to get to know you and your health. They treat you with the respect and empathy you deserve, and have years of local and international experience to give you advice that you can rely on.
-                </p>
+    <main class="bg-white font-sans">
+        <!-- MODERN HERO SECTION -->
+        <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
+            <div class="absolute inset-0 opacity-20">
+                <img src="https://picsum.photos/id/4/1920/1080" class="w-full h-full object-cover">
             </div>
-
-            <!-- Contact Info Grid (2x2) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
-                
-                <!-- Email -->
-                <div class="bg-white text-gray-900 rounded-lg p-6 shadow-lg flex flex-col justify-center hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-imperial-primary">
-                            <i class="fa-solid fa-envelope text-lg"></i>
-                        </div>
-                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500">Email</h3>
-                    </div>
-                    <a href="mailto:imperiallistens@imperialhealth.com" class="text-lg font-bold hover:text-imperial-primary transition">
-                        imperiallistens@imperialhealth.com
-                    </a>
-                </div>
-
-                <!-- Phone Number -->
-                <div class="bg-white text-gray-900 rounded-lg p-6 shadow-lg flex flex-col justify-center hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-imperial-primary">
-                            <i class="fa-solid fa-phone text-lg"></i>
-                        </div>
-                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500">Phone Number</h3>
-                    </div>
-                    <a href="tel:10648" class="text-lg font-bold hover:text-imperial-primary transition">
-                        10648
-                    </a>
-                </div>
-
-                <!-- WhatsApp -->
-                <div class="bg-white text-gray-900 rounded-lg p-6 shadow-lg flex flex-col justify-center hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
-                            <i class="fa-brands fa-whatsapp text-xl"></i>
-                        </div>
-                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500">WhatsApp</h3>
-                    </div>
-                    <a href="https://wa.me/+8801844508402" target="_blank" class="text-lg font-bold hover:text-green-600 transition">
-                        +8801844508402
-                    </a>
-                </div>
-
-                <!-- Address -->
-                <div class="bg-white text-gray-900 rounded-lg p-6 shadow-lg flex flex-col justify-center hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-imperial-primary">
-                            <i class="fa-solid fa-location-dot text-lg"></i>
-                        </div>
-                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500">Address</h3>
-                    </div>
-                    <p class="text-base font-medium">
-                        Plot 9, Road 17, Block C, Banani, Dhaka 1213, Bangladesh
+            <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
+            
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+                        We're Here to <span class="text-indigo-400">Help</span> You
+                    </h1>
+                    <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl mb-12">
+                        Whether you have a question about our services, need assistance with a booking, or want to provide feedback, our team is ready to listen.
                     </p>
-                </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- MAP SECTION -->
-    <!-- Full width map below the hero -->
-    <section class="w-full h-[400px] md:h-[500px] bg-gray-200">
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.389736832745!2d90.3983!3d23.7954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c8c16e0e643b%3A0x6a466d658b8a5e0!2sBanani%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" 
-            width="100%" 
-            height="100%" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy">
-        </iframe>
-    </section>
-
-    <!-- CONTACT FORM SECTION -->
-    <section class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                
-                <!-- Form Side (Span 8) -->
-                <div class="lg:col-span-8">
-                    <div class="bg-gray-50 p-8 md:p-10 rounded-xl border border-gray-100">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h2>
-                        
-                        <form action="#" method="POST" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Name -->
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                    <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imperial-primary focus:border-imperial-primary outline-none transition">
-                                </div>
-                                <!-- Phone -->
-                                <div>
-                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imperial-primary focus:border-imperial-primary outline-none transition">
-                                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex items-center gap-4 hover:bg-white/10 transition-all">
+                            <div class="w-12 h-12 bg-indigo-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                                <i class="fa-solid fa-phone-volume text-xl"></i>
                             </div>
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-400">24/7 Hotline</p>
+                                <p class="text-xl font-black text-white leading-none">10648</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex items-center gap-4 hover:bg-white/10 transition-all">
+                            <div class="w-12 h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-emerald-400">WhatsApp</p>
+                                <p class="text-xl font-black text-white leading-none">+880 18445 08402</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT & FORM SECTION -->
+        <section class="py-24">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                    
+                    <!-- Form Side -->
+                    <div class="lg:col-span-7">
+                        <div class="bg-slate-50 rounded-[40px] p-8 md:p-12 border border-slate-100">
+                            <h2 class="text-3xl font-extrabold text-slate-900 mb-8 tracking-tight">Send us a message</h2>
                             
-                            <!-- Email -->
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imperial-primary focus:border-imperial-primary outline-none transition">
-                            </div>
+                            <form action="#" method="POST" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
+                                        <input type="text" placeholder="e.g. John Doe" class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
+                                        <input type="tel" placeholder="+880" class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
+                                    </div>
+                                </div>
 
-                            <!-- Subject -->
-                            <div>
-                                <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                                <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imperial-primary focus:border-imperial-primary outline-none transition bg-white">
-                                    <option>General Inquiry</option>
-                                    <option>Appointments</option>
-                                    <option>Feedback</option>
-                                    <option>Corporate Partnerships</option>
-                                    <option>Careers</option>
-                                </select>
-                            </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
+                                    <input type="email" placeholder="name@company.com" class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
+                                </div>
 
-                            <!-- Message -->
-                            <div>
-                                <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                                <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imperial-primary focus:border-imperial-primary outline-none transition"></textarea>
-                            </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Reason for Inquiry</label>
+                                    <select class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700 appearance-none">
+                                        <option>General Inquiry</option>
+                                        <option>Appointment Booking</option>
+                                        <option>Laboratory Services</option>
+                                        <option>Corporate Partnership</option>
+                                    </select>
+                                </div>
 
-                            <!-- Button -->
-                            <button type="submit" class="w-full bg-imperial-primary hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg shadow transition duration-300">
-                                Send Message
-                            </button>
-                        </form>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Message</label>
+                                    <textarea rows="4" placeholder="How can we help you?" class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full bg-slate-900 hover:bg-indigo-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3">
+                                    <span>Send Message</span>
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
+
+                    <!-- Info Side -->
+                    <div class="lg:col-span-5 space-y-12 py-6">
+                        <div>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mb-6 tracking-tight">Our Location</h3>
+                            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
+                                    <p class="text-slate-600 font-medium leading-relaxed">Plot 9, Road 17, Block C, Banani<br>Dhaka - 1213, Bangladesh</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                                    <p class="text-slate-600 font-medium">imperiallistens@imperialhealth.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mb-6 tracking-tight">Operating Hours</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                    <span class="text-sm font-bold text-slate-700">Saturday - Thursday</span>
+                                    <span class="text-sm font-black text-indigo-600">8:00 AM - 10:00 PM</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                                    <span class="text-sm font-bold text-slate-700">Friday</span>
+                                    <span class="text-sm font-black text-indigo-600">3:00 PM - 10:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-3xl overflow-hidden h-64 shadow-2xl border-4 border-white">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.389736832745!2d90.3983!3d23.7954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c8c16e0e643b%3A0x6a466d658b8a5e0!2sBanani%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- Info Side (Span 4) -->
-                <div class="lg:col-span-4 space-y-8">
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">Operating Hours</h3>
-                        <ul class="space-y-3 text-gray-600">
-                            <li class="flex justify-between border-b border-gray-100 pb-2">
-                                <span>Saturday - Thursday</span>
-                                <span class="font-bold text-gray-900">8:00 AM - 10:00 PM</span>
-                            </li>
-                            <li class="flex justify-between border-b border-gray-100 pb-2">
-                                <span>Friday</span>
-                                <span class="font-bold text-gray-900">3:00 PM - 10:00 PM</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">Emergency?</h3>
-                        <p class="text-gray-600 mb-4">If you have a medical emergency, please call our emergency hotline immediately.</p>
-                        <a href="tel:10648" class="inline-flex items-center gap-2 text-2xl font-bold text-red-600 hover:text-red-700 transition">
-                            <i class="fa-solid fa-phone-volume"></i> 10648
-                        </a>
-                    </div>
-                </div>
-
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-</main>
 @endsection

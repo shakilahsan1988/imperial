@@ -1,206 +1,108 @@
 @extends('layouts.front')
 
-@section('title', 'Home - Imperial Health Bangladesh')
+@section('title', 'Imperial Health - World Class Healthcare in Bangladesh')
 
 @section('content')
     
     @include('frontend.includes.slider')
 
-    <!-- ========================================== -->
-    <!-- STATS SECTION                              -->
-    <!-- ========================================== -->
-    <section class="py-16 md:py-24 bg-white section-divider">
-        <div class="container mx-auto px-4 sm:px-6">
-            <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
-                <!-- Text Left -->
-                <div class="w-full md:w-5/12 text-center md:text-left reveal">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">About <span class="text-gradient">imperial</span></h2>
-                    <p class="text-base md:text-lg text-gray-600 leading-relaxed">imperial exists to provide a better patient experience. We are a one-stop-shop for your health, offering caring doctors, world-class diagnostics, in-house pharmacy, and much more.</p>
+    <!-- STATS SECTION -->
+    <section class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50 -mr-48 -mt-48"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row gap-20 items-center">
+                <div class="lg:w-5/12 reveal">
+                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">About Imperial</span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Redefining the <span class="text-indigo-600">Patient Experience</span></h2>
+                    <p class="text-lg text-slate-500 leading-relaxed font-medium">Imperial exists to provide a better patient experience. We are a one-stop-shop for your health, offering caring doctors, world-class diagnostics, and accessible healthcare for everyone.</p>
                 </div>
                 
-                <!-- Stats Right -->
-                <div class="w-full md:w-7/12 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="stat-card p-6 rounded-xl card-shadow reveal" style="transition-delay: 0ms;">
-                        <div class="text-4xl md:text-5xl font-bold text-gradient mb-2 counter" data-target="27">0</div>
-                        <h3 class="text-lg sm:text-xl font-medium text-gray-700">Departments</h3>
+                <div class="lg:w-7/12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @php
+                        $stats = [
+                            ['count' => '27', 'label' => 'Specialities', 'icon' => 'fa-stethoscope'],
+                            ['count' => '84', 'label' => 'Expert Doctors', 'icon' => 'fa-user-md'],
+                            ['count' => '914K', 'label' => 'Patients Served', 'icon' => 'fa-users'],
+                        ];
+                    @endphp
+                    @foreach($stats as $s)
+                    <div class="bg-slate-50 p-8 rounded-[32px] border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group reveal">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid {{$s['icon']}} text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-4xl font-black text-slate-900 mb-1 tracking-tighter">{{$s['count']}}</h3>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{$s['label']}}</p>
                     </div>
-                    <div class="stat-card p-6 rounded-xl card-shadow reveal" style="transition-delay: 100ms;">
-                        <div class="text-4xl md:text-5xl font-bold text-gradient mb-2 counter" data-target="84">0</div>
-                        <h3 class="text-lg sm:text-xl font-medium text-gray-700">Doctors</h3>
-                    </div>
-                    <div class="stat-card p-6 rounded-xl card-shadow reveal" style="transition-delay: 200ms;">
-                        <div class="text-4xl md:text-5xl font-bold text-gradient mb-2"><span class="counter" data-target="914">0</span>K</div>
-                        <h3 class="text-lg sm:text-xl font-medium text-gray-700">Patients Served</h3>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- SECTION 1: TEXT LEFT / IMAGE RIGHT         -->
-    <!-- Mobile: Image Top / Desktop: Text Left     -->
-    <!-- ========================================== -->
-    <section class="bg-gray-50 section-bg-pattern">
-        <div class="container mx-auto px-4 sm:px-6 py-16 md:py-24">
-            <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
-                
-                <!-- Text Content (Order 2 on mobile, 1 on desktop) -->
-                <div class="w-full md:w-5/12 order-2 md:order-1 reveal-left">
-                    <h4 class="text-xs md:text-sm font-semibold tracking-wider uppercase mb-3 text-imperial-primary">Why imperial</h4>
-                    <h2 class="text-2xl md:text-4xl font-bold mb-5 leading-tight text-gray-900">Doctors Who Listen</h2>
-                    <p class="text-base md:text-lg leading-relaxed mb-4 text-gray-600">Our doctors spend time to get to know you and your health. They treat you with the respect and empathy you deserve.</p>
-                    <p class="text-base md:text-lg leading-relaxed text-gray-600">Years of local and international experience to give you advice you can rely on.</p>
-                </div>
-
-                <!-- Image (Order 1 on mobile, 2 on desktop) -->
-                <div class="w-full md:w-7/12 order-1 md:order-2 reveal-right">
-                    <div class="img-zoom-container rounded-2xl shadow-2xl">
-                        <img src="{{ asset('assets/front/images/index/why-imperial.jpg') }}" 
-                             onerror="this.src='https://picsum.photos/seed/doclist/800/600'"
-                             alt="Doctors Listening" 
-                             class="w-full h-auto rounded-2xl">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- SECTION 2: IMAGE LEFT / TEXT RIGHT          -->
-    <!-- ========================================== -->
-    <section class="py-16 md:py-24 bg-white section-bg-pattern">
-        <div class="container mx-auto px-4 sm:px-6">
-            <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
-                
-                <!-- Image Left (First in DOM, so Top on Mobile) -->
-                <div class="w-full md:w-1/2 reveal-left">
-                    <div class="img-zoom-container rounded-2xl shadow-2xl">
-                        <img src="{{ asset('assets/front/images/index/diagnosis.jpeg') }}" 
-                             onerror="this.src='https://picsum.photos/seed/lab/800/600'"
-                             alt="Diagnosis Lab" 
-                             class="w-full h-auto rounded-2xl">
-                    </div>
-                </div>
-
-                <!-- Text Right -->
-                <div class="w-full md:w-1/2 reveal-right">
-                    <h4 class="text-xs md:text-sm font-semibold text-imperial-primary tracking-wider uppercase mb-3">Why imperial</h4>
-                    <h2 class="text-2xl md:text-4xl font-bold mb-5 text-gray-900 leading-tight">Diagnosis You Can Trust</h2>
-                    <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-6">You can depend on the quality of our diagnosis and test results. Our laboratories are set up according to international standards and protocols.</p>
-                    
-                    <a href="#" class="link-arrow text-imperial-primary font-bold flex items-center gap-2 group text-base md:text-lg focus-ring px-2 py-1 rounded">
-                        Our services 
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform text-sm"></i>
+    <!-- SECTION 1: TEXT LEFT / IMAGE RIGHT -->
+    <section class="py-24 bg-slate-50 overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row gap-20 items-center">
+                <div class="lg:w-1/2 reveal-left">
+                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">Our Approach</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-8 tracking-tight">Doctors Who <span class="text-indigo-600">Actually</span> Listen</h2>
+                    <p class="text-lg text-slate-600 leading-relaxed mb-6 font-medium">Our specialists dedicate time to truly understand your health history. We believe in respect, empathy, and personalized advice based on international clinical protocols.</p>
+                    <p class="text-slate-500 leading-relaxed mb-10">With years of local and international experience, our team provides healthcare you can trust blindly.</p>
+                    <a href="{{ route('doctor') }}" class="btn-primary text-white px-10 py-4 rounded-2xl font-bold inline-flex items-center gap-3 shadow-xl shadow-indigo-200">
+                        Find a Specialist <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- SECTION 3: TEXT LEFT / IMAGE RIGHT          -->
-    <!-- ========================================== -->
-    <section class="py-16 md:py-24 bg-gray-50 section-bg-pattern">
-        <div class="container mx-auto px-4 sm:px-6">
-            <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
-                
-                <!-- Text Left -->
-                <div class="w-full md:w-5/12 order-2 md:order-1 reveal-left">
-                    <h4 class="text-xs md:text-sm font-semibold tracking-wider uppercase mb-3 text-imperial-primary">Why imperial</h4>
-                    <h2 class="text-2xl md:text-4xl font-bold mb-5 leading-tight text-gray-900">Healthcare Anytime, Anywhere</h2>
-                    <p class="text-base md:text-lg leading-relaxed text-gray-600">We use technology to make healthcare accessible to you no matter where you are. Access your health data, book appointments, and view records anywhere.</p>
-                </div>
-
-                <!-- Image Right -->
-                <div class="w-full md:w-7/12 order-1 md:order-2 reveal-right">
-                    <div class="img-zoom-container rounded-2xl shadow-2xl">
-                        <img src="{{ asset('assets/front/images/index/health-care-anytime.jpg') }}" 
-                             onerror="this.src='https://picsum.photos/seed/tech/800/600'"
-                             alt="Digital Health" 
-                             class="w-full h-auto rounded-2xl">
-                    </div>
+                <div class="lg:w-1/2 relative reveal-right">
+                    <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-indigo-200 rounded-full blur-3xl opacity-30"></div>
+                    <img src="{{ asset('assets/front/images/index/why-imperial.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full hover:scale-[1.02] transition-transform duration-700">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- SECTION 4: FACILITY TOUR SECTION           -->
-    <!-- ========================================== -->
-    <section class="py-16 md:py-24">
-        <div class="container rounded-2xl mx-auto p-10 bg-[#007caa] border border-[#0f172a]/20 shadow-2xl">
-            <!-- Main Card -->
-            <div class="bg-white rounded-2xl overflow-hidden">
-                <div class="flex flex-col md:flex-row">
+    <!-- SECTION 2: IMAGE LEFT / TEXT RIGHT -->
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row-reverse gap-20 items-center">
+                <div class="lg:w-1/2 reveal-right">
+                    <span class="text-emerald-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">Lab Excellence</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-8 tracking-tight">Diagnostics You Can <span class="text-emerald-600">Trust</span></h2>
+                    <p class="text-lg text-slate-600 leading-relaxed mb-8 font-medium">Accuracy is our top priority. Our laboratories follow ISO 15189-2012 international standards to ensure you get precise results every single time.</p>
                     
-                    <!-- Left Column: Image -->
-                    <div class="w-full md:w-1/2 h-[300px] md:h-[450px]">
-                        <img src="{{ asset('assets/front/images/index/tour.jpg') }}" 
-                             onerror="this.src='https://picsum.photos/seed/facility/800/600'"
-                             alt="Facility Tour" 
-                             class="w-full h-full object-cover inner-shadow">
-                    </div>
-
-                    <!-- Right Column: Content -->
-                    <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                        <span class="text-[#1089a4] text-xs md:text-sm font-bold uppercase tracking-widest mb-3">Why imperial</span>
-                        <h2 class="text-2xl md:text-4xl font-bold text-slate-900 mb-5 leading-tight">Take A Tour Of Our Facility</h2>
-                        <p class="text-gray-600 leading-relaxed mb-8">Visit us at our flagship facility in Banani, Dhaka, and find out what makes us different. Experience world-class healthcare in a comfortable and modern environment.</p>
-                        <div>
-                            <a href="#" class="inline-block bg-[#1089a4] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#0d768f] transition shadow-lg">Book a guided tour</a>
+                    <div class="grid grid-cols-2 gap-6 mb-10">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span class="text-sm font-bold text-slate-700 uppercase tracking-tight">ISO Certified</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span class="text-sm font-bold text-slate-700 uppercase tracking-tight">Accredited Lab</span>
                         </div>
                     </div>
+
+                    <a href="{{ route('lab-test') }}" class="text-indigo-600 font-black uppercase tracking-widest text-xs flex items-center gap-3 group">
+                        Explore Our Services <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                    </a>
+                </div>
+                <div class="lg:w-1/2 relative reveal-left">
+                    <img src="{{ asset('assets/front/images/index/diagnosis.jpeg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full hover:scale-[1.02] transition-transform duration-700">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- SECTION 5: IMAGE LEFT / TEXT RIGHT          -->
-    <!-- ========================================== -->
-    <section class="py-16 md:py-24 bg-white section-bg-pattern">
-        <div class="container mx-auto px-4 sm:px-6">
-            <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
-                
-                <!-- Image Left -->
-                <div class="w-full md:w-1/2 reveal-left">
-                    <div class="img-zoom-container rounded-2xl shadow-2xl">
-                        <!-- Applied Responsive Picture Logic Here -->
-                        <picture>
-                            <!-- Mobile Image (Max 480px) -->
-                            <source media="(max-width:480px)" 
-                                    srcset="{{ asset('assets/front/images/index/family-care.jpg') }}" 
-                                    type="image/webp">
-                            <source media="(max-width:480px)" 
-                                    srcset="{{ asset('assets/front/images/index/family-care.jpg') }}">
-                            
-                            <!-- Tablet/Desktop Image (Max 1024px) -->
-                            <source media="(max-width:1024px)" 
-                                    srcset="{{ asset('assets/front/images/index/family-care.jpg') }}" 
-                                    type="image/webp">
-                            <source media="(max-width:1024px)" 
-                                    srcset="{{ asset('assets/front/images/index/family-care.jpg') }}">
-                            
-                            <!-- Default Source -->
-                            <source srcset="{{ asset('assets/front/images/index/family-care.jpg') }}">
-                            
-                            <!-- Fallback Image -->
-                            <img src="{{ asset('assets/front/images/index/family-care.jpg') }}" 
-                                 alt="We Care For You Like Family" 
-                                 loading="lazy"
-                                 class="w-full h-auto rounded-2xl">
-                        </picture>
-                    </div>
+    <!-- FACILITY TOUR -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto bg-slate-900 rounded-[48px] overflow-hidden shadow-2xl relative group">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 h-[400px] lg:h-[600px] overflow-hidden">
+                    <img src="{{ asset('assets/front/images/index/tour.jpg') }}" class="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110">
                 </div>
-
-                <!-- Text Right -->
-                <div class="w-full md:w-1/2 reveal-right">
-                    <h4 class="text-xs md:text-sm font-semibold text-imperial-primary tracking-wider uppercase mb-3">Why imperial</h4>
-                    <h2 class="text-2xl md:text-4xl font-bold mb-5 text-gray-900 leading-tight">We Care For You Like Family</h2>
-                    <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-6">Open every day from 8AM - 10PM. Our dedicated team ensures you feel at home while receiving the best medical attention.</p>
-                    
-                    <a href="#" class="btn-outline border-2 border-imperial-primary text-imperial-primary px-8 py-3 rounded-lg font-bold hover:text-white transition text-center inline-block">Book Appointment</a>
+                <div class="lg:w-1/2 p-12 lg:p-20">
+                    <span class="text-indigo-400 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">Experience Imperial</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-8 tracking-tight">Take a Virtual Tour of Our Facility</h2>
+                    <p class="text-lg text-slate-400 leading-relaxed mb-12">Step inside our world-class medical center. From our luxury waiting areas to state-of-the-art diagnostic labs, experience the Imperial difference.</p>
+                    <a href="#" class="inline-block bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all transform active:scale-95 shadow-xl">Start The Tour</a>
                 </div>
             </div>
         </div>

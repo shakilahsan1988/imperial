@@ -1,77 +1,81 @@
 @extends('layouts.auth')
+
 @section('title')
-  {{__('Create Account')}}
+  {{__('Patient Registration')}}
 @endsection
+
 @section('content')
 
-<form action="{{route('patient.auth.register_submit')}}" method="post" class="validate-form" id="register_form">
+<div class="bg-white rounded-[40px] shadow-2xl overflow-hidden border border-slate-100 max-w-2xl w-full mx-auto my-10">
+    <div class="p-10 md:p-16">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">{{__('Create Account')}}</h1>
+            <p class="text-slate-500 font-medium leading-relaxed">{{__('Join Imperial Health to manage your medical records and book appointments with ease.')}}</p>
+        </div>
 
-    <span class="login100-form-title p-b-20 p-t-20">
-        {{__('Create Account')}}
-    </span>
-    
-    <div class="wrap-input100 validate-input @if($errors->has('name')) error-validation @endif">
-        <input class="input100" type="text" name="name" value="{{old('name')}}" required>
-        <span class="focus-input100"></span>
-        <span class="label-input100">{{__('Name')}}</span>
-    </div>
+        @include('partials.validation_errors')
 
-    <div class="validate-input">
-        <div class="row form-group">
-            <h5 class="col-lg-3 col-md-3 col-sm-3">
-                {{__('Gender')}}
-            </h5>
-            <div class="col-lg-9 col-md-9 col-sm-9 d-inline">
-                <input type="radio" name="gender" id="male" value="male" @if(old('gender')=='male') checked @endif required> <label for="male" class="d-inline">{{__('Male')}}</label><br>
-                <input type="radio" name="gender" id="female" value="female" @if(old('gender')=='female') checked @endif  required> <label for="female" class="d-inline">{{__('Female')}}</label>
+        <form action="{{route('patient.auth.register_submit')}}" method="post" class="space-y-8">
+            @csrf
+            
+            <!-- Basic Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{{__('Full Name')}}</label>
+                    <input type="text" name="name" placeholder="e.g. John Doe" required value="{{old('name')}}"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{{__('Phone Number')}}</label>
+                    <input type="tel" name="phone" placeholder="e.g. +880" required value="{{old('phone')}}"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
+                </div>
             </div>
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{{__('Email Address')}}</label>
+                <input type="email" name="email" placeholder="name@example.com" required value="{{old('email')}}"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
+            </div>
+
+            <!-- Demographics -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{{__('Gender')}}</label>
+                    <select name="gender" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700 appearance-none">
+                        <option value="" disabled selected>{{__('Select Gender')}}</option>
+                        <option value="male" @if(old('gender')=='male') selected @endif>{{__('Male')}}</option>
+                        <option value="female" @if(old('gender')=='female') selected @endif>{{__('Female')}}</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{{__('Date of Birth')}}</label>
+                    <input type="date" name="dob" required value="{{old('dob')}}"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700 uppercase">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{{__('Address')}}</label>
+                <textarea name="address" rows="3" placeholder="{{__('Enter your permanent address')}}" required
+                          class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">{{old('address')}}</textarea>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-indigo-200 transition-all transform active:scale-95 flex items-center justify-center gap-3">
+                    <span>{{__('Create My Account')}}</span>
+                    <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-12 pt-8 border-t border-slate-50 text-center">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{{__('Already a patient?')}}</p>
+            <a href="{{route('patient.auth.login')}}" class="inline-flex items-center gap-2 text-sm font-black text-indigo-600 hover:gap-3 transition-all">
+                {{__('Sign In to Your Account')}} <i class="fa-solid fa-arrow-right"></i>
+            </a>
         </div>
     </div>
-
-    <div class="wrap-input100 validate-input @if($errors->has('phone')) error-validation @endif">
-        <input class="input100" type="text" name="phone" value="{{old('phone')}}" required>
-        <span class="focus-input100"></span>
-        <span class="label-input100">{{__('Phone')}}</span>
-    </div>
-
-    <div class="wrap-input100 validate-input @if($errors->has('email')) error-validation @endif">
-        <input class="input100" type="email" name="email" value="{{old('email')}}" required>
-        <span class="focus-input100"></span>
-        <span class="label-input100">{{__('Email')}}</span>
-    </div>
-
-    <div class="wrap-input100 validate-input @if($errors->has('dob')) error-validation @endif">
-        <input class="input100 datepicker" type="text" name="dob" value="{{old('dob')}}" readonly required>
-        <span class="focus-input100"></span>
-        <span class="label-input100">{{__('Date Of Birth')}}</span>
-    </div>
-
-    <div class="wrap-input100 validate-input @if($errors->has('address')) error-validation @endif">
-        <input class="input100" type="text" name="address" value="{{old('address')}}" required>
-        <span class="focus-input100"></span>
-        <span class="label-input100">{{__('Address')}}</span>
-    </div>
-
-    <div class="container-login100-form-btn">
-        <button class="login100-form-btn">
-            {{__('Submit')}}
-        </button>
-    </div>
-
-</form>
-
-<span class="login100-form-title p-b-20 p-t-20">
-    <a href="{{url('/')}}"> 
-        <h5 class="d-inline">
-            <i class="fas fa-sign-in-alt"></i> 
-            {{__('Login')}}
-        </h5>
-    </a>
-</span>
+</div>
 
 @endsection
-
-@section('scripts')
-  <script src="{{url('js/patient/register.js')}}"></script>
-@endsection
-    

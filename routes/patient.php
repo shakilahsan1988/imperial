@@ -16,22 +16,19 @@ use App\Http\Controllers\Patient\TestsLibraryController;
 */
 
 // Patient authentication (Guest routes)
-Route::group(['prefix' => '/', 'middleware' => 'PatientGuest', 'as' => 'patient.auth.'], function() {
+Route::group(['prefix' => 'user', 'middleware' => 'PatientGuest', 'as' => 'patient.auth.'], function() {
     
     // Registration
-    Route::get('register', [PatientController::class, 'showRegistrationForm'])->name('register');
-    Route::post('register_submit', [PatientController::class, 'register_submit'])->name('register_submit');
+    Route::get('registration', [PatientController::class, 'showRegistrationForm'])->name('register');
+    Route::post('registration', [PatientController::class, 'register_submit'])->name('register_submit');
     
     // Login
-    Route::get('/patient-login', [PatientController::class, 'showLoginForm'])->name('login');
-    Route::post('/login_submit', [PatientController::class, 'login_submit'])->name('login_submit');
+    Route::get('login', [PatientController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [PatientController::class, 'login_submit'])->name('login_submit');
     
     // Patient Code/Mail
-    Route::get('/mail', [PatientController::class, 'showMailForm'])->name('mail');
-    Route::post('/mail_submit', [PatientController::class, 'mail_submit'])->name('mail_submit');
-    
-    // Quick login via code
-    Route::get('patient/login/{code}', [PatientController::class, 'login_patient'])->name('login_by_code');
+    Route::get('mail', [PatientController::class, 'showMailForm'])->name('mail');
+    Route::post('mail_submit', [PatientController::class, 'mail_submit'])->name('mail_submit');
 });
 
 // Logout patient
