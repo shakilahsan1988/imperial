@@ -1,3 +1,8 @@
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 @if($u && ($isSuper || $u->hasPermission('edit_expense_category')))
     <a href="{{route('admin.expense_categories.edit',$expense_category['id'])}}" class="btn btn-primary btn-sm">
         <i class="fa fa-edit"></i>

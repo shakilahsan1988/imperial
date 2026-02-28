@@ -33,28 +33,28 @@ class RolesController extends Controller
             // রোল দেখার পারমিশন চেক
             if (in_array($action, ['index', 'show', 'ajax'])) {
                 if (!$u->hasPermission('view_role')) {
-                    abort(403, 'আপনার রোল তালিকা দেখার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to view roles list.'));
                 }
             }
 
             // রোল তৈরি করার পারমিশন চেক
             if (in_array($action, ['create', 'store'])) {
                 if (!$u->hasPermission('create_role')) {
-                    abort(403, 'আপনার নতুন রোল তৈরি করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to create a new role.'));
                 }
             }
 
             // রোল এডিট করার পারমিশন চেক
             if (in_array($action, ['edit', 'update'])) {
                 if (!$u->hasPermission('edit_role')) {
-                    abort(403, 'আপনার রোল এডিট করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to edit a role.'));
                 }
             }
 
             // রোল ডিলিট করার পারমিশন চেক
             if ($action == 'destroy') {
                 if (!$u->hasPermission('delete_role')) {
-                    abort(403, 'আপনার রোল ডিলিট করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to delete a role.'));
                 }
             }
 
@@ -81,7 +81,7 @@ class RolesController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model = Role::query()->with('permissions');
+        $model = Role::query();
 
         return DataTables::of($model)
             ->addColumn('permissions', function($role) {
@@ -102,9 +102,9 @@ class RolesController extends Controller
      */
     public function create()
     {
-        $permissions=Permission::all();
-        $modules=Module::all();
-        return view('admin.roles.create',compact('permissions','modules'));
+        $permissions = Permission::all();
+        $modules = Module::with('permissions')->get();
+        return view('admin.roles.create', compact('permissions', 'modules'));
     }
 
     /**
@@ -116,11 +116,11 @@ class RolesController extends Controller
     public function store(RoleRequest $request)
     {
         try {
-            $role=Role::create($request->except('_token','permissions'));
+            $role = Role::create($request->only('name', 'description'));
             
-            if($request->has('permissions'))
-            {
-                $role->permissions()->createMany($request['permissions']);
+            if ($request->has('permissions')) {
+                $permissionIds = collect($request->permissions)->pluck('permission_id')->toArray();
+                $role->permissions()->sync($permissionIds);
             }
 
             return redirect()->route('admin.roles.index')->with('success', __('Role created successfully'));
@@ -137,7 +137,7 @@ class RolesController extends Controller
      */
     public function show($id)
     {
-        $role = Role::with('permissions.permission')->findOrFail($id);
+        $role = Role::with('permissions.module')->findOrFail($id);
         return view('admin.roles.show', compact('role'));
     }
 
@@ -149,13 +149,11 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $role=Role::findOrFail($id);
+        $role = Role::with('permissions')->findOrFail($id);
+        $permissions = Permission::all();
+        $modules = Module::with('permissions')->get();
 
-        $permissions=Permission::all();
-
-        $modules=Module::all();
-
-        return view('admin.roles.edit',compact('role','permissions','modules'));
+        return view('admin.roles.edit', compact('role', 'permissions', 'modules'));
     }
 
     /**
@@ -168,15 +166,15 @@ class RolesController extends Controller
     public function update(RoleRequest $request, $id)
     {
         try {
-            $role=Role::findOrFail($id);
+            $role = Role::findOrFail($id);
 
-            $role->update($request->except('_token','_method','permissions'));
+            $role->update($request->only('name', 'description'));
 
-            RolePermission::where('role_id',$id)->delete();
-            
-            if($request->has('permissions'))
-            {
-                $role->permissions()->createMany($request['permissions']);
+            if ($request->has('permissions')) {
+                $permissionIds = collect($request->permissions)->pluck('permission_id')->toArray();
+                $role->permissions()->sync($permissionIds);
+            } else {
+                $role->permissions()->detach();
             }
             
             return redirect()->route('admin.roles.index')->with('success', __('Role updated successfully'));
@@ -194,8 +192,8 @@ class RolesController extends Controller
     public function destroy($id)
     {
         try {
-            $role=Role::findOrFail($id);
-            $role->permissions()->delete();
+            $role = Role::findOrFail($id);
+            $role->permissions()->detach();
             $role->delete();
             return redirect()->route('admin.roles.index')->with('success', __('Role deleted successfully'));
         } catch (\Exception $e) {

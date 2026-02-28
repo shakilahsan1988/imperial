@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('পদবী এডিট করুন') }}
+    {{ __('Edit Role') }}
 @endsection
 
 @section('css')
@@ -15,13 +15,13 @@
             <div class="col-sm-6">
                 <h1 class="m-0 text-dark">
                     <i class="fas fa-users-cog"></i>
-                    {{__('পদবী')}}
+                    {{__('Roles')}}
                 </h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item active"><a href="{{route('admin.roles.index')}}">{{ __('পদবী') }}</a></li>
-                    <li class="breadcrumb-item active">{{ __('এডিট পদবী') }}</li>
+                    <li class="breadcrumb-item active"><a href="{{route('admin.roles.index')}}">{{ __('Roles') }}</a></li>
+                    <li class="breadcrumb-item active">{{ __('Edit Role') }}</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -32,7 +32,7 @@
 @section('content')
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">{{ __('এডিট পদবী') }}</h3>
+        <h3 class="card-title">{{ __('Edit Role') }}</h3>
     </div>
     <!-- /.card-header -->
     <form method="POST" action="{{route('admin.roles.update',$role['id'])}}">
@@ -47,7 +47,7 @@
             <div class="col-lg-12">
                 <button type="submit" class="btn btn-primary">
                     <i class="fa fa-check"></i>
-                    {{__('সেইভ করুন')}}
+                    {{__('Save')}}
                 </button>
             </div>
         </div>
@@ -65,8 +65,8 @@
             "use strict";
             
             @if(isset($role))
-                @foreach($role['permissions'] as $permission)
-                    $("#{{$permission['permission']['key']}}").prop('checked',true);
+                @foreach($role->permissions as $permission)
+                    $("#{{$permission['key']}}").prop('checked',true);
                 @endforeach
             @endif
 

@@ -28,7 +28,7 @@
                         <!-- doctors -->
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div class="form-group">
-                                <label>{{__('Doctor')}}</label>
+                                <label>{{__('Filter by Doctor')}}</label>
                                 <select class="form-control" name="doctors[]" id="doctor" multiple>
                                     @if(isset($doctors))
                                     @foreach($doctors as $doctor)
@@ -43,7 +43,7 @@
                         <!-- tests -->
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div class="form-group">
-                                <label>{{__('Test')}}</label>
+                                <label>{{__('Filter by Test')}}</label>
                                 <select class="form-control" name="tests[]" id="test" multiple>
                                     @if(isset($tests))
                                     @foreach($tests as $test)
@@ -58,7 +58,7 @@
                         <!-- cultures -->
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div class="form-group">
-                                <label>{{__('Culture')}}</label>
+                                <label>{{__('Filter by Culture')}}</label>
                                 <select class="form-control" name="cultures[]" id="culture" multiple>
                                     @if(isset($cultures))
                                     @foreach($cultures as $culture)

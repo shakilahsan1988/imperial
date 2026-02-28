@@ -57,10 +57,20 @@ class User extends Authenticatable
      */
     public function hasPermission($permissionKey)
     {
-        // সরাসরি রোলের ভেতর পারমিশন চেক করা
-        return $this->roles()->whereHas('permissions', function($query) use ($permissionKey) {
-            $query->where('key', $permissionKey);
-        })->exists();
+        // MD. Shakil Ahsan (Super Admin) has all permissions
+        if ($this->id == 1) {
+            return true;
+        }
+
+        return $this->roles->flatMap->permissions->pluck('key')->contains($permissionKey);
+    }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole($roleName)
+    {
+        return $this->roles->pluck('name')->contains($roleName);
     }
 
     public function getActivitylogOptions(): LogOptions

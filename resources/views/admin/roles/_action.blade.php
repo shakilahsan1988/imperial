@@ -1,17 +1,17 @@
 @php
-    // ডাটা-টেবিল এরর এড়াতে ব্লেড ফাইলের ভেতরেই ভেরিয়েবল ডিফাইন করা হলো
+    // Define variables inside blade file to avoid DataTables errors
     $u = auth()->guard('admin')->user();
-    $isSuper = ($u && $u->id == 1); // মো: শাকিল আহসান (সুপার এডমিন) চেক
+    $isSuper = ($u && $u->id == 1); // Super Admin check
 @endphp
 
-{{-- রোল এডিট পারমিশন চেক --}}
+{{-- Role Edit Permission Check --}}
 @if($u && ($isSuper || $u->hasPermission('edit_role')))
     <a href="{{route('admin.roles.edit',$role['id'])}}" class="btn btn-primary btn-sm">
         <i class="fa fa-edit"></i>
     </a>
 @endif
 
-{{-- রোল ডিলিট পারমিশন চেক --}}
+{{-- Role Delete Permission Check --}}
 @if($u && ($isSuper || $u->hasPermission('delete_role')))
     <form method="POST" action="{{route('admin.roles.destroy',$role['id'])}}" class="d-inline">
         @csrf

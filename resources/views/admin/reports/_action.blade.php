@@ -1,3 +1,8 @@
+@php
+    $u = auth()->guard('admin')->user();
+    $isSuper = ($u && $u->id == 1);
+@endphp
+
 <div class="dropdown">
     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-cog"></i>

@@ -23,8 +23,14 @@ class Admin
                 return redirect()->route('admin.login');
             }
         
+            // Eager load roles and permissions to prevent N+1 queries in sidebar/actions
+            $user = Auth::guard('admin')->user();
+            if (!$user->relationLoaded('roles')) {
+                $user->load('roles.permissions');
+            }
+
             //add online
-            Cache::put('user-'.auth()->guard('admin')->user()['id'],'online',now()->addMinutes(2));
+            Cache::put('user-'.$user['id'],'online',now()->addMinutes(2));
 
             //share settings
             $info=setting('info');

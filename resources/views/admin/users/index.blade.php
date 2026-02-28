@@ -27,7 +27,7 @@
 
 @section('content')
 
-{{-- ইউজার এবং সুপার এডমিন চেক করার জন্য লজিক --}}
+{{-- Logic for User and Super Admin Check --}}
 @php
     $u = auth()->guard('admin')->user();
     $isSuper = ($u && $u->id == 1);
@@ -39,7 +39,7 @@
         {{__('Users Table')}}
       </h3>
       
-      {{-- @can('create_user') এর পরিবর্তে আপনার কাস্টম লজিক --}}
+      {{-- Custom logic instead of @can('create_user') --}}
       @if($u && ($isSuper || $u->hasPermission('create_user')))
         <a href="{{route('admin.users.create')}}" class="btn btn-primary btn-sm float-right">
           <i class="fa fa-plus"></i> {{ __('Create User') }}
@@ -59,7 +59,7 @@
             </tr>
             </thead>
             <tbody>
-               {{-- ডাটা টেবিলের ডাটা JS (users.js) এর মাধ্যমে এখানে লোড হবে --}}
+               {{-- DataTable will load data here via JS (users.js) --}}
             </tbody>
           </table>
         </div>

@@ -6,14 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
-use App\Models\UserRole;
 use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
-use Yajra\DataTables\Facades\DataTables; 
+use Yajra\DataTables\Facades\DataTables;
 
 class UsersController extends Controller
 {
-
     /**
      * assign roles with custom permission logic
      */
@@ -21,40 +19,35 @@ class UsersController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $u = auth()->guard('admin')->user();
-            $isSuper = ($u && $u->id == 1); // Md. Shakil Ahsan (Super Admin) check
+            $isSuper = ($u && $u->id == 1);
 
-            // বর্তমান রাউটের অ্যাকশন অনুযায়ী পারমিশন চেক
             $action = $request->route()->getActionMethod();
 
             if ($isSuper) {
                 return $next($request);
             }
 
-            // ইউজার তালিকা দেখার পারমিশন চেক
             if (in_array($action, ['index', 'show', 'ajax'])) {
                 if (!$u->hasPermission('view_user')) {
-                    abort(403, 'আপনার ইউজার তালিকা দেখার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to view users list.'));
                 }
             }
 
-            // নতুন ইউজার তৈরি করার পারমিশন চেক
             if (in_array($action, ['create', 'store'])) {
                 if (!$u->hasPermission('create_user')) {
-                    abort(403, 'আপনার নতুন ইউজার তৈরি করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to create a new user.'));
                 }
             }
 
-            // ইউজার এডিট করার পারমিশন চেক
             if (in_array($action, ['edit', 'update'])) {
                 if (!$u->hasPermission('edit_user')) {
-                    abort(403, 'আপনার ইউজারের তথ্য পরিবর্তন করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to edit a user.'));
                 }
             }
 
-            // ইউজার ডিলিট করার পারমিশন চেক
             if ($action == 'destroy') {
                 if (!$u->hasPermission('delete_user')) {
-                    abort(403, 'আপনার ইউজার মুছে ফেলার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to delete a user.'));
                 }
             }
 
@@ -69,7 +62,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-       return view('admin.users.index');
+        return view('admin.users.index');
     }
 
     /**
@@ -120,12 +113,7 @@ class UsersController extends Controller
             ]);
 
             if ($request->has('roles')) {
-                foreach ($request->roles as $role) {
-                    UserRole::firstOrCreate([
-                        'user_id' => $user->id,
-                        'role_id' => $role,
-                    ]);
-                }
+                $user->roles()->sync($request->roles);
             }
 
             return to_route('admin.users.index')
@@ -143,7 +131,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('roles.role')->findOrFail($id);
+        $user = User::with('roles')->findOrFail($id);
         return view('admin.users.show', compact('user'));
     }
 
@@ -155,10 +143,10 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user=User::findOrFail($id);
-        $roles=Role::all();
+        $user = User::with('roles')->findOrFail($id);
+        $roles = Role::all();
 
-        return view('admin.users.edit',compact('user','roles'));
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -182,15 +170,10 @@ class UsersController extends Controller
             
             $user->save();
 
-            UserRole::where('user_id', $id)->delete();
-
             if ($request->has('roles')) {
-                foreach ($request->roles as $role) {
-                    UserRole::firstOrCreate([
-                        'user_id' => $id,
-                        'role_id' => $role,
-                    ]);
-                }
+                $user->roles()->sync($request->roles);
+            } else {
+                $user->roles()->detach();
             }
 
             return to_route('admin.users.index')
@@ -210,8 +193,7 @@ class UsersController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            
-            UserRole::where('user_id', $id)->delete();
+            $user->roles()->detach();
             $user->delete();
 
             return to_route('admin.users.index')

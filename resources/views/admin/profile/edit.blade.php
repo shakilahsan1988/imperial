@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-{{ __('প্রোফাইল') }}
+{{ __('Profile') }}
 @endsection
 
 @section('breadcrumb')
@@ -11,13 +11,13 @@
             <div class="col-sm-6">
                 <h1 class="m-0 text-dark">
                     <i class="fa fa-user-circle"></i>
-                    {{__('প্রোফাইল')}}
+                    {{__('Profile')}}
                 </h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('হোম')}}</a></li>
-                    <li class="breadcrumb-item active">{{ __('প্রোফাইল') }}</li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
+                    <li class="breadcrumb-item active">{{ __('Profile') }}</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -28,7 +28,7 @@
 @section('content')
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">{{ __('এডিট প্রোফাইল') }}</h3>
+        <h3 class="card-title">{{ __('Edit Profile') }}</h3>
     </div>
     <!-- /.card-header -->
     <form method="POST" action="{{route('admin.profile.update')}}" enctype="multipart/form-data" id="profile_form">
@@ -41,7 +41,7 @@
         <div class="card-footer">
             <div class="col-lg-12">
                 <button type="submit" class="btn btn-primary">
-                  <i class="fa fa-check"></i>  {{__('সেইভ করুন')}}
+                  <i class="fa fa-check"></i>  {{__('Save')}}
                 </button>
             </div>
         </div>

@@ -33,7 +33,7 @@
 
     <div class="col-lg-3">
         <div class="form-group">
-         <label for="name">{{__('Doctor')}}</label>
+         <label for="name">{{__('Referral Doctor (Commission Payment)')}}</label>
          <select class="form-control" name="doctor_id" id="doctor">
             @if(isset($expense)&&isset($expense['doctor']))
                 <option value="{{$expense['doctor']['id']}}" selected>{{$expense['doctor']['name']}}</option>
