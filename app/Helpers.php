@@ -31,19 +31,8 @@ if (!function_exists('formated_price'))
 {
    function formated_price($price)
    {
-        if(cache()->has('currency'))
-        {
-            return $price.' '.cache()->get('currency');
-        }
-        else{
-
-            $setting=\App\Models\Setting::where('key','info')->first()['value'];
-            $setting=json_decode($setting,true);
-            $currency=$setting['currency'];
-            cache()->put('currency',$currency);
-        }
-
-        return $currency;
+        $currency = get_currency();
+        return $price.' '.$currency;
    }
 
 }

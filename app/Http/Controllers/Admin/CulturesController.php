@@ -78,18 +78,18 @@ class CulturesController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Culture::query();
+        $model = Culture::query();
 
-        return DataTables::eloquent($model)
-        ->editColumn('price',function($culture){
-            return formated_price($culture['price']);
-        })
-        ->addColumn('action',function($culture){
-            return view('admin.cultures._action',compact('culture'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('price', function($culture) {
+                return formated_price($culture->price);
+            })
+            ->addColumn('action', function($culture) {
+                return view('admin.cultures._action', compact('culture'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -113,7 +113,7 @@ class CulturesController extends Controller
             Culture::create($request->except('_token'));
             return redirect()->route('admin.cultures.index')->with('success', __('Culture saved successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create culture.'));
+            return back()->withInput()->with('error', __('Failed to create culture: ') . $e->getMessage());
         }
     }
 
@@ -155,7 +155,7 @@ class CulturesController extends Controller
             $culture->update($request->except('_token','_method'));
             return redirect()->route('admin.cultures.index')->with('success', __('Culture updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update culture.'));
+            return back()->withInput()->with('error', __('Failed to update culture: ') . $e->getMessage());
         }
     }
 
@@ -172,7 +172,7 @@ class CulturesController extends Controller
             $culture->delete();
             return redirect()->route('admin.cultures.index')->with('success', __('Culture deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete culture.'));
+            return back()->with('error', __('Failed to delete culture: ') . $e->getMessage());
         }
     }
 }

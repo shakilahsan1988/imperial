@@ -73,7 +73,7 @@ class GroupsController extends Controller
 
     public function ajax(Request $request)
     {
-        $model = Group::query()->with('patient')->orderBy('id', 'desc');
+        $model = Group::query()->with('patient');
 
         if ($request['filter_status'] != null) {
             $model->where('done', $request['filter_status']);
@@ -88,33 +88,33 @@ class GroupsController extends Controller
             $from = date('Y-m-d', strtotime($date[0]));
             $to = date('Y-m-d 23:59:59', strtotime($date[1]));
 
-            // এখানে $mode ছিল যা $model হবে (টাইপো ফিক্স)
             ($from == $to) ? $model->whereDate('created_at', $from) : $model->whereBetween('created_at', [$from, $to]);
         }
         
-        return DataTables::eloquent($model)
-        ->editColumn('subtotal', function($group){
-            return formated_price($group['subtotal']);
-        })
-        ->editColumn('discount', function($group){
-            return formated_price($group['discount']);
-        })
-        ->editColumn('total', function($group){
-            return formated_price($group['total']);
-        })
-        ->editColumn('paid', function($group){
-            return formated_price($group['paid']);
-        })
-        ->editColumn('due', function($group){
-            return view('admin.groups._due', compact('group'));
-        })
-        ->editColumn('done', function($group){
-            return view('admin.groups._status', compact('group'));
-        })
-        ->addColumn('action', function($group){
-            return view('admin.groups._action', compact('group'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('subtotal', function($group) {
+                return formated_price($group->subtotal);
+            })
+            ->editColumn('discount', function($group) {
+                return formated_price($group->discount);
+            })
+            ->editColumn('total', function($group) {
+                return formated_price($group->total);
+            })
+            ->editColumn('paid', function($group) {
+                return formated_price($group->paid);
+            })
+            ->editColumn('due', function($group) {
+                return view('admin.groups._due', compact('group'));
+            })
+            ->editColumn('done', function($group) {
+                return view('admin.groups._status', compact('group'));
+            })
+            ->addColumn('action', function($group) {
+                return view('admin.groups._action', compact('group'));
+            })
+            ->rawColumns(['due', 'done', 'action'])
+            ->make(true);
     }
 
     public function create()
@@ -129,52 +129,55 @@ class GroupsController extends Controller
 
     public function store(GroupRequest $request)
     {
-       $group = Group::create($request->only('branch_id', 'patient_id', 'doctor_id', 'subtotal', 'discount', 'total', 'paid', 'due', 'contract_id'));
-       
-       if ($request->has('tests')) {
-           foreach ($request['tests'] as $test) {
-               $price = Test::find($test)['price'];
-               GroupTest::create([
-                   'group_id' => $group->id,
-                   'test_id' => $test,
-                   'price' => $price
-               ]);
-           }
-       }
-
-       $culture_options = CultureOption::where('parent_id', 0)->get();
-       if ($request->has('cultures')) {
-            foreach ($request['cultures'] as $culture) {
-                $price = Culture::find($culture)['price'];
-                $group_culture = GroupCulture::create([
-                    'group_id' => $group->id,
-                    'culture_id' => $culture,
-                    'price' => $price
-                ]);
-
-                foreach ($culture_options as $culture_option) {
-                    GroupCultureOption::create([
-                        'group_culture_id' => $group_culture['id'],
-                        'culture_option_id' => $culture_option['id'],
+        try {
+            $group = Group::create($request->only('branch_id', 'patient_id', 'doctor_id', 'subtotal', 'discount', 'total', 'paid', 'due', 'contract_id'));
+            
+            if ($request->has('tests')) {
+                foreach ($request['tests'] as $test) {
+                    $price = Test::find($test)['price'];
+                    GroupTest::create([
+                        'group_id' => $group->id,
+                        'test_id' => $test,
+                        'price' => $price
                     ]);
                 }
             }
-       }
 
-       $this->generate_barcode($group);
-       $this->assign_tests_report($group['id']);
-       group_test_calculations($group['id']);
+            $culture_options = CultureOption::where('parent_id', 0)->get();
+            if ($request->has('cultures')) {
+                 foreach ($request['cultures'] as $culture) {
+                     $price = Culture::find($culture)['price'];
+                     $group_culture = GroupCulture::create([
+                         'group_id' => $group->id,
+                         'culture_id' => $culture,
+                         'price' => $price
+                     ]);
 
-       $pdf = generate_pdf($group, 2);
-       if (isset($pdf)) {
-          $group->update(['receipt_pdf' => $pdf]);
-       }
+                     foreach ($culture_options as $culture_option) {
+                         GroupCultureOption::create([
+                             'group_culture_id' => $group_culture['id'],
+                             'culture_option_id' => $culture_option['id'],
+                         ]);
+                     }
+                 }
+            }
 
-       $patient = Patient::find($group['patient_id']);
-       send_notification('patient_code', $patient);
+            $this->generate_barcode($group);
+            $this->assign_tests_report($group['id']);
+            group_test_calculations($group['id']);
 
-       session()->flash('success', __('Group saved successfully'));
-       return redirect()->route('admin.groups.show', $group['id']);
+            $pdf = generate_pdf($group, 2);
+            if (isset($pdf)) {
+               $group->update(['receipt_pdf' => $pdf]);
+            }
+
+            $patient = Patient::find($group['patient_id']);
+            send_notification('patient_code', $patient);
+
+            return redirect()->route('admin.groups.show', $group['id'])->with('success', __('Group saved successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create invoice: ') . $e->getMessage());
+        }
     }
 
     public function show($id)

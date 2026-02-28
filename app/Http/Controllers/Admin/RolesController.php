@@ -81,16 +81,17 @@ class RolesController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Role::query()->with('permissions');
+        $model = Role::query()->with('permissions');
 
-        return DataTables::eloquent($model)
-        ->addColumn('permissions',function($role){
-            return view('admin.roles._permissions',compact('role'));
-        })
-        ->addColumn('action',function($role){
-            return view('admin.roles._action',compact('role'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->addColumn('permissions', function($role) {
+                return view('admin.roles._permissions', compact('role'));
+            })
+            ->addColumn('action', function($role) {
+                return view('admin.roles._action', compact('role'));
+            })
+            ->rawColumns(['permissions', 'action'])
+            ->make(true);
     }
 
 
@@ -124,7 +125,7 @@ class RolesController extends Controller
 
             return redirect()->route('admin.roles.index')->with('success', __('Role created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create role.'));
+            return back()->withInput()->with('error', __('Failed to create role: ') . $e->getMessage());
         }
     }
 
@@ -180,7 +181,7 @@ class RolesController extends Controller
             
             return redirect()->route('admin.roles.index')->with('success', __('Role updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update role.'));
+            return back()->withInput()->with('error', __('Failed to update role: ') . $e->getMessage());
         }
     }
 
@@ -198,7 +199,7 @@ class RolesController extends Controller
             $role->delete();
             return redirect()->route('admin.roles.index')->with('success', __('Role deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete role.'));
+            return back()->with('error', __('Failed to delete role: ') . $e->getMessage());
         }
     }
 }

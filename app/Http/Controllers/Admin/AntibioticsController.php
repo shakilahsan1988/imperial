@@ -76,13 +76,14 @@ class AntibioticsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Antibiotic::query();
+        $model = Antibiotic::query();
 
-        return DataTables::eloquent($model)
-        ->addColumn('action',function($antibiotic){
-            return view('admin.antibiotics._action',compact('antibiotic'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->addColumn('action', function($antibiotic) {
+                return view('admin.antibiotics._action', compact('antibiotic'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -107,7 +108,7 @@ class AntibioticsController extends Controller
             Antibiotic::create($request->except('_token'));
             return redirect()->route('admin.antibiotics.index')->with('success', __('Antibiotic saved successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create antibiotic.'));
+            return back()->withInput()->with('error', __('Failed to create antibiotic: ') . $e->getMessage());
         }
     }
 
@@ -149,7 +150,7 @@ class AntibioticsController extends Controller
             $antibiotic->update($request->except('_token','_method'));
             return redirect()->route('admin.antibiotics.index')->with('success', __('Antibiotic updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update antibiotic.'));
+            return back()->withInput()->with('error', __('Failed to update antibiotic: ') . $e->getMessage());
         }
     }
 
@@ -166,7 +167,7 @@ class AntibioticsController extends Controller
             $antibiotic->delete();
             return redirect()->route('admin.antibiotics.index')->with('success', __('Antibiotic deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete antibiotic.'));
+            return back()->with('error', __('Failed to delete antibiotic: ') . $e->getMessage());
         }
     }
 }

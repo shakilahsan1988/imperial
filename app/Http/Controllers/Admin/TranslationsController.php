@@ -107,12 +107,14 @@ class TranslationsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $translations=json_encode($request['trans'],JSON_PRETTY_PRINT);
-        file_put_contents(resource_path('lang/'.$id.'.json'),$translations);
-        
-        session()->flash('success',__('Translation updated successfully'));
-
-        return redirect()->back();
+        try {
+            $translations=json_encode($request['trans'],JSON_PRETTY_PRINT);
+            file_put_contents(resource_path('lang/'.$id.'.json'),$translations);
+            
+            return redirect()->back()->with('success', __('Translation updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update translation: ') . $e->getMessage());
+        }
     }
 
     /**

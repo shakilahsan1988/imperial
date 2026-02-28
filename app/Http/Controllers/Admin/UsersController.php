@@ -80,16 +80,17 @@ class UsersController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=User::query()->with('roles');
+        $model = User::query()->with('roles');
 
-        return DataTables::eloquent($model)
-        ->addColumn('roles',function($user){
-            return view('admin.users._roles',compact('user'));
-        })
-        ->addColumn('action',function($user){
-            return view('admin.users._action',compact('user'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->addColumn('roles', function($user) {
+                return view('admin.users._roles', compact('user'));
+            })
+            ->addColumn('action', function($user) {
+                return view('admin.users._action', compact('user'));
+            })
+            ->rawColumns(['roles', 'action'])
+            ->make(true);
     }
 
     /**
@@ -130,7 +131,7 @@ class UsersController extends Controller
             return to_route('admin.users.index')
                 ->with('success', __('User created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create user.'));
+            return back()->withInput()->with('error', __('Failed to create user: ') . $e->getMessage());
         }
     }
 
@@ -195,7 +196,7 @@ class UsersController extends Controller
             return to_route('admin.users.index')
                 ->with('success', __('User updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update user.'));
+            return back()->withInput()->with('error', __('Failed to update user: ') . $e->getMessage());
         }
     }
 
@@ -216,7 +217,7 @@ class UsersController extends Controller
             return to_route('admin.users.index')
                 ->with('success', __('User deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete user.'));
+            return back()->with('error', __('Failed to delete user: ') . $e->getMessage());
         }
     }
 }

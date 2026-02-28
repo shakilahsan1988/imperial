@@ -33,3 +33,14 @@
 </div>
 @endif
 
+@if(session()->has('error'))
+<div class="callout callout-danger">
+    <h5 class="text-danger">
+        <i class="fa fa-times"></i> {{__('Failed')}}
+    </h5>
+    <p>
+        {{session()->get('error')}}
+    </p>
+</div>
+@endif
+

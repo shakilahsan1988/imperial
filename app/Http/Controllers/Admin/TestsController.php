@@ -78,18 +78,22 @@ class TestsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Test::query()->where(function($q){
-            return $q->where('parent_id',0)->orWhere('separated',true);
-        });                    
+        $model = Test::query()
+            ->where(function($q) {
+                return $q->where('parent_id', 0)
+                         ->orWhereNull('parent_id')
+                         ->orWhere('separated', 1);
+            });                    
 
-        return DataTables::eloquent($model)
-        ->editColumn('price',function($test){
-            return formated_price($test['price']);
-        })
-        ->addColumn('action',function($test){
-            return view('admin.tests._action',compact('test'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('price', function($test) {
+                return formated_price($test->price);
+            })
+            ->addColumn('action', function($test) {
+                return view('admin.tests._action', compact('test'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
 
@@ -119,6 +123,8 @@ class TestsController extends Controller
                 'price' => $request->price,
                 'precautions' => $request->precautions,
                 'parent_id' => 0,
+                'status' => 1,
+                'type' => '',
             ]);
 
             if ($request->has('component')) {
@@ -128,18 +134,19 @@ class TestsController extends Controller
                             'parent_id' => $test->id,
                             'name' => $component['name'],
                             'title' => true,
+                            'type' => '',
                         ]);
                     } else {
                         $test_component = Test::create([
                             'parent_id' => $test->id,
-                            'type' => $component['type'],
+                            'type' => $component['type'] ?? '',
                             'name' => $component['name'],
                             'unit' => $component['unit'] ?? '',
                             'reference_range' => $component['reference_range'] ?? '',
                             'title' => $component['title'] ?? false,
-                            'separated' => $component['separated'] ?? false,
+                            'separated' => isset($component['separated']) ? true : false,
                             'price' => $component['price'] ?? 0,
-                            'status' => $component['status'] ?? true,
+                            'status' => isset($component['status']) ? true : false,
                             'sample_type' => $test->sample_type,
                         ]);
      
@@ -158,7 +165,7 @@ class TestsController extends Controller
             return to_route('admin.tests.index')
                 ->with('success', __('Test created successfully'));
         } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withInput()->with('error', __('Failed to create test. Please try again.'));
+            return back()->withInput()->with('error', __('Failed to create test: ') . $e->getMessage());
         }
     }
 
@@ -205,6 +212,8 @@ class TestsController extends Controller
                 'price' => $request->price,
                 'precautions' => $request->precautions,
                 'parent_id' => 0,
+                'status' => 1,
+                'type' => '',
             ]);
 
             if ($request->has('component')) {
@@ -213,12 +222,14 @@ class TestsController extends Controller
                         if (isset($component['id'])) {
                             Test::where('id', $component['id'])->update([
                                 'name' => $component['name'],
+                                'type' => '',
                             ]);
                         } else {
                             Test::create([
                                 'parent_id' => $id,
                                 'name' => $component['name'],
                                 'title' => true,
+                                'type' => '',
                             ]);
                         }
                     } else {
@@ -227,18 +238,18 @@ class TestsController extends Controller
 
                             $test_component->update([
                                 'parent_id' => $id,
-                                'type' => $component['type'],
+                                'type' => $component['type'] ?? '',
                                 'name' => $component['name'],
                                 'unit' => $component['unit'] ?? '',
                                 'reference_range' => $component['reference_range'] ?? '',
                                 'title' => $component['title'] ?? false,
-                                'separated' => $component['separated'] ?? false,
+                                'separated' => isset($component['separated']) ? true : false,
                                 'price' => $component['price'] ?? 0,
-                                'status' => $component['status'] ?? true,
+                                'status' => isset($component['status']) ? true : false,
                                 'sample_type' => $test->sample_type,
                             ]);
 
-                            if ($component['type'] != 'select') {
+                            if (isset($component['type']) && $component['type'] != 'select') {
                                 $test_component->options()->delete();
                             }
 
@@ -261,14 +272,14 @@ class TestsController extends Controller
                         } else {
                             $test_component = Test::create([
                                 'parent_id' => $id,
-                                'type' => $component['type'],
+                                'type' => $component['type'] ?? '',
                                 'name' => $component['name'],
                                 'unit' => $component['unit'] ?? '',
                                 'reference_range' => $component['reference_range'] ?? '',
                                 'title' => $component['title'] ?? false,
-                                'separated' => $component['separated'] ?? false,
+                                'separated' => isset($component['separated']) ? true : false,
                                 'price' => $component['price'] ?? 0,
-                                'status' => $component['status'] ?? true,
+                                'status' => isset($component['status']) ? true : false,
                                 'sample_type' => $test->sample_type,
                             ]);
          
@@ -290,7 +301,7 @@ class TestsController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return back()->with('error', __('Test not found.'));
         } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withInput()->with('error', __('Failed to update test. Please try again.'));
+            return back()->withInput()->with('error', __('Failed to update test: ') . $e->getMessage());
         }
     }
 

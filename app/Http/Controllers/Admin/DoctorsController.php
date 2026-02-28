@@ -80,25 +80,26 @@ class DoctorsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Doctor::query();
+        $model = Doctor::query();
 
-        return DataTables::eloquent($model)
-        ->editColumn('commission',function($doctor){
-            return $doctor['commission'].'%';
-        })
-        ->editColumn('total',function($doctor){
-            return formated_price($doctor['total']);
-        })
-        ->editColumn('paid',function($doctor){
-            return formated_price($doctor['paid']);
-        })
-        ->editColumn('due',function($doctor){
-            return view('admin.doctors._due',compact('doctor'));
-        })
-        ->addColumn('action',function($doctor){
-            return view('admin.doctors._action',compact('doctor'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('commission', function($doctor) {
+                return $doctor->commission . '%';
+            })
+            ->editColumn('total', function($doctor) {
+                return formated_price($doctor->total);
+            })
+            ->editColumn('paid', function($doctor) {
+                return formated_price($doctor->paid);
+            })
+            ->editColumn('due', function($doctor) {
+                return view('admin.doctors._due', compact('doctor'));
+            })
+            ->addColumn('action', function($doctor) {
+                return view('admin.doctors._action', compact('doctor'));
+            })
+            ->rawColumns(['due', 'action'])
+            ->make(true);
     }
 
     /**
@@ -124,7 +125,7 @@ class DoctorsController extends Controller
             Doctor::create($request->except('_token', '_method'));
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create doctor.'));
+            return back()->withInput()->with('error', __('Failed to create doctor: ') . $e->getMessage());
         }
     }
 
@@ -167,7 +168,7 @@ class DoctorsController extends Controller
             $doctor->update($request->except('_token','_method'));
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update doctor.'));
+            return back()->withInput()->with('error', __('Failed to update doctor: ') . $e->getMessage());
         }
     }
 
@@ -184,7 +185,7 @@ class DoctorsController extends Controller
             $doctor->delete();
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete doctor.'));
+            return back()->with('error', __('Failed to delete doctor: ') . $e->getMessage());
         }
     }
 

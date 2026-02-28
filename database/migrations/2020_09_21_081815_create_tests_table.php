@@ -21,7 +21,7 @@ class CreateTestsTable extends Migration {
 			$table->string('sample_type')->nullable();
 			$table->string('unit')->nullable();
 			$table->text('reference_range')->nullable();
-			$table->text('type')->bullable();
+			$table->text('type')->nullable();
 			$table->boolean('separated')->default(0);
 			$table->double('price')->default(0);
 			$table->boolean('status')->default(0);

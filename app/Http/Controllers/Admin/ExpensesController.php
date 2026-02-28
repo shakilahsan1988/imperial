@@ -78,16 +78,17 @@ class ExpensesController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Expense::query()->with('category');
+        $model = Expense::query()->with('category');
 
-        return DataTables::eloquent($model)
-        ->editColumn('amount',function($expense){
-           return formated_price($expense['amount']);
-        })
-        ->addColumn('action',function($expense){
-            return view('admin.accounting.expenses._action',compact('expense'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('amount', function($expense) {
+                return formated_price($expense->amount);
+            })
+            ->addColumn('action', function($expense) {
+                return view('admin.accounting.expenses._action', compact('expense'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -115,7 +116,7 @@ class ExpensesController extends Controller
             Expense::create($request->except('_token','_method','files'));
             return redirect()->route('admin.expenses.index')->with('success', __('Expense created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create expense.'));
+            return back()->withInput()->with('error', __('Failed to create expense: ') . $e->getMessage());
         }
     }
 
@@ -159,7 +160,7 @@ class ExpensesController extends Controller
             $expense->update($request->except('_token','_method','files'));
             return redirect()->route('admin.expenses.index')->with('success', __('Expense updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update expense.'));
+            return back()->withInput()->with('error', __('Failed to update expense: ') . $e->getMessage());
         }
     }
 
@@ -176,7 +177,7 @@ class ExpensesController extends Controller
             $expense->delete();
             return redirect()->route('admin.expenses.index')->with('success', __('Expense deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete expense.'));
+            return back()->with('error', __('Failed to delete expense: ') . $e->getMessage());
         }
     }
 }

@@ -76,15 +76,15 @@ class BranchesController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Branch::query();
+        $model = Branch::query();
 
-        return DataTables::eloquent($model)
-        ->addColumn('action',function($branch){
-            return view('admin.branches._action',compact('branch'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->addColumn('action', function($branch) {
+                return view('admin.branches._action', compact('branch'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -108,7 +108,7 @@ class BranchesController extends Controller
             Branch::create($request->except('_token','_method'));
             return redirect()->route('admin.branches.index')->with('success', __('Branch created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create branch.'));
+            return back()->withInput()->with('error', __('Failed to create branch: ') . $e->getMessage());
         }
     }
 
@@ -151,7 +151,7 @@ class BranchesController extends Controller
             $branch->update($request->except('_token','_method'));
             return redirect()->route('admin.branches.index')->with('success', __('Branch updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update branch.'));
+            return back()->withInput()->with('error', __('Failed to update branch: ') . $e->getMessage());
         }
     }
 
@@ -168,7 +168,7 @@ class BranchesController extends Controller
             $branch->delete();
             return redirect()->route('admin.branches.index')->with('success', __('Branch deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete branch.'));
+            return back()->with('error', __('Failed to delete branch: ') . $e->getMessage());
         }
     }
 }

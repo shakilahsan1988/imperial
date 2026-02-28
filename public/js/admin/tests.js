@@ -44,7 +44,8 @@ var option_count=$('#option_count').val();
       ],
       "processing": true,
       "serverSide": true,
-      "bSort" : false,
+      "bSort" : true,
+      "order": [[0, "desc"]],
         "ajax": {
           url: url("admin/get_tests")
         },

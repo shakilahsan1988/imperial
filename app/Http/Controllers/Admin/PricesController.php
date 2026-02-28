@@ -83,19 +83,21 @@ class PricesController extends Controller
      */
     public function tests_submit(Request $request)
     {        
-        if($request->has('test'))
-        {
-            foreach($request['test'] as $key=>$value)
+        try {
+            if($request->has('test'))
             {
-                Test::where('id',$key)->update([
-                    'price'=>$value
-                ]);
+                foreach($request['test'] as $key=>$value)
+                {
+                    Test::where('id',$key)->update([
+                        'price'=>$value
+                    ]);
+                }
             }
+
+            return redirect()->back()->with('success', __('Tests prices updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update tests prices: ') . $e->getMessage());
         }
-
-        session()->flash('success',__('Tests prices updated successfully'));
-
-        return redirect()->back();
     }
 
      /**
@@ -118,19 +120,21 @@ class PricesController extends Controller
      */
     public function cultures_submit(Request $request)
     {
-        if($request->has('culture'))
-        {
-            foreach($request['culture'] as $key=>$value)
+        try {
+            if($request->has('culture'))
             {
-                Culture::where('id',$key)->update([
-                    'price'=>$value
-                ]);
+                foreach($request['culture'] as $key=>$value)
+                {
+                    Culture::where('id',$key)->update([
+                        'price'=>$value
+                    ]);
+                }
             }
+
+            return redirect()->back()->with('success', __('Cultures prices updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update cultures prices: ') . $e->getMessage());
         }
-
-        session()->flash('success',__('Cultures prices updated successfully'));
-
-        return redirect()->back();
     }
 
     /**

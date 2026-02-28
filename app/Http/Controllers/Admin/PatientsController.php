@@ -82,22 +82,23 @@ class PatientsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Patient::query();
+        $model = Patient::query();
 
-        return DataTables::eloquent($model)
-        ->editColumn('total',function($patient){
-            return formated_price($patient['total']);
-        })
-        ->editColumn('paid',function($patient){
-            return formated_price($patient['paid']);
-        })
-        ->editColumn('due',function($patient){
-            return view('admin.patients._due',compact('patient'));
-        })
-        ->addColumn('action',function($patient){
-            return view('admin.patients._action',compact('patient'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('total', function($patient) {
+                return formated_price($patient->total);
+            })
+            ->editColumn('paid', function($patient) {
+                return formated_price($patient->paid);
+            })
+            ->editColumn('due', function($patient) {
+                return view('admin.patients._due', compact('patient'));
+            })
+            ->addColumn('action', function($patient) {
+                return view('admin.patients._action', compact('patient'));
+            })
+            ->rawColumns(['due', 'action'])
+            ->make(true);
     }
 
     /**
@@ -133,8 +134,8 @@ class PatientsController extends Controller
 
             return to_route('admin.patients.index')
                 ->with('success', __('Patient created successfully'));
-        } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withInput()->with('error', __('Failed to create patient. Please try again.'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create patient: ') . $e->getMessage());
         }
     }
 
@@ -190,8 +191,8 @@ class PatientsController extends Controller
                 ->with('success', __('Patient updated successfully'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return back()->with('error', __('Patient not found.'));
-        } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withInput()->with('error', __('Failed to update patient. Please try again.'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update patient: ') . $e->getMessage());
         }
     }
 
@@ -212,8 +213,8 @@ class PatientsController extends Controller
                 ->with('success', __('Patient deleted successfully'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return back()->with('error', __('Patient not found.'));
-        } catch (\Illuminate\Database\QueryException $e) {
-            return back()->with('error', __('Failed to delete patient. Please try again.'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete patient: ') . $e->getMessage());
         }
     }
 

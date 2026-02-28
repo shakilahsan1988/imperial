@@ -77,16 +77,17 @@ class ContractsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Contract::query();
+        $model = Contract::query();
 
-        return DataTables::eloquent($model)
-        ->editColumn('discount',function($contract){
-            return $contract['discount'].' %';
-        })
-        ->addColumn('action',function($contract){
-            return view('admin.contracts._action',compact('contract'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('discount', function($contract) {
+                return $contract->discount . ' %';
+            })
+            ->addColumn('action', function($contract) {
+                return view('admin.contracts._action', compact('contract'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -111,7 +112,7 @@ class ContractsController extends Controller
             Contract::create($request->except('_token','_method','files'));
             return redirect()->route('admin.contracts.index')->with('success', __('Contract created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create contract.'));
+            return back()->withInput()->with('error', __('Failed to create contract: ') . $e->getMessage());
         }
     }
 
@@ -154,7 +155,7 @@ class ContractsController extends Controller
             $contract->update($request->except('_token','_method','files'));
             return redirect()->route('admin.contracts.index')->with('success', __('Contract updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update contract.'));
+            return back()->withInput()->with('error', __('Failed to update contract: ') . $e->getMessage());
         }
     }
 
@@ -171,7 +172,7 @@ class ContractsController extends Controller
             $contract->delete();
             return redirect()->route('admin.contracts.index')->with('success', __('Contract deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete contract.'));
+            return back()->with('error', __('Failed to delete contract: ') . $e->getMessage());
         }
     }
 }

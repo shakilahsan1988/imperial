@@ -90,7 +90,7 @@ class VisitsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=Visit::with('patient')->orderBy('id','desc');
+        $model = Visit::with('patient');
 
         if($request['filter_read']!=null)
         {
@@ -102,18 +102,18 @@ class VisitsController extends Controller
             $model->where('status',$request['filter_status']);
         }
         
-        return DataTables::eloquent($model)
-
-        ->editColumn('read',function($visit){
-            return view('admin.visits._read',compact('visit'));
-        })
-        ->editColumn('status',function($visit){
-            return view('admin.visits._status',compact('visit'));
-        })
-        ->addColumn('action',function($visit){
-            return view('admin.visits._action',compact('visit'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->editColumn('read',function($visit){
+                return view('admin.visits._read',compact('visit'));
+            })
+            ->editColumn('status',function($visit){
+                return view('admin.visits._status',compact('visit'));
+            })
+            ->addColumn('action',function($visit){
+                return view('admin.visits._action',compact('visit'));
+            })
+            ->rawColumns(['read', 'status', 'action'])
+            ->make(true);
     }
 
     /**
@@ -135,43 +135,44 @@ class VisitsController extends Controller
      */
     public function store(VisitRequest $request)
     {        
+        try {
+            if($request->has('patient_id'))
+            {
+                $patient=Patient::find($request['patient_id']);
+            }
+            else{
+                $patient=Patient::create([
+                 'code'=>time(),
+                 'name'=>$request['name'],
+                 'phone'=>$request['phone'],
+                 'dob'=>$request['dob'],
+                 'address'=>$request['address'],
+                 'gender'=>$request['gender'],
+                 'email'=>$request['email'],
+                 'api_token'=>Str::random(32)
+                ]);
+            }
 
-        if($request->has('patient_id'))
-        {
-            $patient=Patient::find($request['patient_id']);
-        }
-        else{
-            $patient=Patient::create([
-             'code'=>time(),
-             'name'=>$request['name'],
-             'phone'=>$request['phone'],
-             'dob'=>$request['dob'],
-             'address'=>$request['address'],
-             'gender'=>$request['gender'],
-             'email'=>$request['email'],
-             'api_token'=>Str::random(32)
+            $visit=Visit::create([
+                'patient_id'=>$patient['id'],
+                'lat'=>$request['lat'],
+                'lng'=>$request['lng'],
+                'zoom_level'=>$request['zoom_level'],
+                'visit_date'=>$request['visit_date'],
             ]);
+
+            if($request->has('attach'))
+            {
+                $attach=$request->file('attach');
+                $name=time().'.'.$attach->getClientOriginalExtension();
+                $attach->move('uploads/visits',$name);
+                $visit->update(['attach'=>$name]);
+            }
+
+            return redirect()->route('admin.visits.index')->with('success', __('Visit saved successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to save visit: ') . $e->getMessage());
         }
-
-        $visit=Visit::create([
-            'patient_id'=>$patient['id'],
-            'lat'=>$request['lat'],
-            'lng'=>$request['lng'],
-            'zoom_level'=>$request['zoom_level'],
-            'visit_date'=>$request['visit_date'],
-        ]);
-
-        if($request->has('attach'))
-        {
-            $attach=$request->file('attach');
-            $name=time().'.'.$attach->getClientOriginalExtension();
-            $attach->move('uploads/visits',$name);
-            $visit->update(['attach'=>$name]);
-        }
-
-        session()->flash('success',__('Visit saved successfully'));
-        
-        return redirect()->route('admin.visits.index');
     }
 
     /**
@@ -213,20 +214,22 @@ class VisitsController extends Controller
      */
     public function update(VisitRequest $request, $id)
     {
-        $visit=Visit::findOrFail($id);
-        $visit->update($request->except('_token','_method','patient_type'));
+        try {
+            $visit=Visit::findOrFail($id);
+            $visit->update($request->except('_token','_method','patient_type'));
 
-        if($request->has('attach'))
-        {
-            $attach=$request->file('attach');
-            $name=time().'.'.$attach->getClientOriginalExtension();
-            $attach->move('uploads/visits',$name);
-            $visit->update(['attach'=>$name]);
+            if($request->has('attach'))
+            {
+                $attach=$request->file('attach');
+                $name=time().'.'.$attach->getClientOriginalExtension();
+                $attach->move('uploads/visits',$name);
+                $visit->update(['attach'=>$name]);
+            }
+
+            return redirect()->route('admin.visits.index')->with('success', __('Visit updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update visit: ') . $e->getMessage());
         }
-
-        session()->flash('success',__('Visit updated successfully'));
-
-        return redirect()->route('admin.visits.index');
     }
 
     /**
@@ -237,13 +240,13 @@ class VisitsController extends Controller
      */
     public function destroy($id)
     {
-        $visit=Visit::findOrFail($id);
-        $visit->delete();
-
-        session()->flash('success',__('Visit deleted successfully'));
-        
-        return redirect()->route('admin.visits.index');
-
+        try {
+            $visit=Visit::findOrFail($id);
+            $visit->delete();
+            return redirect()->route('admin.visits.index')->with('success', __('Visit deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete visit: ') . $e->getMessage());
+        }
     }
 
     /**

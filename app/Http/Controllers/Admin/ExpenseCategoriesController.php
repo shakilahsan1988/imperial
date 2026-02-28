@@ -76,13 +76,14 @@ class ExpenseCategoriesController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model=ExpenseCategory::query();
+        $model = ExpenseCategory::query();
 
-        return DataTables::eloquent($model)
-        ->addColumn('action',function($expense_category){
-            return view('admin.accounting.expense_categories._action',compact('expense_category'));
-        })
-        ->toJson();
+        return DataTables::of($model)
+            ->addColumn('action', function($expense_category) {
+                return view('admin.accounting.expense_categories._action', compact('expense_category'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -107,7 +108,7 @@ class ExpenseCategoriesController extends Controller
             ExpenseCategory::create($request->except('_token'));
             return redirect()->route('admin.expense_categories.index')->with('success', __('Expense category created successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to create expense category.'));
+            return back()->withInput()->with('error', __('Failed to create expense category: ') . $e->getMessage());
         }
     }
 
@@ -150,7 +151,7 @@ class ExpenseCategoriesController extends Controller
             $expense_category->update($request->except('_token','_method'));
             return redirect()->route('admin.expense_categories.index')->with('success', __('Expense category updated successfully'));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', __('Failed to update expense category.'));
+            return back()->withInput()->with('error', __('Failed to update expense category: ') . $e->getMessage());
         }
     }
 
@@ -167,7 +168,7 @@ class ExpenseCategoriesController extends Controller
             $expense_category->delete();
             return redirect()->route('admin.expense_categories.index')->with('success', __('Expense category deleted successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Failed to delete expense category.'));
+            return back()->with('error', __('Failed to delete expense category: ') . $e->getMessage());
         }
     }
 }
