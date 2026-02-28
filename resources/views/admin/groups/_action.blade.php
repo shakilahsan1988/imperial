@@ -4,6 +4,10 @@
     </button>
     
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        @php
+            $u = auth()->guard('admin')->user();
+            $isSuper = ($u && $u->id == 1);
+        @endphp
       
         {{-- ইনভয়েস এডিট পারমিশন --}}
         @if($u && ($isSuper || $u->hasPermission('edit_group')))
@@ -33,7 +37,7 @@
              {{__('Show Receipt')}}
           </a>
 
-          @if($whatsapp['receipt']['active'] && isset($group['receipt_pdf']))
+          @if(isset($whatsapp) && $whatsapp['receipt']['active'] && isset($group['receipt_pdf']))
             @php 
                $message = str_replace(['{patient_name}','{receipt_link}'],[$group['patient']['name'],$group['receipt_pdf']],$whatsapp['receipt']['message']);
             @endphp

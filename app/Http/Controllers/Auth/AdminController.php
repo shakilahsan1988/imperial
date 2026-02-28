@@ -52,7 +52,7 @@ class AdminController extends Controller
         }
         else{
             session()->flash('failed',__('Wrong email or password'));
-            return redirect()->route('admin.auth.login');
+            return redirect()->route('admin.login');
         }
     }
 
@@ -65,7 +65,7 @@ class AdminController extends Controller
     {
         Auth::guard('admin')->logout();
 
-        return redirect()->route('admin.auth.login');
+        return redirect()->route('admin.login');
     }
 
 
@@ -106,13 +106,13 @@ class AdminController extends Controller
             session()->flash('failed',__('Something went wrong'));
           }
 
-          return redirect()->route('admin.reset.mail');
+          return redirect()->route('admin.mail');
           
         }
         else{
 
             session()->flash('failed',__('Email not found'));
-            return redirect()->route('admin.reset.mail');
+            return redirect()->route('admin.mail');
 
         }
     }
@@ -159,6 +159,6 @@ class AdminController extends Controller
 
         session()->flash('success',__('Password reset successfully'));
 
-        return redirect()->route('admin.auth.login');
+        return redirect()->route('admin.login');
     }
 }

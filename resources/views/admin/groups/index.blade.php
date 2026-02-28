@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-{{__('ইনভোয়েছ অ্যান্ড বিলিং')}}
+{{__('Invoice & Billing')}}
 @endsection
 
 @section('breadcrumb')
@@ -11,13 +11,13 @@
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">
             <i class="nav-icon fas fa-file-invoice"></i>
-            {{__('ইনভোয়েছ অ্যান্ড বিলিং')}}
+            {{__('Invoice & Billing')}}
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('হোম')}}</a></li>
-            <li class="breadcrumb-item active">{{__('ইনভোয়েছ সমূহ')}}</li>
+            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
+            <li class="breadcrumb-item active">{{__('Invoices')}}</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -28,9 +28,9 @@
 @section('content')
 <div class="card card-primary card-outline">
     <div class="card-header">
-      <h3 class="card-title">{{__('ইনভোয়েছ টেস্ট টেবিল')}}</h3>
+      <h3 class="card-title">{{__('Invoices Test Table')}}</h3>
       <a href="{{route('admin.groups.create')}}" class="btn btn-primary btn-sm float-right">
-       <i class="fa fa-plus"></i> {{__('ইনভোয়েছ ক্রিয়েট করুন')}} 
+       <i class="fa fa-plus"></i> {{__('Create Invoice')}} 
       </a>
     </div>
     <!-- /.card-header -->
@@ -39,31 +39,31 @@
       <div id="accordion">
         <div class="card card-info">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary collapsed" aria-expanded="false">
-            <i class="fas fa-filter"></i> {{__('ফিল্টার')}}
+            <i class="fas fa-filter"></i> {{__('Filter')}}
           </a>
           <div id="collapseOne" class="panel-collapse in collapse">
             <div class="card-body">
               <div class="row justify-content-center">
                 <div class="col-lg-3">
                   <div class="form-group">
-                     <label for="filter_date">{{__('তারিখ')}}</label>
-                     <input type="text" class="form-control datepickerrange" id="filter_date" placeholder="{{__('তারিখ')}}">
+                     <label for="filter_date">{{__('Date')}}</label>
+                     <input type="text" class="form-control datepickerrange" id="filter_date" placeholder="{{__('Date')}}">
                   </div>
                 </div>
                 <div class="col-lg-3">
                   <div class="form-group">
-                     <label for="filter_status">{{__('স্ট্যাটাস')}}</label>
+                     <label for="filter_status">{{__('Status')}}</label>
                      <select name="filter_status" id="filter_status" class="form-control select2">
-                        <option value="" selected>{{__('সকল')}}</option>
-                        <option value="1">{{__('সম্পন্ন')}}</option>
-                        <option value="0">{{__('পেন্ডিং')}}</option>
+                        <option value="" selected>{{__('All')}}</option>
+                        <option value="1">{{__('Completed')}}</option>
+                        <option value="0">{{__('Pending')}}</option>
                      </select>
                   </div>
                 </div>
                 <div class="col-lg-3">
                   <div class="form-group">
-                     <label for="filter_barcode">{{__('বারকোড')}}</label>
-                     <input type="text" class="form-control" id="filter_barcode" placeholder="{{__('বারকোড')}}">
+                     <label for="filter_barcode">{{__('Barcode')}}</label>
+                     <input type="text" class="form-control" id="filter_barcode" placeholder="{{__('Barcode')}}">
                   </div>
                 </div>
               </div>
@@ -78,17 +78,17 @@
                <thead>
                <tr>
                  <th width="10px">#</th>
-                 <th width="10px">{{__('বারকোড')}}</th>
-                 <th width="100px">{{__('রোগীর কোড')}}</th>
-                 <th>{{__('রোগীর নাম')}}</th>
-                 <th width="100px">{{__('সাবটোটাল')}}</th>
-                 <th width="100px">{{__('ডিস্কাউন্ট')}}</th>
-                 <th width="100px">{{__('টোটাল')}}</th>
-                 <th width="100px">{{__('পরিশোধ')}}</th>
-                 <th width="100px">{{__('বকেয়া')}}</th>
-                 <th width="100px">{{__('তারিখ')}}</th>
-                 <th width="10px">{{__('স্ট্যাটাস')}}</th>
-                 <th width="50px">{{__('একশন')}}</th>
+                 <th width="10px">{{__('Barcode')}}</th>
+                 <th width="100px">{{__('Patient Code')}}</th>
+                 <th>{{__('Patient Name')}}</th>
+                 <th width="100px">{{__('Subtotal')}}</th>
+                 <th width="100px">{{__('Discount')}}</th>
+                 <th width="100px">{{__('Total')}}</th>
+                 <th width="100px">{{__('Paid')}}</th>
+                 <th width="100px">{{__('Due')}}</th>
+                 <th width="100px">{{__('Date')}}</th>
+                 <th width="10px">{{__('Status')}}</th>
+                 <th width="50px">{{__('Action')}}</th>
                </tr>
                </thead>
                <tbody>

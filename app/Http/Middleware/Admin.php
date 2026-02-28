@@ -20,7 +20,7 @@ class Admin
         {
             if(!Auth::guard('admin')->check())
             {
-                return redirect()->route('admin.auth.login');
+                return redirect()->route('admin.login');
             }
         
             //add online

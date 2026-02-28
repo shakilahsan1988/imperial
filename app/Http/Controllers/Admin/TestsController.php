@@ -170,7 +170,8 @@ class TestsController extends Controller
      */
     public function show($id)
     {
-        //
+        $test = Test::with('components.options')->findOrFail($id);
+        return view('admin.tests.show', compact('test'));
     }
 
     /**

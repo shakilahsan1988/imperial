@@ -107,11 +107,12 @@ class ContractsController extends Controller
      */
     public function store(ContractRequest $request)
     {
-       Contract::create($request->except('_token','_method','files'));
-
-       session()->flash('success',__('Contract created successfully'));
-
-       return redirect()->route('admin.contracts.index');
+        try {
+            Contract::create($request->except('_token','_method','files'));
+            return redirect()->route('admin.contracts.index')->with('success', __('Contract created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create contract.'));
+        }
     }
 
     /**
@@ -122,7 +123,8 @@ class ContractsController extends Controller
      */
     public function show($id)
     {
-       
+        $contract = Contract::findOrFail($id);
+        return view('admin.contracts.show', compact('contract'));
     }
 
     /**
@@ -147,12 +149,13 @@ class ContractsController extends Controller
      */
     public function update(ContractRequest $request, $id)
     {
-       $contract=Contract::findOrFail($id);
-       $contract->update($request->except('_token','_method','files'));
-
-       session()->flash('success',__('Contract updated successfully'));
-
-       return redirect()->route('admin.contracts.index');
+        try {
+            $contract=Contract::findOrFail($id);
+            $contract->update($request->except('_token','_method','files'));
+            return redirect()->route('admin.contracts.index')->with('success', __('Contract updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update contract.'));
+        }
     }
 
     /**
@@ -163,11 +166,12 @@ class ContractsController extends Controller
      */
     public function destroy($id)
     {
-        $contract=Contract::findOrFail($id);
-        $contract->delete();
-
-        session()->flash('success',__('Contract deleted successfully'));
-
-        return redirect()->route('admin.contracts.index');
+        try {
+            $contract=Contract::findOrFail($id);
+            $contract->delete();
+            return redirect()->route('admin.contracts.index')->with('success', __('Contract deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete contract.'));
+        }
     }
 }

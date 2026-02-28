@@ -36,35 +36,35 @@ class VisitsController extends Controller
             // হোম ভিজিট দেখার পারমিশন চেক
             if (in_array($action, ['index', 'show', 'ajax'])) {
                 if (!$u->hasPermission('view_visit')) {
-                    abort(403, 'আপনার হোম ভিজিট তালিকা দেখার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to view home visits list.'));
                 }
             }
 
             // হোম ভিজিট বুকিং করার পারমিশন চেক
             if (in_array($action, ['create', 'store'])) {
                 if (!$u->hasPermission('create_visit')) {
-                    abort(403, 'আপনার হোম ভিজিট বুকিং করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to book a home visit.'));
                 }
             }
 
             // ভিজিট এডিট করার পারমিশন চেক
             if (in_array($action, ['edit', 'update'])) {
                 if (!$u->hasPermission('edit_visit')) {
-                    abort(403, 'আপনার হোম ভিজিটের তথ্য পরিবর্তন করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to edit home visit info.'));
                 }
             }
 
             // ভিজিট ডিলিট করার পারমিশন চেক
             if ($action == 'destroy') {
                 if (!$u->hasPermission('delete_visit')) {
-                    abort(403, 'আপনার হোম ভিজিট মুছে ফেলার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to delete a home visit.'));
                 }
             }
 
             // ভিজিট থেকে ইনভয়েস/গ্রুপ তৈরি করার পারমিশন চেক
             if ($action == 'create_tests') {
                 if (!$u->hasPermission('create_group')) {
-                    abort(403, 'আপনার ভিজিট থেকে টেস্ট তৈরি করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to create tests from visit.'));
                 }
             }
 

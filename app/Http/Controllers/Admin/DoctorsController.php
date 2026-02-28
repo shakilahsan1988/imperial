@@ -119,13 +119,13 @@ class DoctorsController extends Controller
      */
     public function store(DoctorRequest $request)
     {
-        $request['code']=doctor_code();
-
-        Doctor::create($request->except('_token','_method'));
-
-        session()->flash('success',__('Doctor created successfully'));
-
-        return redirect()->route('admin.doctors.index');
+        try {
+            $request['code'] = doctor_code();
+            Doctor::create($request->except('_token', '_method'));
+            return redirect()->route('admin.doctors.index')->with('success', __('Doctor created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create doctor.'));
+        }
     }
 
     /**
@@ -136,7 +136,8 @@ class DoctorsController extends Controller
      */
     public function show($id)
     {
-        //
+        $doctor = Doctor::findOrFail($id);
+        return view('admin.doctors.show', compact('doctor'));
     }
 
     /**
@@ -161,12 +162,13 @@ class DoctorsController extends Controller
      */
     public function update(DoctorRequest $request, $id)
     {
-        $doctor=Doctor::findOrFail($id);
-        $doctor->update($request->except('_token','_method'));
-
-        session()->flash('success',__('Doctor updated successfully'));
-
-        return redirect()->route('admin.doctors.index');
+        try {
+            $doctor=Doctor::findOrFail($id);
+            $doctor->update($request->except('_token','_method'));
+            return redirect()->route('admin.doctors.index')->with('success', __('Doctor updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update doctor.'));
+        }
     }
 
     /**
@@ -177,12 +179,13 @@ class DoctorsController extends Controller
      */
     public function destroy($id)
     {
-        $doctor=Doctor::findOrFail($id);
-        $doctor->delete();
-
-        session()->flash('success',__('Doctor deleted successfully'));
-
-        return redirect()->route('admin.doctors.index');
+        try {
+            $doctor=Doctor::findOrFail($id);
+            $doctor->delete();
+            return redirect()->route('admin.doctors.index')->with('success', __('Doctor deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete doctor.'));
+        }
     }
 
     /**

@@ -109,9 +109,12 @@ class CulturesController extends Controller
      */
     public function store(CultureRequest $request)
     {
-        Culture::create($request->except('_token'));
-        session()->flash('success','Culture saved successfully');
-        return redirect()->route('admin.cultures.index');
+        try {
+            Culture::create($request->except('_token'));
+            return redirect()->route('admin.cultures.index')->with('success', __('Culture saved successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create culture.'));
+        }
     }
 
     /**
@@ -122,7 +125,8 @@ class CulturesController extends Controller
      */
     public function show($id)
     {
-        //
+        $culture = Culture::findOrFail($id);
+        return view('admin.cultures.show', compact('culture'));
     }
 
     /**
@@ -146,11 +150,13 @@ class CulturesController extends Controller
      */
     public function update(CultureRequest $request, $id)
     {
-        $culture=Culture::findOrFail($id);
-        $culture->update($request->except('_token','_method'));
-
-        session()->flash('success','Culture updated successfully');
-        return redirect()->route('admin.cultures.index');
+        try {
+            $culture=Culture::findOrFail($id);
+            $culture->update($request->except('_token','_method'));
+            return redirect()->route('admin.cultures.index')->with('success', __('Culture updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update culture.'));
+        }
     }
 
     /**
@@ -161,10 +167,12 @@ class CulturesController extends Controller
      */
     public function destroy($id)
     {
-        $culture=Culture::findOrFail($id);
-        $culture->delete();
-
-        session()->flash('success','Culture deleted successfully');
-        return redirect()->route('admin.cultures.index');
+        try {
+            $culture=Culture::findOrFail($id);
+            $culture->delete();
+            return redirect()->route('admin.cultures.index')->with('success', __('Culture deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete culture.'));
+        }
     }
 }

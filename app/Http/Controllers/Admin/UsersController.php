@@ -129,8 +129,8 @@ class UsersController extends Controller
 
             return to_route('admin.users.index')
                 ->with('success', __('User created successfully'));
-        } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withInput()->with('error', __('Failed to create user. Please try again.'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create user.'));
         }
     }
 
@@ -142,7 +142,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::with('roles.role')->findOrFail($id);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -193,10 +194,8 @@ class UsersController extends Controller
 
             return to_route('admin.users.index')
                 ->with('success', __('User updated successfully'));
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return back()->with('error', __('User not found.'));
-        } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withInput()->with('error', __('Failed to update user. Please try again.'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update user.'));
         }
     }
 
@@ -216,10 +215,8 @@ class UsersController extends Controller
 
             return to_route('admin.users.index')
                 ->with('success', __('User deleted successfully'));
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return back()->with('error', __('User not found.'));
-        } catch (\Illuminate\Database\QueryException $e) {
-            return back()->with('error', __('Failed to delete user. Please try again.'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete user.'));
         }
     }
 }

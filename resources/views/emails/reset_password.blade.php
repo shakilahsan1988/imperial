@@ -11,7 +11,7 @@
     <div style="text-align:center;">
         {!! $emails['reset_password']['body'] !!}
         <br>
-        <a href="{{route('admin.reset.reset_password_form',$user['token'])}}" style="font-size: 18px;order-radius:15px;padding:5px;border-radius:10px;background-color:#C43E00;color:white">
+        <a href="{{route('admin.reset_password_form',$user['token'])}}" style="font-size: 18px;order-radius:15px;padding:5px;border-radius:10px;background-color:#C43E00;color:white">
           {{__('Reset Your Password')}}
         </a>
     </div>

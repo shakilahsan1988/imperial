@@ -1,39 +1,33 @@
 @extends('layouts.auth')
 @section('title')
-{{__('Send patient code')}}
+  {{__('Reset Password')}}
 @endsection
 @section('content')
 
-
-
-<form action="{{route('patient.auth.mail_submit')}}" method="post" class="validate-form">
-
+<form action="{{route('patient.mail_submit')}}" method="post" class="validate-form">
+    @csrf
     <span class="login100-form-title p-b-43">
-        {{__('Send Patient Code')}}
+        {{__('Send Password Reset Link')}}
     </span>
-
-    <div class="wrap-input100 validate-input @if($errors->has('email')) error-validation @endif">
-        <input class="input100" type="text" name="email" required>
+    
+    <div class="wrap-input100 validate-input @if($errors->has('email')) alert-validate @endif" data-validate = "{{__('Please enter your email')}}">
+        <input class="input100" type="email" name="email" id="email" value="{{old('email')}}" required>
         <span class="focus-input100"></span>
-        <span class="label-input100">{{__('Email Or Phone')}}</span>
+        <span class="label-input100">{{__('Email')}}</span>
     </div>
-   
 
     <div class="container-login100-form-btn">
         <button class="login100-form-btn">
-            {{__('Send')}}
+            {{__('Send Email')}}
         </button>
+    </div>
+    
+    <div class="text-center p-t-46 p-b-20">
+        <a href="{{route('patient.login')}}" class="txt1">
+            {{__('Login')}}
+        </a>
     </div>
 
 </form>
-
-<span class="login100-form-title p-b-20 p-t-20">
-    <a href="{{url('/')}}"> 
-        <h5 class="d-inline">
-            <i class="fas fa-sign-in-alt"></i> 
-            {{__('Login')}}
-        </h5>
-    </a>
-</span>
 
 @endsection

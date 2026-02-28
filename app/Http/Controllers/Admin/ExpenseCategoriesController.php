@@ -103,11 +103,12 @@ class ExpenseCategoriesController extends Controller
      */
     public function store(ExpenseCategoryRequest $request)
     {
-        ExpenseCategory::create($request->except('_token'));
-
-        session()->flash('success',__('Expense category created successfully'));
-
-        return redirect()->route('admin.expense_categories.index'); 
+        try {
+            ExpenseCategory::create($request->except('_token'));
+            return redirect()->route('admin.expense_categories.index')->with('success', __('Expense category created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create expense category.'));
+        }
     }
 
     /**
@@ -118,7 +119,8 @@ class ExpenseCategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $expense_category = ExpenseCategory::findOrFail($id);
+        return view('admin.accounting.expense_categories.show', compact('expense_category'));
     }
 
     /**
@@ -143,12 +145,13 @@ class ExpenseCategoriesController extends Controller
      */
     public function update(ExpenseCategoryRequest $request, $id)
     {
-        $expense_category=ExpenseCategory::findOrFail($id);
-        $expense_category->update($request->except('_token','_method'));
-
-        session()->flash('success',__('Expense category updated successfully'));
-
-        return redirect()->route('admin.expense_categories.index'); 
+        try {
+            $expense_category=ExpenseCategory::findOrFail($id);
+            $expense_category->update($request->except('_token','_method'));
+            return redirect()->route('admin.expense_categories.index')->with('success', __('Expense category updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update expense category.'));
+        }
     }
 
     /**
@@ -159,11 +162,12 @@ class ExpenseCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $expense_category=ExpenseCategory::findOrFail($id);
-        $expense_category->delete();
-
-        session()->flash('success',__('Expense category deleted successfully'));
-
-        return redirect()->route('admin.expense_categories.index'); 
+        try {
+            $expense_category=ExpenseCategory::findOrFail($id);
+            $expense_category->delete();
+            return redirect()->route('admin.expense_categories.index')->with('success', __('Expense category deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete expense category.'));
+        }
     }
 }

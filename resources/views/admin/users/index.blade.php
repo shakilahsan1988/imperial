@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{__('ইউজার')}}
+    {{__('Users')}}
 @endsection
 
 @section('breadcrumb')
@@ -11,14 +11,18 @@
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">
             <i class="fa fa-user-circle"></i>
-            {{__('ইউজার')}}
+            {{__('Users')}}
           </h1>
-        </div><div class="col-sm-6">
+        </div><!-- /.col -->
+        <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('হোম')}}</a></li>
-            <li class="breadcrumb-item active"><a href="#">{{__('ইউজার')}}</a></li>
+            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
+            <li class="breadcrumb-item active">{{__('Users')}}</li>
           </ol>
-        </div></div></div></div>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
 @endsection
 
 @section('content')
@@ -32,13 +36,13 @@
 <div class="card card-primary card-outline">
     <div class="card-header">
       <h3 class="card-title">
-        {{__('ইউজার টেবিল')}}
+        {{__('Users Table')}}
       </h3>
       
       {{-- @can('create_user') এর পরিবর্তে আপনার কাস্টম লজিক --}}
       @if($u && ($isSuper || $u->hasPermission('create_user')))
         <a href="{{route('admin.users.create')}}" class="btn btn-primary btn-sm float-right">
-          <i class="fa fa-plus"></i> {{ __('নতুন ইউজার ক্রিয়েট করুন') }}
+          <i class="fa fa-plus"></i> {{ __('Create User') }}
         </a>
       @endif
     </div>
@@ -48,10 +52,10 @@
             <thead>
             <tr>
               <th width="10px">#</th>
-              <th>{{__('নাম')}}</th>
-              <th>{{__('ইমেইল')}}</th>
-              <th>{{__('পদবী')}}</th>
-              <th width="150px">{{__('একশন')}}</th>
+              <th>{{__('Name')}}</th>
+              <th>{{__('Email')}}</th>
+              <th>{{__('Roles')}}</th>
+              <th width="150px">{{__('Action')}}</th>
             </tr>
             </thead>
             <tbody>

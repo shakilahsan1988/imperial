@@ -28,7 +28,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TranslationsController;
 
 // Admin Authentication (Guest)
-Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.auth.'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.'], function() {
     Route::get('/login', [AdminController::class, 'login'])->name('login');
     Route::post('/login', [AdminController::class, 'login_submit'])->name('login_submit');
 });
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.
 Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware('Admin');
 
 // Reset Admin Password
-Route::group(['prefix' => 'admin/reset', 'as' => 'admin.reset.'], function() {
+Route::group(['prefix' => 'admin/reset', 'as' => 'admin.'], function() {
     Route::get('/mail', [AdminController::class, 'mail'])->name('mail');
     Route::post('/mail_submit', [AdminController::class, 'mail_submit'])->name('mail_submit');
     Route::get('/reset_password_form/{token}', [AdminController::class, 'reset_password_form'])->name('reset_password_form');

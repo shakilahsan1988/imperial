@@ -1,4 +1,3 @@
-{{-- ব্রাঞ্চ এবং পেশেন্ট তথ্যের শুরুতে ইউজার ডিফাইন করে নেওয়া --}}
 @php
     $u = auth()->guard('admin')->user();
     $isSuper = ($u && $u->id == 1);
@@ -9,7 +8,7 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h5 class="card-title">
-                    {{__('ব্রাঞ্ছ সিলেক্ট করুন')}}
+                    {{__('Select Branch')}}
                 </h5>
             </div>
             <div class="card-body">
@@ -46,12 +45,12 @@
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">
-            {{__('রোগীর তথ্য')}}
+            {{__('Patient Info')}}
         </h3>
-        {{-- নতুন রোগী এড করার পারমিশন চেক --}}
+        {{-- Permission check for adding new patient --}}
         @if($u && ($isSuper || $u->hasPermission('create_patient')))
             <button type="button" class="btn btn-warning btn-sm add_patient float-right"  data-toggle="modal" data-target="#patient_modal">
-                <i class="fa fa-exclamation-triangle"></i>  {{__('রোগী এড করা নেই ?')}}
+                <i class="fa fa-exclamation-triangle"></i>  {{__('Patient not added?')}}
             </button>
         @endif
     </div>
@@ -59,7 +58,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('কোড')}}</label>
+                    <label>{{__('Code')}}</label>
                     <select id="code" name="patient_id" class="form-control" required>
                         @if(isset($group)&&isset($group['patient']))
                             <option value="{{$group['patient']['id']}}" selected>{{$group['patient']['code']}}</option>
@@ -69,7 +68,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('রোগীর নাম')}}</label>
+                    <label>{{__('Patient Name')}}</label>
                     <select id="name" name="patient_id" class="form-control" required>
                         @if(isset($group)&&isset($group['patient']))
                             <option value="{{$group['patient']['id']}}" selected>{{$group['patient']['name']}}</option>
@@ -79,40 +78,40 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('জন্ম তারিখ')}}</label>
-                    <input class="form-control" id="dob" @if(isset($group)&&isset($group['patient'])) value="{{$group['patient']['dob']}}" @endif readonly>
-                </div> 
+                    <label>{{__('Date of Birth')}}</label>
+                    <input class="form-control" id="dob" @if(isset($group)&&isset($group['patient'])) value="{{$group['patient']['dob']}}" @endif readonly>   
+                </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('মোবাইল নাম্বার')}}</label>
+                    <label>{{__('Phone Number')}}</label>
                     <input class="form-control" id="phone" @if(isset($group)&&isset($group['patient'])) value="{{$group['patient']['phone']}}" @endif  readonly>
                 </div> 
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('ইমেইল এড্রেস')}}</label>
+                    <label>{{__('Email Address')}}</label>
                     <input class="form-control" id="email" @if(isset($group)&&isset($group['patient'])) value="{{$group['patient']['email']}}" @endif readonly>
                 </div> 
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('লিঙ্গ')}}</label>
+                    <label>{{__('Gender')}}</label>
                     <input class="form-control" id="gender" @if(isset($group)&&isset($group['patient'])) value="{{$group['patient']['gender']}}" @endif readonly>
                 </div> 
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('ঠিকানা')}}</label>
+                    <label>{{__('Address')}}</label>
                     <input class="form-control" id="address" @if(isset($group)&&isset($group['patient'])) value="{{$group['patient']['address']}}" @endif readonly>
                 </div> 
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>{{__('রেফারড বাই')}}</label> 
-                    {{-- নতুন ডাক্তার এড করার পারমিশন চেক --}}
+                    <label>{{__('Referred By')}}</label> 
+                    {{-- Permission check for adding new doctor --}}
                     @if($u && ($isSuper || $u->hasPermission('create_doctor')))
-                        <button type="button" class="btn btn-warning btn-sm float-right"  data-toggle="modal" data-target="#doctor_modal"><i class="fa fa-exclamation-triangle"></i> {{__('এড করা নেই ?')}}</button>
+                        <button type="button" class="btn btn-warning btn-sm float-right"  data-toggle="modal" data-target="#doctor_modal"><i class="fa fa-exclamation-triangle"></i> {{__('Not added?')}}</button>
                     @endif
                     <select class="form-control" name="doctor_id" id="doctor">
                         @if(isset($group)&&isset($group['doctor']))
@@ -124,4 +123,177 @@
         </div>
     </div>
 </div>
-{{-- টেস্ট এবং কালচার সেকশন আগের মতোই থাকবে কারণ ওখানে পারমিশন চেক নেই --}}
+
+
+<!-- test -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card card-danger">
+            <div class="card-header">
+                <h5 class="card-title">
+                    {{__('Tests')}}
+                </h5>
+            </div>
+            <div class="card-body tests">
+                <table class="table table-bordered table-sm datatables" width="100%">
+                    <thead>
+                        <tr>
+                            <td>{{__('Test Name')}}</td>
+                            <td>{{__('Price')}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($tests as $test)
+                            <tr>
+                                <td>
+                                    <input type="checkbox"  class="test" id="test_{{$test['id']}}" value="{{$test['id']}}" price="{{$test['price']}}">
+                                    <label for="test_{{$test['id']}}">{{$test['name']}}</label>
+                                </td>
+                                <td>
+                                    {{formated_price($test['price'])}}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+       <div class="card card-danger">
+           <div class="card-header">
+               <h5 class="card-title text-center">
+                   {{__('Cultures')}}
+               </h5>
+           </div>
+           <div class="card-body cultures">
+                <table class="table table-bordered table-sm datatables" width="100%">
+                    <thead>
+                        <tr>
+                            <td>{{__('Culture Name')}}</td>
+                            <td>{{__('Price')}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($cultures as $culture)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="culture" id="culture_{{$culture['id']}}" value="{{$culture['id']}}" price="{{$culture['price']}}">
+                                    <label for="culture_{{$culture['id']}}">{{$culture['name']}}</label>
+                                </td>
+                                <td>
+                                    {{formated_price($culture['price'])}}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+           </div>
+       </div>
+    </div>
+ </div>
+<!-- \End test -->
+
+<!-- Receipt -->
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            {{__('Receipt')}}
+        </h3>
+    </div>
+    <div class="card-body" id="receipt">
+         <div class="row">
+             <div class="col-lg-8 offset-lg-2">
+                <table class="table  table-stripped" id="receipt_table">
+                    <tbody>
+
+                        <tr>
+                            <td>{{__('Subtotal')}}</td>
+                            <td>
+                                <input type="number" id="subtotal" name="subtotal"  @if(isset($group)) value="{{$group['subtotal']}}" @else value="0"  @endif readonly class="form-control">
+                            </td>
+                            <td>
+                                {{get_currency()}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__('Contract')}}</td>
+                            <td>
+                                @if(isset($group))
+                                    <input type="hidden" value="{{$group['contract_id']}}" id="contract_id">
+                                @endif
+                                <select name="contract_id" id="contract_discount" class="form-control select2">
+                                    <option value=""></option>
+                                    @if(isset($group['contract'])&&!$contracts->contains('id',$group['contract_id']))
+                                        <option value="{{$group['contract']['id']}}">{{$group['contract']['title']}} ( {{$group['contract']['discount']}} % )</option>
+                                    @endif
+                                    @foreach($contracts as $contract)
+                                        <option value="{{$contract['id']}}" discount="{{$contract['discount']}}">{{$contract['title']}} ( {{$contract['discount']}} % )</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" id="cancel_contract" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__('Discount')}}</td>
+                            <td>
+                                <input type="number" id="discount" name="discount"  @if(isset($group)) value="{{$group['discount']}}" @else value="0"  @endif readonly class="form-control">
+                            </td>
+                            <td>
+                                {{get_currency()}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>{{__('Total')}}</td>
+                            <td>
+                                <input type="number" id="total" name="total" class="form-control" @if(isset($group)) value="{{$group['total']}}" @else value="0"  @endif  readonly>
+                            </td>
+                            <td>
+                                {{get_currency()}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{__('Paid')}}</td>
+                            <td>
+                                <input type="number" id="paid" name="paid" min="0" class="form-control" @if(isset($group)) value="{{$group['paid']}}" @else value="0"  @endif   required>
+                            </td>
+                            <td>
+                                {{get_currency()}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{__('Due')}}</td>
+                            <td>
+                                <input type="number" id="due" name="due" class="form-control" @if(isset($group)) value="{{$group['due']}}" @else value="0"  @endif   readonly>
+                            </td>
+                            <td>
+                                {{get_currency()}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+             </div>
+         </div>
+    </div>
+</div>
+<!-- \Receipt -->
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <button type="submit" class="btn btn-primary form-control">{{__('Save')}}</button>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <a href="{{route('admin.groups.index')}}" class="btn btn-danger form-control">{{__('Cancel')}}</a>
+    </div>
+</div>
+
+<br>

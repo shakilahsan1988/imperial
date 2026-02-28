@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 
-<form action="{{route('admin.reset_password_submit',$token)}}" method="post" class="validate-form">
+<form action="{{route('patient.reset_password_submit',$token)}}" method="post" class="validate-form">
     @csrf
     <span class="login100-form-title p-b-43">
         {{__('Reset Password')}}
@@ -29,7 +29,7 @@
     </div>
     
     <div class="text-center p-t-46 p-b-20">
-        <a href="{{route('admin.login')}}" class="txt1">
+        <a href="{{route('patient.login')}}" class="txt1">
             {{__('Login')}}
         </a>
     </div>

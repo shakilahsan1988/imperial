@@ -104,11 +104,12 @@ class BranchesController extends Controller
      */
     public function store(BranchRequest $request)
     {
-        Branch::create($request->except('_token','_method'));
-
-        session()->flash('success',__('Branch created successfully'));
-
-        return redirect()->route('admin.branches.index');
+        try {
+            Branch::create($request->except('_token','_method'));
+            return redirect()->route('admin.branches.index')->with('success', __('Branch created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create branch.'));
+        }
     }
 
     /**
@@ -119,7 +120,8 @@ class BranchesController extends Controller
      */
     public function show($id)
     {
-        //
+        $branch = Branch::findOrFail($id);
+        return view('admin.branches.show', compact('branch'));
     }
 
     /**
@@ -130,7 +132,7 @@ class BranchesController extends Controller
      */
     public function edit($id)
     {
-        $branch=Branch::find($id);
+        $branch=Branch::findOrFail($id);
 
         return view('admin.branches.edit',compact('branch'));
     }
@@ -144,12 +146,13 @@ class BranchesController extends Controller
      */
     public function update(BranchRequest $request, $id)
     {
-        $branch=Branch::findOrFail($id);
-        $branch->update($request->except('_token','_method'));
-        
-        session()->flash('success',__('Branch updated successfully'));
-
-        return redirect()->route('admin.branches.index');
+        try {
+            $branch=Branch::findOrFail($id);
+            $branch->update($request->except('_token','_method'));
+            return redirect()->route('admin.branches.index')->with('success', __('Branch updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update branch.'));
+        }
     }
 
     /**
@@ -160,11 +163,12 @@ class BranchesController extends Controller
      */
     public function destroy($id)
     {
-        $branch=Branch::findOrFail($id);
-        $branch->delete();
-
-        session()->flash('success',__('Branch deleted successfully'));
-
-        return redirect()->route('admin.branches.index');
+        try {
+            $branch=Branch::findOrFail($id);
+            $branch->delete();
+            return redirect()->route('admin.branches.index')->with('success', __('Branch deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete branch.'));
+        }
     }
 }

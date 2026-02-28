@@ -105,21 +105,22 @@ class CultureOptionsController extends Controller
      */
     public function store(Request $request)
     {
-      $culture_option=CultureOption::create([
-          'value'=>$request['name'],
-          'parent_id'=>0
-      ]);
+        try {
+            $culture_option=CultureOption::create([
+                'value'=>$request['name'],
+                'parent_id'=>0
+            ]);
 
-      //save new options
-      if($request->has('option'))
-      {
-        $culture_option->childs()->createMany($request['option']);
-      }
+            //save new options
+            if($request->has('option'))
+            {
+                $culture_option->childs()->createMany($request['option']);
+            }
 
-      session()->flash('success',__('Culture option created successfully'));
-
-      return redirect()->route('admin.culture_options.index');
-        
+            return redirect()->route('admin.culture_options.index')->with('success', __('Culture option created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create culture option.'));
+        }
     }
 
     /**
@@ -130,7 +131,8 @@ class CultureOptionsController extends Controller
      */
     public function show($id)
     {
-       //
+        $culture_option = CultureOption::with('childs')->findOrFail($id);
+        return view('admin.culture_options.show', compact('culture_option'));
     }
 
     /**
@@ -155,43 +157,45 @@ class CultureOptionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $culture_option=CultureOption::where([
-            ['id',$id],
-            ['parent_id',0]
-        ])->firstOrFail();
-        
-        $culture_option->update([
-            'value'=>$request['name']
-        ]);
+        try {
+            $culture_option=CultureOption::where([
+                ['id',$id],
+                ['parent_id',0]
+            ])->firstOrFail();
+            
+            $culture_option->update([
+                'value'=>$request['name']
+            ]);
 
-        //old options
-        $old_options=[];
-        
-        if($request->has('old_option'))
-        {
-            foreach($request['old_option'] as $key=>$value)
+            //old options
+            $old_options=[];
+            
+            if($request->has('old_option'))
             {
-                array_push($old_options,$key);
+                foreach($request['old_option'] as $key=>$value)
+                {
+                    array_push($old_options,$key);
 
-                CultureOption::where('id',$key)->update([
-                    'value'=>$value
-                ]);
+                    CultureOption::where('id',$key)->update([
+                        'value'=>$value
+                    ]);
+                }
             }
+
+            //delete old options not submited
+            CultureOption::where('parent_id',$id)->whereNotIn('id',$old_options)->delete();
+
+            //save new options
+            if($request->has('option'))
+            {
+                $culture_option->childs()->createMany($request['option']);
+
+            }
+            
+            return redirect()->back()->with('success', __('Culture option updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update culture option.'));
         }
-
-        //delete old options not submited
-        CultureOption::where('parent_id',$id)->whereNotIn('id',$old_options)->delete();
-
-        //save new options
-        if($request->has('option'))
-        {
-            $culture_option->childs()->createMany($request['option']);
-
-        }
-        
-        session()->flash('success',__('Culture option updated successfully'));
-
-        return redirect()->back();
     }
 
     /**
@@ -202,12 +206,13 @@ class CultureOptionsController extends Controller
      */
     public function destroy($id)
     {
-        $culture_option=CultureOption::where('id',$id)->orWhere('parent_id',$id)->firstOrFail();
-        $culture_option->delete();
+        try {
+            $culture_option=CultureOption::where('id',$id)->orWhere('parent_id',$id)->firstOrFail();
+            $culture_option->delete();
 
-        session()->flash('success',__('Culture option deleted successfully'));
-
-        return redirect()->back();
-
+            return redirect()->back()->with('success', __('Culture option deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete culture option.'));
+        }
     }
 }

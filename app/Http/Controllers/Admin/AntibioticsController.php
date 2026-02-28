@@ -103,9 +103,12 @@ class AntibioticsController extends Controller
      */
     public function store(AntibioticRequest $request)
     {
-        Antibiotic::create($request->except('_token'));
-        session()->flash('success','Antibiotic saved successfully');
-        return redirect()->route('admin.antibiotics.index');
+        try {
+            Antibiotic::create($request->except('_token'));
+            return redirect()->route('admin.antibiotics.index')->with('success', __('Antibiotic saved successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create antibiotic.'));
+        }
     }
 
     /**
@@ -116,7 +119,8 @@ class AntibioticsController extends Controller
      */
     public function show($id)
     {
-        //
+        $antibiotic = Antibiotic::findOrFail($id);
+        return view('admin.antibiotics.show', compact('antibiotic'));
     }
 
     /**
@@ -140,10 +144,13 @@ class AntibioticsController extends Controller
      */
     public function update(AntibioticRequest $request, $id)
     {
-        $antibiotic=Antibiotic::findOrFail($id);
-        $antibiotic->update($request->except('_token','_method'));
-        session()->flash('success','Antibiotic updated successfully');
-        return redirect()->route('admin.antibiotics.index');
+        try {
+            $antibiotic=Antibiotic::findOrFail($id);
+            $antibiotic->update($request->except('_token','_method'));
+            return redirect()->route('admin.antibiotics.index')->with('success', __('Antibiotic updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update antibiotic.'));
+        }
     }
 
     /**
@@ -154,9 +161,12 @@ class AntibioticsController extends Controller
      */
     public function destroy($id)
     {
-        $antibiotic=Antibiotic::findOrFail($id);
-        $antibiotic->delete();
-        session()->flash('success','Antibiotic deleted successfully');
-        return redirect()->route('admin.antibiotics.index');
+        try {
+            $antibiotic=Antibiotic::findOrFail($id);
+            $antibiotic->delete();
+            return redirect()->route('admin.antibiotics.index')->with('success', __('Antibiotic deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete antibiotic.'));
+        }
     }
 }

@@ -173,12 +173,21 @@ if (!function_exists('generate_pdf'))
         $pdf_name=time().'.pdf';
 		        
 		//get header , body , footer
-        $report_header = base64_encode(file_get_contents('img/report_header.jpg'));
-        $report_background = base64_encode(file_get_contents('img/report_background.png'));
-        $report_footer = base64_encode(file_get_contents('img/report_footer.jpg'));
-        $report_header = 'data:'.mime_content_type('img/report_header.jpg').';base64,'.$report_header;
-        $report_background = 'data:'.mime_content_type('img/report_background.png').';base64,'.$report_background;
-        $report_footer = 'data:'.mime_content_type('img/report_footer.jpg').';base64,'.$report_footer;
+        $report_header = '';
+        $report_background = '';
+        $report_footer = '';
+        if (file_exists('img/report_header.jpg')) {
+            $report_header = base64_encode(file_get_contents('img/report_header.jpg'));
+            $report_header = 'data:'.mime_content_type('img/report_header.jpg').';base64,'.$report_header;
+        }
+        if (file_exists('img/report_background.png')) {
+            $report_background = base64_encode(file_get_contents('img/report_background.png'));
+            $report_background = 'data:'.mime_content_type('img/report_background.png').';base64,'.$report_background;
+        }
+        if (file_exists('img/report_footer.jpg')) {
+            $report_footer = base64_encode(file_get_contents('img/report_footer.jpg'));
+            $report_footer = 'data:'.mime_content_type('img/report_footer.jpg').';base64,'.$report_footer;
+        }
 
         if($type==1)
         {

@@ -40,25 +40,25 @@ class GroupsController extends Controller
 
             if (in_array($action, ['index', 'show', 'ajax'])) {
                 if (!$u->hasPermission('view_group')) {
-                    abort(403, 'আপনার এই পেজ দেখার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to view this page.'));
                 }
             }
 
             if (in_array($action, ['create', 'store'])) {
                 if (!$u->hasPermission('create_group')) {
-                    abort(403, 'আপনার নতুন ইনভয়েস তৈরি করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to create a new invoice.'));
                 }
             }
 
             if (in_array($action, ['edit', 'update'])) {
                 if (!$u->hasPermission('edit_group')) {
-                    abort(403, 'আপনার ইনভয়েস এডিট করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to edit an invoice.'));
                 }
             }
 
             if ($action == 'destroy') {
                 if (!$u->hasPermission('delete_group')) {
-                    abort(403, 'আপনার ইনভয়েস ডিলিট করার অনুমতি নেই।');
+                    abort(403, __('You don\'t have permission to delete an invoice.'));
                 }
             }
 
@@ -129,8 +129,7 @@ class GroupsController extends Controller
 
     public function store(GroupRequest $request)
     {
-       // ডাটা টেবিল এর প্যারামিটারগুলো বাদ দেওয়া হয়েছে
-       $group = Group::create($request->except('_token', 'tests', 'cultures'));
+       $group = Group::create($request->only('branch_id', 'patient_id', 'doctor_id', 'subtotal', 'discount', 'total', 'paid', 'due', 'contract_id'));
        
        if ($request->has('tests')) {
            foreach ($request['tests'] as $test) {
@@ -180,7 +179,7 @@ class GroupsController extends Controller
 
     public function show($id)
     {
-        $group = Group::with('tests.test')->findOrFail($id);
+        $group = Group::with(['patient', 'doctor', 'branch', 'contract', 'tests.test.components', 'cultures.culture', 'cultures.options.culture_option'])->findOrFail($id);
         return view('admin.groups.show', compact('group'));
     }
 
@@ -197,85 +196,103 @@ class GroupsController extends Controller
 
     public function update(GroupRequest $request, $id)
     {
-        $group = Group::findOrFail($id);
-        $group->update($request->except('_method', '_token', 'tests', 'cultures'));
-        
-        $group_tests = $group->tests->pluck('test_id')->toArray();
-        $group_cultures = $group->cultures->pluck('culture_id')->toArray();
+        try {
+            $group = Group::findOrFail($id);
+            $group->update($request->only('branch_id', 'patient_id', 'doctor_id', 'subtotal', 'discount', 'total', 'paid', 'due', 'contract_id'));
+            
+            $group_tests = $group->tests->pluck('test_id')->toArray();
+            $group_cultures = $group->cultures->pluck('culture_id')->toArray();
 
-        if ($request->has('tests')) {
-            GroupTest::where('group_id', $id)->whereNotIn('test_id', $request['tests'])->delete(); 
-            $group_update_tests = GroupTest::where('group_id', $id)->whereIn('test_id', $request['tests'])->get();
-            foreach ($group_update_tests as $group_test) {
-                $test = Test::find($group_test['test_id']);
-                $group_test->update(['price' => $test['price']]);
-            }
-        } else {
-            GroupTest::where('group_id', $id)->delete();
-        }
-
-        if ($request->has('cultures')) {
-            GroupCulture::where('group_id', $id)->whereNotIn('culture_id', $request['cultures'])->delete();
-            $group_update_cultures = GroupCulture::where('group_id', $id)->whereIn('culture_id', $request['cultures'])->get();
-            foreach ($group_update_cultures as $group_culture) {
-                $culture = Culture::find($group_culture['culture_id']);
-                $group_culture->update(['price' => $culture['price']]);
-            }
-        } else {
-            GroupCulture::where('group_id', $id)->delete();
-        }
-
-        if ($request->has('tests')) {
-            foreach ($request['tests'] as $test) {
-                if (!in_array($test, $group_tests)) {
-                    GroupTest::create([
-                        'group_id' => $group->id,
-                        'test_id' => $test,
-                        'price' => Test::find($test)['price']
-                    ]);
+            if ($request->has('tests')) {
+                GroupTest::where('group_id', $id)->whereNotIn('test_id', $request['tests'])->delete(); 
+                $group_update_tests = GroupTest::where('group_id', $id)->whereIn('test_id', $request['tests'])->get();
+                foreach ($group_update_tests as $group_test) {
+                    $test = Test::find($group_test['test_id']);
+                    $group_test->update(['price' => $test['price']]);
                 }
+            } else {
+                GroupTest::where('group_id', $id)->delete();
             }
-        }
 
-        if ($request->has('cultures')) {
-            $culture_options = CultureOption::where('parent_id', 0)->get();
-            foreach ($request['cultures'] as $culture) {
-                if (!in_array($culture, $group_cultures)) {
-                    $group_culture = GroupCulture::create([
-                        'group_id' => $group->id,
-                        'culture_id' => $culture,
-                        'price' => Culture::find($culture)['price']
-                    ]);
-                    foreach ($culture_options as $culture_option) {
-                        GroupCultureOption::create([
-                            'group_culture_id' => $group_culture['id'],
-                            'culture_option_id' => $culture_option['id'],
+            if ($request->has('cultures')) {
+                GroupCulture::where('group_id', $id)->whereNotIn('culture_id', $request['cultures'])->delete();
+                $group_update_cultures = GroupCulture::where('group_id', $id)->whereIn('culture_id', $request['cultures'])->get();
+                foreach ($group_update_cultures as $group_culture) {
+                    $culture = Culture::find($group_culture['culture_id']);
+                    $group_culture->update(['price' => $culture['price']]);
+                }
+            } else {
+                GroupCulture::where('group_id', $id)->delete();
+            }
+
+            if ($request->has('tests')) {
+                foreach ($request['tests'] as $test) {
+                    if (!in_array($test, $group_tests)) {
+                        GroupTest::create([
+                            'group_id' => $group->id,
+                            'test_id' => $test,
+                            'price' => Test::find($test)['price']
                         ]);
                     }
                 }
             }
+
+            if ($request->has('cultures')) {
+                $culture_options = CultureOption::where('parent_id', 0)->get();
+                foreach ($request['cultures'] as $culture) {
+                    if (!in_array($culture, $group_cultures)) {
+                        $group_culture = GroupCulture::create([
+                            'group_id' => $group->id,
+                            'culture_id' => $culture,
+                            'price' => Culture::find($culture)['price']
+                        ]);
+                        foreach ($culture_options as $culture_option) {
+                            GroupCultureOption::create([
+                                'group_culture_id' => $group_culture['id'],
+                                'culture_option_id' => $culture_option['id'],
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            $this->assign_tests_report($id);
+            group_test_calculations($id);
+
+            $pdf = generate_pdf($group, 2);
+            if (isset($pdf)) {
+                $group->update(['receipt_pdf' => $pdf]);
+            }
+
+            return redirect()->route('admin.groups.show', $id)->with('success', __('Group updated successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to update invoice.'));
         }
-
-        $this->assign_tests_report($id);
-        group_test_calculations($id);
-
-        $pdf = generate_pdf($group, 2);
-        if (isset($pdf)) {
-            $group->update(['receipt_pdf' => $pdf]);
-        }
-
-        session()->flash('success', __('Group updated successfully'));
-        return redirect()->route('admin.groups.show', $id);
     }
 
     public function destroy($id)
     {
-        $group = Group::findOrFail($id);
-        $group->delete();
+        try {
+            $group = Group::findOrFail($id);
+            
+            // Delete related records manually due to lack of DB level cascading
+            foreach ($group->tests as $test) {
+                GroupTestResult::where('group_test_id', $test->id)->delete();
+                $test->delete();
+            }
 
-        // রিলেটেড ডাটা ডিলিট করার লজিক এখানে ডাটাবেস লেভেলে ক্যাসকেড ডিলিট থাকলে ভালো
-        session()->flash('success', __('Group deleted successfully'));
-        return redirect()->route('admin.groups.index');
+            foreach ($group->cultures as $culture) {
+                GroupCultureResult::where('group_culture_id', $culture->id)->delete();
+                GroupCultureOption::where('group_culture_id', $culture->id)->delete();
+                $culture->delete();
+            }
+
+            $group->delete();
+
+            return redirect()->route('admin.groups.index')->with('success', __('Group deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete invoice.'));
+        }
     }
 
     public function generate_barcode($group)

@@ -110,13 +110,13 @@ class ExpensesController extends Controller
      */
     public function store(ExpenseRequest $request)
     {
-        $request['date']=\Carbon\Carbon::parse($request['date']);
-
-        $expense=Expense::create($request->except('_token','_method','files'));
-
-        session()->flash('success',__('Expense created successfully'));
-
-        return redirect()->route('admin.expenses.index');
+        try {
+            $request['date']=\Carbon\Carbon::parse($request['date']);
+            Expense::create($request->except('_token','_method','files'));
+            return redirect()->route('admin.expenses.index')->with('success', __('Expense created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create expense.'));
+        }
     }
 
     /**
@@ -127,7 +127,8 @@ class ExpensesController extends Controller
      */
     public function show($id)
     {
-        //
+        $expense = Expense::with('category')->findOrFail($id);
+        return view('admin.accounting.expenses.show', compact('expense'));
     }
 
     /**
@@ -152,14 +153,14 @@ class ExpensesController extends Controller
      */
     public function update(ExpenseRequest $request, $id)
     {
-        $request['date']=\Carbon\Carbon::parse($request['date']);
-
-        $expense=Expense::findOrFail($id);
-        $expense->update($request->except('_token','_method','files'));
-
-        session()->flash('success',__('Expense updated successfully'));
-
-        return redirect()->route('admin.expenses.index');
+        try {
+            $request['date']=\Carbon\Carbon::parse($request['date']);
+            $expense=Expense::findOrFail($id);
+            $expense->update($request->except('_token','_method','files'));
+            return redirect()->route('admin.expenses.index')->with('success', __('Expense updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update expense.'));
+        }
     }
 
     /**
@@ -170,11 +171,12 @@ class ExpensesController extends Controller
      */
     public function destroy($id)
     {
-        $expense=Expense::findOrFail($id);
-        $expense->delete();
-
-        session()->flash('success',__('Expense deleted successfully'));
-
-        return redirect()->route('admin.expenses.index');
+        try {
+            $expense=Expense::findOrFail($id);
+            $expense->delete();
+            return redirect()->route('admin.expenses.index')->with('success', __('Expense deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete expense.'));
+        }
     }
 }

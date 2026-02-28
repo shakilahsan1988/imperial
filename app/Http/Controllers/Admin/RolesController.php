@@ -114,17 +114,18 @@ class RolesController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        $role=Role::create($request->except('_token','permissions'));
-        
-        if($request->has('permissions'))
-        {
-            $role->permissions()->createMany($request['permissions']);
+        try {
+            $role=Role::create($request->except('_token','permissions'));
+            
+            if($request->has('permissions'))
+            {
+                $role->permissions()->createMany($request['permissions']);
+            }
+
+            return redirect()->route('admin.roles.index')->with('success', __('Role created successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to create role.'));
         }
-
-        session()->flash('success',__('Role created successfully'));
-
-        return redirect()->route('admin.roles.index');
-
     }
 
     /**
@@ -135,7 +136,8 @@ class RolesController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::with('permissions.permission')->findOrFail($id);
+        return view('admin.roles.show', compact('role'));
     }
 
     /**
@@ -164,21 +166,22 @@ class RolesController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
-        $role=Role::findOrFail($id);
+        try {
+            $role=Role::findOrFail($id);
 
-        $role->update($request->except('_token','_method','permissions'));
+            $role->update($request->except('_token','_method','permissions'));
 
-        RolePermission::where('role_id',$id)->delete();
-        
-        if($request->has('permissions'))
-        {
-            $role->permissions()->createMany($request['permissions']);
+            RolePermission::where('role_id',$id)->delete();
+            
+            if($request->has('permissions'))
+            {
+                $role->permissions()->createMany($request['permissions']);
+            }
+            
+            return redirect()->route('admin.roles.index')->with('success', __('Role updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update role.'));
         }
-        
-        session()->flash('success',__('Role updated successfully'));
-
-        return redirect()->route('admin.roles.index');
-
     }
 
     /**
@@ -189,15 +192,13 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $role=Role::findOrFail($id);
-
-        $role->permissions()->delete();
-
-        $role->delete();
-
-        session()->flash('success',__('Role deleted successfully'));
-        
-        return redirect()->route('admin.roles.index');
-
+        try {
+            $role=Role::findOrFail($id);
+            $role->permissions()->delete();
+            $role->delete();
+            return redirect()->route('admin.roles.index')->with('success', __('Role deleted successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to delete role.'));
+        }
     }
 }

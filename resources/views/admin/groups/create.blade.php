@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{__('ইনভোয়েছ ক্রিয়েট')}}
+    {{__('Create Invoice')}}
 @endsection
 
 @section('breadcrumb')
@@ -11,14 +11,14 @@
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">
             <i class="nav-icon fas fa-layer-group"></i>
-            {{__('ইনভোয়েছ ক্রিয়েট')}}
+            {{__('Create Invoice')}}
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('হোম')}}</a></li>
-            <li class="breadcrumb-item active"><a href="{{route('admin.groups.index')}}">{{__('ইনভোয়েছ অ্যান্ড বিলিং')}}</a></li>
-            <li class="breadcrumb-item active">{{__('ইনভোয়েছ ক্রিয়েট')}}</li>
+            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
+            <li class="breadcrumb-item active"><a href="{{route('admin.groups.index')}}">{{__('Invoice & Billing')}}</a></li>
+            <li class="breadcrumb-item active">{{__('Create Invoice')}}</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -27,7 +27,7 @@
 @endsection
 
 @section('content')
-   
+
    <!-- Form -->
    <form action="{{route('admin.groups.store')}}" method="POST" id="group_form">
     @csrf

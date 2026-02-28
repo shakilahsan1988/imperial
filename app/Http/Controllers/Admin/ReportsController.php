@@ -204,84 +204,86 @@ class ReportsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $group_test=GroupTest::where('id',$id)->firstOrFail();
-        
-        GroupTest::where('id',$id)->update([
-           'done'=>true,
-           'comment'=>$request['comment']
-        ]);
+        try {
+            $group_test=GroupTest::where('id',$id)->firstOrFail();
+            
+            GroupTest::where('id',$id)->update([
+               'done'=>true,
+               'comment'=>$request['comment']
+            ]);
 
-        $group=Group::find($group_test['group_id']);
-        
-        //check if all reports done
-        $done=check_group_done($group_test['group_id']);
+            $group=Group::find($group_test['group_id']);
+            
+            //check if all reports done
+            $done=check_group_done($group_test['group_id']);
 
-        //send tests notification
-        if($done)
-        {
-            $patient=Patient::find($group['patient_id']);
-            send_notification('tests_notification',$patient);
-        }
-
-        //end check
-
-        $group->update(['done'=>$done]);
-
-        //update result
-        if($request->has('result'))
-        {
-            foreach($request['result'] as $key=>$result)
+            //send tests notification
+            if($done)
             {
-                $group_test_result=GroupTestResult::where('id',$key)->first();
-
-                $test=Test::where('id',$group_test_result['test_id'])->first();
-
-                //add if new option created
-                if(isset($test)&&$test['type']=='select')
-                {
-                    $option=TestOption::where([
-                        ['test_id',$test['id']],
-                        ['name',$result['result']]
-                    ])->first();
-
-                    if(!isset($option))
-                    {
-                        TestOption::create([
-                            'name'=>$result['result'],
-                            'test_id'=>$test['id']
-                        ]);
-                    }
-                }
-
-                if(!isset($result['status']))
-                {
-                    $result['status']='';
-                }
-
-                if(!isset($result['result']))
-                {
-                    $result['result']='';
-                }
-                
-                //update result
-                $group_test_result->update([
-                    'result'=>$result['result'],
-                    'status'=>$result['status']
-                ]);
+                $patient=Patient::find($group['patient_id']);
+                send_notification('tests_notification',$patient);
             }
+
+            //end check
+
+            $group->update(['done'=>$done]);
+
+            //update result
+            if($request->has('result'))
+            {
+                foreach($request['result'] as $key=>$result)
+                {
+                    $group_test_result=GroupTestResult::where('id',$key)->first();
+
+                    $test=Test::where('id',$group_test_result['test_id'])->first();
+
+                    //add if new option created
+                    if(isset($test)&&$test['type']=='select')
+                    {
+                        $option=TestOption::where([
+                            ['test_id',$test['id']],
+                            ['name',$result['result']]
+                        ])->first();
+
+                        if(!isset($option))
+                        {
+                            TestOption::create([
+                                'name'=>$result['result'],
+                                'test_id'=>$test['id']
+                            ]);
+                        }
+                    }
+
+                    if(!isset($result['status']))
+                    {
+                        $result['status']='';
+                    }
+
+                    if(!isset($result['result']))
+                    {
+                        $result['result']='';
+                    }
+                    
+                    //update result
+                    $group_test_result->update([
+                        'result'=>$result['result'],
+                        'status'=>$result['status']
+                    ]);
+                }
+            }
+
+            //generate pdf
+            $pdf=generate_pdf($group);
+
+            if(isset($pdf))
+            {
+                $group->update(['report_pdf'=>$pdf]);
+            }
+          
+            return redirect()->back()->with('success', __('Test result saved successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to save test result.'));
         }
-
-        //generate pdf
-        $pdf=generate_pdf($group);
-
-        if(isset($pdf))
-        {
-            $group->update(['report_pdf'=>$pdf]);
-        }
-      
-        session()->flash('success',__('Test result saved successfully'));
-
-        return redirect()->back();
     }
 
     /**
@@ -293,65 +295,66 @@ class ReportsController extends Controller
      */
     public function update_culture(UpdateCultureResultRequest $request,$id)
     {        
-        $group_culture=GroupCulture::findOrFail($id);        
-      
-        GroupCultureResult::where('group_culture_id',$id)->delete();
+        try {
+            $group_culture=GroupCulture::findOrFail($id);        
+          
+            GroupCultureResult::where('group_culture_id',$id)->delete();
 
-        $group_culture->update([
-            'done'=>true,
-            'comment'=>$request['comment']
-        ]);
-
-        //save options
-        foreach($request['culture_options'] as $key=>$value)
-        {
-            GroupCultureOption::where('id',$key)->update([
-                'value'=>$value
+            $group_culture->update([
+                'done'=>true,
+                'comment'=>$request['comment']
             ]);
-        }
-        
-        //save antibiotics
-        if($request->has('antibiotic'))
-        {
-            foreach($request['antibiotic'] as $antibiotic)
+
+            //save options
+            foreach($request['culture_options'] as $key=>$value)
             {
-                if(!empty($antibiotic['antibiotic'])&&!empty($antibiotic['sensitivity']))
+                GroupCultureOption::where('id',$key)->update([
+                    'value'=>$value
+                ]);
+            }
+            
+            //save antibiotics
+            if($request->has('antibiotic'))
+            {
+                foreach($request['antibiotic'] as $antibiotic)
                 {
-                    GroupCultureResult::create([
-                        'group_culture_id'=>$id,
-                        'antibiotic_id'=>$antibiotic['antibiotic'],
-                        'sensitivity'=>$antibiotic['sensitivity'],
-                    ]);
+                    if(!empty($antibiotic['antibiotic'])&&!empty($antibiotic['sensitivity']))
+                    {
+                        GroupCultureResult::create([
+                            'group_culture_id'=>$id,
+                            'antibiotic_id'=>$antibiotic['antibiotic'],
+                            'sensitivity'=>$antibiotic['sensitivity'],
+                        ]);
+                    }
                 }
             }
+
+
+            //check if all reports done
+            $done=check_group_done($group_culture['group_id']);
+
+            //send tests notification
+            $group=Group::find($group_culture['group_id']);
+            if($done)
+            {
+                $patient=Patient::find($group['patient_id']);
+                send_notification('tests_notification',$patient);
+            }
+
+            //end check
+
+            //generate pdf
+            $pdf=generate_pdf($group);
+
+            if(isset($pdf))
+            {
+                $group->update(['report_pdf'=>$pdf]);
+            }
+
+            return redirect()->back()->with('success', __('Culture result saved successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Failed to save culture result.'));
         }
-
-
-        //check if all reports done
-        $done=check_group_done($group_culture['group_id']);
-
-        //send tests notification
-        $group=Group::find($group_culture['group_id']);
-        if($done)
-        {
-            $patient=Patient::find($group['patient_id']);
-            send_notification('tests_notification',$patient);
-        }
-
-        //end check
-
-        //generate pdf
-        $pdf=generate_pdf($group);
-
-        if(isset($pdf))
-        {
-            $group->update(['report_pdf'=>$pdf]);
-        }
-
-        session()->flash('success',__('Culture result saved successfully'));
-
-        return redirect()->back();
-       
     }
 
     /**
