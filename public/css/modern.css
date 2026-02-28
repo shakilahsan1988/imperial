@@ -1,0 +1,577 @@
+/* 
+    Modern UI Overrides for Imperial Lab Management 
+    Designed for a clean, professional, and sophisticated look.
+*/
+
+/* --- Typography --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    background-color: #f4f7f6 !important;
+    color: #334155 !important;
+    font-size: 0.9rem;
+}
+
+/* --- Global Colors --- */
+:root {
+    --primary: #4f46e5; /* Modern Indigo */
+    --secondary: #64748b;
+    --success: #10b981;
+    --info: #0ea5e9;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --dark: #1e293b;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* --- Cards & Containers --- */
+.card {
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow) !important;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding: 1.25rem 1.5rem !important;
+}
+
+.card-title {
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    font-size: 1.1rem !important;
+}
+
+.card-outline.card-primary {
+    border-top: 4px solid var(--primary) !important;
+}
+
+/* --- Sidebar Styling --- */
+.main-sidebar {
+    background-color: #1e293b !important; /* Deep Navy/Slate */
+    box-shadow: 4px 0 10px rgba(0,0,0,0.05) !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+}
+
+.nav-sidebar .nav-link {
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+    padding: 10px 12px !important;
+    font-weight: 500 !important;
+    color: #cbd5e1 !important; /* Muted slate */
+    transition: all 0.2s ease;
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: rgba(255,255,255,0.05) !important;
+    color: #fff !important;
+}
+
+.nav-sidebar .nav-icon {
+    font-size: 1.1rem !important;
+    margin-right: 10px !important;
+}
+
+.brand-link {
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 1.5rem 1rem !important;
+}
+
+/* --- Navbar (Glassmorphism) --- */
+.main-header {
+    border-bottom: 1px solid #f1f5f9 !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 1rem !important;
+}
+
+/* Fix navbar text and icon visibility on light background */
+.main-header .nav-link {
+    color: #334155 !important;
+    font-weight: 500 !important;
+}
+
+.main-header .nav-link i {
+    color: #64748b !important;
+}
+
+.main-header .nav-link:hover,
+.main-header .nav-link:hover i {
+    color: var(--primary) !important;
+}
+
+/* Logout Button in Header */
+.main-header .btn-danger {
+    background-color: #fee2e2 !important;
+    color: #ef4444 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 6px 12px !important;
+}
+
+.main-header .btn-danger:hover {
+    background-color: #ef4444 !important;
+    color: #fff !important;
+}
+
+/* --- Buttons --- */
+.btn {
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+}
+
+.btn-primary { background-color: var(--primary) !important; }
+.btn-success { background-color: var(--success) !important; }
+.btn-danger  { background-color: var(--danger) !important; }
+.btn-info    { background-color: var(--info) !important; }
+.btn-warning { background-color: var(--warning) !important; color: #fff !important; }
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* --- Inputs --- */
+.form-control {
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 10px 15px !important;
+    height: auto !important;
+    background-color: #f8fafc !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary) !important;
+    background-color: #fff !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+}
+
+/* --- DataTables --- */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 6px !important;
+}
+
+table.dataTable thead th {
+    background-color: #f8fafc !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* --- Badges --- */
+.badge {
+    padding: 6px 10px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+}
+
+/* --- Preloader --- */
+.preloader {
+    background-color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- User Panel --- */
+.user-panel {
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    padding: 1.5rem 1rem !important;
+}
+
+.user-panel .image img {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border: 2px solid rgba(255,255,255,0.1) !important;
+}
+
+.user-panel .info a {
+    font-weight: 600 !important;
+    color: #fff !important;
+    font-size: 0.95rem !important;
+}
+
+/* --- Card Refinements --- */
+.card-primary.card-outline {
+    border-top: 3px solid var(--primary) !important;
+}
+
+.card-success.card-outline {
+    border-top: 3px solid var(--success) !important;
+}
+
+.card-danger.card-outline {
+    border-top: 3px solid var(--danger) !important;
+}
+
+/* --- Tables --- */
+.table {
+    color: #475569 !important;
+}
+
+.table thead th {
+    border-top: none !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.table td {
+    vertical-align: middle !important;
+    padding: 1rem 0.75rem !important;
+    border-top: 1px solid #f8fafc !important;
+}
+
+/* --- Dashboard Widgets --- */
+.small-box {
+    border-radius: var(--border-radius) !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none !important;
+    box-shadow: var(--shadow) !important;
+}
+
+.small-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.small-box > .inner {
+    padding: 1.5rem !important;
+}
+
+.small-box h3 {
+    font-weight: 700 !important;
+    font-size: 2rem !important;
+}
+
+.small-box .icon {
+    top: 10px !important;
+    right: 15px !important;
+    font-size: 60px !important;
+    opacity: 0.15 !important;
+}
+
+/* Modern Color Variations for Boxes */
+.bgPrimary { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important; color: #fff !important; }
+.bgSecondary { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%) !important; color: #fff !important; }
+.bg-olive { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: #fff !important; }
+.bg-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important; color: #fff !important; }
+.bg-danger { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important; color: #fff !important; }
+
+.small-box-footer {
+    background-color: rgba(0,0,0,0.1) !important;
+    padding: 8px !important;
+    font-weight: 500 !important;
+}
+
+.info-box {
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow) !important;
+    border: none !important;
+}
+
+.info-box .info-box-icon {
+    border-radius: var(--border-radius) 0 0 var(--border-radius) !important;
+    font-size: 1.5rem !important;
+}
+
+/* --- Select2 Modernization --- */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    height: auto !important;
+    background-color: #f8fafc !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #334155 !important;
+    line-height: 1.5 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px !important;
+}
+
+.select2-dropdown {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* --- Modals --- */
+.modal-content {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding: 1.5rem !important;
+}
+
+.modal-footer {
+    border-top: 1px solid #f1f5f9 !important;
+    padding: 1.25rem !important;
+}
+
+/* --- Progress Bars --- */
+.progress {
+    height: 8px !important;
+    border-radius: 10px !important;
+    background-color: #f1f5f9 !important;
+}
+
+.progress-bar {
+    border-radius: 10px !important;
+    background-color: var(--primary) !important;
+}
+
+/* --- Content Header Refinement --- */
+.content-header {
+    padding: 2rem 0.5rem 1rem !important;
+}
+
+/* --- Labels --- */
+label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: 600 !important;
+    color: #475569 !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 0.85rem !important;
+}
+
+/* --- Auth Pages Modernization --- */
+.container-login100 {
+    background-color: #f8fafc !important;
+}
+
+.wrap-login100 {
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.login100-form-title {
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.wrap-input100 {
+    border-bottom: 2px solid #e2e8f0 !important;
+    margin-bottom: 25px !important;
+}
+
+.input100 {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1rem !important;
+    color: #1e293b !important;
+    padding: 0 5px !important;
+}
+
+.focus-input100::after {
+    background: var(--primary) !important;
+}
+
+.label-input100 {
+    font-family: 'Inter', sans-serif !important;
+    color: #64748b !important;
+}
+
+.login100-form-btn {
+    font-family: 'Inter', sans-serif !important;
+    background-color: var(--primary) !important;
+    border-radius: 10px !important;
+    height: 55px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.login100-form-btn:hover {
+    background-color: #4338ca !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4) !important;
+}
+
+.login100-form-social-item {
+    border-radius: 12px !important;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 1.2rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.login100-form-social-item:hover {
+    transform: scale(1.1);
+}
+
+.txt1, .txt2 {
+    font-family: 'Inter', sans-serif !important;
+    color: #64748b !important;
+}
+
+.txt1:hover {
+    color: var(--primary) !important;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .main-sidebar {
+        box-shadow: 10px 0 30px rgba(0,0,0,0.1) !important;
+    }
+}
+
+/* --- Netliva Switch Modernization --- */
+.netliva-switch {
+    height: 24px !important;
+    width: 48px !important;
+}
+
+.netliva-switch label {
+    background-color: #e2e8f0 !important;
+    border-radius: 20px !important;
+}
+
+.netliva-switch input:checked + label {
+    background-color: var(--success) !important;
+}
+
+/* --- Custom File Input --- */
+.custom-file-label {
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 10px 15px !important;
+    height: auto !important;
+}
+
+.custom-file-label::after {
+    border-radius: 0 8px 8px 0 !important;
+    height: auto !important;
+    padding: 10px 15px !important;
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+/* --- Specific Table Styling for Invoice Form --- */
+#receipt_table td {
+    padding: 0.75rem !important;
+    font-weight: 500;
+}
+
+#receipt_table input.form-control {
+    text-align: right;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+/* --- Box Shadow Utilities --- */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important; }
+.shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important; }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important; }
+
+/* --- Spacing --- */
+.card-body {
+    padding: 1.5rem !important;
+}
+
+/* --- Table Enhancements --- */
+.table-hover tbody tr:hover {
+    background-color: #f1f5f9 !important;
+    transition: background-color 0.2s ease;
+}
+
+/* --- Scrollbar Customization --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* --- Nav Icon Polish --- */
+.nav-sidebar .nav-icon {
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover .nav-icon {
+    transform: scale(1.1);
+}
+
+/* --- Nav Tabs Modernization --- */
+.nav-tabs {
+    border-bottom: 2px solid #f1f5f9 !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: -2px !important;
+}
+
+.nav-tabs .nav-link {
+    border: none !important;
+    color: #64748b !important;
+    font-weight: 600 !important;
+    padding: 12px 20px !important;
+    border-bottom: 2px solid transparent !important;
+    background-color: transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--primary) !important;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary) !important;
+    background-color: transparent !important;
+    border-bottom: 2px solid var(--primary) !important;
+}
+
+/* --- Dashboard Specific --- */
+.online_list .product-info {
+    margin-left: 60px !important;
+}
+
+.online_list .product-img img {
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 12px !important;
+}
+
+.online_list .product-title {
+    font-weight: 600 !important;
+    color: #1e293b !important;
+}

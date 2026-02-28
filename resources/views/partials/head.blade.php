@@ -59,4 +59,7 @@
     <link rel="stylesheet" href="{{url('css/bootstrap-rtl.min.css')}}">
 @endif
 
+<!-- Modern UI Styles -->
+<link rel="stylesheet" href="{{url('css/modern.css')}}">
+
 @yield('css')

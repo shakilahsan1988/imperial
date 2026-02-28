@@ -37,73 +37,79 @@
             }
         @endif
 
+        body {
+            font-family: sans-serif;
+            color: #334155;
+        }
+
         .table-bordered {
-            border: 1px solid #dee2e6;
+            border: 1px solid #e2e8f0;
             border-collapse: collapse;
             background-color: white!important;
         }
 
-        .table-bordered,
-        .table-bordered td {
-            border: 1px solid #dee2e6;
-        }
-
-        .table-bordered thead th,
-        .table-bordered thead td {
-            border-bottom-width: 2px;
-        }  
-
         .table-bordered th,
         .table-bordered td {
-            border: 1px solid #ddd !important;
+            border: 1px solid #e2e8f0 !important;
+            padding: 8px 12px;
         }
-        table{
+
+        table {
             width: 100%;
             border-collapse: collapse;
         }
-        table td,th{
-            padding: 5px;
+
+        .title {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #64748b;
         }
-        .title{
-            background-color: #ddd;
+
+        .data {
+            font-weight: 500;
+            color: #1e293b;
         }
-        .signature{
-            font-size:13px;
-            font-weight: bold!important; 
+
+        .signature {
+            font-size: 13px;
+            font-weight: 600 !important; 
         }
-        .footer{
-            border-top: 3px double;
+
+        .footer {
+            border-top: 1px solid #cbd5e1;
+            padding-top: 10px;
+            margin-top: 20px;
         }
-        .branch_name{
+
+        .patient-info-table {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .patient-info-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .patient-info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .branch_name {
             color:{{$reports_settings['branch_name']['color']}}!important;
             font-size:{{$reports_settings['branch_name']['font-size']}}!important;
             font-family:{{$reports_settings['branch_name']['font-family']}}!important;
+            font-weight: 700;
+            margin-bottom: 5px;
         }
-        .branch_info{
+
+        .branch_info {
             color:{{$reports_settings['branch_info']['color']}}!important;
             font-size:{{$reports_settings['branch_info']['font-size']}}!important;
             font-family:{{$reports_settings['branch_info']['font-family']}}!important;
-        }
-        .title{
-            color:{{$reports_settings['patient_title']['color']}}!important;
-            font-size:{{$reports_settings['patient_title']['font-size']}}!important;
-            font-family:{{$reports_settings['patient_title']['font-family']}}!important;
-        }
-        .data{
-            color:{{$reports_settings['patient_data']['color']}}!important;
-            font-size:{{$reports_settings['patient_data']['font-size']}}!important;
-            font-family:{{$reports_settings['patient_data']['font-family']}}!important;
-        }
-        .signature{
-            color:{{$reports_settings['signature']['color']}}!important;
-            font-size:{{$reports_settings['signature']['font-size']}}!important;
-            font-family:{{$reports_settings['signature']['font-family']}}!important;
-        }
-        .footer{
-            color:{{$reports_settings['report_footer']['color']}}!important;
-            font-size:{{$reports_settings['report_footer']['font-size']}}!important;
-            font-family:{{$reports_settings['report_footer']['font-family']}}!important;
-            text-align:{{$reports_settings['report_footer']['text-align']}}!important;
+            margin: 2px 0;
         }
     </style>
 

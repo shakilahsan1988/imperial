@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{__('Home visits')}}
-@endsection
-
-@section('css')
-    <link rel="stylesheet" href="{{url('plugins/swtich-netliva/css/netliva_switch.css')}}">
+{{__('Home Visits')}}
 @endsection
 
 @section('breadcrumb')
@@ -14,20 +10,22 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">
-            <i class="fa fa-home"></i>
-            {{__('Home visits')}}
+            <i class="nav-icon fas fa-home"></i>   
+            {{__('Home Visits')}}
           </h1>
-        </div><div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
-            <li class="breadcrumb-item active"><a href="#">{{__('Home visits')}}</a></li>
+            <li class="breadcrumb-item active">{{__('Home Visits')}}</li>
           </ol>
-        </div></div></div></div>
+        </div>
+      </div>
+    </div>
+</div>
 @endsection
 
 @section('content')
-
-{{-- ইউজার এবং সুপার এডমিন চেক করার জন্য লজিক --}}
 @php
     $u = auth()->guard('admin')->user();
     $isSuper = ($u && $u->id == 1);
@@ -35,11 +33,8 @@
 
 <div class="card card-primary card-outline">
     <div class="card-header">
-      <h3 class="card-title">
-        {{__('Home visits table')}}
-      </h3>
+      <h3 class="card-title">{{__('Home Visits Table')}}</h3>
       
-      {{-- @can('create_visit') এর পরিবর্তে কাস্টম লজিক --}}
       @if($u && ($isSuper || $u->hasPermission('create_visit')))
         <a href="{{route('admin.visits.create')}}" class="btn btn-primary btn-sm float-right">
           <i class="fa fa-plus"></i> {{ __('Create') }}
@@ -47,43 +42,8 @@
       @endif
     </div>
     <div class="card-body">
-
-        <div id="accordion">
-          <div class="card card-info">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary collapsed" aria-expanded="false">
-              <i class="fas fa-filter"></i> {{__('Filters')}}
-            </a>
-            <div id="collapseOne" class="panel-collapse in collapse">
-              <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="col-lg-3">
-                      <div class="form-group">
-                          <label for="filter_status">{{__('Status')}}</label>
-                          <select name="filter_status" id="filter_status" class="form-control select2">
-                            <option value="" selected>{{__('All')}}</option>
-                            <option value="1">{{__('Completed')}}</option>
-                            <option value="0">{{__('Pending')}}</option>
-                          </select>
-                      </div>
-                    </div>
-        
-                    <div class="col-lg-3">
-                      <div class="form-group">
-                          <label for="filter_read">{{__('Viewed')}}</label>
-                          <select name="filter_read" id="filter_read" class="form-control select2">
-                            <option value="" selected>{{__('All')}}</option>
-                            <option value="1">{{__('Viewed')}}</option>
-                            <option value="0">{{__('Pending')}}</option>
-                          </select>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-          
-        <div class="col-lg-12 table-responsive">
+        <div class="row">
+          <div class="col-lg-12 table-responsive">
             <table id="visits_table" class="table table-striped table-hover table-bordered"  width="100%">
               <thead>
                 <tr>
@@ -92,23 +52,21 @@
                   <th>{{__('Phone')}}</th>
                   <th>{{__('Address')}}</th>
                   <th>{{__('Visit Date')}}</th>
-                  <th class="text-center">{{__('Viewed')}}</th>
                   <th>{{__('Status')}}</th>
-                  <th class="text-center" width="100px">{{__('Action')}}</th>
+                  <th>{{__('Viewed')}}</th>
+                  <th width="100px">{{__('Action')}}</th>
                 </tr>
               </thead>
               <tbody>
-                {{-- ডাটা টেবিলের ডাটা JS (visits.js) এর মাধ্যমে এখানে লোড হবে --}}
               </tbody>
             </table>
+          </div>
         </div>
-
     </div>
-    </div>
+</div>
 
 @endsection
 
 @section('scripts')
-  <script src="{{url('js/admin/visits.js')}}"></script>
-  <script src="{{url('plugins/swtich-netliva/js/netliva_switch.js')}}"></script>
+    <script src="{{url('js/admin/visits.js')}}"></script>
 @endsection

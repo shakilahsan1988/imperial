@@ -2,141 +2,103 @@
 
 @section('content')
 <style>
-    .receipt_title td,th{
-        border-color: white;
+    .receipt_header h2 {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #1e293b;
+        margin: 0;
+        padding: 10px 0;
     }
-    .receipt_title .total{
-        background-color: #ddd;
+    .invoice-table thead th {
+        background-color: #f8fafc;
+        border-bottom: 2px solid #e2e8f0 !important;
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
     }
-    .table th{
-        color:{{$reports_settings['test_head']['color']}}!important;
-        font-size:{{$reports_settings['test_head']['font-size']}}!important;
-        font-family:{{$reports_settings['test_head']['font-family']}}!important;
+    .total-row td {
+        background-color: #f8fafc;
+        border-top: 2px solid #e2e8f0 !important;
+        font-weight: 700;
     }
-    .total{
-        font-family:{{$reports_settings['test_head']['font-family']}}!important;
+    .summary-table td {
+        border: none !important;
+        padding: 5px 10px;
     }
-
-    .due_date{
-        font-family:{{$reports_settings['test_head']['font-family']}}!important;
+    .summary-label {
+        color: #64748b;
+        font-weight: 600;
     }
-
-    .test_name{
-        color:{{$reports_settings['test_name']['color']}}!important;
-        font-size:{{$reports_settings['test_name']['font-size']}}!important;
-        font-family:{{$reports_settings['test_name']['font-family']}}!important;
+    .summary-value {
+        text-align: right;
+        font-weight: 700;
+        color: #1e293b;
     }
-   
+    .due-amount {
+        color: #ef4444 !important;
+        font-size: 16px;
+    }
 </style>
 
 <div class="invoice">
-    
-    <table width="100%" style="margin-bottom: 10px">
-        
-		            <thead>
-                <tr>
-                    <th  class="test_title" align="center" colspan="5">
-                        <h2>Invoice</h2>
-                    </th>
-                </tr>
-            </thead>
-		
-		
-		
-		<tbody>
-		
-		
-		
-            <tr>
-                <td @if(session('rtl')) align="right" @endif>
-                        <b class="due_date">
-                            {{__('Due date')}} : {{date('d-m-Y')}}
-                        </b>
-                    <br>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="receipt_header" style="text-align: center; border-bottom: 1px solid #f1f5f9; margin-bottom: 20px;">
+        <h2>Invoice</h2>
+        <p style="color: #64748b;">Date: {{date('d-m-Y', strtotime($group['created_at']))}}</p>
+    </div>
 
-    <table class="table table-bordered" width="100%">
+    <table class="table table-bordered invoice-table" width="100%">
         <thead>
             <tr>
-                <th colspan="2" width="85%">{{__('Test Name')}}</th>
-                <th width="15%">{{__('Price')}}</th>
+                <th align="left" width="75%">Test / Investigation Name</th>
+                <th align="right" width="25%">Price</th>
             </tr>
         </thead>
         <tbody>
             @foreach($group['tests'] as $test)
             <tr>
-                <td colspan="2" class="print_title test_name">
-                    @if(isset($test['test'])) 
-                        {{$test['test']['name']}}
-                    @endif
-                </td>
-                <td>{{$test['price']}} {{get_currency()}}</td>
+                <td class="test_name">@if(isset($test['test'])) {{$test['test']['name']}} @endif</td>
+                <td align="right">{{formated_price($test['price'])}}</td>
             </tr>
             @endforeach
 
             @foreach($group['cultures'] as $culture)
             <tr>
-                <td colspan="2" class="print_title test_name">
-                    @if(isset($culture['culture']))
-                        {{$culture['culture']['name']}}
-                    @endif
-                </td>
-                <td>{{$culture['price']}} {{get_currency()}}</td>
+                <td class="test_name">@if(isset($culture['culture'])) {{$culture['culture']['name']}} @endif</td>
+                <td align="right">{{formated_price($culture['price'])}}</td>
             </tr>
             @endforeach
-
-            <tr class="receipt_title border-top">
-                <td width="70%" class="no-right-border"></td>
-                <td class="total">
-                    <b>{{__('Subtotal')}}</b>
-                </td>
-                <td class="total">{{$group['subtotal']}} {{get_currency()}}</td>
-            </tr>
-
-            <tr class="receipt_title">
-                <td width="70%" class="no-right-border"></td>
-                <td class="total">
-                   <b>
-                        {{__('Discount')}}
-                        @if(!empty($group['contract'])) <br> 
-                            ( {{$group['contract']['title']}} {{$group['contract']['discount']}}% ) 
-                        @endif
-                   </b>
-                </td>
-                <td class="total">{{$group['discount']}} {{get_currency()}}</td>
-            </tr>
-
-            <tr class="receipt_title">
-                <td width="70%" class="no-right-border"></td>
-                <td class="total">
-                    <b>{{__('Total')}}</b>
-                </td>
-                <td class="total">{{$group['total']}} {{get_currency()}}</td>
-            </tr>
-
-            <tr class="receipt_title">
-                <td width="70%" class="no-right-border"></td>
-                <td class="total">
-                    <b>
-                        {{__('Paid')}}
-                    </b>
-                </td>
-                <td class="total">{{$group['paid']}} {{get_currency()}}</td>
-            </tr>
-
-            <tr class="receipt_title">
-                <td width="70%" class="no-right-border"></td>
-                <td class="total">
-                    <b>{{__('Due')}}</b>
-                </td>
-                <td class="total">{{$group['due']}} {{get_currency()}}</td>
-            </tr>
-
         </tbody>
     </table>
+
+    <div style="margin-top: 30px; width: 300px; float: right;">
+        <table class="summary-table" width="100%">
+            <tr>
+                <td class="summary-label">{{__('Subtotal')}}:</td>
+                <td class="summary-value">{{formated_price($group['subtotal'])}}</td>
+            </tr>
+            @if($group['discount'] > 0)
+            <tr>
+                <td class="summary-label">{{__('Discount')}} @if(!empty($group['contract'])) ({{$group['contract']['discount']}}%) @endif:</td>
+                <td class="summary-value" style="color: #10b981;">- {{formated_price($group['discount'])}}</td>
+            </tr>
+            @endif
+            <tr style="border-top: 1px solid #e2e8f0 !important;">
+                <td class="summary-label" style="padding-top: 10px;">{{__('Total')}}:</td>
+                <td class="summary-value" style="padding-top: 10px; font-size: 18px; color: var(--primary);">{{formated_price($group['total'])}}</td>
+            </tr>
+            <tr>
+                <td class="summary-label">{{__('Paid')}}:</td>
+                <td class="summary-value">{{formated_price($group['paid'])}}</td>
+            </tr>
+            @if($group['due'] > 0)
+            <tr>
+                <td class="summary-label">{{__('Due Amount')}}:</td>
+                <td class="summary-value due-amount">{{formated_price($group['due'])}}</td>
+            </tr>
+            @endif
+        </table>
+    </div>
+    <div style="clear: both;"></div>
 </div>
 
 @endsection

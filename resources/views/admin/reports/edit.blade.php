@@ -23,13 +23,14 @@
 @endsection
 
 @section('content')
-{{-- ইউজার এবং সুপার এডমিন চেক করার জন্য লজিক --}}
+
+{{-- User and Super Admin Check Logic --}}
 @php
     $u = auth()->guard('admin')->user();
     $isSuper = ($u && $u->id == 1);
 @endphp
 
-{{-- @can('view_report') এর পরিবর্তে কাস্টম লজিক --}}
+{{-- View Report Permission Check --}}
 @if($u && ($isSuper || $u->hasPermission('view_report')))
 <div class="row">
   <div class="col-lg-12">

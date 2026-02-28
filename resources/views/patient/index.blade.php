@@ -27,7 +27,7 @@
     <!-- ./col -->
     <div class="col-lg-4">
         <!-- small box -->
-        <div class="small-box bg-primary">
+        <div class="small-box bgPrimary">
           <div class="inner">
             <h3>{{$group_tests_count}}</h3>
             <p>{{__('Total Reports')}}</p>
@@ -55,7 +55,7 @@
       <!-- ./col -->
       <div class="col-lg-4">
         <!-- small box -->
-        <div class="small-box bg-success">
+        <div class="small-box bg-olive">
           <div class="inner">
             <h3>{{$done_tests_count}}</h3>
             <p>{{__('Completed Reports')}}</p>

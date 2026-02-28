@@ -8,8 +8,8 @@
             $u = auth()->guard('admin')->user();
             $isSuper = ($u && $u->id == 1);
         @endphp
-      
-        {{-- ইনভয়েস এডিট পারমিশন --}}
+
+        {{-- Invoice Edit Permission --}}
         @if($u && ($isSuper || $u->hasPermission('edit_group')))
           <a href="{{route('admin.groups.edit',$group['id'])}}" class="dropdown-item">
              <i class="fa fa-edit"></i>
@@ -17,7 +17,7 @@
           </a>
         @endif
 
-        {{-- টেস্ট রেজাল্ট এন্ট্রি পারমিশন --}}
+        {{-- Enter Results Permission --}}
         @if($u && ($isSuper || $u->hasPermission('edit_report')))
           <a href="{{route('admin.reports.edit',$group['id'])}}" class="dropdown-item">
              <i class="fa fa-flask"></i>
@@ -25,7 +25,7 @@
           </a>
         @endif
 
-        {{-- ইনভয়েস ভিউ, বারকোড এবং রশিদ পারমিশন --}}
+        {{-- View, Barcode and Receipt Permissions --}}
         @if($u && ($isSuper || $u->hasPermission('view_group')))
           <a style="cursor: pointer" data-toggle="modal" data-target="#print_barcode_modal" class="dropdown-item print_barcode" group_id="{{$group['id']}}">
             <i class="fa fa-barcode" aria-hidden="true"></i>
@@ -39,7 +39,7 @@
 
           @if(isset($whatsapp) && $whatsapp['receipt']['active'] && isset($group['receipt_pdf']))
             @php 
-               $message = str_replace(['{patient_name}','{receipt_link}'],[$group['patient']['name'],$group['receipt_pdf']],$whatsapp['receipt']['message']);
+               $message = str_replace(['{patient_name}','{report_link}'],[$group['patient']['name'],$group['receipt_pdf']],$whatsapp['receipt']['message']);
             @endphp
             <a target="_blank" href="https://wa.me/{{$group['patient']['phone']}}?text={{$message}}" class="dropdown-item">
                <i class="fab fa-whatsapp" aria-hidden="true" class="text-success"></i>
@@ -48,7 +48,7 @@
           @endif
         @endif
 
-        {{-- ডিলিট পারমিশন --}}
+        {{-- Delete Permission --}}
         @if($u && ($isSuper || $u->hasPermission('delete_group')))
           <form method="POST" action="{{route('admin.groups.destroy',$group['id'])}}" class="d-inline">
              @csrf

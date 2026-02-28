@@ -22,7 +22,6 @@
 @endsection
 
 @section('content')
-{{-- পারমিশন চেক করার জন্য ইউজার ভেরিয়েবল সেটআপ --}}
 @php
     $u = auth()->guard('admin')->user();
     $isSuper = ($u && $u->id == 1);
@@ -32,7 +31,6 @@
   <div class="card-header">
     <h3 class="card-title">{{__('Expenses Table')}}</h3>
     
-    {{-- এখানে ভুল পারমিশন 'create_antibiotic' পরিবর্তন করে সঠিক লজিক দেওয়া হলো --}}
     @if($u && ($isSuper || $u->hasPermission('create_expense')))
     <a href="{{route('admin.expenses.create')}}" class="btn btn-primary btn-sm float-right">
      <i class="fa fa-plus"></i> {{__('Create')}}
@@ -54,7 +52,6 @@
             </tr>
           </thead>
           <tbody>
-              {{-- ডাটা টেবিলের তথ্য JS এর মাধ্যমে লোড হবে --}}
           </tbody>
         </table>
       </div>

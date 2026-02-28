@@ -34,6 +34,9 @@
 @endif
 <!--===============================================================================================-->
 	<link rel="stylesheet" href="{{url('plugins/jquery-ui/jquery-ui.min.css')}}">
+    <!-- Modern UI Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url('css/modern.css')}}">
 	<link rel="apple-touch-icon" sizes="57x57" href="{{url('img/apple-icon-57x57.png')}}">
 	<link rel="apple-touch-icon" sizes="60x60" href="{{url('img/apple-icon-60x60.png')}}">
 	<link rel="apple-touch-icon" sizes="72x72" href="{{url('img/apple-icon-72x72.png')}}">

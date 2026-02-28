@@ -9,7 +9,7 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         
-        {{-- রিপোর্ট এডিট পারমিশন চেক --}}
+        {{-- Report Edit Permission --}}
         @if($u && ($isSuper || $u->hasPermission('edit_report')))
             <a class="dropdown-item" href="{{route('admin.reports.edit',$group['id'])}}">
                 <i class="fa fa-flask" aria-hidden="true"></i>
@@ -17,7 +17,7 @@
             </a>
         @endif
 
-        {{-- রিপোর্ট সিগনেচার পারমিশন চেক --}}
+        {{-- Report Signature Permission --}}
         @if($u && ($isSuper || $u->hasPermission('sign_report')))
             <a class="dropdown-item" href="{{route('admin.reports.sign',$group['id'])}}">
                 <i class="fas fa-signature" aria-hidden="true"></i>
@@ -25,7 +25,7 @@
             </a>
         @endif
 
-        {{-- রিপোর্ট ভিউ, বারকোড এবং হোয়াটসঅ্যাপে পাঠানো --}}
+        {{-- View, Barcode and Whatsapp Permissions --}}
         @if($u && ($isSuper || $u->hasPermission('view_report')))
             <a class="dropdown-item" href="{{route('admin.reports.show',$group['id'])}}">
                 <i class="fa fa-eye" aria-hidden="true"></i>
