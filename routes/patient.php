@@ -18,21 +18,22 @@ use App\Http\Controllers\Patient\TestsLibraryController;
 // Patient authentication (Guest routes)
 Route::group(['prefix' => 'user', 'middleware' => 'PatientGuest', 'as' => 'patient.auth.'], function() {
     
-    // Registration
-    Route::get('registration', [PatientController::class, 'showRegistrationForm'])->name('register');
-    Route::post('registration', [PatientController::class, 'register_submit'])->name('register_submit');
-    
-    // Login
+    // Login & Registration (Step 1: Email)
     Route::get('login', [PatientController::class, 'showLoginForm'])->name('login');
+    Route::get('registration', [PatientController::class, 'showLoginForm'])->name('register');
     Route::post('login', [PatientController::class, 'login_submit'])->name('login_submit');
     
-    // Patient Code/Mail
+    // Login Step 2 (Verify OTP)
+    Route::get('verify', [PatientController::class, 'showVerifyForm'])->name('verify');
+    Route::post('verify', [PatientController::class, 'verify_submit'])->name('verify_submit');
+
+    // Backward compatibility or secondary access
     Route::get('mail', [PatientController::class, 'showMailForm'])->name('mail');
     Route::post('mail_submit', [PatientController::class, 'mail_submit'])->name('mail_submit');
 });
 
 // Logout patient
-Route::post('/logout', [PatientController::class, 'logout'])->name('patient.logout');
+Route::post('/user/logout', [PatientController::class, 'logout'])->name('patient.logout');
 
 // Patient pages (Authenticated routes)
 Route::group(['prefix' => 'patient', 'middleware' => 'Patient', 'as' => 'patient.'], function() {

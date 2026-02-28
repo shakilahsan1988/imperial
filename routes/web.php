@@ -62,6 +62,24 @@ Route::middleware(['Install', 'Locale'])->group(function () {
 Route::get('change_locale/{lang}', [HomeController::class, 'change_locale'])->name('change_locale');
 
 // System Utility Routes
+Route::get('run-otp-migration', function () {
+    try {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('patient_otps')) {
+            \Illuminate\Support\Facades\Schema::create('patient_otps', function ($table) {
+                $table->id();
+                $table->string('email');
+                $table->string('otp');
+                $table->timestamp('expires_at');
+                $table->timestamps();
+            });
+            return "Success: patient_otps table created!";
+        }
+        return "Table already exists.";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 Route::get('clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');

@@ -5,168 +5,132 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Patient;
-use App\Models\Setting;
-use App\Mail\PatientCode;
+use App\Models\PatientOtp;
+use App\Mail\PatientOtpMail;
 use Auth;
 use Mail;
-use App\Http\Requests\Patient\PatientRegisterRequest;
-use App\Http\Requests\Patient\PatientLoginRequest;
-use App\Http\Requests\Patient\ForgetCodeRequest;
-use Str;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+
 class PatientController extends Controller
 {
     /**
-    * show patient registration form
-    *
-    * @access public
-    */
-    public function showRegistrationForm()
-    {
-        $info=setting('info');
-
-        return view('auth.patient.register',compact('info'));
-    }
-
-    /**
-    * register patient
-    * @param Request $request
-    * @access public
-    */
-    public function register_submit(PatientRegisterRequest $request)
-    {
-        $patient=Patient::create([
-            'code'=>patient_code(),
-            'name'=>$request['name'],
-            'phone'=>$request['phone'],
-            'email'=>$request['email'],
-            'gender'=>$request['gender'],
-            'dob'=>$request['dob'],
-            'address'=>$request['address'],
-        ]);
-
-        send_notification('patient_code',$patient);
-
-        session()->flash('success',__('Patient registered successfully'));
-        
-        Auth::guard('patient')->login($patient);
-
-        return redirect()->route('patient.index');
-    }
-
-    /**
-    * show patient login form
-    *
-    * @access public
+    * show patient login form (Step 1: Email Entry)
     */
     public function showLoginForm()
     {
-        $info=setting('info');
-
-        return view('auth.patient.login',compact('info'));
+        return view('auth.patient.login');
     }
 
     /**
-    * login patient
-    * @param Request $request
-    * @access public
+    * Generate and send OTP
     */
-    public function login_submit(PatientLoginRequest $request)
+    public function login_submit(Request $request)
     {
-        $patient=Patient::where('code',$request['code'])->first();
-        
-        //logout from admin
-        auth()->guard('admin')->logout();
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-        if(isset($patient))
-        {
-            $remember=($request->has('remeber'))?true:false;
+        $email = $request->email;
+        $otp = rand(100000, 999999);
 
-            Auth::guard('patient')->login($patient,$remember);
+        try {
+            // Delete any existing OTPs for this email
+            PatientOtp::where('email', $email)->delete();
 
-            session()->flash('success',__('Login success'));
-            
-            return redirect()->route('patient.index');
+            // Store new OTP
+            PatientOtp::create([
+                'email' => $email,
+                'otp' => $otp,
+                'expires_at' => Carbon::now()->addMinutes(10),
+            ]);
+
+            // Send Email
+            Mail::to($email)->send(new PatientOtpMail($otp));
+
+            // Store email in session for verify step
+            session(['login_email' => $email]);
+
+            return redirect()->route('patient.auth.verify')->with('success', __('Verification code sent to your email.'));
+        } catch (\Exception $e) {
+            \Log::error('OTP Send Error: ' . $e->getMessage());
+            return back()->with('error', __('Failed to send verification code. Please check your email configuration or try again later.'));
         }
-        else{
+    }
 
-            session()->flash('failed',__('Wrong patient code'));
-            return redirect()->back();
+    /**
+     * Show verification form (Step 2: OTP Entry)
+     */
+    public function showVerifyForm()
+    {
+        if (!session('login_email')) {
+            return redirect()->route('patient.auth.login');
         }
 
+        return view('auth.patient.verify');
     }
 
     /**
-    * send patient code form
-    *
-    * @access public
-    */
-    public function showMailForm()
+     * Verify OTP and Login
+     */
+    public function verify_submit(Request $request)
     {
-        $info=setting('info');
+        $request->validate([
+            'otp' => 'required|numeric|digits:6',
+        ]);
 
-        return view('auth.patient.mail',compact('info'));
-    }
+        $email = session('login_email');
+        if (!$email) {
+            return redirect()->route('patient.auth.login');
+        }
 
+        $otpRecord = PatientOtp::where('email', $email)
+            ->where('otp', $request->otp)
+            ->where('expires_at', '>', Carbon::now())
+            ->first();
 
-    /**
-    * send patient code mail
-    * @param Request $request
-    * @access public
-    */
-    public function mail_submit(ForgetCodeRequest $request)
-    {
+        if ($otpRecord) {
+            // OTP is valid, delete it
+            $otpRecord->delete();
 
-       $patient=Patient::where('email',$request['email'])
-                        ->orWhere('phone',$request['email'])
-                        ->first();
+            // Find or Create Patient
+            $patient = Patient::where('email', $email)->first();
 
-       if(isset($patient))
-       {
-           //send mail
-           send_notification('patient_code',$patient);
+            if (!$patient) {
+                // Auto-registration for new user
+                $patient = Patient::create([
+                    'email' => $email,
+                    'code' => patient_code(),
+                    'name' => 'New Patient', // Default name, they can update in profile
+                    'gender' => 'male', // Default
+                    'dob' => Carbon::now()->subYears(20)->format('Y-m-d'), // Default
+                ]);
+                
+                $is_new = true;
+            } else {
+                $is_new = false;
+            }
 
-           session()->flash('success',__('we sent you the patient code,Please check your mail or phone for the patient code message'));
-           return redirect()->route('patient.auth.login');
-       }
-       else{
-        session()->flash('failed',__('Wrong patient email or phone'));
-        return redirect()->back();
-       }
+            // Login
+            Auth::guard('patient')->login($patient);
+            session()->forget('login_email');
+
+            if ($is_new || empty($patient->phone)) {
+                return redirect()->route('patient.profile.edit')->with('success', __('Welcome! Please complete your profile information.'));
+            }
+
+            return redirect()->route('patient.index')->with('success', __('Login successful.'));
+        }
+
+        return back()->with('error', __('Invalid or expired verification code.'));
     }
 
     /**
     * logout patient
-    * @request $request
-    * @access public
     */
     public function logout(Request $request)
     {
         Auth::guard('patient')->logout();
-
-        return redirect()->route('patient.auth.login');
+        return redirect()->route('fhome');
     }
-
-    /**
-    * QRCode patient login
-    * $code
-    * @access public
-    */
-    public function login_patient($code)
-    {
-        $patient=Patient::where('code',$code)->first();
-        
-        if(isset($patient))
-        {
-            session()->flash('success',__('Login success'));
-            
-            Auth::guard('patient')->login($patient);
-            
-            return redirect()->route('patient.index');
-        }
-        else{
-            session()->flash('failed',__('Wrong patient code'));
-            return redirect()->back();
-        }
-    }
-
 }

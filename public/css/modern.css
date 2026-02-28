@@ -15,9 +15,9 @@ body {
 
 /* --- Global Colors --- */
 :root {
-    --primary: #4f46e5; /* Modern Indigo */
-    --primary-dark: #4338ca;
-    --primary-light: #eef2ff;
+    --primary: #007caa; /* Brand Teal/Blue */
+    --primary-dark: #0066a1;
+    --primary-light: #e0f2fe;
     --secondary: #64748b;
     --success: #10b981;
     --info: #0ea5e9;
