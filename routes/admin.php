@@ -16,7 +16,6 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\PricesController;
 use App\Http\Controllers\Admin\AccountingController;
-use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\VisitsController;
 use App\Http\Controllers\Admin\BranchesController;
 use App\Http\Controllers\Admin\ContractsController;
@@ -124,9 +123,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::get('doctor_report', [AccountingController::class, 'doctor_report'])->name('accounting.doctor_report');
     Route::get('generate_doctor_report', [AccountingController::class, 'generate_doctor_report'])->name('accounting.generate_doctor_report');
     
-    // Chat
-    Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
-   
     // Visits
     Route::resource('visits', VisitsController::class);
     Route::get('visits/create_tests/{id}', [VisitsController::class, 'create_tests'])->name('visits.create_tests');

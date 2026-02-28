@@ -41,18 +41,10 @@ Route::group(['prefix' => 'ajax', 'as' => 'ajax.', 'middleware' => ['web']], fun
 
     // Admin authenticated AJAX
     Route::middleware(['Admin'])->group(function () {
-        Route::get('online', [AjaxController::class, 'online'])->name('online');
-        Route::get('get_chat/{id}', [AjaxController::class, 'get_chat'])->name('get_chat');
-        Route::get('chat_unread/{id}', [AjaxController::class, 'chat_unread'])->name('chat_unread');
-        Route::post('send_message/{id}', [AjaxController::class, 'send_message'])->name('send_message');
         Route::post('change_visit_status/{id}', [AjaxController::class, 'change_visit_status'])->name('change_visit_status');
         Route::post('change_lang_status/{id}', [AjaxController::class, 'change_lang_status'])->name('change_lang_status');
         Route::post('add_expense_category', [AjaxController::class, 'add_expense_category'])->name('add_expense_category');
-        Route::get('get_unread_messages', [AjaxController::class, 'get_unread_messages'])->name('get_unread_messages');
-        Route::get('get_unread_messages_count/{id}', [AjaxController::class, 'get_unread_messages_count'])->name('get_unread_messages_count');
-        Route::get('get_my_messages/{id}', [AjaxController::class, 'get_my_messages'])->name('get_my_messages');
         Route::get('get_new_visits', [AjaxController::class, 'get_new_visits'])->name('get_new_visits');
-        Route::get('load_more/{user_id}/{message_id}', [AjaxController::class, 'load_more'])->name('load_more');
     });
     
     // Patient authenticated AJAX

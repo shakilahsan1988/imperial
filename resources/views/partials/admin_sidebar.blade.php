@@ -133,15 +133,6 @@
       </li>
       @endif
 
-      @if($u && ($isSuper || $u->hasPermission('view_chat')))
-      <li class="nav-item">
-        <a href="{{route('admin.chat.index')}}" class="nav-link" id="chat">
-          <i class="nav-icon far fa-comment-dots"></i>
-          <p>{{__('admin.live_chat')}}</p>
-        </a>
-      </li>
-      @endif
-
       @if($u && ($isSuper || $u->hasPermission('view_branch')))
       <li class="nav-item">
         <a href="{{route('admin.branches.index')}}" class="nav-link" id="branches">

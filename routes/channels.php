@@ -17,7 +17,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-// Admin Specific Channel (For chat/notifications)
+// Admin Specific Channel (For notifications)
 Broadcast::channel('admin.{id}', function ($user, $id) {
     return $user->id === (int) $id;
 }, ['guards' => ['admin']]);
