@@ -158,13 +158,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Scheduled Date *</label>
-                                        <input type="date" name="scheduled_date" class="form-control" min="{{ date('Y-m-d') }}" required>
+                                        <input type="date" name="scheduled_date" id="scheduledDate" class="form-control" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Scheduled Time *</label>
-                                        <input type="time" name="scheduled_time" class="form-control" required>
+                                        <input type="time" name="scheduled_time" id="scheduledTime" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -348,6 +348,29 @@
                     $('#patientAddress').val('');
                 }
             });
+
+            // Date and Time validation
+            function updateMinTime() {
+                var selectedDate = $('#scheduledDate').val();
+                var today = new Date().toISOString().split('T')[0];
+                var $timeInput = $('#scheduledTime');
+
+                if (selectedDate === today) {
+                    var now = new Date();
+                    var hours = String(now.getHours()).padStart(2, '0');
+                    var minutes = String(now.getMinutes()).padStart(2, '0');
+                    $timeInput.attr('min', hours + ':' + minutes);
+                } else {
+                    $timeInput.removeAttr('min');
+                }
+            }
+
+            $('#scheduledDate').change(function() {
+                updateMinTime();
+            });
+
+            // Initial call
+            updateMinTime();
 
             // Trigger initial state
             $('input[name="booking_type"]:checked').trigger('change');

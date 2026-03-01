@@ -257,8 +257,25 @@ class BookingsController extends Controller
             $paymentStatus = 'partial';
         }
 
+        // Auto-create or Find Patient
+        $patientId = $request->patient_id;
+        if (empty($patientId)) {
+            $patient = Patient::where('phone', $request->patient_phone)->first();
+            if (!$patient) {
+                $patient = Patient::create([
+                    'code' => patient_code(),
+                    'name' => $request->patient_name,
+                    'phone' => $request->patient_phone,
+                    'email' => $request->patient_email,
+                    'address' => $request->patient_address,
+                    'gender' => 'male', // Default or could be added to form
+                ]);
+            }
+            $patientId = $patient->id;
+        }
+
         $booking = Booking::create([
-            'patient_id' => $request->patient_id,
+            'patient_id' => $patientId,
             'branch_id' => $request->booking_type === 'branch_visit' ? $request->branch_id : null,
             'patient_name' => $request->patient_name,
             'patient_phone' => $request->patient_phone,

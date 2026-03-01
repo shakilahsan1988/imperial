@@ -15,11 +15,11 @@ class Branch extends Model
 
     protected $fillable = [
         'name',
-        'code',
-        'phone',
-        'email',
         'address',
-        'status',
+        'phone',
+        'lat',
+        'lng',
+        'zoom_level',
     ];
 
     /**

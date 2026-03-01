@@ -82,17 +82,21 @@ class PatientsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model = Patient::with('groups');
+        $model = Patient::with('bookings');
 
         return DataTables::of($model)
             ->editColumn('total', function($patient) {
-                return formated_price($patient->total);
+                return formated_price($patient->bookings->sum('total_amount'));
             })
             ->editColumn('paid', function($patient) {
-                return formated_price($patient->paid);
+                return formated_price($patient->bookings->sum('paid_amount'));
             })
             ->editColumn('due', function($patient) {
-                return view('admin.patients._due', compact('patient'));
+                $due = $patient->bookings->sum('due_amount');
+                if ($due > 0) {
+                    return '<span class="badge bg-danger-soft text-danger">' . formated_price($due) . '</span>';
+                }
+                return '<span class="badge bg-success-soft text-success">' . formated_price(0) . '</span>';
             })
             ->addColumn('action', function($patient) {
                 return view('admin.patients._action', compact('patient'));

@@ -40,6 +40,14 @@ class Patient extends Authenticatable
     }
 
     /**
+     * Get the bookings associated with the patient.
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'patient_id', 'id');
+    }
+
+    /**
      * Interact with the patient's age.
      * Calculated based on Date of Birth (dob).
      */
