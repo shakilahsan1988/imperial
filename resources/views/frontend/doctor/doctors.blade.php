@@ -83,15 +83,6 @@
         <!-- DOCTOR LISTING -->
         <section class="container mx-auto px-4 py-16">
             
-            <!-- A-Z Navigation -->
-            <div class="flex items-center gap-2 mb-12 overflow-x-auto pb-4 no-scrollbar">
-                <span class="text-xs font-bold text-slate-400 uppercase mr-4 whitespace-nowrap">Filter A-Z:</span>
-                <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md shadow-indigo-100">All</button>
-                @foreach(range('A', 'Z') as $letter)
-                    <button class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 transition-all text-sm font-bold">{{ $letter }}</button>
-                @endforeach
-            </div>
-
             <!-- Acupuncture Section -->
             <div class="mb-20">
                 <div class="flex items-baseline gap-4 mb-8">
