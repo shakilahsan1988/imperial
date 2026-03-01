@@ -66,6 +66,32 @@
                                 <p class="text-amber-700">{{ $service->preparation }}</p>
                             </div>
                         @endif
+
+                        @if($service->components->count() > 0)
+                            <div class="mb-8">
+                                <h2 class="text-xl font-bold text-slate-900 mb-4">Tests Included</h2>
+                                <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="bg-slate-100/50">
+                                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase">Parameter</th>
+                                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase">Normal Range</th>
+                                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase">Unit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            @foreach($service->components as $comp)
+                                            <tr>
+                                                <td class="px-6 py-4 font-bold text-slate-700">{{ $comp->name }}</td>
+                                                <td class="px-6 py-4 text-slate-500">{{ $comp->reference_range }}</td>
+                                                <td class="px-6 py-4 text-slate-500">{{ $comp->unit }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Booking Form -->

@@ -58,15 +58,30 @@ class FrontController extends Controller
             $totalAmount += $service->home_visit_price;
         }
 
-        // Get patient ID if logged in
+        // Get or Create Patient
         $patientId = null;
         if (auth()->guard('patient')->check()) {
             $patientId = auth()->guard('patient')->id();
+        } else {
+            // Check by phone
+            $existingPatient = Patient::where('phone', $request->patient_phone)->first();
+            if ($existingPatient) {
+                $patientId = $existingPatient->id;
+            } else {
+                $newPatient = Patient::create([
+                    'code' => patient_code(),
+                    'name' => $request->patient_name,
+                    'phone' => $request->patient_phone,
+                    'email' => $request->patient_email,
+                    'gender' => 'male', // Default
+                ]);
+                $patientId = $newPatient->id;
+            }
         }
 
         $booking = Booking::create([
             'patient_id' => $patientId,
-            'service_id' => $service->id,
+            'service_id' => $service->id, // Keep for legacy compatibility if needed
             'patient_name' => $request->patient_name,
             'patient_phone' => $request->patient_phone,
             'patient_email' => $request->patient_email,
@@ -77,10 +92,14 @@ class FrontController extends Controller
             'payment_type' => $request->payment_type,
             'payment_status' => 'pending',
             'total_amount' => $totalAmount,
+            'due_amount' => $totalAmount, // Initially all is due
             'scheduled_date' => $request->scheduled_date,
             'scheduled_time' => $request->scheduled_time,
             'notes' => $request->notes,
         ]);
+
+        // Attach to pivot table for the new architecture
+        $booking->services()->attach($service->id, ['price' => $service->price]);
 
         // TODO: Send email notification
 
@@ -111,7 +130,13 @@ class FrontController extends Controller
 		return view('frontend.services.membership-details', compact('id'));
     }
     public function lab_test(){
-    	return view('frontend.services.lab-test');
+        $services = Service::active()
+            ->showOnFrontend()
+            ->with(['serviceCategory', 'subCategory'])
+            ->orderBy('name')
+            ->get();
+            
+    	return view('frontend.services.lab-test', compact('services'));
     }
     public function video_consultation(){
     	return view('frontend.services.video-consultation');

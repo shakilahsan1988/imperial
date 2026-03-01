@@ -681,7 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             const lightbox = document.getElementById('lightbox');
-            if (!lightbox.classList.contains('active')) return;
+            if (!lightbox || !lightbox.classList.contains('active')) return;
             
             if (e.key === 'Escape') {
                 closeLightbox();

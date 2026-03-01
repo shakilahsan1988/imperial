@@ -68,9 +68,9 @@
                         <span class="text-xs font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">Filter by:</span>
                         <div class="flex-grow flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                             <button onclick="filterTable('', this)" class="category-btn active px-6 py-2 bg-indigo-600 text-white rounded-full text-xs font-bold shadow-lg shadow-indigo-100 transition-all whitespace-nowrap">All Tests</button>
-                            <button onclick="filterTable('Lab', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Laboratory</button>
-                            <button onclick="filterTable('Imaging', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Imaging</button>
-                            <button onclick="filterTable('Procedures', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Procedures</button>
+                            <button onclick="filterTable('laboratory', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Laboratory</button>
+                            <button onclick="filterTable('imaging', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Imaging</button>
+                            <button onclick="filterTable('procedure', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Procedures</button>
                         </div>
                     </div>
                 </div>
@@ -83,41 +83,47 @@
                         <tr class="bg-slate-50/50">
                             <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">Test / Investigation Name</th>
                             <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">Category</th>
+                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">Available Home Visit</th>
                             <th class="px-8 py-5 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Standard Price</th>
                             <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-50">
+                        @foreach($services as $s)
                         @php
-                            $tests = [
-                                ['name' => 'Complete Blood Count (CBC)', 'cat' => 'Lab', 'price' => '850', 'color' => 'emerald'],
-                                ['name' => 'Echocardiogram (Color Doppler)', 'cat' => 'Imaging', 'price' => '2,650', 'color' => 'indigo'],
-                                ['name' => 'Mammography of Both Breasts', 'cat' => 'Imaging', 'price' => '3,500', 'color' => 'indigo'],
-                                ['name' => '24 Hours Urinary Cortisol', 'cat' => 'Lab', 'price' => '1,400', 'color' => 'emerald'],
-                                ['name' => 'Blood Glucose (Fasting)', 'cat' => 'Lab', 'price' => '250', 'color' => 'emerald'],
-                                ['name' => 'MRI Brain with Contrast', 'cat' => 'Imaging', 'price' => '8,500', 'color' => 'indigo'],
-                                ['name' => 'Endoscopy (Upper GI)', 'cat' => 'Procedures', 'price' => '4,500', 'color' => 'rose'],
-                                ['name' => 'Vitamin D (25-OH)', 'cat' => 'Lab', 'price' => '4,200', 'color' => 'emerald'],
-                                ['name' => 'Lipid Profile', 'cat' => 'Lab', 'price' => '1,200', 'color' => 'emerald'],
-                                ['name' => 'Liver Function Test (LFT)', 'cat' => 'Lab', 'price' => '1,800', 'color' => 'emerald'],
-                            ];
+                            $colors = ['laboratory' => 'emerald', 'imaging' => 'indigo', 'procedure' => 'rose'];
+                            $color = $colors[$s->category] ?? 'slate';
+                            $catName = $s->category == 'laboratory' ? 'Lab' : ($s->category == 'procedure' ? 'Procedures' : ucfirst($s->category));
                         @endphp
-                        @foreach($tests as $t)
-                        <tr class="hover:bg-slate-50 transition-colors group" data-category="{{$t['cat']}}">
+                        <tr class="hover:bg-slate-50 transition-colors group" data-category="{{$s->category}}">
                             <td class="px-8 py-6">
-                                <p class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{{$t['name']}}</p>
-                                <p class="text-[10px] text-slate-400 font-medium">Standard clinical procedure</p>
+                                <p class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors test-name">{{$s->name}}</p>
+                                <p class="text-[10px] text-slate-400 font-medium">
+                                    {{ $s->subCategory->name ?? ($s->serviceCategory->name ?? 'Diagnostic Test') }}
+                                </p>
                             </td>
                             <td class="px-8 py-6 text-center">
-                                <span class="bg-{{$t['color']}}-50 text-{{$t['color']}}-600 text-[10px] font-black px-3 py-1.5 rounded-lg uppercase tracking-tighter">{{$t['cat']}}</span>
+                                <span class="bg-{{$color}}-50 text-{{$color}}-600 text-[10px] font-black px-3 py-1.5 rounded-lg uppercase tracking-tighter">{{$catName}}</span>
+                            </td>
+                            <td class="px-8 py-6 text-center">
+                                @if($s->home_visit_available)
+                                    <span class="text-emerald-600 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-circle-check"></i> Yes
+                                    </span>
+                                    @if($s->home_visit_price > 0)
+                                        <p class="text-[9px] text-slate-400 font-bold mt-1">+{{ formated_price($s->home_visit_price) }}</p>
+                                    @endif
+                                @else
+                                    <span class="text-slate-300 text-[10px] font-black uppercase tracking-widest">No</span>
+                                @endif
                             </td>
                             <td class="px-8 py-6 text-right">
-                                <span class="text-base font-black text-slate-900">৳ {{$t['price']}}</span>
+                                <span class="text-base font-black text-slate-900">{{ formated_price($s->price) }}</span>
                             </td>
                             <td class="px-8 py-6 text-center">
-                                <button class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all transform active:scale-90">
+                                <a href="{{ route('service.detail', $s->id) }}" class="inline-flex w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl items-center justify-center hover:bg-indigo-600 hover:text-white transition-all transform active:scale-90">
                                     <i class="fa-solid fa-plus text-xs"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                         @endforeach
@@ -127,14 +133,7 @@
 
             <!-- Custom Pagination Style -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Showing 10 of 124 diagnostic tests</p>
-                <div class="flex gap-2">
-                    <button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 opacity-50 cursor-not-allowed"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                    <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-100">1</button>
-                    <button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 font-bold hover:border-indigo-500 hover:text-indigo-600 transition-all">2</button>
-                    <button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 font-bold hover:border-indigo-500 hover:text-indigo-600 transition-all">3</button>
-                    <button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:border-indigo-500 hover:text-indigo-600 transition-all"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-                </div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Showing {{ $services->count() }} diagnostic tests</p>
             </div>
         </section>
     </main>
@@ -148,29 +147,54 @@
         }
     </style>
 
+@endsection
+
+@push('scripts')
     <script>
+        let currentCategory = '';
+
         function filterTable(category, btn) {
+            currentCategory = category;
+            
             // UI Update
             $('.category-btn').removeClass('active bg-indigo-600 text-white shadow-lg shadow-indigo-100').addClass('bg-white text-slate-600 border border-slate-200');
             $(btn).addClass('active bg-indigo-600 text-white shadow-lg shadow-indigo-100').removeClass('bg-white text-slate-600 border border-slate-200');
             
-            // Logic (Simple toggle for demo, in real it would filter DataTables)
-            if(category === '') {
-                $('#labTestsTable tbody tr').show();
-            } else {
-                $('#labTestsTable tbody tr').hide();
-                $('#labTestsTable tbody tr[data-category="'+category+'"]').show();
-            }
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = $('#customSearch').val().toLowerCase().trim();
+            
+            $('#labTestsTable tbody tr').each(function() {
+                const row = $(this);
+                const testName = row.find('.test-name').text().toLowerCase();
+                const category = row.data('category');
+                
+                const matchesSearch = searchTerm === '' || testName.indexOf(searchTerm) > -1;
+                const matchesCategory = currentCategory === '' || category === currentCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
         }
 
         $(document).ready(function() {
-            $('#customSearch').on('keyup', function() {
-                var value = $(this).val().toLowerCase();
-                $('#labTestsTable tbody tr').filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+            // Real-time filter
+            $('#customSearch').on('keyup input', function(e) {
+                applyFilters();
+            });
+
+            // Manual filter on Enter key
+            $('#customSearch').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    applyFilters();
+                }
             });
         });
     </script>
-
-@endsection
+@endpush
