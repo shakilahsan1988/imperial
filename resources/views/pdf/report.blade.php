@@ -2,69 +2,81 @@
 
 @section('content')
 <style>
-    .report-container { padding: 20px 0; }
-    .test-card { margin-bottom: 30px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-    .test-header { background-color: #f8fafc; padding: 12px 20px; border-bottom: 1px solid #e2e8f0; }
-    .test-title { margin: 0; color: #1e293b; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .report-header { margin-bottom: 20px; border-bottom: 2px solid #1e293b; padding-bottom: 10px; }
+    .report-title { text-align: center; text-transform: uppercase; letter-spacing: 2px; color: #1e293b; margin: 10px 0; font-size: 18px; }
     
-    .results-table { width: 100%; border-collapse: collapse; }
-    .results-table th { background-color: #fff; color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 12px 20px; border-bottom: 2px solid #f1f5f9; text-align: left; }
-    .results-table td { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 13px; }
+    .results-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .results-table th { 
+        background-color: #f8fafc; 
+        color: #475569; 
+        font-size: 11px; 
+        font-weight: 700; 
+        text-transform: uppercase; 
+        padding: 10px 12px; 
+        border-bottom: 2px solid #e2e8f0; 
+        text-align: left; 
+    }
+    .results-table td { 
+        padding: 10px 12px; 
+        border-bottom: 1px solid #f1f5f9; 
+        color: #1e293b; 
+        font-size: 12px; 
+        vertical-align: middle;
+    }
     
-    .result-value { font-weight: 700; color: #0f172a; font-size: 14px; }
-    .status-normal { color: #10b981; font-weight: 600; }
-    .status-high { color: #ef4444; font-weight: 700; }
-    .status-low { color: #f59e0b; font-weight: 700; }
+    .test-name { font-weight: 700; color: #0f172a; }
+    .result-value { font-weight: 800; color: #000; font-size: 13px; }
     
-    .comment-section { padding: 15px 20px; background-color: #fcfcfc; border-top: 1px dashed #e2e8f0; }
-    .comment-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; display: block; }
-    .comment-text { font-style: italic; color: #475569; font-size: 12px; }
+    .status-high { color: #ef4444; font-weight: 800; }
+    .status-low { color: #f59e0b; font-weight: 800; }
+    .status-normal { color: #10b981; }
+
+    .comment-row td { background-color: #fafafa; padding: 5px 12px 10px 12px; border-bottom: 1px solid #e2e8f0; }
+    .comment-text { font-style: italic; font-size: 11px; color: #64748b; margin: 0; }
 </style>
 
-<div class="report-container">
-    @foreach($group->tests as $test)
-    <div class="test-card">
-        <div class="test-header">
-            <h3 class="test-title">{{ $test->service->name ?? 'Diagnostic Test' }}</h3>
-        </div>
-        
-        <table class="results-table">
-            <thead>
-                <tr>
-                    <th width="40%">Investigation / Parameter</th>
-                    <th width="15%">Result</th>
-                    <th width="15%">Unit</th>
-                    <th width="20%">Reference Range</th>
-                    <th width="10%">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="font-weight: 600;">{{ $test->service->name }}</td>
-                    <td class="result-value">{{ $test->result }}</td>
-                    <td style="color: #64748b;">{{ $test->service->unit }}</td>
-                    <td style="font-size: 12px; color: #475569;">{!! $test->service->reference_range !!}</td>
-                    <td>
-                        @php $status = strtolower($test->status); @endphp
-                        @if($status == 'high')
-                            <span class="status-high">HIGH</span>
-                        @elseif($status == 'low')
-                            <span class="status-low">LOW</span>
-                        @else
-                            <span class="status-normal">Normal</span>
-                        @endif
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<div class="report-title">Laboratory Diagnostic Report</div>
 
+<table class="results-table">
+    <thead>
+        <tr>
+            <th width="35%">Investigation / Test Name</th>
+            <th width="15%" style="text-align: center;">Result</th>
+            <th width="15%" style="text-align: center;">Unit</th>
+            <th width="25%" style="text-align: center;">Normal Reference Range</th>
+            <th width="10%" style="text-align: center;">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($group->tests as $test)
+        <tr>
+            <td class="test-name">{{ $test->service->name ?? 'N/A' }}</td>
+            <td class="result-value" align="center">{{ $test->result }}</td>
+            <td align="center" style="color: #64748b;">{{ $test->service->unit }}</td>
+            <td align="center" style="font-size: 11px; color: #475569;">{!! $test->service->reference_range !!}</td>
+            <td align="center">
+                @php $status = strtolower($test->status); @endphp
+                @if($status == 'high')
+                    <span class="status-high">HIGH</span>
+                @elseif($status == 'low')
+                    <span class="status-low">LOW</span>
+                @else
+                    <span class="status-normal">Normal</span>
+                @endif
+            </td>
+        </tr>
         @if($test->comment)
-        <div class="comment-section">
-            <span class="comment-label">Pathologist Observations:</span>
-            <p class="comment-text">{{ $test->comment }}</p>
-        </div>
+        <tr class="comment-row">
+            <td colspan="5">
+                <p class="comment-text"><strong>Note:</strong> {{ $test->comment }}</p>
+            </td>
+        </tr>
         @endif
-    </div>
-    @endforeach
+        @endforeach
+    </tbody>
+</table>
+
+<div style="margin-top: 30px; font-size: 10px; color: #94a3b8; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 10px;">
+    *** End of Report ***
 </div>
 @endsection
