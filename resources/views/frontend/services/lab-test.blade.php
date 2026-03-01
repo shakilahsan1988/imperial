@@ -77,7 +77,7 @@
             </div>
 
             <!-- MODERN DATA TABLE -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-12">
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-8">
                 <table id="labTestsTable" class="w-full text-sm">
                     <thead>
                         <tr class="bg-slate-50/50">
@@ -95,7 +95,7 @@
                             $color = $colors[$s->category] ?? 'slate';
                             $catName = $s->category == 'laboratory' ? 'Lab' : ($s->category == 'procedure' ? 'Procedures' : ucfirst($s->category));
                         @endphp
-                        <tr class="hover:bg-slate-50 transition-colors group" data-category="{{$s->category}}">
+                        <tr class="hover:bg-slate-50 transition-colors group test-row" data-category="{{$s->category}}">
                             <td class="px-8 py-6">
                                 <p class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors test-name">{{$s->name}}</p>
                                 <p class="text-[10px] text-slate-400 font-medium">
@@ -131,9 +131,40 @@
                 </table>
             </div>
 
-            <!-- Custom Pagination Style -->
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Showing {{ $services->count() }} diagnostic tests</p>
+            <!-- Custom Pagination -->
+            <div class="mt-12 mb-20">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                    <p class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
+                        Showing {{ $services->firstItem() ?? 0 }} - {{ $services->lastItem() ?? 0 }} <span class="mx-2 text-slate-200">/</span> {{ $services->total() }} Tests
+                    </p>
+                    
+                    <div class="flex items-center gap-2">
+                        @if ($services->onFirstPage())
+                            <span class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-100 text-slate-300 cursor-not-allowed">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </span>
+                        @else
+                            <a href="{{ $services->previousPageUrl() }}" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-600 hover:border-indigo-600 hover:text-indigo-600 transition-all active:scale-90 shadow-sm hover:shadow-md">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </a>
+                        @endif
+
+                        <div class="flex items-center gap-2 px-4">
+                            <span class="text-sm font-black text-indigo-600">Page {{ $services->currentPage() }}</span>
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-widest ml-1">of {{ $services->lastPage() }}</span>
+                        </div>
+
+                        @if ($services->hasMorePages())
+                            <a href="{{ $services->nextPageUrl() }}" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-600 hover:border-indigo-600 hover:text-indigo-600 transition-all active:scale-90 shadow-sm hover:shadow-md">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </a>
+                        @else
+                            <span class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-100 text-slate-300 cursor-not-allowed">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </span>
+                        @endif
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -145,6 +176,9 @@
             border-color: #4f46e5 !important;
             box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
         }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 
 @endsection

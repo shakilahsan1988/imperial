@@ -134,7 +134,7 @@ class FrontController extends Controller
             ->showOnFrontend()
             ->with(['serviceCategory', 'subCategory'])
             ->orderBy('name')
-            ->get();
+            ->paginate(15);
             
     	return view('frontend.services.lab-test', compact('services'));
     }
