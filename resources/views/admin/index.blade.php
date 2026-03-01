@@ -31,11 +31,22 @@
     <div class="col-lg-2 col-6">
       <div class="small-box bgPrimary">
         <div class="inner">
-          <h3>{{$tests_count}}</h3>
-          <p>{{__('admin.tests')}}</p>
+          <h3>{{$services_count ?? 0}}</h3>
+          <p>Services</p>
         </div>
         <div class="icon"><i class="fa fa-flask"></i></div>
-        <a href="{{route('admin.tests.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{route('admin.services.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-2 col-6">
+      <div class="small-box bgPrimary">
+        <div class="inner">
+          <h3>{{$bookings_count ?? 0}}</h3>
+          <p>Bookings</p>
+        </div>
+        <div class="icon"><i class="fa fa-calendar-check"></i></div>
+        <a href="{{route('admin.bookings.index')}}" class="small-box-footer">{{__('admin.see_more')}} <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 

@@ -479,5 +479,11 @@
     "admin.activity_log": "Activity Log",
     "admin.database_backup": "Database Backup",
     "admin.my_dashboard": "My Dashboard",
-    "Api Keys Settings": "Api Keys Settings"
+    "Api Keys Settings": "Api Keys Settings",
+    "Manage Services": "Manage Services",
+    "Service Category": "Service Category",
+    "Service Sub Category": "Service Sub Category",
+    "Services": "Services",
+    "TAT": "Turnaround Time",
+    "Specimen": "Specimen Type"
 }

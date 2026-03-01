@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Admin\IndexController;
-use App\Http\Controllers\Admin\TestsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\AntibioticsController;
 use App\Http\Controllers\Admin\PatientsController;
@@ -25,6 +24,10 @@ use App\Http\Controllers\Admin\BackupsController;
 use App\Http\Controllers\Admin\ActivityLogsController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TranslationsController;
+use App\Http\Controllers\Admin\ServicesController;
+use App\Http\Controllers\Admin\ServiceCategoriesController;
+use App\Http\Controllers\Admin\ServiceSubCategoriesController;
+use App\Http\Controllers\Admin\BookingsController;
 
 // Admin Authentication (Guest)
 Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.'], function() {
@@ -55,10 +58,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
         Route::post('update', [ProfileController::class, 'update'])->name('update');
     });
 
-    // Tests
-    Route::resource('tests', TestsController::class);
-    Route::get('get_tests', [TestsController::class, 'ajax'])->name('get_tests');
-    
+    // Manage Services
+    Route::resource('service_categories', ServiceCategoriesController::class);
+    Route::get('get_service_sub_categories', [ServiceSubCategoriesController::class, 'ajax'])->name('service_sub_categories.ajax');
+    Route::resource('service_sub_categories', ServiceSubCategoriesController::class);
+
+    // Services
+    Route::get('get_services_ajax', [ServicesController::class, 'ajax'])->name('services.ajax');
+    Route::resource('services', ServicesController::class);
+
+    // Bookings
+    Route::resource('bookings', BookingsController::class);
+    Route::get('get_bookings', [BookingsController::class, 'ajax'])->name('get_bookings');
+    Route::patch('bookings/{booking}/status', [BookingsController::class, 'updateStatus'])->name('bookings.updateStatus');
+    Route::get('bookings/patients', [BookingsController::class, 'getPatients'])->name('bookings.patients');
+
     // Antibiotics
     Route::resource('antibiotics', AntibioticsController::class);
     Route::get('get_antibiotics', [AntibioticsController::class, 'ajax'])->name('get_antibiotics');

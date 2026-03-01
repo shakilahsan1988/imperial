@@ -46,10 +46,15 @@
 <!-- Scripts Translation -->
 <script>
   var translations=`{!! session("trans") !!}`;
+  var translationsObj = {};
+  try {
+    translationsObj = JSON.parse(translations || '{}');
+  } catch(e) {
+    translationsObj = {};
+  }
   function trans(key)
   {
-    var trans=JSON.parse(translations);
-    return (trans[key]!=null?trans[key]:key);
+    return (translationsObj[key]!=null?translationsObj[key]:key);
   }
 </script>
 <!-- Main dashboard -->

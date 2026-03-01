@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Service;
+use App\Models\Booking;
+use App\Models\Patient;
+use Carbon\Carbon;
 
 class FrontController extends Controller
 {
@@ -10,11 +14,89 @@ class FrontController extends Controller
     public function index(){
        return view('frontend.index');
     }
-    public function services(){
-		 return view('frontend.services.services');
+    public function services(Request $request){
+        $category = $request->category ?? $request->segment(2);
+        
+        $query = Service::active()->showOnFrontend();
+        
+        if ($category && in_array($category, ['laboratory', 'imaging', 'procedure'])) {
+            $query->where('category', $category);
+        }
+        
+        $services = $query->orderBy('category')->orderBy('name')->get();
+        return view('frontend.services.services', compact('services', 'category'));
     }
     public function service_details(){
     	return view('frontend.services.service-details');
+    }
+    public function service_detail(Request $request, $id){
+        $service = Service::findOrFail($id);
+        return view('frontend.services.service-detail', compact('service'));
+    }
+    public function store_booking(Request $request){
+        $request->validate([
+            'service_id' => 'required|exists:services,id',
+            'patient_name' => 'required|string|max:255',
+            'patient_phone' => 'required|string|max:20',
+            'patient_email' => 'nullable|email',
+            'booking_type' => 'required|in:branch_visit,home_visit',
+            'payment_type' => 'required|in:online,pay_at_branch',
+            'scheduled_date' => 'required|date|after_or_equal:today',
+            'scheduled_time' => 'required',
+        ]);
+
+        $service = Service::findOrFail($request->service_id);
+
+        // Check if home visit is available
+        if ($request->booking_type === 'home_visit' && !$service->home_visit_available) {
+            return back()->with('error', 'Home visit is not available for this service.')->withInput();
+        }
+
+        // Calculate total amount
+        $totalAmount = $service->price;
+        if ($request->booking_type === 'home_visit' && $service->home_visit_price) {
+            $totalAmount += $service->home_visit_price;
+        }
+
+        // Get patient ID if logged in
+        $patientId = null;
+        if (auth()->guard('patient')->check()) {
+            $patientId = auth()->guard('patient')->id();
+        }
+
+        $booking = Booking::create([
+            'patient_id' => $patientId,
+            'service_id' => $service->id,
+            'patient_name' => $request->patient_name,
+            'patient_phone' => $request->patient_phone,
+            'patient_email' => $request->patient_email,
+            'patient_address' => $request->patient_address,
+            'city' => $request->city,
+            'postal_code' => $request->postal_code,
+            'booking_type' => $request->booking_type,
+            'payment_type' => $request->payment_type,
+            'payment_status' => 'pending',
+            'total_amount' => $totalAmount,
+            'scheduled_date' => $request->scheduled_date,
+            'scheduled_time' => $request->scheduled_time,
+            'notes' => $request->notes,
+        ]);
+
+        // TODO: Send email notification
+
+        return redirect()->route('bookings.confirmation', $booking->id);
+    }
+    public function booking_confirmation(Request $request, $id){
+        $booking = Booking::with('service')->findOrFail($id);
+        return view('frontend.booking.confirmation', compact('booking'));
+    }
+    public function my_bookings(Request $request){
+        $patientId = auth()->guard('patient')->id();
+        $bookings = Booking::with('service')
+            ->where('patient_id', $patientId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('frontend.booking.my-bookings', compact('bookings'));
     }
     public function health_check(){
 		return view('frontend.services.health-check');

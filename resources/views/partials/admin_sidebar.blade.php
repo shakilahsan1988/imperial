@@ -31,11 +31,49 @@
       </li>
       @endif
 
-      @if($u && ($isSuper || $u->hasPermission('view_test')))
+      @if($u && ($isSuper || $u->hasPermission('view_service') || $u->hasPermission('view_service_category') || $u->hasPermission('view_service_sub_category')))
+        <li class="nav-item has-treeview" id="service_management">
+          <a href="#" class="nav-link" id="service_management_link">
+            <i class="nav-icon fas fa-concierge-bell"></i>
+            <p>
+              {{__('admin.service_management')}}
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            @if($isSuper || $u->hasPermission('view_service_category'))
+            <li class="nav-item">
+              <a href="{{route('admin.service_categories.index')}}" class="nav-link" id="service_categories">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{__('admin.service_category')}}</p>
+              </a>
+            </li>
+            @endif
+            @if($isSuper || $u->hasPermission('view_service_sub_category'))
+            <li class="nav-item">
+              <a href="{{route('admin.service_sub_categories.index')}}" class="nav-link" id="service_sub_categories">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{__('admin.service_sub_category')}}</p>
+              </a>
+            </li>
+            @endif
+            @if($isSuper || $u->hasPermission('view_service'))
+            <li class="nav-item">
+              <a href="{{route('admin.services.index')}}" class="nav-link" id="services">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{__('admin.services')}}</p>
+              </a>
+            </li>
+            @endif
+          </ul>
+        </li>
+      @endif
+
+      @if($u && ($isSuper || $u->hasPermission('view_booking')))
       <li class="nav-item">
-        <a href="{{route('admin.tests.index')}}" class="nav-link" id="tests">
-          <i class="nav-icon fas fa-flask"></i>
-          <p>{{__('admin.test_price_format')}}</p>
+        <a href="{{route('admin.bookings.index')}}" class="nav-link" id="bookings">
+          <i class="nav-icon fas fa-calendar-check"></i>
+          <p>{{__('Bookings')}}</p>
         </a>
       </li>
       @endif

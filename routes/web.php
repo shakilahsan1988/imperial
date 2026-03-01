@@ -15,7 +15,12 @@ use Illuminate\Support\Facades\Artisan;
 */
     Route::get('/', [FrontController::class, 'index'])->name('fhome');
     Route::get('/services', [FrontController::class, 'services'])->name('services');
+    Route::get('/services/{category?}', [FrontController::class, 'services'])->name('services.category');
     Route::get('/service-details', [FrontController::class, 'service_details'])->name('service-details');
+    Route::get('/service/{id}', [FrontController::class, 'service_detail'])->name('service.detail');
+    Route::post('/bookings', [FrontController::class, 'store_booking'])->name('bookings.store');
+    Route::get('/booking/confirmation/{id}', [FrontController::class, 'booking_confirmation'])->name('bookings.confirmation');
+    Route::get('/my-bookings', [FrontController::class, 'my_bookings'])->name('my-bookings')->middleware('patient');
     Route::get('/health-check', [FrontController::class, 'health_check'])->name('health-check');
     Route::get('/package-details/{id?}', [FrontController::class, 'package_details'])->name('package-details');
     Route::get('/membership', [FrontController::class, 'membership'])->name('membership');

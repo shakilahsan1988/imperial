@@ -19,13 +19,13 @@
     //Date range picker
     var ranges={};
     ranges[trans('Today')]=[moment(), moment()];
-    ranges[trans('Yesterday')]=[moment().subtract('days', 1), moment().subtract('days', 1)];
-    ranges[trans('Last 7 Days')]=[moment().subtract('days', 6), moment()];
-    ranges[trans('Last 30 Days')]=[moment().subtract('days', 29), moment()];
+    ranges[trans('Yesterday')]=[moment().subtract(1, 'days'), moment().subtract(1, 'days')];
+    ranges[trans('Last 7 Days')]=[moment().subtract(6, 'days'), moment()];
+    ranges[trans('Last 30 Days')]=[moment().subtract(29, 'days'), moment()];
     ranges[trans('This Month')]=[moment().startOf('month'), moment().endOf('month')];
-    ranges[trans('Last Month')]=[moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')];
+    ranges[trans('Last Month')]=[moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')];
     ranges[trans('This Year')]=[moment().startOf('year'), moment().endOf('year')];
-    ranges[trans('Last Year')]=[moment().subtract(1,'year').startOf('year'), moment().subtract(1,'year').endOf('year')];
+    ranges[trans('Last Year')]=[moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')];
 
     $('.datepickerrange').daterangepicker({
       locale:{
@@ -33,7 +33,7 @@
         "cancelLabel": trans("Cancel"),
       },
       ranges,
-      startDate: moment().subtract('days', 29),
+      startDate: moment().subtract(29, 'days'),
       endDate: moment()
     },
     function(start, end) {
@@ -268,7 +268,7 @@ function get_unread_messages()
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>`;
-    
+  
         });
 
         $('.unread_messages_count').text(messages.length);
@@ -282,6 +282,9 @@ function get_unread_messages()
       
       $('.list_unread_messages').html(html);
   
+    },
+    error: function() {
+      // Silently fail if the endpoint doesn't exist
     }
   });
 }
@@ -315,6 +318,9 @@ function get_new_visits()
         $('.list_visits').html(`<p class="text-center">`+trans("No new visits")+`</p>`);
       }
     
+    },
+    error: function() {
+      // Silently fail if the endpoint doesn't exist
     }
   });
 }

@@ -302,4 +302,17 @@ return [
     'completed' => 'Completed',
     'pending' => 'Pending',
     'contracts' => 'Contracts',
+
+    // Manage Services
+    'service_management' => 'Manage Services',
+    'service_category' => 'Service Category',
+    'service_sub_category' => 'Service Sub Category',
+    'services' => 'Services',
+    'create_service' => 'Create Service',
+    'edit_service' => 'Edit Service',
+    'service_name' => 'Service Name',
+    'short_name' => 'Short Name',
+    'price' => 'Price',
+    'specimen_type' => 'Specimen Type',
+    'home_visit' => 'Home Visit',
 ];

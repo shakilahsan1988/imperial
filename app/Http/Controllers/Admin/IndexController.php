@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Test;
+use App\Models\Service;
+use App\Models\Booking;
 use App\Models\Culture;
 use App\Models\Patient;
 use App\Models\Antibiotic;
@@ -43,7 +44,8 @@ class IndexController extends Controller
     public function index()
     {
         //general statistics
-        $tests_count=Test::where('parent_id',0)->orWhere('separated',true)->count();
+        $services_count=Service::count();
+        $bookings_count=Booking::count();
         $cultures_count=Culture::count();
         $antibiotics_count=Antibiotic::count();
         $patients_count=Patient::count();
@@ -90,7 +92,8 @@ class IndexController extends Controller
         $today_profit=$today_paid-$today_total_expense;
         
         return view('admin.index',compact(
-            'tests_count',
+            'services_count',
+            'bookings_count',
             'cultures_count',
             'antibiotics_count',
             'patients_count',

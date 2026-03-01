@@ -104,6 +104,11 @@ body {
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
 }
 
+.nav-sidebar .nav-link .right,
+.nav-sidebar .nav-link p .right {
+    top: 1rem !important;
+}
+
 .nav-sidebar .nav-link {
     border-radius: 8px !important;
     margin: 2px 8px !important;
