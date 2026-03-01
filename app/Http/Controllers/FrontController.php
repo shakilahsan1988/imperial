@@ -10,13 +10,12 @@ use Carbon\Carbon;
 
 class FrontController extends Controller
 {
-    //
     public function index(){
        return view('frontend.index');
     }
+
     public function services(Request $request){
         $category = $request->category ?? $request->segment(2);
-        
         $query = Service::active()->showOnFrontend();
         
         if ($category && in_array($category, ['laboratory', 'imaging', 'procedure'])) {
@@ -26,186 +25,246 @@ class FrontController extends Controller
         $services = $query->orderBy('category')->orderBy('name')->get();
         return view('frontend.services.services', compact('services', 'category'));
     }
+
     public function service_details(){
     	return view('frontend.services.service-details');
     }
+
     public function service_detail(Request $request, $id){
-        $service = Service::findOrFail($id);
+        $service = Service::with('components')->findOrFail($id);
         return view('frontend.services.service-detail', compact('service'));
     }
+
     public function store_booking(Request $request){
         $request->validate([
-            'service_id' => 'required|exists:services,id',
             'patient_name' => 'required|string|max:255',
             'patient_phone' => 'required|string|max:20',
             'patient_email' => 'nullable|email',
             'booking_type' => 'required|in:branch_visit,home_visit',
-            'payment_type' => 'required|in:online,pay_at_branch',
+            'branch_id' => 'required_if:booking_type,branch_visit|nullable|exists:branches,id',
             'scheduled_date' => 'required|date|after_or_equal:today',
             'scheduled_time' => 'required',
         ]);
 
-        $service = Service::findOrFail($request->service_id);
-
-        // Check if home visit is available
-        if ($request->booking_type === 'home_visit' && !$service->home_visit_available) {
-            return back()->with('error', 'Home visit is not available for this service.')->withInput();
+        $cart = session()->get('cart', []);
+        if (count($cart) == 0) {
+            return redirect()->route('lab-test')->with('error', 'Your cart is empty.');
         }
 
-        // Calculate total amount
-        $totalAmount = $service->price;
-        if ($request->booking_type === 'home_visit' && $service->home_visit_price) {
-            $totalAmount += $service->home_visit_price;
+        // Calculate totals and prepare services pivot data
+        $totalAmount = 0;
+        $pivotData = [];
+        foreach ($cart as $id => $item) {
+            $totalAmount += $item['price'];
+            $pivotData[$id] = ['price' => $item['price']];
         }
 
-        // Get or Create Patient
-        $patientId = null;
-        if (auth()->guard('patient')->check()) {
-            $patientId = auth()->guard('patient')->id();
-        } else {
-            // Check by phone
-            $existingPatient = Patient::where('phone', $request->patient_phone)->first();
-            if ($existingPatient) {
-                $patientId = $existingPatient->id;
-            } else {
-                $newPatient = Patient::create([
-                    'code' => patient_code(),
-                    'name' => $request->patient_name,
-                    'phone' => $request->patient_phone,
-                    'email' => $request->patient_email,
-                    'gender' => 'male', // Default
-                ]);
-                $patientId = $newPatient->id;
+        // Handle Home Visit Fee (Maximum fee among selected services)
+        $extraFee = 0;
+        if ($request->booking_type === 'home_visit') {
+            foreach ($cart as $id => $item) {
+                $service = Service::find($id);
+                if ($service && $service->home_visit_available && $service->home_visit_price > $extraFee) {
+                    $extraFee = $service->home_visit_price;
+                }
             }
+            $totalAmount += $extraFee;
         }
+// Get or Create Patient
+$patientId = null;
+if (auth()->guard('patient')->check()) {
+    $patientId = auth()->guard('patient')->id();
+} else {
+    // Check by phone OR email
+    $existingPatient = Patient::where('phone', $request->patient_phone)
+        ->when($request->patient_email, function($q) use ($request) {
+            return $q->orWhere('email', $request->patient_email);
+        })
+        ->first();
+
+    if ($existingPatient) {
+        $patientId = $existingPatient->id;
+        // Optionally update their info if it was missing
+        if (empty($existingPatient->email) && $request->patient_email) {
+            $existingPatient->update(['email' => $request->patient_email]);
+        }
+    } else {
+        $newPatient = Patient::create([
+            'code' => patient_code(),
+            'name' => $request->patient_name,
+            'phone' => $request->patient_phone,
+            'email' => $request->patient_email,
+            'gender' => 'male',
+        ]);
+        $patientId = $newPatient->id;
+    }
+}
 
         $booking = Booking::create([
             'patient_id' => $patientId,
-            'service_id' => $service->id, // Keep for legacy compatibility if needed
+            'branch_id' => $request->booking_type === 'branch_visit' ? $request->branch_id : null,
             'patient_name' => $request->patient_name,
             'patient_phone' => $request->patient_phone,
             'patient_email' => $request->patient_email,
             'patient_address' => $request->patient_address,
-            'city' => $request->city,
-            'postal_code' => $request->postal_code,
             'booking_type' => $request->booking_type,
-            'payment_type' => $request->payment_type,
+            'payment_type' => $request->payment_type ?? 'pay_at_branch',
             'payment_status' => 'pending',
             'total_amount' => $totalAmount,
-            'due_amount' => $totalAmount, // Initially all is due
+            'due_amount' => $totalAmount,
             'scheduled_date' => $request->scheduled_date,
             'scheduled_time' => $request->scheduled_time,
             'notes' => $request->notes,
         ]);
 
-        // Attach to pivot table for the new architecture
-        $booking->services()->attach($service->id, ['price' => $service->price]);
+        // Attach all services from cart
+        $booking->services()->attach($pivotData);
 
-        // TODO: Send email notification
+        // Clear Cart
+        session()->forget('cart');
 
-        return redirect()->route('bookings.confirmation', $booking->id);
+        return redirect()->route('bookings.confirmation', $booking->id)->with('success', 'Booking placed successfully!');
     }
+
     public function booking_confirmation(Request $request, $id){
-        $booking = Booking::with('service')->findOrFail($id);
+        $booking = Booking::with('services', 'patient', 'branch')->findOrFail($id);
         return view('frontend.booking.confirmation', compact('booking'));
     }
+
+    public function booking_receipt($id)
+    {
+        $booking = Booking::with(['services', 'patient', 'branch'])->findOrFail($id);
+        
+        // We can reuse the generate_pdf helper or create a specific one for receipts
+        // Since we want it professional, let's pass a specific type
+        $pdf_url = generate_pdf($booking, 2); // Type 2 for Receipt/Invoice
+        return redirect($pdf_url);
+    }
+
     public function my_bookings(Request $request){
         $patientId = auth()->guard('patient')->id();
-        $bookings = Booking::with('service')
+        $bookings = Booking::with('services')
             ->where('patient_id', $patientId)
             ->orderBy('created_at', 'desc')
             ->get();
         return view('frontend.booking.my-bookings', compact('bookings'));
     }
+
     public function health_check(){
 		return view('frontend.services.health-check');
     }
+
     public function package_details(Request $request, $id = null){
 		return view('frontend.services.package-details', compact('id'));
     }
+
     public function membership(){
      	return view('frontend.services.membership-plan');
     }
+
     public function membership_details(Request $request, $id = null){
 		return view('frontend.services.membership-details', compact('id'));
     }
+
     public function lab_test(){
         $services = Service::active()
             ->showOnFrontend()
-            ->with(['serviceCategory', 'subCategory'])
+            ->with(['serviceCategory', 'subCategory', 'components'])
             ->orderBy('name')
-            ->paginate(15);
+            ->get();
             
     	return view('frontend.services.lab-test', compact('services'));
     }
+
     public function video_consultation(){
     	return view('frontend.services.video-consultation');
     }
-     public function beauty(){
+
+    public function beauty(){
     	return view('frontend.services.beauty');
     }
+
     public function about(){
     	return view('frontend.about.about');
     }
+
     public function about_details(){
     	return view('frontend.about.about-details');
     }
+
     public function bill_of_rights(){
     	return view('frontend.about.bill-of-right');
     }
+
     public function career(){
     	return view('frontend.about.career');
     }
+
     public function career_details(){
     	return view('frontend.about.career-details');
     }
+
     public function code_ethics(){
     	return view('frontend.about.code-of-ethics');
     }
+
     public function contact(){
     	return view('frontend.about.contact');
     }
-     public function client(){
+
+    public function client(){
     	return view('frontend.about.corporate-clients');
     }
+
     public function management(){
     	return view('frontend.about.management');
     }
+
     public function management_details(){
     	return view('frontend.about.management-details');
     }
+
     public function mission_vision_value(){
     	return view('frontend.about.mission-vision-values');
     }
+
     public function privacy_notice(){
     	return view('frontend.about.privacy-notice');
     }
+
     public function doctor(){
     	return view('frontend.doctor.doctors');
     }
+
     public function book_doctor(){
     	return view('frontend.doctor.book-doctor');
     }
+
     public function blog(){
     	return view('frontend.community.blog');
     }
+
     public function blog_details(){
     	return view('frontend.community.blog-details');
     }
+
     public function event(){
     	return view('frontend.community.event');
     }
+
     public function event_details(){
     	return view('frontend.community.event-details');
     }
+
     public function press(){
     	return view('frontend.community.press');
     }
+
     public function press_details(){
     	return view('frontend.community.press-details');
     }
+
     public function gallery(){
     	return view('frontend.community.gallery');
     }
-
 }

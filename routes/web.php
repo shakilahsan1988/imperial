@@ -20,12 +20,21 @@ use Illuminate\Support\Facades\Artisan;
     Route::get('/service/{id}', [FrontController::class, 'service_detail'])->name('service.detail');
     Route::post('/bookings', [FrontController::class, 'store_booking'])->name('bookings.store');
     Route::get('/booking/confirmation/{id}', [FrontController::class, 'booking_confirmation'])->name('bookings.confirmation');
+    Route::get('/booking/receipt/{id}', [FrontController::class, 'booking_receipt'])->name('bookings.receipt');
     Route::get('/my-bookings', [FrontController::class, 'my_bookings'])->name('my-bookings')->middleware('patient');
     Route::get('/health-check', [FrontController::class, 'health_check'])->name('health-check');
     Route::get('/package-details/{id?}', [FrontController::class, 'package_details'])->name('package-details');
     Route::get('/membership', [FrontController::class, 'membership'])->name('membership');
     Route::get('/membership-details/{id?}', [FrontController::class, 'membership_details'])->name('membership-details');
     Route::get('/lab-test', [FrontController::class, 'lab_test'])->name('lab-test');
+    
+    // Cart Routes
+    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::get('/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart/count', [\App\Http\Controllers\CartController::class, 'getCount'])->name('cart.count');
+
     Route::get('/video-consultation', [FrontController::class, 'video_consultation'])->name('video-consultation');
     Route::get('/beauty', [FrontController::class, 'beauty'])->name('beauty');
     Route::get('/about', [FrontController::class, 'about'])->name('about');

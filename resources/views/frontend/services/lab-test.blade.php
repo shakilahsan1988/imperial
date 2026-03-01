@@ -94,13 +94,31 @@
                             $colors = ['laboratory' => 'emerald', 'imaging' => 'indigo', 'procedure' => 'rose'];
                             $color = $colors[$s->category] ?? 'slate';
                             $catName = $s->category == 'laboratory' ? 'Lab' : ($s->category == 'procedure' ? 'Procedures' : ucfirst($s->category));
+                            $hasComponents = $s->components->count() > 0;
                         @endphp
-                        <tr class="hover:bg-slate-50 transition-colors group test-row" data-category="{{$s->category}}">
+                        {{-- Main Test Row --}}
+                        <tr id="test-{{$s->id}}" class="hover:bg-slate-50 transition-colors group test-row" data-category="{{$s->category}}" data-test-name="{{ strtolower($s->name) }}">
                             <td class="px-8 py-6">
-                                <p class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors test-name">{{$s->name}}</p>
-                                <p class="text-[10px] text-slate-400 font-medium">
-                                    {{ $s->subCategory->name ?? ($s->serviceCategory->name ?? 'Diagnostic Test') }}
-                                </p>
+                                <div class="flex items-center gap-3">
+                                    @if($hasComponents)
+                                        <button onclick="toggleAccordion({{$s->id}}, this)" class="w-6 h-6 flex items-center justify-center rounded-lg bg-slate-100 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all toggle-btn">
+                                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                        </button>
+                                    @endif
+                                    <div>
+                                        <p class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors test-name-text">{{$s->name}}</p>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <p class="text-[10px] text-slate-400 font-medium">
+                                                {{ $s->subCategory->name ?? ($s->serviceCategory->name ?? 'Diagnostic Test') }}
+                                            </p>
+                                            @if($hasComponents)
+                                                <span class="text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black uppercase tracking-tighter">
+                                                    {{ $s->components->count() }} Parameters
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-8 py-6 text-center">
                                 <span class="bg-{{$color}}-50 text-{{$color}}-600 text-[10px] font-black px-3 py-1.5 rounded-lg uppercase tracking-tighter">{{$catName}}</span>
@@ -121,50 +139,48 @@
                                 <span class="text-base font-black text-slate-900">{{ formated_price($s->price) }}</span>
                             </td>
                             <td class="px-8 py-6 text-center">
-                                <a href="{{ route('service.detail', $s->id) }}" class="inline-flex w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl items-center justify-center hover:bg-indigo-600 hover:text-white transition-all transform active:scale-90">
-                                    <i class="fa-solid fa-plus text-xs"></i>
-                                </a>
+                                <button onclick="addToCart({{$s->id}})" class="group/btn inline-flex w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl items-center justify-center hover:bg-indigo-600 transition-all transform active:scale-90">
+                                    <i class="fa-solid fa-plus text-xs group-hover/btn:text-white"></i>
+                                </button>
                             </td>
                         </tr>
+
+                        {{-- Accordion Row (Hidden by default) --}}
+                        @if($hasComponents)
+                        <tr id="accordion-{{$s->id}}" class="hidden bg-slate-50/30 accordion-row" data-category="{{$s->category}}">
+                            <td colspan="5" class="px-12 py-6">
+                                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <table class="w-full text-xs">
+                                        <thead>
+                                            <tr class="bg-slate-50 border-bottom border-slate-100">
+                                                <th class="px-6 py-3 text-left font-black text-slate-400 uppercase tracking-widest">Included Parameter</th>
+                                                <th class="px-6 py-3 text-left font-black text-slate-400 uppercase tracking-widest">Normal Range</th>
+                                                <th class="px-6 py-3 text-left font-black text-slate-400 uppercase tracking-widest">Unit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-50">
+                                            @foreach($s->components as $comp)
+                                            <tr>
+                                                <td class="px-6 py-3 font-bold text-slate-700">{{ $comp->name }}</td>
+                                                <td class="px-6 py-3 text-slate-500">{{ $comp->reference_range }}</td>
+                                                <td class="px-6 py-3 text-slate-500">{{ $comp->unit }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
-            <!-- Custom Pagination -->
-            <div class="mt-12 mb-20">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-                    <p class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
-                        Showing {{ $services->firstItem() ?? 0 }} - {{ $services->lastItem() ?? 0 }} <span class="mx-2 text-slate-200">/</span> {{ $services->total() }} Tests
-                    </p>
-                    
-                    <div class="flex items-center gap-2">
-                        @if ($services->onFirstPage())
-                            <span class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-100 text-slate-300 cursor-not-allowed">
-                                <i class="fa-solid fa-chevron-left text-xs"></i>
-                            </span>
-                        @else
-                            <a href="{{ $services->previousPageUrl() }}" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-600 hover:border-indigo-600 hover:text-indigo-600 transition-all active:scale-90 shadow-sm hover:shadow-md">
-                                <i class="fa-solid fa-chevron-left text-xs"></i>
-                            </a>
-                        @endif
-
-                        <div class="flex items-center gap-2 px-4">
-                            <span class="text-sm font-black text-indigo-600">Page {{ $services->currentPage() }}</span>
-                            <span class="text-xs font-bold text-slate-300 uppercase tracking-widest ml-1">of {{ $services->lastPage() }}</span>
-                        </div>
-
-                        @if ($services->hasMorePages())
-                            <a href="{{ $services->nextPageUrl() }}" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-600 hover:border-indigo-600 hover:text-indigo-600 transition-all active:scale-90 shadow-sm hover:shadow-md">
-                                <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </a>
-                        @else
-                            <span class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-100 text-slate-300 cursor-not-allowed">
-                                <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </span>
-                        @endif
-                    </div>
-                </div>
+            <div class="mt-12 mb-20 text-center">
+                <p class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
+                    End of Test Catalog <span class="mx-2 text-slate-200">/</span> Total {{ $services->count() }} Investigations
+                </p>
             </div>
         </section>
     </main>
@@ -179,6 +195,12 @@
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .toggle-btn.active {
+            background-color: #4f46e5 !important;
+            color: white !important;
+            transform: rotate(90deg);
+        }
     </style>
 
 @endsection
@@ -200,31 +222,87 @@
         function applyFilters() {
             const searchTerm = $('#customSearch').val().toLowerCase().trim();
             
-            $('#labTestsTable tbody tr').each(function() {
+            $('.test-row').each(function() {
                 const row = $(this);
-                const testName = row.find('.test-name').text().toLowerCase();
+                const testName = row.data('test-name');
                 const category = row.data('category');
+                const accordionRow = $('#accordion-' + row.attr('id').split('-').pop());
                 
                 const matchesSearch = searchTerm === '' || testName.indexOf(searchTerm) > -1;
                 const matchesCategory = currentCategory === '' || category === currentCategory;
                 
                 if (matchesSearch && matchesCategory) {
                     row.show();
+                    // If accordion was open, keep it visible, otherwise keep it hidden
+                    if (row.find('.toggle-btn').hasClass('active')) {
+                        accordionRow.show();
+                    }
                 } else {
                     row.hide();
+                    accordionRow.hide();
+                }
+            });
+        }
+
+        function toggleAccordion(id, btn) {
+            const row = $('#accordion-' + id);
+            const $btn = $(btn);
+            
+            if (row.hasClass('hidden')) {
+                row.removeClass('hidden');
+                $btn.addClass('active');
+            } else {
+                row.addClass('hidden');
+                $btn.removeClass('active');
+            }
+        }
+
+        function addToCart(serviceId) {
+            $.ajax({
+                url: "{{ route('cart.add') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    service_id: serviceId
+                },
+                success: function(response) {
+                    $('#cart-count-badge').text(response.cart_count).removeClass('hidden');
+                    
+                    // Professional SweetAlert Toast
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error adding test to cart',
+                    });
                 }
             });
         }
 
         $(document).ready(function() {
-            // Real-time filter
             $('#customSearch').on('keyup input', function(e) {
                 applyFilters();
             });
 
-            // Manual filter on Enter key
             $('#customSearch').on('keypress', function(e) {
-                if (e.which === 13) { // Enter key
+                if (e.which === 13) {
                     e.preventDefault();
                     applyFilters();
                 }
