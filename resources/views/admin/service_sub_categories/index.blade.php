@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('Service Sub Categories'))
+@section('title', __('admin.service_sub_category'))
 
 @section('breadcrumb')
 <div class="content-header">
@@ -13,7 +13,7 @@
                 
                 @if($u && ($isSuper || $u->hasPermission('create_service_sub_category')))
                 <a href="{{ route('admin.service_sub_categories.create') }}" class="btn btn-primary shadow-sm">
-                    <i class="fas fa-plus mr-1"></i> {{ __('Create Sub Category') }}
+                    <i class="fas fa-plus mr-1"></i> {{ __('admin.create') }} {{ __('admin.service_sub_category') }}
                 </a>
                 @endif
             </div>
@@ -32,9 +32,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-0">
-                        <label class="text-xs text-uppercase text-muted font-weight-bold mb-1">{{ __('Filter by Category') }}</label>
+                        <label class="text-xs text-uppercase text-muted font-weight-bold mb-1">{{ __('admin.filter') }} {{ __('admin.service_category') }}</label>
                         <select id="categoryFilter" class="form-control form-control-sm select2">
-                            <option value="">{{ __('All Categories') }}</option>
+                            <option value="">{{ __('admin.all') }} {{ __('admin.service_category') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
@@ -50,7 +50,7 @@
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
                     <h3 class="card-title font-weight-bold mb-0">
-                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('Sub Categories Table') }}
+                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('admin.service_sub_category') }} {{ __('admin.actions') }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -59,11 +59,11 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th width="50" class="border-0 px-4 py-3"><input type="checkbox" id="selectAll"></th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Sub Category Name') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Category') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Services') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Status') }}</th>
-                                    <th width="150" class="border-0 text-xs text-uppercase text-muted text-center py-3">{{ __('Actions') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.name') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.service_category') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.services') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.status') }}</th>
+                                    <th width="150" class="border-0 text-xs text-uppercase text-muted text-center py-3">{{ __('admin.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>

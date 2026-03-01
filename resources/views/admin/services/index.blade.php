@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('Services'))
+@section('title', __('admin.services'))
 
 @section('breadcrumb')
 <div class="content-header">
@@ -13,7 +13,7 @@
                 
                 @if($u && ($isSuper || $u->hasPermission('create_service')))
                 <a href="{{ route('admin.services.create') }}" class="btn btn-primary shadow-sm">
-                    <i class="fas fa-plus mr-1"></i> {{ __('Create Service') }}
+                    <i class="fas fa-plus mr-1"></i> {{ __('admin.create_service') }}
                 </a>
                 @endif
             </div>
@@ -58,7 +58,7 @@
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
                     <h3 class="card-title font-weight-bold mb-0">
-                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('Services Table') }}
+                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('admin.test_list') }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -67,13 +67,13 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th width="30" class="border-0 px-4 py-3"><input type="checkbox" id="selectAll"></th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Service Name') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Category') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Sub Category') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Price') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Home Visit') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Status') }}</th>
-                                    <th width="100" class="border-0 text-xs text-uppercase text-muted text-center py-3">{{ __('Actions') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.test_name') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.service_category') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.service_sub_category') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.price') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.home_visit') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.status') }}</th>
+                                    <th width="100" class="border-0 text-xs text-uppercase text-muted text-center py-3">{{ __('admin.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>

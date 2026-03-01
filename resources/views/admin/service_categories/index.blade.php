@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('Service Categories'))
+@section('title', __('admin.service_category'))
 
 @section('breadcrumb')
 <div class="content-header">
@@ -13,7 +13,7 @@
                 
                 @if($u && ($isSuper || $u->hasPermission('create_service_category')))
                 <a href="{{ route('admin.service_categories.create') }}" class="btn btn-primary shadow-sm">
-                    <i class="fas fa-plus mr-1"></i> {{ __('Create Category') }}
+                    <i class="fas fa-plus mr-1"></i> {{ __('admin.create') }} {{ __('admin.service_category') }}
                 </a>
                 @endif
             </div>
@@ -28,7 +28,7 @@
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
                     <h3 class="card-title font-weight-bold mb-0">
-                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('Categories Table') }}
+                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('admin.service_category') }} {{ __('admin.actions') }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -37,12 +37,12 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th width="50" class="border-0 px-4 py-3"><input type="checkbox" id="selectAll"></th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">Category Name</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">Type</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">Services</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">Sub Categories</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted py-3">Status</th>
-                                    <th width="150" class="border-0 text-xs text-uppercase text-muted text-center py-3">Actions</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.name') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.type') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.services') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.service_sub_category') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('admin.status') }}</th>
+                                    <th width="150" class="border-0 text-xs text-uppercase text-muted text-center py-3">{{ __('admin.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
