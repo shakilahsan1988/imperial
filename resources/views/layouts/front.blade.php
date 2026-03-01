@@ -54,6 +54,18 @@
         .hover\:bg-indigo-700:hover { background-color: #0066a1 !important; }
         .border-indigo-600 { border-color: #007caa !important; }
         .focus\:ring-indigo-500:focus { --tw-ring-color: #007caa !important; }
+
+        /* Ensure header is always visible on mobile */
+        @media (max-width: 1023px) {
+            #main-header {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            .hidden.lg\:flex {
+                display: none !important;
+            }
+        }
     </style>
 
     <!-- Modern UI Styles -->
