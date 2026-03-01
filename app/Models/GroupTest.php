@@ -27,4 +27,12 @@ class GroupTest extends Model
     {
         return $this->belongsTo(Service::class, 'service_id', 'id')->withTrashed();
     }
+
+    /**
+     * Get the sub-results for this test (if it's a profile).
+     */
+    public function results(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(GroupTestResult::class, 'group_test_id', 'id');
+    }
 }

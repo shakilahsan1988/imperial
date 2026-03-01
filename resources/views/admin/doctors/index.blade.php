@@ -1,74 +1,73 @@
 @extends('layouts.app')
-
-@section('title')
-{{__('Doctors')}}
-@endsection
+@section('title', __('Doctors'))
 
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">
-            <i class="fa fa-user-md nav-icon"></i>
-            {{__('Doctors')}}
-          </h1>
+        <div class="d-flex align-items-center justify-content-end mb-2">
+            <div class="d-flex align-items-center">
+                @php
+                    $u = auth()->guard('admin')->user();
+                    $isSuper = ($u && $u->id == 1);
+                @endphp
+                
+                @if($u && ($isSuper || $u->hasPermission('view_doctor')))
+                <a href="{{ route('admin.doctors.export') }}" class="btn btn-success shadow-sm mr-2">
+                    <i class="fas fa-file-excel mr-1"></i> {{ __('Export') }}
+                </a>
+                @endif
+
+                @if($u && ($isSuper || $u->hasPermission('create_doctor')))
+                <a href="{{ route('admin.doctors.create') }}" class="btn btn-primary shadow-sm">
+                    <i class="fas fa-plus mr-1"></i> {{ __('Create Doctor') }}
+                </a>
+                @endif
+            </div>
         </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
-            <li class="breadcrumb-item active">{{__('Doctors')}}</li>
-          </ol>
-        </div>
-      </div>
     </div>
 </div>
 @endsection
 
 @section('content')
-@php
-    $u = auth()->guard('admin')->user();
-    $isSuper = ($u && $u->id == 1);
-@endphp
-
-<div class="card card-primary card-outline">
-  <div class="card-header">
-    <h3 class="card-title">{{__('Doctors Table')}}</h3>
-    
-    @if($u && ($isSuper || $u->hasPermission('create_doctor')))
-    <a href="{{route('admin.doctors.create')}}" class="btn btn-primary btn-sm float-right">
-     <i class="fa fa-plus"></i> {{__('Create')}}
-    </a>
-    @endif
-  </div>
-  <div class="card-body">
-    <div class="row table-responsive">
-      <div class="col-12">
-        <table id="doctors_table" class="table table-striped table-hover table-bordered"  width="100%">
-          <thead>
-            <tr>
-              <th width="10px">#</th>
-              <th>{{__('Code')}}</th>
-              <th>{{__('Name')}}</th>
-              <th>{{__('Phone')}}</th>
-              <th>{{__('Email')}}</th>
-              <th>{{__('Commission')}}</th>
-              <th>{{__('Total')}}</th>
-              <th>{{__('Paid')}}</th>
-              <th>{{__('Due')}}</th>
-              <th width="100px">{{__('Action')}}</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h3 class="card-title font-weight-bold mb-0">
+                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('Doctors Table') }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="doctors_table" class="table table-hover align-middle" width="100%">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="10px" class="border-0 text-xs text-uppercase text-muted">#</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Code') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Name') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Phone') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Email') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Commission') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Total') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Paid') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Due') }}</th>
+                                    <th width="100px" class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
 @endsection
 
-@section('scripts')
-  <script src="{{url('js/admin/doctors.js')}}"></script>
-@endsection
+@push('scripts')
+    <script src="{{url('js/admin/doctors.js')}}"></script>
+    <style>
+        .text-xs { font-size: 0.75rem; }
+        .table td { vertical-align: middle; }
+    </style>
+@endpush

@@ -1,91 +1,88 @@
 @extends('layouts.app')
-
-@section('title')
-{{__('Activity Logs')}}
-@endsection
+@section('title', __('Activity Logs'))
 
 @section('breadcrumb')
 <div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0 text-dark">
-          <i class="nav-icon fas fa-server"></i>   
-          {{__('Activity Logs')}}
-        </h1>
-      </div><div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
-          <li class="breadcrumb-item active">{{__('Activity Logs')}}</li>
-        </ol>
-      </div></div></div></div>
+    <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-end mb-2">
+            <div class="d-flex align-items-center">
+                @php
+                    $u = auth()->guard('admin')->user();
+                    $isSuper = ($u && $u->id == 1);
+                @endphp
+                
+                @if($u && ($isSuper || $u->hasPermission('clear_activity_log')))
+                <form action="{{route('admin.activity_logs.clear')}}" method="POST" onsubmit="return confirm('Are you sure you want to clear all logs?')">
+                    @csrf
+                    <button type="submit" class="btn btn-danger shadow-sm">
+                        <i class="fas fa-trash-alt mr-1"></i> {{ __('Clear Logs') }}
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('content')
-@php
-    $u = auth()->guard('admin')->user();
-    $isSuper = ($u && $u->id == 1);
-@endphp
-
-<div class="card card-primary card-outline">
-  <div class="card-header">
-    <h3 class="card-title">{{__('Activity Logs Table')}}</h3>
-
-    @if($u && ($isSuper || $u->hasPermission('clear_activity_log')))
-      <form action="{{route('admin.activity_logs.clear')}}" method="POST">
-        @csrf
-        <button type="submit" class="btn btn-danger btn-sm float-right">
-          <i class="fa fa-trash"></i> {{__('Clear')}}
-        </button>
-      </form>
-    @endif
-  </div>
-  <div class="card-body">
-    <div id="accordion">
-        <div class="card card-info">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary collapsed" aria-expanded="false">
-            <i class="fas fa-filter"></i> {{__('Filter')}}
-          </a>
-          <div id="collapseOne" class="panel-collapse in collapse">
-            <div class="card-body">
-              <div class="row justify-content-center">
-                <div class="col-lg-3">
-                  <div class="form-group">
-                     <label for="filter_user">{{__('User')}}</label>
-                     <select name="filter_user" id="filter_user" class="form-control select2">
-                        <option value="" selected>{{__('All')}}</option>
-                        @foreach($users as $user)
-                            <option value="{{$user['id']}}">{{$user['name']}}</option>
-                        @endforeach
-                     </select>
-                  </div>
+    {{-- Filter Section --}}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-3">
+            <div class="row align-items-center">
+                <div class="col-md-1 text-center border-right">
+                    <i class="fas fa-filter text-muted fa-lg"></i>
                 </div>
-              </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-0">
+                        <label class="text-xs text-uppercase text-muted font-weight-bold mb-1">{{ __('Filter by User') }}</label>
+                        <select name="filter_user" id="filter_user" class="form-control form-control-sm select2">
+                            <option value="">{{ __('All Users') }}</option>
+                            @foreach($users as $user)
+                                <option value="{{$user['id']}}">{{$user['name']}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    <div class="row">
-      <div class="col-12 table-responsive">
-        <table id="activity_logs_table" class="table table-striped table-hover table-bordered"  width="100%">
-          <thead>
-            <tr>
-              <th width="10px">#</th>
-              <th>{{__('Action')}}</th>
-              <th>{{__('User')}}</th>
-              <th>{{__('Time')}}</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
     </div>
-  </div>
-  </div>
 
+    {{-- Logs Table --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h3 class="card-title font-weight-bold mb-0">
+                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('System Activity') }}
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="activity_logs_table" class="table table-hover align-middle mb-0" width="100%">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="10px" class="border-0 text-xs text-uppercase text-muted px-4 py-3">#</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Action / Description') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Performed By') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted py-3">{{ __('Timestamp') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
-@section('scripts')
-  <script src="{{url('js/admin/activity_logs.js')}}"></script>
-@endsection
+@push('scripts')
+    <script src="{{url('js/admin/activity_logs.js')}}"></script>
+    <style>
+        .text-xs { font-size: 0.75rem; }
+        .table td { vertical-align: middle; }
+        .bg-light { background-color: #f8fafc !important; }
+    </style>
+@endpush

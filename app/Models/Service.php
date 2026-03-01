@@ -55,6 +55,14 @@ class Service extends Model
         return $this->belongsTo(ServiceSubCategory::class, 'service_sub_category_id');
     }
 
+    /**
+     * Get the components (parameters) for this service.
+     */
+    public function components()
+    {
+        return $this->hasMany(ServiceComponent::class)->orderBy('sort_order', 'asc');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);

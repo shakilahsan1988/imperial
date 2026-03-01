@@ -111,7 +111,52 @@
                             </div>
                         </div>
 
-                        {{-- Section 4: Pricing & Timing --}}
+                        {{-- Section 4: Service Components (For Profiles/Panels) --}}
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-uppercase text-muted font-weight-bold mb-0" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-layer-group mr-1"></i> Service Components (For Profiles/Panels)
+                                </h6>
+                                <button type="button" id="addComponent" class="btn btn-sm btn-outline-primary rounded-pill">
+                                    <i class="fas fa-plus mr-1"></i> Add Parameter
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm" id="componentsTable">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Parameter Name</th>
+                                            <th width="150">Unit</th>
+                                            <th width="250">Reference Range</th>
+                                            <th width="50"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="componentsBody">
+                                        @foreach($service->components as $index => $component)
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" name="components[{{$index}}][id]" value="{{$component->id}}">
+                                                <input type="text" name="components[{{$index}}][name]" class="form-control form-control-sm" value="{{$component->name}}" placeholder="e.g. S. Cholesterol" required>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="components[{{$index}}][unit]" class="form-control form-control-sm" value="{{$component->unit}}" placeholder="mg/dL">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="components[{{$index}}][reference_range]" class="form-control form-control-sm" value="{{$component->reference_range}}" placeholder="120-200">
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-link text-danger remove-component p-0"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <small class="form-text text-muted">Leave this empty if the service is a single test. Add rows for profiles (like Lipid Profile, CBC, etc).</small>
+                        </div>
+
+                        {{-- Section 5: Pricing & Timing --}}
                         <div class="mb-4">
                             <h6 class="text-uppercase text-muted font-weight-bold mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
                                 <i class="fas fa-dollar-sign mr-1"></i> Pricing & Timing
@@ -241,6 +286,34 @@
             } else {
                 $subCategorySelect.prop('disabled', true);
             }
+        });
+
+        // Component Management
+        let componentIndex = {{ count($service->components) }};
+        
+        $('#addComponent').click(function() {
+            let html = `
+                <tr>
+                    <td>
+                        <input type="text" name="components[${componentIndex}][name]" class="form-control form-control-sm" placeholder="e.g. Parameter name" required>
+                    </td>
+                    <td>
+                        <input type="text" name="components[${componentIndex}][unit]" class="form-control form-control-sm" placeholder="Unit">
+                    </td>
+                    <td>
+                        <input type="text" name="components[${componentIndex}][reference_range]" class="form-control form-control-sm" placeholder="Reference Range">
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-link text-danger remove-component p-0"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            $('#componentsBody').append(html);
+            componentIndex++;
+        });
+
+        $(document).on('click', '.remove-component', function() {
+            $(this).closest('tr').remove();
         });
     </script>
 @endpush

@@ -5,11 +5,7 @@
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-            <div>
-                <h3 class="mb-0 text-dark font-weight-bold">{{ __('Diagnostic Report') }}</h3>
-                <p class="text-muted mb-0">Invoice #{{ $group->barcode ?? $group->id }}</p>
-            </div>
+        <div class="d-flex align-items-center justify-content-end mb-2">
             <div>
                 <a href="{{ route('admin.results.index') }}" class="btn btn-secondary shadow-sm">
                     <i class="fas fa-arrow-left mr-1"></i> {{ __('Back to Results') }}
@@ -72,37 +68,77 @@
                 <div class="bg-light px-4 py-2 border-bottom">
                     <h6 class="mb-0 font-weight-bold text-dark">{{ $test->service->name ?? 'Unknown Test' }}</h6>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-white">
-                            <tr>
-                                <th class="border-0 text-xs text-uppercase text-muted px-4">{{ __('Investigation') }}</th>
-                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Result') }}</th>
-                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Unit') }}</th>
-                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Reference Range') }}</th>
-                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Status') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="px-4 font-weight-600 text-dark">{{ $test->service->name }}</td>
-                                <td class="text-center h5 mb-0 font-weight-bold text-primary">{{ $test->result }}</td>
-                                <td class="text-center text-muted">{{ $test->service->unit }}</td>
-                                <td class="text-center small text-muted">{!! $test->service->reference_range !!}</td>
-                                <td class="text-center">
-                                    @php $status = strtolower($test->status); @endphp
-                                    @if($status == 'high')
-                                        <span class="badge bg-danger px-3 py-1">HIGH</span>
-                                    @elseif($status == 'low')
-                                        <span class="badge bg-warning px-3 py-1">LOW</span>
-                                    @else
-                                        <span class="badge bg-success-soft text-success px-3 py-1">Normal</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                
+                @if($test->results->count() > 0)
+                    {{-- Profile View --}}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th class="border-0 text-xs text-uppercase text-muted px-4" width="40%">{{ __('Parameter') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Result') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Unit') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Reference Range') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Status') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($test->results as $res)
+                                <tr>
+                                    <td class="px-4 font-weight-600 text-dark">{{ $res->component->name }}</td>
+                                    <td class="text-center font-weight-bold text-primary">{{ $res->result }}</td>
+                                    <td class="text-center text-muted">{{ $res->component->unit }}</td>
+                                    <td class="text-center small text-muted">{!! $res->component->reference_range !!}</td>
+                                    <td class="text-center">
+                                        @php $status = strtolower($res->status); @endphp
+                                        @if($status == 'high')
+                                            <span class="badge bg-danger px-2 py-1">HIGH</span>
+                                        @elseif($status == 'low')
+                                            <span class="badge bg-warning px-2 py-1">LOW</span>
+                                        @else
+                                            <span class="badge bg-success-soft text-success px-2 py-1">Normal</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    {{-- Single Test View --}}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th class="border-0 text-xs text-uppercase text-muted px-4">{{ __('Investigation') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Result') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Unit') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Reference Range') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Status') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-4 font-weight-600 text-dark">{{ $test->service->name }}</td>
+                                    <td class="text-center h5 mb-0 font-weight-bold text-primary">{{ $test->result }}</td>
+                                    <td class="text-center text-muted">{{ $test->service->unit }}</td>
+                                    <td class="text-center small text-muted">{!! $test->service->reference_range !!}</td>
+                                    <td class="text-center">
+                                        @php $status = strtolower($test->status); @endphp
+                                        @if($status == 'high')
+                                            <span class="badge bg-danger px-3 py-1">HIGH</span>
+                                        @elseif($status == 'low')
+                                            <span class="badge bg-warning px-3 py-1">LOW</span>
+                                        @else
+                                            <span class="badge bg-success-soft text-success px-3 py-1">Normal</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+
                 @if($test->comment)
                 <div class="bg-slate-50 p-3 border-top">
                     <small class="text-uppercase text-muted font-weight-bold d-block mb-1">Pathologist Comment:</small>

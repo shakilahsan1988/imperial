@@ -425,7 +425,7 @@ table.dataTable thead th {
 
 /* --- Content Header Refinement --- */
 .content-header {
-    padding: 2rem 0.5rem 1rem !important;
+    padding: 1.5rem 0.5rem 1.5rem !important;
 }
 
 /* --- Labels --- */
@@ -649,4 +649,28 @@ label:not(.form-check-label):not(.custom-file-label) {
 .online_list .product-title {
     font-weight: 600 !important;
     color: #1e293b !important;
+}
+
+/* --- Sidebar Submenu Active State Refinement --- */
+.nav-sidebar .nav-treeview > .nav-item > .nav-link.active {
+    background-color: transparent !important;
+    color: var(--primary) !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+}
+
+.nav-sidebar .nav-treeview > .nav-item > .nav-link.active i {
+    color: var(--primary) !important;
+}
+
+/* Change hollow circle to solid circle when active */
+.nav-sidebar .nav-treeview > .nav-item > .nav-link.active .far.fa-circle::before {
+    content: "\f111"; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+/* Ensure the parent menu item background is subtle when expanded */
+.nav-item.menu-open > .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.05) !important;
 }

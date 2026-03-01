@@ -162,7 +162,16 @@ class ServicesController extends Controller
         $data['show_on_frontend'] = $request->has('show_on_frontend');
         $data['status'] = $request->has('status');
 
-        Service::create($data);
+        $service = Service::create($data);
+
+        // Handle components
+        if ($request->has('components')) {
+            foreach ($request->components as $compData) {
+                if (!empty($compData['name'])) {
+                    $service->components()->create($compData);
+                }
+            }
+        }
 
         session()->flash('success', 'Service created successfully.');
 
@@ -205,6 +214,30 @@ class ServicesController extends Controller
         $data['status'] = $request->has('status');
 
         $service->update($data);
+
+        // Handle components
+        if ($request->has('components')) {
+            $keepIds = [];
+            foreach ($request->components as $compData) {
+                if (!empty($compData['name'])) {
+                    if (!empty($compData['id'])) {
+                        $comp = \App\Models\ServiceComponent::find($compData['id']);
+                        if ($comp) {
+                            $comp->update($compData);
+                            $keepIds[] = $comp->id;
+                        }
+                    } else {
+                        $newComp = $service->components()->create($compData);
+                        $keepIds[] = $newComp->id;
+                    }
+                }
+            }
+            // Delete components that were removed from the UI
+            $service->components()->whereNotIn('id', $keepIds)->delete();
+        } else {
+            // If no components sent, delete all existing components
+            $service->components()->delete();
+        }
 
         session()->flash('success', 'Service updated successfully.');
 

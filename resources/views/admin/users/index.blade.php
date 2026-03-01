@@ -1,73 +1,62 @@
 @extends('layouts.app')
-
-@section('title')
-    {{__('Users')}}
-@endsection
+@section('title', __('Users'))
 
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">
-            <i class="fa fa-user-circle"></i>
-            {{__('Users')}}
-          </h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
-            <li class="breadcrumb-item active">{{__('Users')}}</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+        <div class="d-flex align-items-center justify-content-end mb-2">
+            <div class="d-flex align-items-center">
+                @php
+                    $u = auth()->guard('admin')->user();
+                    $isSuper = ($u && $u->id == 1);
+                @endphp
+                
+                @if($u && ($isSuper || $u->hasPermission('create_user')))
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary shadow-sm">
+                    <i class="fas fa-plus mr-1"></i> {{ __('Create User') }}
+                </a>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
 @section('content')
-
-{{-- Logic for User and Super Admin Check --}}
-@php
-    $u = auth()->guard('admin')->user();
-    $isSuper = ($u && $u->id == 1);
-@endphp
-
-<div class="card card-primary card-outline">
-    <div class="card-header">
-      <h3 class="card-title">
-        {{__('Users Table')}}
-      </h3>
-      
-      {{-- Custom logic instead of @can('create_user') --}}
-      @if($u && ($isSuper || $u->hasPermission('create_user')))
-        <a href="{{route('admin.users.create')}}" class="btn btn-primary btn-sm float-right">
-          <i class="fa fa-plus"></i> {{ __('Create User') }}
-        </a>
-      @endif
-    </div>
-    <div class="card-body">
-        <div class="col-lg-12 table-responsive">
-          <table id="reports_table" class="table table-striped table-hover table-bordered" width="100%">
-            <thead>
-            <tr>
-              <th width="10px">#</th>
-              <th>{{__('Name')}}</th>
-              <th>{{__('Email')}}</th>
-              <th>{{__('Roles')}}</th>
-              <th width="150px">{{__('Action')}}</th>
-            </tr>
-            </thead>
-            <tbody>
-               {{-- DataTable will load data here via JS (users.js) --}}
-            </tbody>
-          </table>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h3 class="card-title font-weight-bold mb-0">
+                        <i class="fas fa-table mr-2 text-primary"></i>{{ __('Users Table') }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="reports_table" class="table table-hover align-middle" width="100%">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="10px" class="border-0 text-xs text-uppercase text-muted">#</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Name') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Email') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Roles') }}</th>
+                                    <th width="150px" class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-
 @endsection
 
-@section('scripts')
-  <script src="{{url('js/admin/users.js')}}"></script>
-@endsection
+@push('scripts')
+    <script src="{{url('js/admin/users.js')}}"></script>
+    <style>
+        .text-xs { font-size: 0.75rem; }
+        .table td { vertical-align: middle; }
+    </style>
+@endpush

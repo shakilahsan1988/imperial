@@ -5,11 +5,7 @@
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-            <div>
-                <h3 class="mb-0 text-dark font-weight-bold">{{ __('Edit Report Results') }}</h3>
-                <p class="text-muted mb-0">Invoice #{{ $group->barcode ?? $group->id }}</p>
-            </div>
+        <div class="d-flex align-items-center justify-content-end mb-2">
             <div>
                 <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary shadow-sm">
                     <i class="fas fa-arrow-left mr-1"></i> {{ __('Back to List') }}
@@ -113,37 +109,81 @@
                                     </div>
                                     
                                     @if($test->service_id)
-                                        {{-- Direct Service Result Entry --}}
-                                        <div class="table-responsive">
-                                            <table class="table table-hover align-middle">
-                                                <thead class="bg-light">
-                                                    <tr>
-                                                        <th class="border-0 text-xs text-uppercase text-muted">{{ __('Test Name') }}</th>
-                                                        <th class="border-0 text-xs text-uppercase text-muted">{{ __('Unit') }}</th>
-                                                        <th class="border-0 text-xs text-uppercase text-muted">{{ __('Reference Range') }}</th>
-                                                        <th class="border-0 text-xs text-uppercase text-muted" style="width: 250px;">{{ __('Result') }}</th>
-                                                        <th class="border-0 text-xs text-uppercase text-muted" style="width: 150px;">{{ __('Status') }}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="font-weight-600 text-dark">{{ $test->service->name }}</td>
-                                                        <td class="text-muted">{{ $test->service->unit }}</td>
-                                                        <td class="small text-muted">{!! $test->service->reference_range !!}</td>
-                                                        <td>
-                                                            <input type="text" name="result" class="form-control form-control-sm shadow-none" value="{{ $test->result }}" placeholder="Enter value" required>
-                                                        </td>
-                                                        <td>
-                                                            <select name="status" class="form-control form-control-sm shadow-none">
-                                                                <option value="Normal" {{ $test->status == 'Normal' ? 'selected' : '' }}>Normal</option>
-                                                                <option value="High" {{ $test->status == 'High' ? 'selected' : '' }} class="text-danger font-weight-bold">High</option>
-                                                                <option value="Low" {{ $test->status == 'Low' ? 'selected' : '' }} class="text-warning font-weight-bold">Low</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        {{-- Check if service has multiple parameters (Profile) --}}
+                                        @php
+                                            $components = $test->service->components;
+                                        @endphp
+
+                                        @if($components->count() > 0)
+                                            {{-- Profile/Panel Result Entry --}}
+                                            <div class="table-responsive">
+                                                <table class="table table-hover align-middle">
+                                                    <thead class="bg-light">
+                                                        <tr>
+                                                            <th class="border-0 text-xs text-uppercase text-muted">{{ __('Parameter') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted">{{ __('Unit') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted">{{ __('Reference Range') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted" style="width: 250px;">{{ __('Result') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted" style="width: 150px;">{{ __('Status') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($components as $component)
+                                                            @php
+                                                                $existingResult = $test->results->where('service_component_id', $component->id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td class="font-weight-600 text-dark">{{ $component->name }}</td>
+                                                                <td class="text-muted">{{ $component->unit }}</td>
+                                                                <td class="small text-muted">{!! $component->reference_range !!}</td>
+                                                                <td>
+                                                                    <input type="text" name="results[{{$component->id}}][result]" class="form-control form-control-sm shadow-none" value="{{ $existingResult->result ?? '' }}" placeholder="Enter value">
+                                                                </td>
+                                                                <td>
+                                                                    <select name="results[{{$component->id}}][status]" class="form-control form-control-sm shadow-none">
+                                                                        <option value="Normal" {{ ($existingResult->status ?? '') == 'Normal' ? 'selected' : '' }}>Normal</option>
+                                                                        <option value="High" {{ ($existingResult->status ?? '') == 'High' ? 'selected' : '' }} class="text-danger font-weight-bold">High</option>
+                                                                        <option value="Low" {{ ($existingResult->status ?? '') == 'Low' ? 'selected' : '' }} class="text-warning font-weight-bold">Low</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @else
+                                            {{-- Single Service Result Entry --}}
+                                            <div class="table-responsive">
+                                                <table class="table table-hover align-middle">
+                                                    <thead class="bg-light">
+                                                        <tr>
+                                                            <th class="border-0 text-xs text-uppercase text-muted">{{ __('Test Name') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted">{{ __('Unit') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted">{{ __('Reference Range') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted" style="width: 250px;">{{ __('Result') }}</th>
+                                                            <th class="border-0 text-xs text-uppercase text-muted" style="width: 150px;">{{ __('Status') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="font-weight-600 text-dark">{{ $test->service->name }}</td>
+                                                            <td class="text-muted">{{ $test->service->unit }}</td>
+                                                            <td class="small text-muted">{!! $test->service->reference_range !!}</td>
+                                                            <td>
+                                                                <input type="text" name="result" class="form-control form-control-sm shadow-none" value="{{ $test->result }}" placeholder="Enter value" required>
+                                                            </td>
+                                                            <td>
+                                                                <select name="status" class="form-control form-control-sm shadow-none">
+                                                                    <option value="Normal" {{ $test->status == 'Normal' ? 'selected' : '' }}>Normal</option>
+                                                                    <option value="High" {{ $test->status == 'High' ? 'selected' : '' }} class="text-danger font-weight-bold">High</option>
+                                                                    <option value="Low" {{ $test->status == 'Low' ? 'selected' : '' }} class="text-warning font-weight-bold">Low</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endif
                                     @else
                                         {{-- Legacy Tests Library Results (if any) --}}
                                         <div class="table-responsive">

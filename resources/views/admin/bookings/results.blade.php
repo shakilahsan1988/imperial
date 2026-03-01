@@ -4,10 +4,9 @@
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
-        <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center justify-content-end mb-2">
             <div>
-                <h3 class="mb-0 text-dark font-weight-bold">Completed Results</h3>
-                <p class="text-muted mb-0">List of all bookings with completed diagnostic reports</p>
+                {{-- Actions could go here if needed in future --}}
             </div>
         </div>
     </div>

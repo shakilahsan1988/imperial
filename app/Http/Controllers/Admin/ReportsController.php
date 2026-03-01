@@ -62,7 +62,9 @@ class ReportsController extends Controller
     public function show($id)
     {
         $group = Group::with([
-            'tests' => fn($q) => $q->with('service'),
+            'tests' => function($q) {
+                return $q->with(['service', 'results.component']);
+            },
             'booking.services',
             'patient'
         ])->findOrFail($id);
@@ -76,7 +78,9 @@ class ReportsController extends Controller
     public function pdf($id)
     {
         $group = Group::with([
-            'tests' => fn($q) => $q->with('service'),
+            'tests' => function($q) {
+                return $q->with(['service', 'results.component']);
+            },
             'patient'
         ])->findOrFail($id);
 
@@ -101,6 +105,24 @@ class ReportsController extends Controller
     {
         try {
             $group_test = GroupTest::findOrFail($id);
+            
+            // Handle sub-components if any
+            if ($request->has('results')) {
+                foreach ($request->results as $componentId => $resData) {
+                    \App\Models\GroupTestResult::updateOrCreate(
+                        [
+                            'group_test_id' => $group_test->id,
+                            'service_component_id' => $componentId
+                        ],
+                        [
+                            'result' => $resData['result'],
+                            'status' => $resData['status']
+                        ]
+                    );
+                }
+            }
+
+            // Update main test record
             $group_test->update([
                 'result' => $request->result,
                 'status' => $request->status,

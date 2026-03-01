@@ -162,7 +162,7 @@
             @if($isSuper || $u->hasPermission('view_role'))
             <li class="nav-item">
               <a href="{{route('admin.roles.index')}}" class="nav-link" id="roles">
-                <i class="fa fa-window-maximize nav-icon"></i>
+                <i class="far fa-circle nav-icon"></i>
                 <p>{{__('admin.role_list')}}</p>
               </a>
             </li>
@@ -170,14 +170,14 @@
             @if($isSuper || $u->hasPermission('view_user'))
             <li class="nav-item">
               <a href="{{route('admin.users.index')}}" class="nav-link" id="users">
-                <i class="fa fa-users nav-icon"></i>
+                <i class="far fa-circle nav-icon"></i>
                 <p>{{__('admin.user_list')}}</p>
               </a>
             </li>
             @endif
             <li class="nav-item">
               <a href="{{route('admin.profile.edit')}}" class="nav-link">
-                <i class="fa fa-key nav-icon"></i>
+                <i class="far fa-circle nav-icon"></i>
                 <p>{{__('admin.change_password')}}</p>
               </a>
             </li>
