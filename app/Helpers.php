@@ -32,7 +32,7 @@ if (!function_exists('formated_price'))
    function formated_price($price)
    {
         $currency = get_currency();
-        return $price.' '.$currency;
+        return $currency.' '.number_format($price, 2);
    }
 
 }
@@ -217,12 +217,12 @@ if (!function_exists('print_barcode'))
 }
 
 
-//check if report all subtests and cultures are done
+//check if report all subtests are done
 if (!function_exists('check_group_done')) 
 {  
     function check_group_done($group_id)
     {
-        $group=\App\Models\Group::with(['tests','cultures'])->where('id',$group_id)->first();
+        $group=\App\Models\Group::with(['tests'])->where('id',$group_id)->first();
 
         $done=true;
 
@@ -235,16 +235,6 @@ if (!function_exists('check_group_done'))
                 {
                     $done=false;
                 }
-
-            }
-            //check cultures
-            foreach($group['cultures'] as $culture)
-            {
-                if(!$culture['done'])
-                {
-                    $done=false;
-                }
-
             }
         }
 
@@ -260,7 +250,7 @@ if (!function_exists('group_test_calculations'))
 {
     function group_test_calculations($id)
     {
-        $group=Group::with('tests','cultures','contract')->where('id',$id)->first();
+        $group=Group::with('tests','contract')->where('id',$id)->first();
 
         $subtotal=0;
         $discount=0;
@@ -272,14 +262,6 @@ if (!function_exists('group_test_calculations'))
             foreach($group['tests'] as $test)
             {
                 $subtotal+=$test['price'];
-            }
-        }
-
-        if(isset($group['cultures']))
-        {
-            foreach($group['cultures'] as $culture)
-            {
-                $subtotal+=$culture['price'];
             }
         }
 

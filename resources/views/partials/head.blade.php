@@ -49,6 +49,7 @@
 <link rel="stylesheet" href="{{ URL::asset('css/toastr.min.css')}}">
 <!-- select2 css -->
 <link rel="stylesheet" href="{{ url('css/select2.css')}}" type="text/css">
+<link rel="stylesheet" href="{{ url('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 <!-- jquery ui -->
 <link rel="stylesheet" href="{{url('plugins/jquery-ui/jquery-ui.min.css')}}">
 <!-- sweetalert -->

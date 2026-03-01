@@ -6,103 +6,58 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Booking;
-use App\Models\Culture;
 use App\Models\Patient;
-use App\Models\Antibiotic;
 use App\Models\Group;
 use App\Models\GroupTest;
-use App\Models\GroupCulture;
 use App\Models\Visit;
 use App\Models\Expense;
 use App\Models\Contract;
-use Spatie\Activitylog\Models\Activity;
 
 class IndexController extends Controller
 {
-    /**
-     * Dashboard access for admin only
-     */
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
             $u = auth()->guard('admin')->user();
-            
-            // ড্যাশবোর্ড এক্সেস চেক: সুপার এডমিন বা এডমিন গার্ডে লগইন থাকলে এক্সেস পাবে
             if ($u && ($u->id == 1 || auth()->guard('admin')->check())) {
                 return $next($request);
             }
-
-            abort(403, 'আপনার ড্যাশবোর্ড দেখার অনুমতি নেই।');
+            abort(403, 'You do not have permission to view the dashboard.');
         });
     }
 
-    /**
-     * admin dashboard
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //general statistics
-        $services_count=Service::count();
-        $bookings_count=Booking::count();
-        $cultures_count=Culture::count();
-        $antibiotics_count=Antibiotic::count();
-        $patients_count=Patient::count();
-        $contracts_count=Contract::count();
-        $visits_count=Visit::count();
+        // Statistics
+        $services_count = Service::count();
+        $bookings_count = Booking::count();
+        $patients_count = Patient::count();
+        $contracts_count = Contract::count();
+        $visits_count = Visit::count();
        
-        //tests statistics
-        $group_tests_count=GroupTest::count();
-        $pending_tests_count=GroupTest::where('done',false)->count();
-        $done_tests_count=GroupTest::where('done',true)->count();
+        // Report/Test statistics based on new system
+        $group_tests_count = GroupTest::count();
+        $pending_tests_count = GroupTest::where('done', false)->count();
+        $done_tests_count = GroupTest::where('done', true)->count();
 
-        //cultures statistics
-        $group_cultures_count=GroupCulture::count();
-        $pending_cultures_count=GroupCulture::where('done',false)->count();
-        $done_cultures_count=GroupCulture::where('done',true)->count();
+        // New home visits
+        $visits = Visit::with('patient')->where('read', false)->get();
 
-        //new home visists
-        $visits=Visit::with('patient')->where('read',false)->get();
+        // Today's scheduled visits
+        $today_visits = Visit::with('patient')->whereDate('visit_date', now())->get();
 
-        //todays visits
-        $today_visits=Visit::with('patient')->where('visit_date','like','%'.date('d-m-Y').'%')->get();
-       
-        //total income , due , payment
-        $today_paid=0;
-
-        $today_groups=Group::whereDate('created_at',now())->get();
-
-        foreach($today_groups as $group)
-        {
-            $today_paid+=$group['paid'];
-        }
-
-        //expenses
-        $today_total_expense=0;
+        // Financials
+        $today_paid = Group::whereDate('created_at', now())->sum('paid');
+        $today_total_expense = Expense::whereDate('date', now())->sum('amount');
+        $today_profit = $today_paid - $today_total_expense;
         
-        $today_expenses=Expense::whereDate('date',now())->get();
-       
-        foreach($today_expenses as $today_expense)
-        {
-            $today_total_expense+=$today_expense['amount'];
-        }
-
-        //today profit
-        $today_profit=$today_paid-$today_total_expense;
-        
-        return view('admin.index',compact(
+        return view('admin.index', compact(
             'services_count',
             'bookings_count',
-            'cultures_count',
-            'antibiotics_count',
             'patients_count',
             'group_tests_count',
             'pending_tests_count',
             'done_tests_count',
-            'group_cultures_count',
-            'pending_cultures_count',
-            'done_cultures_count',
             'visits',
             'today_visits',
             'today_paid',

@@ -1,350 +1,127 @@
 @extends('layouts.app')
 
-@section('title')
-{{__('Print Report')}}
-@endsection
-
-@section('css')
-  <link rel="stylesheet" href="{{url('css/print.css')}}">
-@endsection
+@section('title', __('View Report'))
 
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">
-                    <i class="fa fa-flag"></i>
-                    {{__('Reports')}}
-                </h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
-                    <li class="breadcrumb-item"><a href="{{route('admin.reports.index')}}">{{__('Reports')}}</a></li>
-                    <li class="breadcrumb-item active">{{__('Print Report')}}</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+                <h3 class="mb-0 text-dark font-weight-bold">{{ __('Diagnostic Report') }}</h3>
+                <p class="text-muted mb-0">Invoice #{{ $group->barcode ?? $group->id }}</p>
+            </div>
+            <div>
+                <a href="{{ route('admin.results.index') }}" class="btn btn-secondary shadow-sm">
+                    <i class="fas fa-arrow-left mr-1"></i> {{ __('Back to Results') }}
+                </a>
+                <a href="{{ route('admin.reports.pdf', $group->id) }}" class="btn btn-info shadow-sm ml-2" target="_blank">
+                    <i class="fas fa-print mr-1"></i> {{ __('Print Report') }}
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
 @section('content')
-<form method="POST" action="{{route('admin.reports.pdf',$group['id'])}}" id="print_form">
-    @csrf
-    <!-- patient code -->
-    <input type="hidden" id="patient_code" @if(isset($group['patient'])) value="{{$group['patient']['code']}}" @endif>
-    
-    <div class="row mb-3">
-        <div class="col-lg-6">
-            <h6>
-                {{__('Select tests and cultures to be printed in the report')}}
-            </h6>
-        </div>
-        <div class="col-lg-6">
-          
-            <button type="submit" class="btn btn-primary float-right d-inline">
-                <i class="fa fa-print"></i>
-                {{__('Print')}}
-            </button>
-
-           
-            <button type="button" class="btn btn-danger deselect_all float-right d-inline mr-2">
-                <i class="fa fa-times-circle"></i>
-                {{__('Deselect all')}}
-            </button>
-
-            <button type="button" class="btn btn-success select_all float-right d-inline mr-2">
-                <i class="fas fa-check-square"></i>
-                {{__('Select all')}}
-            </button>
-
-        </div>
-
-        <div class="col-lg-12">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#patient_modal">
-                <i class="fas fa-user-injured"></i> {{__('Patient info')}}
-            </button>
+    {{-- Patient Summary Card --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-1">
+                            <div class="bg-primary-soft rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user-injured text-primary fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3 border-right">
+                            <label class="text-xs text-uppercase text-muted mb-1 d-block">{{ __('Patient Name') }}</label>
+                            <h5 class="font-weight-bold mb-0 text-dark">{{ $group->patient->name }}</h5>
+                            <small class="text-muted">{{ $group->patient->phone }}</small>
+                        </div>
+                        <div class="col-md-2 border-right">
+                            <label class="text-xs text-uppercase text-muted mb-1 d-block">{{ __('Gender / Age') }}</label>
+                            <p class="mb-0 text-dark font-weight-600">{{ ucfirst($group->patient->gender) }} / {{ $group->patient->age }}</p>
+                        </div>
+                        <div class="col-md-3 border-right">
+                            <label class="text-xs text-uppercase text-muted mb-1 d-block">{{ __('Report Date') }}</label>
+                            <p class="mb-0 text-dark font-weight-600">{{ $group->updated_at->format('d M, Y h:i A') }}</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <span class="badge bg-success-soft text-success px-4 py-2 rounded-pill border border-success">
+                                <i class="fas fa-check-circle mr-1"></i> COMPLETED
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <!-- Tests -->
-        <div class="col-lg-12">
-            <div class="card card-primary">
-                <div class="card-header">
-
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <h3 class="card-title">{{__('Tests')}}</h3>
-                        </div>
-                       
-                    </div>
-
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div id="accordion">
-                        <div class="row">
-                            <div class="col-lg-12 table-responsive">
-                                <table width="100%">
-                                    <tbody id="analysis_titles_sort">
-                                        @if(!count($group['tests']))
-                                        <tr class="nosort">
-                                            <td class="text-center">
-                                                {{__('No data available')}}
-                                            </td>
-                                        </tr>
-                                        @endif
-                                        @foreach($group['tests'] as $test)
-                                        <tr>
-                                            <td>
-                                                <div class="card card-primary card-outline collapsed-card" id="card_{{$test['id']}}">
-        
-                                                    <div class="card-header">
-                                                        <h4 class="card-title">
-                                                            <input type="checkbox" class="analyses_select" id="test_{{$test['id']}}" name="tests[]" value="{{$test['id']}}">
-                                                            @if($test['done']) 
-                                                                <i class="fa fa-check text-success"></i>
-                                                            @endif
-                                                            <label for="test_{{$test['id']}}">@if(isset($test['test'])) {{$test['test']["name"]}} @endif</label>
-                                                        </h4>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-        
-                                                    <div class="card-body">
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td width="100%" colspan="5"  class="nosort analysis_title_row">
-                                                                        <h5 class="text-center analysis_title">
-                                                                            @if(isset($test['test']))
-                                                                                {{$test['test']['name']}}
-                                                                            @endif
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr  class="nosort transparent">
-                                                                    <td width="100%" colspan="5" class="transparent"></td>
-                                                                <tr>
-                                                                <tr class="analysis_head">
-                                                                    <th width="30%">{{__('Test')}}</th>
-                                                                    <th width="17.5%" class="text-center">{{__('Result')}}</th>
-                                                                    <th width="10%" class="text-center">{{__('Unit')}}</th>
-                                                                    <th width="17.5%" class="text-center">{{__('Normal Range')}}</th>
-                                                                    <th width="5%" class="text-center">{{__('Status')}}</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($test["results"] as $result)
-                                                                    @if(isset($result['component']))
-                                                                        <!-- Title -->
-                                                                        @if($result['component']['title'])
-                                                                            <tr>
-                                                                                <td colspan="5" class="title">
-                                                                                    <b>{{$result['component']['name']}}</b>
-                                                                                </td>
-                                                                            </tr>
-                                                                        @else
-                                                                        <tr>
-                                                                            <td>{{$result["component"]["name"]}}</td>
-                                                                            <td class="text-center">{{$result["result"]}}</td>
-                                                                            <td class="text-center">{{$result["component"]["unit"]}}</td>
-                                                                            <td class="text-center">{!! $result["component"]["reference_range"] !!}</td>
-                                                                            <td class="text-center">
-                                                                               {{$result["status"]}}
-                                                                            </td>
-                                                                        </tr>
-                                                                        @endif
-                                                                    @endif
-                                                                @endforeach
-                                                                @if(isset($test['comment']))
-                                                                <tr>
-                                                                    <td colspan="5">
-                                                                        <table width="100%">
-                                                                            <tbody>
-                                                                                <tr class="comment">
-                                                                                    <th width="90px">{{__('Comment')}} :</th>
-                                                                                    <td>{{$test['comment']}}</td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>                                                                        
-                                                                    </td>
-                                                                </tr>
-                                                                @endif
-                                                            </tbody>
-        
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-        
-                                    </tbody>
-        
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.card-body -->
-            </div>
+    {{-- Tests Section --}}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+            <h5 class="card-title font-weight-bold text-primary mb-0">
+                <i class="fas fa-microscope mr-2"></i>{{ __('Diagnostic Results') }}
+            </h5>
         </div>
-        <!-- \Tests -->
-
-        <!-- Cultures -->
-        <div class="col-lg-12">
-            <div class="card card-primary">
-                <div class="card-header">
-
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <h3 class="card-title">{{__('Cultures')}}</h3>
-                        </div>
-                    </div>
-
+        <div class="card-body p-4">
+            @foreach($group->tests as $test)
+            <div class="border rounded mb-4 overflow-hidden">
+                <div class="bg-light px-4 py-2 border-bottom">
+                    <h6 class="mb-0 font-weight-bold text-dark">{{ $test->service->name ?? 'Unknown Test' }}</h6>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div id="accordion">
-                        <div class="row">
-                            <div class="col-lg-12 table-responsive">
-                                @if(!count($group['cultures']))
-                                    <p class="text-center">
-                                        {{__('No data available')}}
-                                    </p>
-                                @endif
-                                @foreach($group['cultures'] as $culture)
-                                <div class="card card-primary card-outline collapsed-card">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <input type="checkbox" class="analyses_select" id="culture_{{$culture['id']}}" name="cultures[]" value="{{$culture['id']}}">
-                                            @if($culture['done']) 
-                                                <i class="fa fa-check text-success"></i>
-                                            @endif
-                                            <label for="culture_{{$culture['id']}}">
-                                                {{$culture['culture']['name']}}
-                                            </label>
-                                        </div>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- culture options -->
-                                        <table  width="100%">
-                                            <tbody>
-                                                @foreach($culture['culture_options'] as $culture_option)
-                                                    @if(isset($culture_option['value'])&&isset($culture_option['culture_option']))
-                                                        <tr>
-                                                            <th class="no-border nowrap" width="10px" nowrap="nowrap">
-                                                                <span class="option_title">{{$culture_option['culture_option']['value']}} :</span>
-                                                            </th>
-                                                            <td class="no-border">
-                                                                {{$culture_option['value']}}
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <!-- /culture options -->
-
-                                        <!-- sensitivity -->
-                                        <table class="table table-bordered" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Sensitivity</th>
-                                                    <th>Commercial name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($culture['high_antibiotics'] as $antibiotic)
-                                                    <tr>
-                                                        <td width="200px" nowrap="nowrap" align="left">
-                                                            {{$antibiotic['antibiotic']['name']}}
-                                                        </td>
-                                                        <td width="120px" nowrap="nowrap" align="center">
-                                                            {{$antibiotic['sensitivity']}}
-                                                        </td>
-                                                        <td>
-                                                            {{$antibiotic['antibiotic']['commercial_name']}}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-
-                                                @foreach($culture['moderate_antibiotics'] as $antibiotic)
-                                                    <tr>
-                                                        <td width="200px" nowrap="nowrap" align="left">
-                                                            {{$antibiotic['antibiotic']['name']}}
-                                                        </td>
-                                                        <td width="120px" nowrap="nowrap" align="center">
-                                                            {{$antibiotic['sensitivity']}}
-                                                        </td>
-                                                        <td>
-                                                            {{$antibiotic['antibiotic']['commercial_name']}}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-
-                                                @foreach($culture['resident_antibiotics'] as $antibiotic)
-                                                <tr>
-                                                    <td width="200px" nowrap="nowrap" align="left">
-                                                        {{$antibiotic['antibiotic']['name']}}
-                                                    </td>
-                                                    <td width="120px" nowrap="nowrap" align="center">
-                                                        {{$antibiotic['sensitivity']}}
-                                                    </td>
-                                                    <td>
-                                                        {{$antibiotic['antibiotic']['commercial_name']}}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-
-                                        <!-- Comment -->
-                                        @if(isset($culture['comment']))
-                                        <table width="100%"  class="comment">
-                                            <tbody>
-                                                <tr>
-                                                    <td width="100px" nowrap="nowrap"><b>{{__('Comment')}}</b> :</td>
-                                                    <td>{{$culture['comment']}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>     
-                                        @endif
-                                        <!-- /comment -->
-                                    </div>
-                                </div>
-                                @endforeach                               
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-white">
+                            <tr>
+                                <th class="border-0 text-xs text-uppercase text-muted px-4">{{ __('Investigation') }}</th>
+                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Result') }}</th>
+                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Unit') }}</th>
+                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Reference Range') }}</th>
+                                <th class="border-0 text-xs text-uppercase text-muted text-center">{{ __('Status') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-4 font-weight-600 text-dark">{{ $test->service->name }}</td>
+                                <td class="text-center h5 mb-0 font-weight-bold text-primary">{{ $test->result }}</td>
+                                <td class="text-center text-muted">{{ $test->service->unit }}</td>
+                                <td class="text-center small text-muted">{!! $test->service->reference_range !!}</td>
+                                <td class="text-center">
+                                    @php $status = strtolower($test->status); @endphp
+                                    @if($status == 'high')
+                                        <span class="badge bg-danger px-3 py-1">HIGH</span>
+                                    @elseif($status == 'low')
+                                        <span class="badge bg-warning px-3 py-1">LOW</span>
+                                    @else
+                                        <span class="badge bg-success-soft text-success px-3 py-1">Normal</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- /.card-body -->
+                @if($test->comment)
+                <div class="bg-slate-50 p-3 border-top">
+                    <small class="text-uppercase text-muted font-weight-bold d-block mb-1">Pathologist Comment:</small>
+                    <p class="mb-0 text-dark italic">"{{ $test->comment }}"</p>
+                </div>
+                @endif
             </div>
+            @endforeach
         </div>
-        <!-- \Cultures -->
     </div>
-</form>
-
-@include('admin.reports._patient_modal')
-
 @endsection
-@section('scripts')
-    <script src="{{url('js/admin/reports.js')}}"></script>
-@endsection
+
+@push('scripts')
+<style>
+    .bg-primary-soft { background-color: rgba(79, 70, 229, 0.1); }
+    .bg-success-soft { background-color: rgba(16, 185, 129, 0.1); }
+    .bg-slate-50 { background-color: #f8fafc; }
+    .text-xs { font-size: 0.75rem; }
+    .font-weight-600 { font-weight: 600; }
+    .italic { font-style: italic; }
+</style>
+@endpush

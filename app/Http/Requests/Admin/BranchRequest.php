@@ -27,9 +27,9 @@ class BranchRequest extends FormRequest
             'name'=>'required',
             'address'=>'required',
             'phone'=>'required',
-            'lat'=>'required',
-            'lng'=>'required',
-            'zoom_level'=>'required',
+            'lat'=>'nullable',
+            'lng'=>'nullable',
+            'zoom_level'=>'nullable',
         ];
     }
 }

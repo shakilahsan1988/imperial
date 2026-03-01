@@ -17,6 +17,24 @@ class Group extends Model
      */
     protected $guarded = [];
     
+    protected $fillable = [
+        'booking_id',
+        'patient_id',
+        'doctor_id',
+        'branch_id',
+        'subtotal',
+        'discount',
+        'total',
+        'paid',
+        'due',
+        'contract_id',
+        'barcode',
+        'receipt_pdf',
+        'report_pdf',
+        'done',
+        'signature',
+    ];
+    
     /**
      * The attributes that should be cast.
      */
@@ -33,11 +51,11 @@ class Group extends Model
     }
 
     /**
-     * Get the cultures associated with the group.
+     * Get the cultures associated with the group (empty for now).
      */
     public function cultures(): HasMany
     {
-        return $this->hasMany(GroupCulture::class, 'group_id', 'id');
+        return $this->hasMany(GroupTest::class, 'group_id', 'id')->whereRaw('1 = 0');
     }
 
     /**
@@ -70,6 +88,14 @@ class Group extends Model
     public function contract(): BelongsTo
     {
         return $this->belongsTo(Contract::class, 'contract_id', 'id')->withTrashed();
+    }
+
+    /**
+     * Get the booking associated with the group.
+     */
+    public function booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class, 'booking_id', 'id');
     }
 
     /**

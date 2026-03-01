@@ -50,7 +50,7 @@
                         @endif
                         <tr>
                             <th>Price</th>
-                            <td>{{ number_format($service->price, 2) }}</td>
+                            <td>{{ get_currency() }} {{ number_format($service->price, 2) }}</td>
                         </tr>
                         <tr>
                             <th>Duration</th>
@@ -101,7 +101,7 @@
                         @if($service->home_visit_available && $service->home_visit_price)
                         <tr>
                             <th>Additional Price</th>
-                            <td>+ {{ number_format($service->home_visit_price, 2) }}</td>
+                            <td>+ {{ get_currency() }} {{ number_format($service->home_visit_price, 2) }}</td>
                         </tr>
                         @endif
                     </table>

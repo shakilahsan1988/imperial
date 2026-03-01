@@ -8,6 +8,8 @@ use App\Models\Booking;
 use App\Models\Service;
 use App\Models\Patient;
 use App\Models\User;
+use App\Models\Group;
+use App\Models\GroupTest;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 
@@ -56,7 +58,8 @@ class BookingsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Booking::with(['patient', 'service', 'technician', 'creator'])
+            $query = Booking::with(['patient', 'services', 'report'])
+                ->select('bookings.*')
                 ->orderBy('created_at', 'desc');
 
             if ($request->has('status') && $request->status) {
@@ -80,15 +83,20 @@ class BookingsController extends Controller
                     return 'BK-' . str_pad($booking->id, 5, '0', STR_PAD_LEFT);
                 })
                 ->addColumn('patient_name', function ($booking) {
-                    if ($booking->patient) {
-                        return $booking->patient->name . '<br><small class="text-muted">' . $booking->patient->phone . '</small>';
-                    }
-                    return $booking->patient_name . '<br><small class="text-muted">' . $booking->patient_phone . '</small>';
+                    $name = $booking->patient ? $booking->patient->name : $booking->patient_name;
+                    $phone = $booking->patient ? $booking->patient->phone : $booking->patient_phone;
+                    return $name . '<br><small class="text-muted">' . $phone . '</small>';
                 })
                 ->addColumn('service', function ($booking) {
-                    return $booking->service->name . '<br><small class="text-muted">' . ucfirst($booking->service->category) . '</small>';
+                    $services = $booking->services;
+                    if ($services->count() > 1) {
+                        return $services->first()->name . ' <span class="badge bg-info">+' . ($services->count() - 1) . ' more</span>';
+                    } elseif ($services->count() == 1) {
+                        return $services->first()->name;
+                    }
+                    return '<span class="text-danger">No service</span>';
                 })
-                ->addColumn('booking_type', function ($booking) {
+                ->editColumn('booking_type', function ($booking) {
                     return $booking->booking_type === 'home_visit'
                         ? '<span class="badge bg-indigo">Home Visit</span>'
                         : '<span class="badge bg-success">Branch Visit</span>';
@@ -96,7 +104,7 @@ class BookingsController extends Controller
                 ->addColumn('schedule', function ($booking) {
                     return Carbon::parse($booking->scheduled_date)->format('d M Y') . '<br><small class="text-muted">' . Carbon::parse($booking->scheduled_time)->format('h:i A') . '</small>';
                 })
-                ->addColumn('status', function ($booking) {
+                ->editColumn('status', function ($booking) {
                     $badges = [
                         'pending' => 'bg-warning',
                         'confirmed' => 'bg-info',
@@ -106,19 +114,96 @@ class BookingsController extends Controller
                         'cancelled' => 'bg-danger',
                         'no_show' => 'bg-secondary',
                     ];
-                    return '<span class="badge ' . ($badges[$booking->status] ?? 'bg-secondary') . '">' . ucfirst($booking->status) . '</span>';
+                    $badgeClass = $badges[$booking->status] ?? 'bg-secondary';
+                    return '<span class="badge ' . $badgeClass . '">' . ucfirst(str_replace('_', ' ', $booking->status)) . '</span>';
                 })
-                ->addColumn('total', function ($booking) {
-                    return number_format($booking->total_amount, 2);
+                ->editColumn('total', function ($booking) {
+                    return get_currency() . ' ' . number_format($booking->total_amount, 2);
+                })
+                ->addColumn('report', function ($booking) {
+                    if ($booking->report) {
+                        return '<a href="' . url('admin/reports/' . $booking->report->id . '/edit') . '" class="btn btn-sm btn-success shadow-sm rounded-pill px-3">
+                                    <i class="fas fa-file-medical mr-1"></i> Report Entry
+                                </a>';
+                    }
+                    
+                    $hasLaboratory = $booking->services->where('category', 'laboratory')->count() > 0;
+                    if ($hasLaboratory) {
+                        return '<a href="' . url('admin/bookings/' . $booking->id . '/create_report') . '" class="btn btn-sm btn-outline-primary shadow-sm rounded-pill px-3">
+                                    <i class="fas fa-plus mr-1"></i> Create Report
+                                </a>';
+                    }
+                    
+                    return '<span class="text-muted small">Not Required</span>';
                 })
                 ->addColumn('actions', function ($booking) {
                     return view('admin.bookings._action', compact('booking'))->render();
                 })
-                ->rawColumns(['booking_id', 'patient_name', 'service', 'booking_type', 'schedule', 'status', 'actions'])
+                ->rawColumns(['booking_id', 'patient_name', 'service', 'booking_type', 'schedule', 'status', 'total', 'report', 'actions'])
                 ->make(true);
         }
 
         return view('admin.bookings.index');
+    }
+
+    public function ajax(Request $request)
+    {
+        return $this->index($request);
+    }
+
+    public function createReport(Booking $booking)
+    {
+        $report = Group::where('booking_id', $booking->id)->first();
+        if ($report) {
+            return redirect()->route('admin.reports.edit', $report->id);
+        }
+
+        try {
+            $patientId = $booking->patient_id;
+            if (!$patientId) {
+                $patient = Patient::where('phone', $booking->patient_phone)->first();
+                if (!$patient) {
+                    $patient = Patient::create([
+                        'code' => patient_code(),
+                        'name' => $booking->patient_name,
+                        'phone' => $booking->patient_phone,
+                        'email' => $booking->patient_email,
+                        'address' => $booking->patient_address,
+                    ]);
+                }
+                $patientId = $patient->id;
+                $booking->update(['patient_id' => $patientId]);
+            }
+
+            $group = Group::create([
+                'booking_id' => $booking->id,
+                'patient_id' => $patientId,
+                'branch_id' => $booking->branch_id,
+                'subtotal' => $booking->total_amount,
+                'total' => $booking->total_amount - $booking->discount,
+                'discount' => $booking->discount,
+                'paid' => $booking->paid_amount,
+                'due' => $booking->due_amount,
+            ]);
+
+            $labServices = $booking->services()->where('category', 'laboratory')->get();
+            
+            foreach ($labServices as $service) {
+                GroupTest::create([
+                    'group_id' => $group->id,
+                    'service_id' => $service->id,
+                    'price' => $service->price,
+                ]);
+            }
+
+            $groupsController = new GroupsController();
+            $groupsController->generate_barcode($group);
+
+            return redirect()->route('admin.reports.edit', $group->id)
+                ->with('success', 'Report created successfully with booked services.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to create report: ' . $e->getMessage());
+        }
     }
 
     public function create()
@@ -126,8 +211,9 @@ class BookingsController extends Controller
         $services = Service::active()->orderBy('category')->orderBy('name')->get();
         $patients = Patient::orderBy('name')->get();
         $technicians = User::where('is_technician', true)->orderBy('name')->get();
+        $branches = \App\Models\Branch::orderBy('name')->get();
 
-        return view('admin.bookings.create', compact('services', 'patients', 'technicians'));
+        return view('admin.bookings.create', compact('services', 'patients', 'technicians', 'branches'));
     }
 
     public function store(Request $request)
@@ -138,23 +224,42 @@ class BookingsController extends Controller
             'patient_phone' => 'required|string|max:20',
             'patient_email' => 'nullable|email',
             'patient_address' => 'nullable|string',
-            'service_id' => 'required|exists:services,id',
+            'service_id' => 'required|array|min:1',
+            'service_id.*' => 'exists:services,id',
             'booking_type' => 'required|in:branch_visit,home_visit',
+            'branch_id' => 'required_if:booking_type,branch_visit|nullable|exists:branches,id',
             'payment_type' => 'required|in:online,pay_at_branch',
+            'paid_amount' => 'nullable|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
             'scheduled_date' => 'required|date|after_or_equal:today',
             'scheduled_time' => 'required',
         ]);
 
-        $service = Service::findOrFail($request->service_id);
+        $selectedServices = Service::whereIn('id', $request->service_id)->get();
+        $totalAmount = 0;
+        $pivotData = [];
 
-        $totalAmount = $service->price;
-        if ($request->booking_type === 'home_visit' && $service->home_visit_price) {
-            $totalAmount += $service->home_visit_price;
+        foreach ($selectedServices as $service) {
+            $price = $service->price;
+            $totalAmount += $price;
+            $pivotData[$service->id] = ['price' => $price];
+        }
+
+        $paidAmount = $request->paid_amount ?? 0;
+        $discount = $request->discount ?? 0;
+        $dueAmount = $totalAmount - $paidAmount - $discount;
+        if ($dueAmount < 0) $dueAmount = 0;
+
+        $paymentStatus = 'pending';
+        if ($paidAmount >= ($totalAmount - $discount)) {
+            $paymentStatus = 'paid';
+        } elseif ($paidAmount > 0) {
+            $paymentStatus = 'partial';
         }
 
         $booking = Booking::create([
             'patient_id' => $request->patient_id,
-            'service_id' => $request->service_id,
+            'branch_id' => $request->booking_type === 'branch_visit' ? $request->branch_id : null,
             'patient_name' => $request->patient_name,
             'patient_phone' => $request->patient_phone,
             'patient_email' => $request->patient_email,
@@ -163,13 +268,18 @@ class BookingsController extends Controller
             'postal_code' => $request->postal_code,
             'booking_type' => $request->booking_type,
             'payment_type' => $request->payment_type,
-            'payment_status' => $request->payment_type === 'online' ? 'paid' : 'pending',
+            'payment_status' => $paymentStatus,
             'total_amount' => $totalAmount,
+            'paid_amount' => $paidAmount,
+            'discount' => $discount,
+            'due_amount' => $dueAmount,
             'scheduled_date' => $request->scheduled_date,
             'scheduled_time' => $request->scheduled_time,
             'notes' => $request->notes,
             'created_by' => auth()->guard('admin')->id(),
         ]);
+
+        $booking->services()->attach($pivotData);
 
         session()->flash('success', 'Booking created successfully.');
 
@@ -178,8 +288,9 @@ class BookingsController extends Controller
 
     public function show(Booking $booking)
     {
-        $booking->load(['patient', 'service', 'technician', 'creator']);
-        return view('admin.bookings.show', compact('booking'));
+        $booking->load(['patient', 'technician', 'creator', 'services']);
+        $technicians = User::where('is_technician', true)->orderBy('name')->get();
+        return view('admin.bookings.show', compact('booking', 'technicians'));
     }
 
     public function edit(Booking $booking)
@@ -187,8 +298,9 @@ class BookingsController extends Controller
         $services = Service::active()->orderBy('category')->orderBy('name')->get();
         $patients = Patient::orderBy('name')->get();
         $technicians = User::where('is_technician', true)->orderBy('name')->get();
+        $branches = \App\Models\Branch::orderBy('name')->get();
 
-        return view('admin.bookings.edit', compact('booking', 'services', 'patients', 'technicians'));
+        return view('admin.bookings.edit', compact('booking', 'services', 'patients', 'technicians', 'branches'));
     }
 
     public function update(Request $request, Booking $booking)
@@ -198,23 +310,42 @@ class BookingsController extends Controller
             'patient_name' => 'required|string|max:255',
             'patient_phone' => 'required|string|max:20',
             'patient_email' => 'nullable|email',
-            'service_id' => 'required|exists:services,id',
+            'service_id' => 'required|array|min:1',
+            'service_id.*' => 'exists:services,id',
             'booking_type' => 'required|in:branch_visit,home_visit',
+            'branch_id' => 'required_if:booking_type,branch_visit|nullable|exists:branches,id',
             'payment_type' => 'required|in:online,pay_at_branch',
+            'paid_amount' => 'nullable|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
             'scheduled_date' => 'required|date',
             'scheduled_time' => 'required',
         ]);
 
-        $service = Service::findOrFail($request->service_id);
+        $selectedServices = Service::whereIn('id', $request->service_id)->get();
+        $totalAmount = 0;
+        $pivotData = [];
 
-        $totalAmount = $service->price;
-        if ($request->booking_type === 'home_visit' && $service->home_visit_price) {
-            $totalAmount += $service->home_visit_price;
+        foreach ($selectedServices as $service) {
+            $price = $service->price;
+            $totalAmount += $price;
+            $pivotData[$service->id] = ['price' => $price];
+        }
+
+        $paidAmount = $request->paid_amount ?? 0;
+        $discount = $request->discount ?? 0;
+        $dueAmount = $totalAmount - $paidAmount - $discount;
+        if ($dueAmount < 0) $dueAmount = 0;
+
+        $paymentStatus = 'pending';
+        if ($paidAmount >= ($totalAmount - $discount)) {
+            $paymentStatus = 'paid';
+        } elseif ($paidAmount > 0) {
+            $paymentStatus = 'partial';
         }
 
         $booking->update([
             'patient_id' => $request->patient_id,
-            'service_id' => $request->service_id,
+            'branch_id' => $request->booking_type === 'branch_visit' ? $request->branch_id : null,
             'patient_name' => $request->patient_name,
             'patient_phone' => $request->patient_phone,
             'patient_email' => $request->patient_email,
@@ -223,11 +354,17 @@ class BookingsController extends Controller
             'postal_code' => $request->postal_code,
             'booking_type' => $request->booking_type,
             'payment_type' => $request->payment_type,
+            'payment_status' => $paymentStatus,
             'total_amount' => $totalAmount,
+            'paid_amount' => $paidAmount,
+            'discount' => $discount,
+            'due_amount' => $dueAmount,
             'scheduled_date' => $request->scheduled_date,
             'scheduled_time' => $request->scheduled_time,
             'notes' => $request->notes,
         ]);
+
+        $booking->services()->sync($pivotData);
 
         session()->flash('success', 'Booking updated successfully.');
 
@@ -236,6 +373,36 @@ class BookingsController extends Controller
 
     public function updateStatus(Request $request, Booking $booking)
     {
+        if ($request->has('update_payment')) {
+            $request->validate([
+                'paid_amount' => 'required|numeric|min:0',
+                'discount' => 'required|numeric|min:0',
+            ]);
+
+            $totalAmount = $booking->total_amount;
+            $paidAmount = $request->paid_amount;
+            $discount = $request->discount;
+            $dueAmount = $totalAmount - $paidAmount - $discount;
+            if ($dueAmount < 0) $dueAmount = 0;
+
+            $paymentStatus = 'pending';
+            if ($paidAmount >= ($totalAmount - $discount)) {
+                $paymentStatus = 'paid';
+            } elseif ($paidAmount > 0) {
+                $paymentStatus = 'partial';
+            }
+
+            $booking->update([
+                'paid_amount' => $paidAmount,
+                'discount' => $discount,
+                'due_amount' => $dueAmount,
+                'payment_status' => $paymentStatus,
+            ]);
+
+            session()->flash('success', 'Payment information updated successfully.');
+            return redirect()->back();
+        }
+
         $request->validate([
             'status' => 'required|in:pending,confirmed,sample_collected,in_progress,completed,cancelled,no_show',
         ]);
@@ -264,21 +431,63 @@ class BookingsController extends Controller
         return redirect()->route('admin.bookings.index');
     }
 
-    public function ajax(Request $request)
+    public function results(Request $request)
     {
-        $query = Booking::with(['patient', 'service']);
+        if ($request->ajax()) {
+            $query = Booking::with(['patient', 'services', 'report'])
+                ->select('bookings.*')
+                ->where('status', 'completed')
+                ->orderBy('updated_at', 'desc');
 
-        if ($request->has('status') && $request->status) {
-            $query->where('status', $request->status);
+            return DataTables::of($query)
+                ->addColumn('booking_id', function ($booking) {
+                    return 'BK-' . str_pad($booking->id, 5, '0', STR_PAD_LEFT);
+                })
+                ->addColumn('patient_name', function ($booking) {
+                    $name = $booking->patient ? $booking->patient->name : $booking->patient_name;
+                    $phone = $booking->patient ? $booking->patient->phone : $booking->patient_phone;
+                    return $name . '<br><small class="text-muted">' . $phone . '</small>';
+                })
+                ->addColumn('service', function ($booking) {
+                    $services = $booking->services;
+                    if ($services->count() > 1) {
+                        return $services->first()->name . ' <span class="badge bg-info">+' . ($services->count() - 1) . ' more</span>';
+                    } elseif ($services->count() == 1) {
+                        return $services->first()->name;
+                    }
+                    return '<span class="text-danger">No service</span>';
+                })
+                ->addColumn('completed_at', function ($booking) {
+                    return $booking->updated_at->format('d M Y') . '<br><small class="text-muted">' . $booking->updated_at->format('h:i A') . '</small>';
+                })
+                ->addColumn('actions', function ($booking) {
+                    $reportId = $booking->report ? $booking->report->id : null;
+                    
+                    $html = '<div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle shadow-sm rounded-pill px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-cog mr-1"></i> Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right shadow border-0">';
+                    
+                    if ($reportId) {
+                        $html .= '<a class="dropdown-item py-2" href="' . route('admin.reports.show', $reportId) . '">
+                                    <i class="fas fa-eye mr-2 text-info"></i> View Report
+                                  </a>';
+                        $html .= '<a class="dropdown-item py-2" href="' . route('admin.reports.pdf', $reportId) . '" target="_blank">
+                                    <i class="fas fa-print mr-2 text-success"></i> Print Report
+                                  </a>';
+                    } else {
+                        $html .= '<span class="dropdown-item py-2 text-muted">No Report Available</span>';
+                    }
+                    
+                    $html .= '</div></div>';
+                    return $html;
+                })
+                ->rawColumns(['booking_id', 'patient_name', 'service', 'completed_at', 'actions'])
+                ->make(true);
         }
 
-        if ($request->has('date') && $request->date) {
-            $query->whereDate('scheduled_date', $request->date);
-        }
-
-        $bookings = $query->orderBy('scheduled_time')->get();
-
-        return response()->json($bookings);
+        return view('admin.bookings.results');
     }
 
     public function getPatients(Request $request)

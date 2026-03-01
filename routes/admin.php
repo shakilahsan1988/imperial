@@ -4,10 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\AntibioticsController;
 use App\Http\Controllers\Admin\PatientsController;
-use App\Http\Controllers\Admin\CulturesController;
-use App\Http\Controllers\Admin\CultureOptionsController;
 use App\Http\Controllers\Admin\GroupsController;
 use App\Http\Controllers\Admin\DoctorsController;
 use App\Http\Controllers\Admin\ReportsController;
@@ -72,11 +69,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::get('get_bookings', [BookingsController::class, 'ajax'])->name('get_bookings');
     Route::patch('bookings/{booking}/status', [BookingsController::class, 'updateStatus'])->name('bookings.updateStatus');
     Route::get('bookings/patients', [BookingsController::class, 'getPatients'])->name('bookings.patients');
+    Route::get('bookings/{booking}/create_report', [BookingsController::class, 'createReport'])->name('bookings.create_report');
 
-    // Antibiotics
-    Route::resource('antibiotics', AntibioticsController::class);
-    Route::get('get_antibiotics', [AntibioticsController::class, 'ajax'])->name('get_antibiotics');
-    
+    // Results (Completed Bookings)
+    Route::get('results', [BookingsController::class, 'results'])->name('results.index');
+
     // Patients
     Route::resource('patients', PatientsController::class);
     Route::get('get_patients', [PatientsController::class, 'ajax'])->name('get_patients'); 
@@ -84,17 +81,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::get('patients_download_template', [PatientsController::class, 'download_template'])->name('patients.download_template'); 
     Route::post('patients_import', [PatientsController::class, 'import'])->name('patients.import'); 
 
-    // Cultures
-    Route::resource('cultures', CulturesController::class);
-    Route::get('get_cultures', [CulturesController::class, 'ajax'])->name('get_cultures');
-
-    // Culture Options
-    Route::resource('culture_options', CultureOptionsController::class);
-    Route::get('get_culture_options', [CultureOptionsController::class, 'ajax'])->name('culture_options.ajax');
-   
     // Groups
     Route::resource('groups', GroupsController::class);
-    Route::post('groups/delete_analysis/{id}', [GroupsController::class, 'delete_analysis']);
     Route::get('get_groups', [GroupsController::class, 'ajax'])->name('get_groups');
     Route::post('groups/print_barcode/{group_id}', [GroupsController::class, 'print_barcode'])->name('groups.print_barcode');
    
@@ -106,11 +94,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::post('doctors_import', [DoctorsController::class, 'import'])->name('doctors.import'); 
 
     // Reports
+    Route::get('reports/{id}/pdf', [ReportsController::class, 'pdf'])->name('reports.pdf');
     Route::resource('reports', ReportsController::class);
-    Route::post('reports/pdf/{id}', [ReportsController::class, 'pdf'])->name('reports.pdf');
-    Route::post('reports/update_culture/{id}', [ReportsController::class, 'update_culture'])->name('reports.update_culture');
     Route::get('get_reports', [ReportsController::class, 'ajax'])->name('get_reports');
-    Route::get('sign_report/{id}', [ReportsController::class, 'sign'])->name('reports.sign');
     
     // Roles
     Route::resource('roles', RolesController::class);
@@ -120,17 +106,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('users', UsersController::class);
     Route::get('get_users', [UsersController::class, 'ajax'])->name('get_users');
    
-    // Prices
-    Route::get('prices/tests', [PricesController::class, 'tests'])->name('prices.tests');
-    Route::post('prices/tests', [PricesController::class, 'tests_submit'])->name('prices.tests_submit');
-    Route::get('tests_prices_export', [PricesController::class, 'tests_prices_export'])->name('prices.tests_prices_export'); 
-    Route::post('tests_prices_import', [PricesController::class, 'tests_prices_import'])->name('prices.tests_prices_import'); 
-  
-    Route::get('prices/cultures', [PricesController::class, 'cultures'])->name('prices.cultures');
-    Route::post('prices/cultures', [PricesController::class, 'cultures_submit'])->name('prices.cultures_submit');
-    Route::get('cultures_prices_export', [PricesController::class, 'cultures_prices_export'])->name('prices.cultures_prices_export'); 
-    Route::post('cultures_prices_import', [PricesController::class, 'cultures_prices_import'])->name('prices.cultures_prices_import'); 
-    
     // Accounting
     Route::get('accounting', [AccountingController::class, 'index'])->name('accounting.index');
     Route::get('generate_report', [AccountingController::class, 'generate_report'])->name('accounting.generate_report');
@@ -139,7 +114,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     
     // Visits
     Route::resource('visits', VisitsController::class);
-    Route::get('visits/create_tests/{id}', [VisitsController::class, 'create_tests'])->name('visits.create_tests');
     Route::get('get_visits', [VisitsController::class, 'ajax'])->name('get_visits');
    
     // Branches

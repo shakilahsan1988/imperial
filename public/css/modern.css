@@ -180,11 +180,17 @@ body {
     border: none !important;
 }
 
-.btn-primary { background-color: var(--primary) !important; }
-.btn-success { background-color: var(--success) !important; }
-.btn-danger  { background-color: var(--danger) !important; }
-.btn-info    { background-color: var(--info) !important; }
+.btn-primary { background-color: var(--primary) !important; color: #fff !important; }
+.btn-secondary { background-color: var(--secondary) !important; color: #fff !important; }
+.btn-success { background-color: var(--success) !important; color: #fff !important; }
+.btn-danger  { background-color: var(--danger) !important; color: #fff !important; }
+.btn-info    { background-color: var(--info) !important; color: #fff !important; }
 .btn-warning { background-color: var(--warning) !important; color: #fff !important; }
+
+.btn-secondary:hover {
+    background-color: #475569 !important;
+    color: #fff !important;
+}
 
 .btn:hover {
     transform: translateY(-1px);
@@ -339,7 +345,9 @@ table.dataTable thead th {
 
 /* --- Select2 Modernization --- */
 .select2-container--default .select2-selection--single,
-.select2-container--default .select2-selection--multiple {
+.select2-container--default .select2-selection--multiple,
+.select2-container--bootstrap4 .select2-selection--single,
+.select2-container--bootstrap4 .select2-selection--multiple {
     border: 1px solid #e2e8f0 !important;
     border-radius: 8px !important;
     padding: 6px 12px !important;
@@ -347,12 +355,15 @@ table.dataTable thead th {
     background-color: #f8fafc !important;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__rendered {
+.select2-container--default .select2-selection--single .select2-selection__rendered,
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
     color: #334155 !important;
     line-height: 1.5 !important;
+    padding-left: 0 !important;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__arrow {
+.select2-container--default .select2-selection--single .select2-selection__arrow,
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow {
     height: 38px !important;
 }
 
@@ -360,6 +371,27 @@ table.dataTable thead th {
     border: 1px solid #e2e8f0 !important;
     border-radius: 8px !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    z-index: 1060 !important;
+}
+
+/* Ensure search field inside dropdown is clearly visible */
+.select2-search--dropdown {
+    padding: 8px !important;
+    background-color: #f8fafc !important;
+}
+
+.select2-search--dropdown .select2-search__field {
+    border: 1.5px solid #cbd5e1 !important; /* Prominent border */
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    background-color: #ffffff !important;
+    color: #334155 !important;
+}
+
+.select2-search--dropdown .select2-search__field:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    outline: none !important;
 }
 
 /* --- Modals --- */

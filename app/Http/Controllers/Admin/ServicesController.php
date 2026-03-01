@@ -105,13 +105,13 @@ class ServicesController extends Controller
                     return $service->sub_category ?: '-';
                 })
                 ->addColumn('price', function ($service) {
-                    return number_format($service->price, 2);
+                    return get_currency() . ' ' . number_format($service->price, 2);
                 })
                 ->addColumn('home_visit', function ($service) {
                     if ($service->home_visit_available) {
                         $html = '<span class="badge bg-success">Yes</span>';
                         if ($service->home_visit_price) {
-                            $html .= '<br><small class="text-muted">+' . number_format($service->home_visit_price, 2) . '</small>';
+                            $html .= '<br><small class="text-muted">+' . get_currency() . ' ' . number_format($service->home_visit_price, 2) . '</small>';
                         }
                         return $html;
                     }
@@ -148,6 +148,8 @@ class ServicesController extends Controller
             'service_sub_category_id' => 'nullable|exists:service_sub_categories,id',
             'price' => 'required|numeric|min:0',
             'home_visit_price' => 'nullable|numeric|min:0',
+            'unit' => 'nullable|string|max:255',
+            'reference_range' => 'nullable|string',
         ]);
 
         $data = $request->all();
@@ -188,6 +190,8 @@ class ServicesController extends Controller
             'service_sub_category_id' => 'nullable|exists:service_sub_categories,id',
             'price' => 'required|numeric|min:0',
             'home_visit_price' => 'nullable|numeric|min:0',
+            'unit' => 'nullable|string|max:255',
+            'reference_range' => 'nullable|string',
         ]);
 
         $data = $request->all();

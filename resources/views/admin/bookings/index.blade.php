@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="row">
+                    <div class="row w-100">
                         <div class="col-md-3">
                             <select id="statusFilter" class="form-control">
                                 <option value="">All Status</option>
@@ -40,6 +40,11 @@
                         <div class="col-md-2">
                             <input type="date" id="dateTo" class="form-control" placeholder="Date To">
                         </div>
+                        <div class="col-md-2 d-flex justify-content-end">
+                            <a href="{{ route('admin.bookings.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Create Booking
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -54,6 +59,7 @@
                                     <th>Schedule</th>
                                     <th>Total</th>
                                     <th>Status</th>
+                                    <th>Report</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -90,6 +96,7 @@
                     { data: 'schedule', name: 'scheduled_date' },
                     { data: 'total', name: 'total_amount' },
                     { data: 'status', name: 'status' },
+                    { data: 'report', name: 'report', orderable: false, searchable: false },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false }
                 ]
             });

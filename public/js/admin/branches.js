@@ -34,7 +34,7 @@
         {
           extend:    'colvis',
           text:      '<i class="fas fa-eye"></i>',
-          titleAttr: 'PDF'
+          titleAttr: trans("Column visibility")
         }
         
       ],
@@ -74,19 +74,6 @@
       }
    });
 
-    //submit map form
-    $('#branch_form').on('submit',function(){
-       let lat=$('#branch_lat').val();
-       let lng=$('#branch_lng').val();
-
-       if(lat==''||lng=='')
-       {
-           toastr.error('Please choose location on map','Failed');
-
-           return false;
-       }
-    });
-
     //delete branch
     $(document).on('click','.delete_branch',function(e){
       e.preventDefault();
@@ -106,53 +93,3 @@
     });
 
 })(jQuery);
-
-let marker;
-let map;
-let branch_lat=parseFloat($('#branch_lat').val());
-let branch_lng=parseFloat($('#branch_lng').val());
-let zoom_level=parseInt($('#zoom_level').val());
-
-if(isNaN(branch_lat)||isNaN(branch_lng)||isNaN(zoom_level))
-{
-    branch_lat=26.8206;
-    branch_lng=30.8025;
-    zoom_level=4;
-}
-
-function initMap() {
-
-    const myLatlng = { lat: branch_lat, lng: branch_lng};
-
-    map = new google.maps.Map(document.getElementById("map"), {
-      zoom: zoom_level,
-      center: myLatlng
-    });
-
-    marker = new google.maps.Marker({
-      position: myLatlng,
-      map,
-      title: "Click to zoom"
-    });
-    
-    map.addListener('click', function(e) {
-        placeMarkerAndPanTo(e.latLng, map);
-    });
-  }
-
-  function placeMarkerAndPanTo(latLng, map) {
-      marker.setMap(null);
-      marker = new google.maps.Marker({
-        position: latLng,
-        map: map
-      });
-      //set branch lat and lng
-      $('#branch_lat').val(latLng.lat());
-      $('#branch_lng').val(latLng.lng());
-      $('#zoom_level').val(map.getZoom());
-
-  }
-
-
-
- 

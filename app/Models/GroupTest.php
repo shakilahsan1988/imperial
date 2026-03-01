@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GroupTest extends Model
 {
@@ -22,18 +21,10 @@ class GroupTest extends Model
     }
 
     /**
-     * Get the test details, including trashed records.
+     * Get the service associated with this entry.
      */
-    public function test(): BelongsTo
+    public function service(): BelongsTo
     {
-        return $this->belongsTo(Test::class, 'test_id', 'id')->withTrashed();
-    }
-
-    /**
-     * Get the results associated with this specific group test.
-     */
-    public function results(): HasMany
-    {
-        return $this->hasMany(GroupTestResult::class, 'group_test_id', 'id')->orderBy('id', 'asc');
+        return $this->belongsTo(Service::class, 'service_id', 'id')->withTrashed();
     }
 }

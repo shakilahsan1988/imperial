@@ -89,7 +89,29 @@
                             </div>
                         </div>
 
-                        {{-- Section 3: Pricing & Timing --}}
+                        {{-- Section 3: Reference Values (Report Entry) --}}
+                        <div class="mb-4">
+                            <h6 class="text-uppercase text-muted font-weight-bold mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                <i class="fas fa-file-medical mr-1"></i> Reference Values (For Reports)
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Unit</label>
+                                        <input type="text" name="unit" class="form-control" value="{{ $service->unit }}" placeholder="e.g., mg/dL, g/L, %">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Normal Reference Range</label>
+                                        <input type="text" name="reference_range" class="form-control" value="{{ $service->reference_range }}" placeholder="e.g., 70 - 110, Negative, < 5.0">
+                                        <small class="form-text text-muted">This will be displayed on the report result entry page.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Section 4: Pricing & Timing --}}
                         <div class="mb-4">
                             <h6 class="text-uppercase text-muted font-weight-bold mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
                                 <i class="fas fa-dollar-sign mr-1"></i> Pricing & Timing
@@ -100,7 +122,7 @@
                                         <label>Price (Branch Visit) *</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">{{ get_currency() }}</span>
                                             </div>
                                             <input type="number" name="price" class="form-control" step="0.01" min="0" value="{{ $service->price }}" required>
                                         </div>
@@ -135,7 +157,7 @@
                                 <label>Home Visit Additional Price</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">{{ config('app.currency', '$') }}</span>
+                                        <span class="input-group-text">{{ get_currency() }}</span>
                                     </div>
                                     <input type="number" name="home_visit_price" class="form-control" step="0.01" min="0" value="{{ $service->home_visit_price }}" placeholder="Extra fee for home visit">
                                 </div>

@@ -11,7 +11,7 @@ class Booking extends Model
 
     protected $fillable = [
         'patient_id',
-        'service_id',
+        'branch_id',
         'patient_name',
         'patient_phone',
         'patient_email',
@@ -23,6 +23,8 @@ class Booking extends Model
         'payment_status',
         'total_amount',
         'paid_amount',
+        'discount',
+        'due_amount',
         'scheduled_date',
         'scheduled_time',
         'status',
@@ -37,11 +39,28 @@ class Booking extends Model
         'scheduled_time' => 'datetime:H:i:s',
         'total_amount' => 'decimal:2',
         'paid_amount' => 'decimal:2',
+        'discount' => 'decimal:2',
+        'due_amount' => 'decimal:2',
     ];
 
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function report()
+    {
+        return $this->hasOne(Group::class, 'booking_id');
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'booking_services')->withPivot('price')->withTimestamps();
     }
 
     public function service()

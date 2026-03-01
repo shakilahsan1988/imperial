@@ -48,6 +48,4 @@
 </div>
 @endsection
 @section('scripts')
-<script src="https://maps.googleapis.com/maps/api/js?key={{$api_keys['google_map']}}&callback=initMap&libraries=&v=weekly" defer></script>
-<script src="{{url('js/admin/branches.js')}}"></script>
 @endsection

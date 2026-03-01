@@ -82,7 +82,7 @@ class PatientsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model = Patient::query();
+        $model = Patient::with('groups');
 
         return DataTables::of($model)
             ->editColumn('total', function($patient) {

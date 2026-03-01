@@ -13,24 +13,6 @@
         </a>
       </li>
 
-      @if($u && ($isSuper || $u->hasPermission('view_group')))
-      <li class="nav-item">
-        <a href="{{route('admin.groups.index')}}" class="nav-link" id="groups">
-          <i class="nav-icon fas fa-file-invoice"></i>
-          <p>{{__('admin.invoice_and_billing')}}</p>
-        </a>
-      </li>
-      @endif
-
-      @if($u && ($isSuper || $u->hasPermission('view_report')))
-      <li class="nav-item">
-        <a href="{{route('admin.reports.index')}}" class="nav-link" id="reports">
-          <i class="nav-icon fas fa-flag"></i>
-          <p>{{__('admin.report_entry')}}</p>
-        </a>
-      </li>
-      @endif
-
       @if($u && ($isSuper || $u->hasPermission('view_service') || $u->hasPermission('view_service_category') || $u->hasPermission('view_service_sub_category')))
         <li class="nav-item has-treeview" id="service_management">
           <a href="#" class="nav-link" id="service_management_link">
@@ -76,61 +58,10 @@
           <p>{{__('Bookings')}}</p>
         </a>
       </li>
-      @endif
-
-      @if($u && ($isSuper || $u->hasPermission('view_culture')))
       <li class="nav-item">
-        <a href="{{route('admin.cultures.index')}}" class="nav-link" id="cultures">
-          <i class="nav-icon fas fa-vial"></i>
-          <p>{{__('admin.culture_price_format')}}</p>
-        </a>
-      </li>
-      @endif
-
-      @if($u && ($isSuper || $u->hasPermission('view_culture_option')))
-      <li class="nav-item">
-        <a href="{{route('admin.culture_options.index')}}" class="nav-link" id="culture_options">
-          <i class="nav-icon fas fa-vial"></i>
-          <p>{{__('admin.culture_options')}}</p>
-        </a>
-      </li>
-      @endif
-    
-      @if($u && ($isSuper || $u->hasPermission('view_test_prices') || $u->hasPermission('view_culture_prices')))
-        <li class="nav-item has-treeview" id="prices">
-          <a href="#" class="nav-link" id="prices_link">
-            <i class="nav-icon fas fa-list"></i>
-            <p>
-              {{__('admin.price_list')}}
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            @if($isSuper || $u->hasPermission('view_test_prices'))
-            <li class="nav-item">
-              <a href="{{route('admin.prices.tests')}}" class="nav-link" id="tests_prices">
-                <i class="far fa-circle nav-icon"></i>
-                <p>{{__('admin.tests')}}</p>
-              </a>
-            </li>
-            @endif
-            @if($isSuper || $u->hasPermission('view_culture_prices'))
-            <li class="nav-item">
-              <a href="{{route('admin.prices.cultures')}}" class="nav-link" id="cultures_prices">
-                <i class="far fa-circle nav-icon"></i>
-                <p>{{__('admin.cultures')}}</p>
-              </a>
-            </li>
-            @endif
-          </ul>
-        </li>
-      @endif
-
-      @if($u && ($isSuper || $u->hasPermission('view_antibiotic')))
-      <li class="nav-item">
-        <a href="{{route('admin.antibiotics.index')}}" class="nav-link" id="antibiotics">
-          <i class="nav-icon fas fa-capsules"></i>
-          <p>{{__('admin.medicines')}}</p>
+        <a href="{{route('admin.results.index')}}" class="nav-link" id="results">
+          <i class="nav-icon fas fa-poll-h"></i>
+          <p>{{__('Results')}}</p>
         </a>
       </li>
       @endif

@@ -18,6 +18,8 @@ class Service extends Model
         'service_category_id',
         'service_sub_category_id',
         'description',
+        'unit',
+        'reference_range',
         'preparation',
         'specimen_type',
         'price',
@@ -40,7 +42,7 @@ class Service extends Model
 
     public function bookings()
     {
-        return $this->hasMany(Booking::class);
+        return $this->belongsToMany(Booking::class, 'booking_services')->withPivot('price')->withTimestamps();
     }
 
     public function serviceCategory()
