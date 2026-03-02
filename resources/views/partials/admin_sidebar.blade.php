@@ -337,7 +337,7 @@
         <a href="#" class="nav-link" id="membership_module_link">
           <i class="nav-icon fas fa-id-card"></i>
           <p>
-            Membership
+            Membership &amp; Video
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -358,6 +358,18 @@
             <a href="{{ route('admin.membership_plan_bookings.index') }}" class="nav-link" id="membership_plan_bookings">
               <i class="far fa-circle nav-icon"></i>
               <p>Plan Booking</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.video_consultant_packages.index') }}" class="nav-link" id="video_consultant_packages">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Consultant Package</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.video_consultant_bookings.index') }}" class="nav-link" id="video_consultant_bookings">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Consultant Booking</p>
             </a>
           </li>
         </ul>

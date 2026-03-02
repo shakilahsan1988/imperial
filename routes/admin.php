@@ -181,6 +181,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('health_package_bookings', HealthPackageBookingsController::class)->only(['index', 'show', 'update']);
 
     // Membership
+    Route::get('video_consultant/packages', [MembershipPlansController::class, 'consultantIndex'])->name('video_consultant_packages.index');
+    Route::get('video_consultant/bookings', [MembershipPlanBookingsController::class, 'consultantIndex'])->name('video_consultant_bookings.index');
     Route::resource('membership_categories', MembershipCategoriesController::class)->except(['show']);
     Route::resource('membership_plans', MembershipPlansController::class)->except(['show']);
     Route::resource('membership_plan_bookings', MembershipPlanBookingsController::class)->only(['index', 'show', 'update']);

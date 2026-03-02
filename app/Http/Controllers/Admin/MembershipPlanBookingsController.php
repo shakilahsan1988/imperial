@@ -29,13 +29,28 @@ class MembershipPlanBookingsController extends Controller
     public function index()
     {
         $bookings = MembershipPlanBooking::with('plan.category')->latest()->paginate(30);
-        return view('admin.membership_plan_bookings.index', compact('bookings'));
+        $module = 'membership';
+        return view('admin.membership_plan_bookings.index', compact('bookings', 'module'));
     }
 
-    public function show(MembershipPlanBooking $membership_plan_booking)
+    public function consultantIndex()
+    {
+        $bookings = MembershipPlanBooking::with('plan.category')
+            ->whereHas('plan', function ($q) {
+                $q->where('is_video_consultant', true);
+            })
+            ->latest()
+            ->paginate(30);
+
+        $module = 'video_consultant';
+        return view('admin.membership_plan_bookings.index', compact('bookings', 'module'));
+    }
+
+    public function show(Request $request, MembershipPlanBooking $membership_plan_booking)
     {
         $booking = $membership_plan_booking->load('plan.category', 'patient');
-        return view('admin.membership_plan_bookings.show', compact('booking'));
+        $module = $request->get('module') === 'video_consultant' ? 'video_consultant' : 'membership';
+        return view('admin.membership_plan_bookings.show', compact('booking', 'module'));
     }
 
     public function update(Request $request, MembershipPlanBooking $membership_plan_booking)

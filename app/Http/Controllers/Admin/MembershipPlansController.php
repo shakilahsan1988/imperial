@@ -32,13 +32,27 @@ class MembershipPlansController extends Controller
     public function index()
     {
         $plans = MembershipPlan::with('category')->orderBy('sort_order')->orderBy('name')->paginate(20);
-        return view('admin.membership_plans.index', compact('plans'));
+        $module = 'membership';
+        return view('admin.membership_plans.index', compact('plans', 'module'));
+    }
+
+    public function consultantIndex()
+    {
+        $plans = MembershipPlan::with('category')
+            ->where('is_video_consultant', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->paginate(20);
+        $module = 'video_consultant';
+        return view('admin.membership_plans.index', compact('plans', 'module'));
     }
 
     public function create()
     {
         $categories = MembershipCategory::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
-        return view('admin.membership_plans.create', compact('categories'));
+        $isVideoDefault = request()->boolean('video', false);
+        $module = $isVideoDefault ? 'video_consultant' : 'membership';
+        return view('admin.membership_plans.create', compact('categories', 'isVideoDefault', 'module'));
     }
 
     public function store(Request $request)
@@ -46,6 +60,7 @@ class MembershipPlansController extends Controller
         $data = $this->validatedData($request);
         $data['slug'] = Str::slug($data['name']) . '-' . time();
         $data['show_on_frontend'] = $request->boolean('show_on_frontend', true);
+        $data['is_video_consultant'] = $request->boolean('is_video_consultant', false);
         $data['status'] = $request->boolean('status', true);
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
@@ -61,14 +76,20 @@ class MembershipPlansController extends Controller
 
         MembershipPlan::create($data);
 
-        return redirect()->route('admin.membership_plans.index')->with('success', 'Membership plan created successfully.');
+        $redirectRoute = $data['is_video_consultant']
+            ? 'admin.video_consultant_packages.index'
+            : 'admin.membership_plans.index';
+
+        return redirect()->route($redirectRoute)->with('success', 'Membership plan created successfully.');
     }
 
     public function edit(MembershipPlan $membership_plan)
     {
         $plan = $membership_plan;
         $categories = MembershipCategory::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
-        return view('admin.membership_plans.edit', compact('plan', 'categories'));
+        $module = $plan->is_video_consultant ? 'video_consultant' : 'membership';
+        $isVideoDefault = $plan->is_video_consultant;
+        return view('admin.membership_plans.edit', compact('plan', 'categories', 'module', 'isVideoDefault'));
     }
 
     public function update(Request $request, MembershipPlan $membership_plan)
@@ -76,6 +97,7 @@ class MembershipPlansController extends Controller
         $data = $this->validatedData($request);
         $data['slug'] = Str::slug($data['name']) . '-' . $membership_plan->id;
         $data['show_on_frontend'] = $request->boolean('show_on_frontend', false);
+        $data['is_video_consultant'] = $request->boolean('is_video_consultant', false);
         $data['status'] = $request->boolean('status', false);
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
@@ -93,7 +115,11 @@ class MembershipPlansController extends Controller
 
         $membership_plan->update($data);
 
-        return redirect()->route('admin.membership_plans.index')->with('success', 'Membership plan updated successfully.');
+        $redirectRoute = $data['is_video_consultant']
+            ? 'admin.video_consultant_packages.index'
+            : 'admin.membership_plans.index';
+
+        return redirect()->route($redirectRoute)->with('success', 'Membership plan updated successfully.');
     }
 
     public function destroy(MembershipPlan $membership_plan)

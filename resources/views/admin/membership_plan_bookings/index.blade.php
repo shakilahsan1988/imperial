@@ -1,11 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Membership Plan Bookings')
+@php
+    $isVideoModule = ($module ?? 'membership') === 'video_consultant';
+@endphp
+@section('title', $isVideoModule ? 'Consultant Bookings' : 'Membership Plan Bookings')
 
 @section('content')
 <div class="card shadow-sm border-0">
     <div class="card-header bg-white py-3">
         <h3 class="card-title font-weight-bold mb-0">
-            <i class="fas fa-calendar-check mr-2 text-primary"></i> Membership Plan Bookings
+            <i class="fas fa-calendar-check mr-2 text-primary"></i> {{ $isVideoModule ? 'Consultant Bookings' : 'Membership Plan Bookings' }}
         </h3>
     </div>
     <div class="card-body">
@@ -41,7 +44,7 @@
                             </form>
                         </td>
                         <td class="text-right">
-                            <a href="{{ route('admin.membership_plan_bookings.show', $booking->id) }}" class="btn btn-sm btn-info">View</a>
+                            <a href="{{ route('admin.membership_plan_bookings.show', ['membership_plan_booking' => $booking->id, 'module' => $isVideoModule ? 'video_consultant' : 'membership']) }}" class="btn btn-sm btn-info">View</a>
                         </td>
                     </tr>
                 @empty
@@ -57,8 +60,14 @@
 
 @push('scripts')
 <script>
+@if($isVideoModule)
+$('#video_consultant_bookings').addClass('active');
+$('#membership_module_link').addClass('active');
+$('#membership_module').addClass('menu-open');
+@else
 $('#membership_plan_bookings').addClass('active');
 $('#membership_module_link').addClass('active');
 $('#membership_module').addClass('menu-open');
+@endif
 </script>
 @endpush

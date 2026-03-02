@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Membership Plans')
+@php
+    $isVideoModule = ($module ?? 'membership') === 'video_consultant';
+@endphp
+@section('title', $isVideoModule ? 'Consultant Packages' : 'Membership Plans')
 
 @section('breadcrumb')
 <div class="content-header">
     <div class="container-fluid">
         <div class="d-flex align-items-center justify-content-end mb-2">
-            <a href="{{ route('admin.membership_plans.create') }}" class="btn btn-primary shadow-sm">
-                <i class="fas fa-plus mr-1"></i> Create Plan
+            <a href="{{ route('admin.membership_plans.create', $isVideoModule ? ['video' => 1] : []) }}" class="btn btn-primary shadow-sm">
+                <i class="fas fa-plus mr-1"></i> {{ $isVideoModule ? 'Create Consultant Package' : 'Create Plan' }}
             </a>
         </div>
     </div>
@@ -40,7 +43,12 @@
                             <strong>{{ $plan->name }}</strong>
                             <div class="small text-muted">Page Name: {{ $plan->page_name }}</div>
                         </td>
-                        <td>{{ $plan->category->name ?? '-' }}</td>
+                        <td>
+                            {{ $plan->category->name ?? '-' }}
+                            @if($plan->is_video_consultant)
+                                <div class="small text-info">Video Consultant</div>
+                            @endif
+                        </td>
                         <td>{{ formated_price($plan->price) }}</td>
                         <td>{!! $plan->show_on_frontend ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>' !!}</td>
                         <td>{!! $plan->status ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>' !!}</td>
@@ -66,8 +74,14 @@
 
 @push('scripts')
 <script>
+@if($isVideoModule)
+$('#video_consultant_packages').addClass('active');
+$('#membership_module_link').addClass('active');
+$('#membership_module').addClass('menu-open');
+@else
 $('#membership_plans').addClass('active');
 $('#membership_module_link').addClass('active');
 $('#membership_module').addClass('menu-open');
+@endif
 </script>
 @endpush

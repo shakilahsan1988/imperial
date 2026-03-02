@@ -27,56 +27,30 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @forelse($plans as $plan)
             <article class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
-                <a href="{{ route('membership-details', ['id' => 'amar-jotno-3-months-plan-demo']) }}" class="block h-44 overflow-hidden">
-                    <img src="{{ asset('assets/front/images/services/con1.png') }}" alt="3 Months Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                <a href="{{ route('membership-details', ['id' => $plan->slug ?: $plan->id]) }}" class="block h-44 overflow-hidden">
+                    <img src="{{ !empty($plan->image) ? asset($plan->image) : asset('assets/front/images/services/con1.png') }}" alt="{{ $plan->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                 </a>
                 <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="font-bold text-gray-900 mb-1">Amar Jotno 3 Months Plan</h3>
-                    <p class="text-gray-500 text-xs mb-3">Unlimited video consultations</p>
-                    <div class="mb-3">
-                        <span class="text-2xl font-bold text-imperial-primary">{{ formated_price(3850) }}</span>
-                    </div>
-                    <div class="mt-auto">
-                        <a href="{{ route('membership') }}" class="block w-full bg-imperial-primary hover:bg-imperial-dark text-white text-center py-2.5 rounded-lg font-medium transition">View Details</a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
-                <a href="{{ route('membership-details', ['id' => 'amar-jotno-6-months-plan-demo']) }}" class="block h-44 overflow-hidden">
-                    <img src="{{ asset('assets/front/images/services/con2.jpg') }}" alt="6 Months Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                </a>
-                <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="font-bold text-gray-900 mb-1">Amar Jotno 6 Months Plan</h3>
-                    <p class="text-gray-500 text-xs mb-3">Unlimited video consultations</p>
-                    <div class="mb-3">
-                        <span class="text-2xl font-bold text-imperial-primary">{{ formated_price(5050) }}</span>
-                    </div>
-                    <div class="mt-auto">
-                        <a href="{{ route('membership') }}" class="block w-full bg-imperial-primary hover:bg-imperial-dark text-white text-center py-2.5 rounded-lg font-medium transition">View Details</a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
-                <a href="{{ route('membership-details', ['id' => 'amar-jotno-12-months-plan-demo']) }}" class="block h-44 overflow-hidden">
-                    <img src="{{ asset('assets/front/images/services/con3.jpeg') }}" alt="12 Months Plan" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                </a>
-                <div class="p-5 flex flex-col flex-grow">
+                    @if(!empty($plan->badge_text))
                     <div class="mb-2">
-                        <span class="inline-flex px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded">Best Value</span>
+                        <span class="inline-flex px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded">{{ $plan->badge_text }}</span>
                     </div>
-                    <h3 class="font-bold text-gray-900 mb-1">Amar Jotno 12 Months Plan</h3>
-                    <p class="text-gray-500 text-xs mb-3">Unlimited video consultations</p>
+                    @endif
+                    <h3 class="font-bold text-gray-900 mb-1">{{ $plan->name }}</h3>
+                    <p class="text-gray-500 text-xs mb-3">{{ $plan->subtitle ?: 'Unlimited video consultations' }}</p>
                     <div class="mb-3">
-                        <span class="text-2xl font-bold text-imperial-primary">{{ formated_price(6250) }}</span>
+                        <span class="text-2xl font-bold text-imperial-primary">{{ formated_price($plan->price) }}</span>
                     </div>
                     <div class="mt-auto">
-                        <a href="{{ route('membership') }}" class="block w-full bg-imperial-primary hover:bg-imperial-dark text-white text-center py-2.5 rounded-lg font-medium transition">View Details</a>
+                        <a href="{{ route('membership-details', ['id' => $plan->slug ?: $plan->id]) }}" class="block w-full bg-imperial-primary hover:bg-imperial-dark text-white text-center py-2.5 rounded-lg font-medium transition">View Details</a>
                     </div>
                 </div>
             </article>
+            @empty
+            <div class="col-span-full text-center py-8 text-gray-500">No video consultation packages available now.</div>
+            @endforelse
         </div>
     </div>
 </section>

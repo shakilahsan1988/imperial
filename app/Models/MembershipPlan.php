@@ -32,6 +32,7 @@ class MembershipPlan extends Model
         'faq_3_question',
         'faq_3_answer',
         'show_on_frontend',
+        'is_video_consultant',
         'status',
         'sort_order',
     ];
@@ -40,6 +41,7 @@ class MembershipPlan extends Model
         'price' => 'decimal:2',
         'old_price' => 'decimal:2',
         'show_on_frontend' => 'boolean',
+        'is_video_consultant' => 'boolean',
         'status' => 'boolean',
     ];
 

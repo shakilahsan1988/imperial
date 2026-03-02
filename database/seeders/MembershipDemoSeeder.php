@@ -46,6 +46,7 @@ class MembershipDemoSeeder extends Seeder
                 'service_discount' => '15% Off',
                 'badge_text' => 'Popular',
                 'sort_order' => 1,
+                'is_video_consultant' => false,
             ],
             [
                 'category_id' => $annual?->id,
@@ -56,6 +57,7 @@ class MembershipDemoSeeder extends Seeder
                 'doctor_visits' => 'Unlimited',
                 'service_discount' => '10% Off',
                 'sort_order' => 2,
+                'is_video_consultant' => false,
             ],
             [
                 'category_id' => $annual?->id,
@@ -67,6 +69,7 @@ class MembershipDemoSeeder extends Seeder
                 'service_discount' => '25% Off',
                 'badge_text' => 'Premium',
                 'sort_order' => 3,
+                'is_video_consultant' => false,
             ],
             [
                 'category_id' => $special?->id,
@@ -77,6 +80,7 @@ class MembershipDemoSeeder extends Seeder
                 'doctor_visits' => 'Scheduled',
                 'service_discount' => '10% Off',
                 'sort_order' => 1,
+                'is_video_consultant' => false,
             ],
             [
                 'category_id' => $special?->id,
@@ -87,6 +91,7 @@ class MembershipDemoSeeder extends Seeder
                 'doctor_visits' => 'Scheduled',
                 'service_discount' => '10% Off',
                 'sort_order' => 2,
+                'is_video_consultant' => false,
             ],
             [
                 'category_id' => $video?->id,
@@ -98,6 +103,7 @@ class MembershipDemoSeeder extends Seeder
                 'service_discount' => 'N/A',
                 'badge_text' => 'Best Value',
                 'sort_order' => 1,
+                'is_video_consultant' => true,
             ],
             [
                 'category_id' => $video?->id,
@@ -108,6 +114,42 @@ class MembershipDemoSeeder extends Seeder
                 'doctor_visits' => 'Unlimited Video',
                 'service_discount' => 'N/A',
                 'sort_order' => 2,
+                'is_video_consultant' => true,
+            ],
+            [
+                'category_id' => $video?->id,
+                'name' => 'Amar Jotno 3 Months Plan',
+                'subtitle' => 'Unlimited video consultations',
+                'price' => 3850,
+                'duration' => '3 Months',
+                'doctor_visits' => 'Unlimited Video',
+                'service_discount' => 'N/A',
+                'sort_order' => 3,
+                'is_video_consultant' => true,
+            ],
+            [
+                'category_id' => $video?->id,
+                'name' => 'Amar Jotno Family Plus Plan',
+                'subtitle' => 'Family focused video consultation package',
+                'price' => 8450,
+                'duration' => '12 Months',
+                'doctor_visits' => 'Unlimited Video',
+                'service_discount' => '5% Off Diagnostics',
+                'badge_text' => 'Family',
+                'sort_order' => 4,
+                'is_video_consultant' => true,
+            ],
+            [
+                'category_id' => $video?->id,
+                'name' => 'Amar Jotno Senior Care Plan',
+                'subtitle' => 'Video consultations tailored for seniors',
+                'price' => 7250,
+                'duration' => '12 Months',
+                'doctor_visits' => 'Unlimited Video',
+                'service_discount' => '10% Off Follow-up Tests',
+                'badge_text' => 'Senior Care',
+                'sort_order' => 5,
+                'is_video_consultant' => true,
             ],
         ];
 
@@ -142,6 +184,7 @@ class MembershipDemoSeeder extends Seeder
                     'faq_3_question' => 'Is refund available?',
                     'faq_3_answer' => 'Refund is considered as per membership policy and usage status.',
                     'show_on_frontend' => true,
+                    'is_video_consultant' => $plan['is_video_consultant'] ?? false,
                     'status' => true,
                     'sort_order' => $plan['sort_order'],
                 ]

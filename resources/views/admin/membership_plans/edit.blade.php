@@ -1,9 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Edit Membership Plan')
+@php
+    $isVideoModule = ($module ?? 'membership') === 'video_consultant';
+@endphp
+@section('title', $isVideoModule ? 'Edit Consultant Package' : 'Edit Membership Plan')
 
 @section('content')
 <div class="card card-primary">
-    <div class="card-header"><h3 class="card-title">Edit Membership Plan</h3></div>
+    <div class="card-header"><h3 class="card-title">{{ $isVideoModule ? 'Edit Consultant Package' : 'Edit Membership Plan' }}</h3></div>
     <form method="POST" action="{{ route('admin.membership_plans.update', $plan->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -20,8 +23,14 @@
 
 @push('scripts')
 <script>
+@if($isVideoModule)
+$('#video_consultant_packages').addClass('active');
+$('#membership_module_link').addClass('active');
+$('#membership_module').addClass('menu-open');
+@else
 $('#membership_plans').addClass('active');
 $('#membership_module_link').addClass('active');
 $('#membership_module').addClass('menu-open');
+@endif
 </script>
 @endpush

@@ -152,6 +152,10 @@
                 <input type="checkbox" class="custom-control-input" id="show_on_frontend" name="show_on_frontend" value="1" {{ old('show_on_frontend', $plan->show_on_frontend ?? true) ? 'checked' : '' }}>
                 <label class="custom-control-label" for="show_on_frontend">Show on Frontend</label>
             </div>
+            <div class="custom-control custom-checkbox d-inline-block mr-3">
+                <input type="checkbox" class="custom-control-input" id="is_video_consultant" name="is_video_consultant" value="1" {{ old('is_video_consultant', $plan->is_video_consultant ?? ($isVideoDefault ?? false)) ? 'checked' : '' }}>
+                <label class="custom-control-label" for="is_video_consultant">Enable for Video Consultant</label>
+            </div>
             <div class="custom-control custom-checkbox d-inline-block">
                 <input type="checkbox" class="custom-control-input" id="status" name="status" value="1" {{ old('status', $plan->status ?? true) ? 'checked' : '' }}>
                 <label class="custom-control-label" for="status">Active</label>

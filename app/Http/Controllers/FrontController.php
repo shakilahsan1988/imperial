@@ -353,7 +353,15 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function video_consultation(){
-    	return view('frontend.services.video-consultation');
+        $plans = MembershipPlan::with('category')
+            ->where('status', true)
+            ->where('show_on_frontend', true)
+            ->where('is_video_consultant', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+    	return view('frontend.services.video-consultation', compact('plans'));
     }
 
     public function beauty(){
