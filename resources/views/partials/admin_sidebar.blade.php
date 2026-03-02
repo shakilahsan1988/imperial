@@ -76,11 +76,46 @@
       @endif
 
       @if($u && ($isSuper || $u->hasPermission('view_doctor')))
-      <li class="nav-item">
-        <a href="{{route('admin.doctors.index')}}" class="nav-link" id="doctors">
+      <li class="nav-item has-treeview" id="manage_doctors">
+        <a href="#" class="nav-link" id="manage_doctors_link">
           <i class="nav-icon fa fa-user-md"></i>
-          <p>{{__('admin.doctor_list')}}</p>
+          <p>
+            Manage Doctors
+            <i class="right fas fa-angle-left"></i>
+          </p>
         </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{route('admin.doctors.index')}}" class="nav-link" id="doctors">
+              <i class="far fa-circle nav-icon"></i>
+              <p>{{__('admin.doctor_list')}}</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('admin.doctor_specialties.index')}}" class="nav-link" id="doctor_specialties">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Specialty</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('admin.doctor_departments.index')}}" class="nav-link" id="doctor_departments">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Department</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('admin.doctor_consultation_slots.index')}}" class="nav-link" id="doctor_consultation_slots">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Time Slots</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('admin.doctor_consultation_bookings.index')}}" class="nav-link" id="doctor_consultation_bookings">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Consultation Booking</p>
+            </a>
+          </li>
+        </ul>
       </li>
       @endif
 
@@ -191,6 +226,112 @@
           <i class="fa fa-cogs nav-icon"></i>
           <p>{{__('admin.software_settings')}}</p>
         </a>
+      </li>
+      <li class="nav-item has-treeview" id="pages">
+        <a href="#" class="nav-link" id="pages_link">
+          <i class="nav-icon fas fa-file-alt"></i>
+          <p>
+            Pages
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ route('admin.pages.home_settings') }}" class="nav-link" id="pages_home_settings">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Home Settings</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.pages.diagonostic_settings') }}" class="nav-link" id="pages_diagonostic">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Diagonostic</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.pages.health_check_settings') }}" class="nav-link" id="pages_health_check">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Health Check</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_membership">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Membership</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_video_consultation">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Video Consultation</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_our_doctors">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Our Doctors</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_blog">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Blog</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_gallery">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Gallery</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_mission_vission">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Mission &amp; Vission</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_management">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Management</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="pages_contact">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Contact</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item has-treeview" id="helth_check">
+        <a href="#" class="nav-link" id="helth_check_link">
+          <i class="nav-icon fas fa-heartbeat"></i>
+          <p>
+            Helth Check
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ route('admin.health_package_categories.index') }}" class="nav-link" id="health_package_categories">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Package Category</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.health_packages.index') }}" class="nav-link" id="health_packages">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Health Package</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.health_package_bookings.index') }}" class="nav-link" id="health_package_bookings">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Package Booking</p>
+            </a>
+          </li>
+        </ul>
       </li>
       @endif
 

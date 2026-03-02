@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'Diagnostics & Lab Tests - Imperial Health Bangladesh')
+@section('title', ($diagSettings['page_name'] ?? 'Diagnostics & Lab Tests') . ' - Imperial Health Bangladesh')
 
 @section('content')
 
@@ -8,17 +8,18 @@
         <!-- MODERN HERO SECTION -->
         <section class="relative py-20 md:py-32 bg-[#1E293B] overflow-hidden">
             <div class="absolute inset-0 opacity-20">
-                <img src="https://img.freepik.com/free-photo/coronavirus-vaccine-lab-with-samples_23-2148920827.jpg" class="w-full h-full object-cover">
+                <img src="{{ asset($diagSettings['hero_image']) }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-3xl">
+                    <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $diagSettings['page_name'] }}</p>
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                        Precision <span class="text-indigo-400">Diagnostics</span> for Better Health
+                        {!! $diagSettings['hero_title_html'] !!}
                     </h1>
                     <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl">
-                        Experience world-class laboratory services with international quality standards and 99.9% accuracy in results.
+                        {{ $diagSettings['hero_description'] }}
                     </p>
                 </div>
             </div>
@@ -30,9 +31,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     @php
                         $features = [
-                            ['title' => 'Quality Assured', 'desc' => 'International standards & ISO protocols.', 'icon' => 'fa-award', 'color' => 'indigo'],
-                            ['title' => 'Rapid Turnaround', 'desc' => 'Fast & reliable test result delivery.', 'icon' => 'fa-bolt', 'color' => 'emerald'],
-                            ['title' => 'Home Collection', 'desc' => 'Sample collection from your doorstep.', 'icon' => 'fa-house-medical', 'color' => 'rose'],
+                            ['title' => $diagSettings['feature_1_title'], 'desc' => $diagSettings['feature_1_desc'], 'icon' => 'fa-award', 'color' => 'indigo'],
+                            ['title' => $diagSettings['feature_2_title'], 'desc' => $diagSettings['feature_2_desc'], 'icon' => 'fa-bolt', 'color' => 'emerald'],
+                            ['title' => $diagSettings['feature_3_title'], 'desc' => $diagSettings['feature_3_desc'], 'icon' => 'fa-house-medical', 'color' => 'rose'],
                         ];
                     @endphp
                     @foreach($features as $f)
@@ -59,7 +60,7 @@
                         <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
                             <i class="fa-solid fa-magnifying-glass text-slate-400 group-focus-within:text-indigo-600 transition-colors"></i>
                         </div>
-                        <input type="text" id="customSearch" placeholder="Search for tests or procedures..." 
+                        <input type="text" id="customSearch" placeholder="{{ $diagSettings['search_placeholder'] }}" 
                                class="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700">
                     </div>
 
@@ -67,10 +68,10 @@
                     <div class="flex items-center gap-4 w-full md:w-1/2">
                         <span class="text-xs font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">Filter by:</span>
                         <div class="flex-grow flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-                            <button onclick="filterTable('', this)" class="category-btn active px-6 py-2 bg-indigo-600 text-white rounded-full text-xs font-bold shadow-lg shadow-indigo-100 transition-all whitespace-nowrap">All Tests</button>
-                            <button onclick="filterTable('laboratory', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Laboratory</button>
-                            <button onclick="filterTable('imaging', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Imaging</button>
-                            <button onclick="filterTable('procedure', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">Procedures</button>
+                            <button onclick="filterTable('', this)" class="category-btn active px-6 py-2 bg-indigo-600 text-white rounded-full text-xs font-bold shadow-lg shadow-indigo-100 transition-all whitespace-nowrap">{{ $diagSettings['all_tests_label'] }}</button>
+                            <button onclick="filterTable('laboratory', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">{{ $diagSettings['laboratory_label'] }}</button>
+                            <button onclick="filterTable('imaging', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">{{ $diagSettings['imaging_label'] }}</button>
+                            <button onclick="filterTable('procedure', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">{{ $diagSettings['procedures_label'] }}</button>
                         </div>
                     </div>
                 </div>
@@ -179,7 +180,7 @@
 
             <div class="mt-12 mb-20 text-center">
                 <p class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
-                    End of Test Catalog <span class="mx-2 text-slate-200">/</span> Total {{ $services->count() }} Investigations
+                    {{ $diagSettings['catalog_footer_prefix'] }} <span class="mx-2 text-slate-200">/</span> Total {{ $services->count() }} {{ $diagSettings['catalog_footer_suffix'] }}
                 </p>
             </div>
         </section>

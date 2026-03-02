@@ -9,8 +9,12 @@ use App\Http\Requests\Admin\ExcelImportRequest;
 use App\Exports\DoctorExport;
 use App\Imports\DoctorImport;
 use App\Models\Doctor;
+use App\Models\DoctorSpecialty;
+use App\Models\DoctorDepartment;
 use Yajra\DataTables\Facades\DataTables; 
 use Excel;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class DoctorsController extends Controller
 {   
@@ -80,9 +84,23 @@ class DoctorsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model = Doctor::query();
+        $model = Doctor::with(['specialty', 'department'])->select('doctors.*');
 
         return DataTables::of($model)
+            ->addColumn('specialty', function($doctor) {
+                return optional($doctor->specialty)->name ?: '-';
+            })
+            ->addColumn('department', function($doctor) {
+                return optional($doctor->department)->name ?: '-';
+            })
+            ->addColumn('consultation_fee', function($doctor) {
+                return formated_price($doctor->consultation_fee ?? 0);
+            })
+            ->addColumn('video_consultation', function($doctor) {
+                return $doctor->video_consultation_available
+                    ? '<span class="badge bg-success">Yes</span>'
+                    : '<span class="badge bg-secondary">No</span>';
+            })
             ->editColumn('commission', function($doctor) {
                 return $doctor->commission . '%';
             })
@@ -98,7 +116,7 @@ class DoctorsController extends Controller
             ->addColumn('action', function($doctor) {
                 return view('admin.doctors._action', compact('doctor'));
             })
-            ->rawColumns(['due', 'action'])
+            ->rawColumns(['video_consultation', 'due', 'action'])
             ->make(true);
     }
 
@@ -109,7 +127,10 @@ class DoctorsController extends Controller
      */
     public function create()
     {
-        return view('admin.doctors.create');
+        $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+
+        return view('admin.doctors.create', compact('specialties', 'departments'));
     }
 
     /**
@@ -121,8 +142,23 @@ class DoctorsController extends Controller
     public function store(DoctorRequest $request)
     {
         try {
-            $request['code'] = doctor_code();
-            Doctor::create($request->except('_token', '_method'));
+            $data = $request->except('_token', '_method', 'image');
+            $data['code'] = doctor_code();
+            $data['slug'] = Str::slug($request->name) . '-' . time();
+            $data['video_consultation_available'] = $request->boolean('video_consultation_available');
+            $data['status'] = $request->boolean('status', true);
+
+            if ($request->hasFile('image')) {
+                if (!File::isDirectory('uploads/doctors')) {
+                    File::makeDirectory('uploads/doctors', 0755, true);
+                }
+                $image = $request->file('image');
+                $imageName = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move('uploads/doctors', $imageName);
+                $data['image'] = 'uploads/doctors/' . $imageName;
+            }
+
+            Doctor::create($data);
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor created successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to create doctor: ') . $e->getMessage());
@@ -150,8 +186,10 @@ class DoctorsController extends Controller
     public function edit($id)
     {
         $doctor=Doctor::findOrFail($id);
+        $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
 
-        return view('admin.doctors.edit',compact('doctor'));
+        return view('admin.doctors.edit',compact('doctor', 'specialties', 'departments'));
     }
 
     /**
@@ -165,7 +203,22 @@ class DoctorsController extends Controller
     {
         try {
             $doctor=Doctor::findOrFail($id);
-            $doctor->update($request->except('_token','_method'));
+            $data = $request->except('_token', '_method', 'image');
+            $data['slug'] = Str::slug($request->name) . '-' . $doctor->id;
+            $data['video_consultation_available'] = $request->boolean('video_consultation_available');
+            $data['status'] = $request->boolean('status');
+
+            if ($request->hasFile('image')) {
+                if (!File::isDirectory('uploads/doctors')) {
+                    File::makeDirectory('uploads/doctors', 0755, true);
+                }
+                $image = $request->file('image');
+                $imageName = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move('uploads/doctors', $imageName);
+                $data['image'] = 'uploads/doctors/' . $imageName;
+            }
+
+            $doctor->update($data);
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor updated successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update doctor: ') . $e->getMessage());

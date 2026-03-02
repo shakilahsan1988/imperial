@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             ServiceSeeder::class,
+            DoctorModuleDemoSeeder::class,
         ]);
     }
 }

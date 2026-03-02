@@ -6,12 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Booking;
 use App\Models\Patient;
+use App\Models\HealthPackage;
+use App\Models\HealthPackageBooking;
+use App\Models\HealthPackageCategory;
+use App\Models\Doctor;
+use App\Models\DoctorSpecialty;
+use App\Models\DoctorDepartment;
+use App\Models\DoctorConsultationSlot;
+use App\Models\DoctorConsultationBooking;
+use App\Models\Branch;
 use Carbon\Carbon;
 
 class FrontController extends Controller
 {
     public function index(){
-       return view('frontend.index');
+        $homeSettings = home_page_settings();
+
+        return view('frontend.index', compact('homeSettings'));
     }
 
     public function services(Request $request){
@@ -151,11 +162,85 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function health_check(){
-		return view('frontend.services.health-check');
+        $categories = HealthPackageCategory::where('status', true)
+            ->with(['packages' => function ($q) {
+                $q->where('status', true)->where('show_on_frontend', true);
+            }])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        $healthCheckSettings = health_check_page_settings();
+
+		return view('frontend.services.health-check', compact('categories', 'healthCheckSettings'));
     }
 
-    public function package_details(Request $request, $id = null){
-		return view('frontend.services.package-details', compact('id'));
+    public function package_details(Request $request, $slug){
+        $package = HealthPackage::with('category')
+            ->where('status', true)
+            ->where('show_on_frontend', true)
+            ->where('slug', $slug)
+            ->first();
+
+        if (!$package && ctype_digit((string) $slug)) {
+            $package = HealthPackage::with('category')
+                ->where('status', true)
+                ->where('show_on_frontend', true)
+                ->findOrFail((int) $slug);
+
+            return redirect()->route('package-details', ['slug' => $package->slug]);
+        }
+
+        abort_unless($package, 404);
+
+		return view('frontend.services.package-details', compact('package'));
+    }
+
+    public function package_booking_submit(Request $request, $slug)
+    {
+        $package = HealthPackage::where('slug', $slug)->first();
+        if (!$package && ctype_digit((string) $slug)) {
+            $package = HealthPackage::findOrFail((int) $slug);
+        }
+        abort_unless($package, 404);
+
+        $data = $request->validate([
+            'patient_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:30',
+            'email' => 'required|email|max:255',
+            'dob' => 'required|date',
+            'preferred_date' => 'nullable|date|after_or_equal:today',
+            'notes' => 'nullable|string|max:2000',
+        ]);
+
+        $email = strtolower(trim($data['email']));
+        $patient = Patient::where('email', $email)->first();
+
+        if (!$patient) {
+            $patient = Patient::create([
+                'code' => patient_code(),
+                'name' => $data['patient_name'],
+                'gender' => 'male',
+                'dob' => $data['dob'],
+                'email' => $email,
+                'phone' => $data['phone'],
+            ]);
+        } else {
+            $patient->update([
+                'name' => $data['patient_name'],
+                'phone' => $data['phone'],
+                'dob' => $data['dob'],
+            ]);
+        }
+
+        $data['health_package_id'] = $package->id;
+        $data['patient_id'] = $patient->id;
+        $data['email'] = $email;
+        $data['status'] = 'pending';
+
+        HealthPackageBooking::create($data);
+
+        return back()->with('success', 'Package booking request submitted successfully.');
     }
 
     public function membership(){
@@ -172,8 +257,10 @@ if (auth()->guard('patient')->check()) {
             ->with(['serviceCategory', 'subCategory', 'components'])
             ->orderBy('name')
             ->get();
-            
-    	return view('frontend.services.lab-test', compact('services'));
+
+        $diagSettings = diagonostic_page_settings();
+
+    	return view('frontend.services.lab-test', compact('services', 'diagSettings'));
     }
 
     public function video_consultation(){
@@ -233,11 +320,126 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function doctor(){
-    	return view('frontend.doctor.doctors');
+        $query = Doctor::with(['specialty', 'department'])->where('status', true);
+
+        if (request('specialty_id')) {
+            $query->where('doctor_specialty_id', request('specialty_id'));
+        }
+
+        if (request('department_id')) {
+            $query->where('doctor_department_id', request('department_id'));
+        }
+
+        if (request('name')) {
+            $query->where('name', 'like', '%' . request('name') . '%');
+        }
+
+        $doctors = $query->orderBy('name')->get();
+        $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $groupedDoctors = $doctors->groupBy(function ($doctor) {
+            return optional($doctor->department)->name ?: 'General';
+        });
+
+    	return view('frontend.doctor.doctors', compact('doctors', 'specialties', 'departments', 'groupedDoctors'));
     }
 
-    public function book_doctor(){
-    	return view('frontend.doctor.book-doctor');
+    public function book_doctor($doctor = null){
+        if ($doctor) {
+            $model = Doctor::with(['specialty', 'department'])
+                ->where('status', true)
+                ->where(function ($q) use ($doctor) {
+                    $q->where('slug', $doctor)->orWhere('id', $doctor);
+                })
+                ->firstOrFail();
+        } else {
+            $model = Doctor::with(['specialty', 'department'])->where('status', true)->firstOrFail();
+        }
+
+        $slots = DoctorConsultationSlot::where('status', true)->orderBy('sort_order')->orderBy('start_time')->get();
+        $branches = Branch::orderBy('name')->get();
+
+    	return view('frontend.doctor.book-doctor', compact('model', 'slots', 'branches'));
+    }
+
+    public function submit_doctor_booking(Request $request, $doctor)
+    {
+        $doctorModel = Doctor::where('status', true)
+            ->where(function ($q) use ($doctor) {
+                $q->where('slug', $doctor)->orWhere('id', $doctor);
+            })
+            ->firstOrFail();
+
+        $data = $request->validate([
+            'patient_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:30',
+            'email' => 'required|email|max:255',
+            'dob' => 'required|date',
+            'visit_type' => 'required|in:in_hub,video',
+            'branch_id' => 'required_if:visit_type,in_hub|nullable|exists:branches,id',
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'doctor_consultation_slot_id' => 'required|exists:doctor_consultation_slots,id',
+            'notes' => 'nullable|string|max:2000',
+        ]);
+
+        if ($data['visit_type'] === 'video' && !$doctorModel->video_consultation_available) {
+            return back()->withInput()->withErrors([
+                'visit_type' => 'Video consultation is not available for this doctor.',
+            ]);
+        }
+
+        $slot = DoctorConsultationSlot::where('status', true)->findOrFail($data['doctor_consultation_slot_id']);
+        $email = strtolower(trim($data['email']));
+
+        if (auth()->guard('patient')->check()) {
+            $patient = auth()->guard('patient')->user();
+            $data['patient_name'] = $patient->name ?: $data['patient_name'];
+            $data['phone'] = $patient->phone ?: $data['phone'];
+            $email = $patient->email ?: $email;
+            $data['dob'] = $patient->dob ?: $data['dob'];
+            $patient->update([
+                'name' => $data['patient_name'],
+                'phone' => $data['phone'],
+                'dob' => $data['dob'],
+            ]);
+        } else {
+            $patient = Patient::where('email', $email)->first();
+            if (!$patient) {
+                $patient = Patient::create([
+                    'code' => patient_code(),
+                    'name' => $data['patient_name'],
+                    'gender' => 'male',
+                    'dob' => $data['dob'],
+                    'email' => $email,
+                    'phone' => $data['phone'],
+                ]);
+            } else {
+                $patient->update([
+                    'name' => $data['patient_name'],
+                    'phone' => $data['phone'],
+                    'dob' => $data['dob'],
+                ]);
+            }
+        }
+
+        DoctorConsultationBooking::create([
+            'doctor_id' => $doctorModel->id,
+            'patient_id' => $patient->id ?? null,
+            'doctor_consultation_slot_id' => $slot->id,
+            'branch_id' => $data['visit_type'] === 'in_hub' ? $data['branch_id'] : null,
+            'patient_name' => $data['patient_name'],
+            'phone' => $data['phone'],
+            'email' => $email,
+            'dob' => $data['dob'],
+            'visit_type' => $data['visit_type'],
+            'appointment_date' => $data['appointment_date'],
+            'notes' => $data['notes'] ?? null,
+            'consultation_fee' => $doctorModel->consultation_fee,
+            'commission_percentage' => $doctorModel->commission,
+            'status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Consultation booking request submitted successfully.');
     }
 
     public function blog(){

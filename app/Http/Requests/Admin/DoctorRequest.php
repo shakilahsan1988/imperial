@@ -41,8 +41,13 @@ class DoctorRequest extends FormRequest
                     'required',
                     Rule::unique('doctors')->ignore($this->doctor)->whereNull('deleted_at')
                 ],
+                'doctor_specialty_id' => 'required|exists:doctor_specialties,id',
+                'doctor_department_id' => 'required|exists:doctor_departments,id',
                 'address'=>'required',
-                'commission'=>'required|numeric|min:0|max:100'
+                'commission'=>'required|numeric|min:0|max:100',
+                'consultation_fee' => 'required|numeric|min:0',
+                'experience_years' => 'nullable|integer|min:0|max:60',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             ];
         }
         else{
@@ -60,8 +65,13 @@ class DoctorRequest extends FormRequest
                     'required',
                     Rule::unique('doctors')->whereNull('deleted_at')
                 ],
+                'doctor_specialty_id' => 'required|exists:doctor_specialties,id',
+                'doctor_department_id' => 'required|exists:doctor_departments,id',
                 'address'=>'required',
-                'commission'=>'required|numeric|min:0|max:100'
+                'commission'=>'required|numeric|min:0|max:100',
+                'consultation_fee' => 'required|numeric|min:0',
+                'experience_years' => 'nullable|integer|min:0|max:60',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             ];
         }
 

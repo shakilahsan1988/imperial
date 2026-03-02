@@ -20,11 +20,19 @@ use App\Http\Controllers\Admin\ExpenseCategoriesController;
 use App\Http\Controllers\Admin\BackupsController;
 use App\Http\Controllers\Admin\ActivityLogsController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\PageSettingsController;
 use App\Http\Controllers\Admin\TranslationsController;
 use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\Admin\ServiceCategoriesController;
 use App\Http\Controllers\Admin\ServiceSubCategoriesController;
 use App\Http\Controllers\Admin\BookingsController;
+use App\Http\Controllers\Admin\HealthPackageCategoriesController;
+use App\Http\Controllers\Admin\HealthPackagesController;
+use App\Http\Controllers\Admin\HealthPackageBookingsController;
+use App\Http\Controllers\Admin\DoctorSpecialtiesController;
+use App\Http\Controllers\Admin\DoctorDepartmentsController;
+use App\Http\Controllers\Admin\DoctorConsultationSlotsController;
+use App\Http\Controllers\Admin\DoctorConsultationBookingsController;
 
 // Admin Authentication (Guest)
 Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.'], function() {
@@ -151,6 +159,27 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
         Route::post('api_keys', [SettingsController::class, 'api_keys_submit'])->name('api_keys_submit');
     });
 
+    // Page Settings
+    Route::group(['prefix' => 'pages', 'as' => 'pages.'], function() {
+        Route::get('home-settings', [PageSettingsController::class, 'homeSettings'])->name('home_settings');
+        Route::post('home-settings', [PageSettingsController::class, 'updateHomeSettings'])->name('home_settings_submit');
+        Route::get('diagonostic-settings', [PageSettingsController::class, 'diagonosticSettings'])->name('diagonostic_settings');
+        Route::post('diagonostic-settings', [PageSettingsController::class, 'updateDiagonosticSettings'])->name('diagonostic_settings_submit');
+        Route::get('health-check-settings', [PageSettingsController::class, 'healthCheckSettings'])->name('health_check_settings');
+        Route::post('health-check-settings', [PageSettingsController::class, 'updateHealthCheckSettings'])->name('health_check_settings_submit');
+    });
+
     // Translations
     Route::resource('translations', TranslationsController::class);
+
+    // Health Check
+    Route::resource('health_package_categories', HealthPackageCategoriesController::class)->except(['show']);
+    Route::resource('health_packages', HealthPackagesController::class)->except(['show']);
+    Route::resource('health_package_bookings', HealthPackageBookingsController::class)->only(['index', 'show', 'update']);
+
+    // Manage Doctors
+    Route::resource('doctor_specialties', DoctorSpecialtiesController::class)->except(['show']);
+    Route::resource('doctor_departments', DoctorDepartmentsController::class)->except(['show']);
+    Route::resource('doctor_consultation_slots', DoctorConsultationSlotsController::class)->except(['show']);
+    Route::resource('doctor_consultation_bookings', DoctorConsultationBookingsController::class)->only(['index', 'show', 'update']);
 });

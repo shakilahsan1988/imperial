@@ -4,6 +4,8 @@
   
     //active
     $('#doctors').addClass('active');
+    $('#manage_doctors_link').addClass('active');
+    $('#manage_doctors').addClass('menu-open');
 
     //doctors datatable
     var table=$('#doctors_table').DataTable( {
@@ -50,9 +52,12 @@
          {data:"id"},
          {data:"code"},
          {data:"name"},
+         {data:"specialty"},
+         {data:"department"},
          {data:"phone"},
          {data:"email"},
-         {data:"address"},
+         {data:"consultation_fee"},
+         {data:"video_consultation"},
          {data:"commission"},
          {data:"total"},
          {data:"paid"},

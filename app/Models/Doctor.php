@@ -14,12 +14,30 @@ class Doctor extends Model
     use SoftDeletes, LogsActivity;
 
     protected $fillable = [
+        'code',
+        'doctor_specialty_id',
+        'doctor_department_id',
         'name',
+        'slug',
         'phone',
         'email',
         'commission',
+        'consultation_fee',
+        'video_consultation_available',
         'address',
+        'designation',
+        'qualification',
+        'experience_years',
+        'bio',
+        'image',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
+        'video_consultation_available' => 'boolean',
+        'commission' => 'decimal:2',
+        'consultation_fee' => 'decimal:2',
     ];
 
     /**
@@ -41,6 +59,21 @@ class Doctor extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(Expense::class, 'doctor_id', 'id');
+    }
+
+    public function specialty()
+    {
+        return $this->belongsTo(DoctorSpecialty::class, 'doctor_specialty_id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(DoctorDepartment::class, 'doctor_department_id');
+    }
+
+    public function consultationBookings()
+    {
+        return $this->hasMany(DoctorConsultationBooking::class, 'doctor_id');
     }
 
     /**

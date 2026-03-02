@@ -1,85 +1,110 @@
-
 @extends('layouts.front')
 
-@section('title', 'Book Appointment - Dr. Ahmed Farukh')
+@section('title', 'Book Appointment - ' . ($model->name ?? 'Doctor'))
 
 @section('content')
-
-    <main class="min-h-screen bg-[#F8FAFC] font-sans pb-20">
-
-        <!-- BREADCRUMBS -->
-        <nav class="bg-white border-b border-slate-100 py-4 mb-8">
-            <div class="container mx-auto px-4">
-                <ol class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                    <li><a href="{{ route('fhome') }}" class="hover:text-indigo-600 transition">Home</a></li>
-                    <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
-                    <li><a href="{{ route('doctor') }}" class="hover:text-indigo-600 transition">Doctors</a></li>
-                    <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
-                    <li class="text-indigo-600">Book Appointment</li>
-                </ol>
-            </div>
-        </nav>
-
+@php
+    $fallbacks = [
+        'assets/front/images/doctor/1.jpg',
+        'assets/front/images/doctor/2.jpg',
+        'assets/front/images/doctor/3.jpg',
+        'assets/front/images/doctor/4.jpg',
+        'assets/front/images/doctor/5.jpg',
+        'assets/front/images/doctor/6.jpg',
+        'assets/front/images/doctor/7.jpg',
+        'assets/front/images/doctor/8.jpg',
+    ];
+    $fallbackImage = $fallbacks[$model->id % count($fallbacks)];
+    $doctorImage = !empty($model->image)
+        ? (\Illuminate\Support\Str::startsWith($model->image, ['http://', 'https://']) ? $model->image : asset($model->image))
+        : asset($fallbackImage);
+@endphp
+<main class="min-h-screen bg-[#F8FAFC] font-sans pb-20">
+    <nav class="bg-white border-b border-slate-100 py-4 mb-8">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                
-                <!-- LEFT COLUMN: Profile & Schedule -->
-                <div class="lg:col-span-8 space-y-8">
-                    
-                    <!-- DOCTOR PROFILE CARD -->
-                    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-50">
-                        <div class="flex flex-col md:flex-row">
-                            <!-- Image -->
-                            <div class="w-full md:w-64 bg-slate-100 aspect-square md:aspect-auto overflow-hidden">
-                                <img src="{{ asset('assets/front/images/doctor/5.jpg') }}" class="w-full h-full object-cover">
-                            </div>
-                            <!-- Details -->
-                            <div class="p-8 flex-1">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div>
-                                        <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2 inline-block">Specialist</span>
-                                        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-1">Dr. Ahmed Farukh</h1>
-                                        <p class="text-indigo-600 font-bold text-sm">Consultant - Energetic medicine & acupuncture</p>
-                                    </div>
-                                    <div class="text-right hidden md:block">
-                                        <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Consultation Fee</p>
-                                        <p class="text-3xl font-black text-slate-900 tracking-tighter">৳ 1,200</p>
-                                    </div>
-                                </div>
+            <ol class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+                <li><a href="{{ route('fhome') }}" class="hover:text-indigo-600 transition">Home</a></li>
+                <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
+                <li><a href="{{ route('doctor') }}" class="hover:text-indigo-600 transition">Doctors</a></li>
+                <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
+                <li class="text-indigo-600">Book Appointment</li>
+            </ol>
+        </div>
+    </nav>
 
-                                <div class="grid grid-cols-2 gap-6 py-6 border-y border-slate-50 mb-6">
-                                    <div>
-                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Qualification</p>
-                                        <p class="text-sm font-bold text-slate-700">MBBS (RMC), PhD (Germany)</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Experience</p>
-                                        <p class="text-sm font-bold text-slate-700">21+ Years Practice</p>
-                                    </div>
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="lg:col-span-8 space-y-8">
+                <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-50">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="w-full md:w-64 bg-slate-100 aspect-square md:aspect-auto overflow-hidden">
+                            <img src="{{ $doctorImage }}" alt="{{ $model->name }}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-8 flex-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2 inline-block">{{ optional($model->specialty)->name ?: 'Specialist' }}</span>
+                                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{{ $model->name }}</h1>
+                                    <p class="text-indigo-600 font-bold text-sm">{{ $model->designation ?: 'Consultant' }}</p>
                                 </div>
-
-                                <div class="text-slate-500 text-sm leading-relaxed italic">
-                                    "Dr. Ahmed is a bio-energetic medicine specialist with international training in Germany & Switzerland, providing holistic patient care for over two decades."
+                                <div class="text-right hidden md:block">
+                                    <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Consultation Fee</p>
+                                    <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ formated_price($model->consultation_fee ?? 0) }}</p>
                                 </div>
                             </div>
+
+                            <div class="grid grid-cols-2 gap-6 py-6 border-y border-slate-50 mb-6">
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Qualification</p>
+                                    <p class="text-sm font-bold text-slate-700">{{ $model->qualification ?: '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Experience</p>
+                                    <p class="text-sm font-bold text-slate-700">{{ $model->experience_years ? $model->experience_years . '+ Years' : '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="text-slate-500 text-sm leading-relaxed italic">{{ $model->bio ?: 'Professional consultation available.' }}</div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- APPOINTMENT STEPPER -->
-                    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border border-slate-50">
-                        <div class="flex items-center gap-3 mb-10">
-                            <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold shadow-lg shadow-indigo-200">1</div>
+                <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border border-slate-50">
+                    <form method="POST" action="{{ route('book-doctor.submit', ['doctor' => $model->slug ?: $model->id]) }}">
+                        @csrf
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold">1</div>
                             <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Select Preferred Schedule</h2>
                         </div>
 
-                        <!-- Consultation Type -->
-                        <div class="flex flex-wrap gap-4 mb-10">
+                        @php($patient = auth()->guard('patient')->user())
+
+                        @if ($errors->any())
+                            <div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                                @foreach ($errors->all() as $error)
+                                    <div>{{ $error }}</div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <input type="text" name="patient_name" class="form-control" placeholder="Patient Name" value="{{ old('patient_name', $patient->name ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            <input type="email" name="email" class="form-control" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            <input type="date" name="dob" class="form-control" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" {{ $patient ? 'readonly' : '' }} required>
+                        </div>
+
+                        <div class="flex flex-wrap gap-4 mb-6">
                             <label class="cursor-pointer relative flex-1 min-w-[150px]">
-                                <input type="radio" name="appt_type" class="peer sr-only" checked>
+                                <input type="radio" name="visit_type" value="in_hub" class="peer sr-only" {{ old('visit_type', 'in_hub') === 'in_hub' ? 'checked' : '' }}>
                                 <div class="p-4 border-2 border-slate-100 rounded-2xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center">
-                                        <i class="fa-solid fa-hospital text-indigo-600"></i>
-                                    </div>
+                                    <i class="fa-solid fa-hospital text-indigo-600"></i>
                                     <div>
                                         <p class="text-sm font-bold text-slate-900">In-Hub Visit</p>
                                         <p class="text-[10px] text-slate-500">Visit our facility</p>
@@ -87,131 +112,88 @@
                                 </div>
                             </label>
                             <label class="cursor-pointer relative flex-1 min-w-[150px]">
-                                <input type="radio" name="appt_type" class="peer sr-only">
-                                <div class="p-4 border-2 border-slate-100 rounded-2xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center">
-                                        <i class="fa-solid fa-video text-indigo-600"></i>
-                                    </div>
+                                <input type="radio" name="visit_type" value="video" class="peer sr-only" {{ old('visit_type') === 'video' ? 'checked' : '' }} {{ $model->video_consultation_available ? '' : 'disabled' }}>
+                                <div class="p-4 border-2 border-slate-100 rounded-2xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all flex items-center gap-3 {{ $model->video_consultation_available ? '' : 'opacity-60' }}">
+                                    <i class="fa-solid fa-video text-indigo-600"></i>
                                     <div>
                                         <p class="text-sm font-bold text-slate-900">Video Consult</p>
-                                        <p class="text-[10px] text-slate-500">Safe from home</p>
+                                        <p class="text-[10px] text-slate-500">
+                                            {{ $model->video_consultation_available ? 'Online consultation' : 'Not available for this doctor' }}
+                                        </p>
                                     </div>
                                 </div>
                             </label>
                         </div>
 
-                        <!-- Date Scroller -->
-                        <div class="mb-10">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Select Appointment Date</p>
-                            <div class="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
-                                @foreach(['Thu 22', 'Fri 23', 'Sat 24', 'Sun 25', 'Mon 26', 'Tue 27', 'Wed 28'] as $day)
-                                    <label class="cursor-pointer flex-shrink-0">
-                                        <input type="radio" name="appt_date" class="peer sr-only" {{ $loop->first ? 'checked' : '' }}>
-                                        <div class="w-20 h-24 border-2 border-slate-50 rounded-2xl flex flex-col items-center justify-center transition-all peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:text-white shadow-sm">
-                                            <span class="text-xs font-bold opacity-60">{{ explode(' ', $day)[0] }}</span>
-                                            <span class="text-2xl font-black">{{ explode(' ', $day)[1] }}</span>
-                                            <span class="text-[8px] font-bold uppercase mt-1">Jan</span>
-                                        </div>
-                                    </label>
+                        <div class="mb-6" id="branch-wrap">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Hub</label>
+                            <select name="branch_id" id="branch_id" class="form-control">
+                                <option value="">Select Hub</option>
+                                @foreach($branches as $branch)
+                                <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Appointment Date</label>
+                                <input type="date" name="appointment_date" class="form-control" min="{{ date('Y-m-d') }}" value="{{ old('appointment_date') }}" required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Time Slot</label>
+                                <select name="doctor_consultation_slot_id" class="form-control" required>
+                                    <option value="">Select Slot</option>
+                                    @foreach($slots as $slot)
+                                    <option value="{{ $slot->id }}" {{ old('doctor_consultation_slot_id') == $slot->id ? 'selected' : '' }}>{{ $slot->label }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Time Slots Segmented -->
-                        <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Select Time Slot</p>
-                            
-                            <div class="space-y-6">
-                                <!-- Morning -->
-                                <div>
-                                    <div class="flex items-center gap-2 mb-3 text-amber-500">
-                                        <i class="fa-solid fa-cloud-sun text-xs"></i>
-                                        <span class="text-xs font-bold uppercase tracking-widest">Morning Slots</span>
-                                    </div>
-                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                        @foreach(['09:00 AM', '10:30 AM', '11:15 AM'] as $time)
-                                            <label class="cursor-pointer">
-                                                <input type="radio" name="appt_time" class="peer sr-only">
-                                                <div class="py-2 text-center border border-slate-200 rounded-xl text-xs font-bold text-slate-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all hover:border-indigo-300">{{ $time }}</div>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <!-- Afternoon -->
-                                <div>
-                                    <div class="flex items-center gap-2 mb-3 text-indigo-500">
-                                        <i class="fa-solid fa-sun text-xs"></i>
-                                        <span class="text-xs font-bold uppercase tracking-widest">Afternoon Slots</span>
-                                    </div>
-                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                        @foreach(['02:00 PM', '03:30 PM', '04:45 PM', '05:30 PM'] as $time)
-                                            <label class="cursor-pointer">
-                                                <input type="radio" name="appt_time" class="peer sr-only">
-                                                <div class="py-2 text-center border border-slate-200 rounded-xl text-xs font-bold text-slate-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all hover:border-indigo-300">{{ $time }}</div>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="mb-8">
+                            <textarea name="notes" class="form-control" rows="3" placeholder="Notes (optional)">{{ old('notes') }}</textarea>
                         </div>
 
-                        <!-- Policy Note -->
-                        <div class="mt-12 p-5 bg-slate-50 rounded-2xl border border-slate-100 flex gap-4">
-                            <i class="fa-solid fa-circle-info text-indigo-500 text-xl mt-1"></i>
-                            <div class="text-xs text-slate-500 leading-relaxed font-medium">
-                                <strong class="text-slate-900">Note:</strong> Submitting a request does not guarantee an appointment. Our patient coordination team will call you within 30 minutes to confirm your final slot and specialist availability.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RIGHT COLUMN: Booking Sticky Summary -->
-                <div class="lg:col-span-4">
-                    <div class="sticky top-24">
-                        <div class="bg-indigo-900 rounded-[32px] p-8 text-white shadow-2xl shadow-indigo-200 overflow-hidden relative">
-                            <!-- Background Decor -->
-                            <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
-                            
-                            <h3 class="text-lg font-bold mb-8 border-b border-white/10 pb-4 tracking-tight">Booking Summary</h3>
-                            
-                            <div class="space-y-6 mb-10">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-indigo-300 uppercase tracking-widest">Specialist</span>
-                                    <span class="text-sm font-bold">Dr. Ahmed Farukh</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-indigo-300 uppercase tracking-widest">Visit Type</span>
-                                    <span class="text-sm font-bold">In-Hub Visit</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-indigo-300 uppercase tracking-widest">Date & Time</span>
-                                    <span class="text-sm font-bold">22 Jan, 02:00 PM</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/10 rounded-2xl p-5 mb-8">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-indigo-300 uppercase tracking-widest">Total Payable</span>
-                                    <span class="text-2xl font-black tracking-tighter">৳ 1,200</span>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="w-full bg-white hover:bg-slate-100 text-indigo-900 py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3">
-                                <span>Complete Booking</span>
-                                <i class="fa-solid fa-arrow-right"></i>
+                        <div class="text-right">
+                            <button type="submit" class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-2xl font-black uppercase tracking-widest text-sm transition-all">
+                                Confirm Appointment Request
                             </button>
-
-                            <p class="text-center text-[10px] text-white/40 mt-6 font-medium">
-                                Secure Payment Powered by Imperial Health
-                            </p>
                         </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4">
+                <div class="sticky top-24 bg-indigo-900 rounded-[32px] p-8 text-white">
+                    <h3 class="text-lg font-bold mb-6">Booking Summary</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between"><span>Doctor</span><span>{{ $model->name }}</span></div>
+                        <div class="flex justify-between"><span>Department</span><span>{{ optional($model->department)->name ?: '-' }}</span></div>
+                        <div class="flex justify-between"><span>Specialty</span><span>{{ optional($model->specialty)->name ?: '-' }}</span></div>
+                        <div class="flex justify-between"><span>Fee</span><span>{{ formated_price($model->consultation_fee ?? 0) }}</span></div>
                     </div>
                 </div>
-
             </div>
         </div>
-
-    </main>
-
+    </div>
+</main>
 @endsection
+
+@push('scripts')
+<script>
+(function(){
+  const radios = document.querySelectorAll('input[name="visit_type"]');
+  const branchWrap = document.getElementById('branch-wrap');
+  const branchInput = document.getElementById('branch_id');
+  function toggleBranch(){
+    const selected = document.querySelector('input[name="visit_type"]:checked');
+    const inHub = selected && selected.value === 'in_hub';
+    if (branchWrap) branchWrap.style.display = inHub ? '' : 'none';
+    if (branchInput) branchInput.required = inHub;
+  }
+  radios.forEach(r => r.addEventListener('change', toggleBranch));
+  toggleBranch();
+})();
+</script>
+@endpush

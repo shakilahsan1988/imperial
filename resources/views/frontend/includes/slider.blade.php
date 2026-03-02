@@ -144,64 +144,39 @@
     }
 </style>
 
+@php
+    $slides = $homeSettings['hero']['slides'] ?? [];
+@endphp
+
+@if(count($slides))
 <section id="hero-slider">
-    
-    <!-- Slide 1 -->
-    <div class="slide active h-full w-full absolute inset-0" data-index="0">
-        <img src="{{ asset('assets/front/images/index/slide-1.jpg') }}" onerror="this.src='https://picsum.photos/seed/h1/1920/1080'" class="slide-bg">
+    @foreach($slides as $index => $slide)
+    <div class="slide {{ $index === 0 ? 'active' : '' }} h-full w-full absolute inset-0" data-index="{{ $index }}">
+        <img
+            src="{{ asset($slide['image'] ?? '') }}"
+            onerror="this.src='https://picsum.photos/seed/h{{ $index + 1 }}/1920/1080'"
+            class="slide-bg"
+        >
         <div class="slide-overlay"></div>
         <div class="container mx-auto px-6 slide-content">
             <div class="max-w-2xl">
-                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px] mb-4">Precision & Care</span>
-                <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">Healthcare <br>Anytime, <span class="text-indigo-400 italic">Anywhere</span></h1>
-                <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">Experience the future of healthcare with our world-class medical facilities and home diagnostics.</p>
+                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px] mb-4">{{ $slide['badge'] ?? '' }}</span>
+                <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $slide['title_html'] ?? '' !!}</h1>
+                <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">{{ $slide['description'] ?? '' }}</p>
                 <div class="animate-item animate-4">
-                    <a href="{{ route('services') }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all shadow-xl active:scale-95 inline-block">Explore Services</a>
+                    <a href="{{ $slide['button_url'] ?? '#' }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all shadow-xl active:scale-95 inline-block">{{ $slide['button_text'] ?? 'Learn More' }}</a>
                 </div>
             </div>
         </div>
     </div>
+    @endforeach
 
-    <!-- Slide 2 -->
-    <div class="slide h-full w-full absolute inset-0" data-index="1">
-        <img src="{{ asset('assets/front/images/index/slide-2.jpg') }}" onerror="this.src='https://picsum.photos/seed/h2/1920/1080'" class="slide-bg">
-        <div class="slide-overlay"></div>
-        <div class="container mx-auto px-6 slide-content">
-            <div class="max-w-2xl">
-                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px] mb-4">Wellness Packages</span>
-                <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">Affordable <br>Health <span class="text-indigo-400 italic">Checks</span></h1>
-                <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">Tailored packages designed for every age and gender, fitting perfectly within your family budget.</p>
-                <div class="animate-item animate-4">
-                    <a href="{{ route('health-check') }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all shadow-xl active:scale-95 inline-block">View Packages</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="slide h-full w-full absolute inset-0" data-index="2">
-        <img src="{{ asset('assets/front/images/index/slide-3.jpg') }}" onerror="this.src='https://picsum.photos/seed/h3/1920/1080'" class="slide-bg">
-        <div class="slide-overlay"></div>
-        <div class="container mx-auto px-6 slide-content">
-            <div class="max-w-2xl">
-                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px] mb-4">Lab at Doorstep</span>
-                <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">Hassle-Free <br>Diagnostic <span class="text-indigo-400 italic">Tests</span></h1>
-                <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">Avoid the traffic and wait. Our experts come to you for sample collection in the comfort of your home.</p>
-                <div class="animate-item animate-4">
-                    <a href="{{ route('lab-test') }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all shadow-xl active:scale-95 inline-block">Book Home Test</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Progress Nav -->
     <div class="nav-container">
-        <div class="progress-btn active" onclick="jumpToSlide(0)"><div class="progress-fill"></div></div>
-        <div class="progress-btn" onclick="jumpToSlide(1)"><div class="progress-fill"></div></div>
-        <div class="progress-btn" onclick="jumpToSlide(2)"><div class="progress-fill"></div></div>
+        @foreach($slides as $index => $slide)
+        <div class="progress-btn {{ $index === 0 ? 'active' : '' }}" onclick="jumpToSlide({{ $index }})"><div class="progress-fill"></div></div>
+        @endforeach
     </div>
 
-    <!-- Arrow Controls -->
     <div class="slider-arrow arrow-left" onclick="moveSlide(-1)">
         <i class="fa-solid fa-chevron-left"></i>
     </div>
@@ -219,22 +194,20 @@
     let slideTimer;
 
     function showSlide(index) {
-        // Reset
         allSlides.forEach(s => s.classList.remove('active'));
         allProgressBtns.forEach(b => b.classList.remove('active'));
-        
-        // Update Index
+
         if (index >= slideCount) currentSlideIndex = 0;
         else if (index < 0) currentSlideIndex = slideCount - 1;
         else currentSlideIndex = index;
 
-        // Activate
         allSlides[currentSlideIndex].classList.add('active');
         allProgressBtns[currentSlideIndex].classList.add('active');
 
-        // Restart Auto-play timer
         clearTimeout(slideTimer);
-        slideTimer = setTimeout(() => showSlide(currentSlideIndex + 1), 6000);
+        if (slideCount > 1) {
+            slideTimer = setTimeout(() => showSlide(currentSlideIndex + 1), 6000);
+        }
     }
 
     function moveSlide(step) {
@@ -245,8 +218,8 @@
         showSlide(index);
     }
 
-    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         showSlide(0);
     });
 </script>
+@endif

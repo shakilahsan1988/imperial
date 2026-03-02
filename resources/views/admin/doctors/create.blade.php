@@ -36,7 +36,7 @@
     <div class="card-header">
       <h3 class="card-title">{{__('Create Doctor')}}</h3>
     </div>
-    <form method="POST" action="{{route('admin.doctors.store')}}">
+    <form method="POST" action="{{route('admin.doctors.store')}}" enctype="multipart/form-data">
         <!-- /.card-header -->
         <div class="card-body">
             @csrf

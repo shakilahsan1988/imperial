@@ -143,6 +143,175 @@ if (!function_exists('setting'))
     }
 }
 
+if (!function_exists('home_page_settings'))
+{
+    function home_page_settings()
+    {
+        $defaults = [
+            'hero' => [
+                'slides' => [
+                    [
+                        'badge' => 'Precision & Care',
+                        'title_html' => 'Healthcare <br>Anytime, <span class="text-indigo-400 italic">Anywhere</span>',
+                        'description' => 'Experience the future of healthcare with our world-class medical facilities and home diagnostics.',
+                        'button_text' => 'Explore Services',
+                        'button_url' => '/services',
+                        'image' => 'assets/front/images/index/slide-1.jpg',
+                    ],
+                    [
+                        'badge' => 'Wellness Packages',
+                        'title_html' => 'Affordable <br>Health <span class="text-indigo-400 italic">Checks</span>',
+                        'description' => 'Tailored packages designed for every age and gender, fitting perfectly within your family budget.',
+                        'button_text' => 'View Packages',
+                        'button_url' => '/health-check',
+                        'image' => 'assets/front/images/index/slide-2.jpg',
+                    ],
+                    [
+                        'badge' => 'Lab at Doorstep',
+                        'title_html' => 'Hassle-Free <br>Diagnostic <span class="text-indigo-400 italic">Tests</span>',
+                        'description' => 'Avoid the traffic and wait. Our experts come to you for sample collection in the comfort of your home.',
+                        'button_text' => 'Book Home Test',
+                        'button_url' => '/lab-test',
+                        'image' => 'assets/front/images/index/slide-3.jpg',
+                    ],
+                ],
+            ],
+            'about' => [
+                'badge' => 'About Imperial',
+                'title_html' => 'Redefining the <span class="text-indigo-600">Patient Experience</span>',
+                'description' => 'Imperial exists to provide a better patient experience. We are a one-stop-shop for your health, offering caring doctors, world-class diagnostics, and accessible healthcare for everyone.',
+            ],
+            'stats' => [
+                'specialities_count' => '27',
+                'specialities_label' => 'Specialities',
+                'doctors_count' => '84',
+                'doctors_label' => 'Expert Doctors',
+                'patients_count' => '914K',
+                'patients_label' => 'Patients Served',
+            ],
+            'our_approach' => [
+                'badge' => 'Our Approach',
+                'title_html' => 'Doctors Who <span class="text-indigo-600">Actually</span> Listen',
+                'description_1' => 'Our specialists dedicate time to truly understand your health history. We believe in respect, empathy, and personalized advice based on international clinical protocols.',
+                'description_2' => 'With years of local and international experience, our team provides healthcare you can trust blindly.',
+                'button_text' => 'Find a Specialist',
+                'button_url' => '/doctor',
+                'image' => 'assets/front/images/index/why-imperial.jpg',
+            ],
+            'lab_excellence' => [
+                'badge' => 'Lab Excellence',
+                'title_html' => 'Diagnostics You Can <span class="text-emerald-600">Trust</span>',
+                'description' => 'Accuracy is our top priority. Our laboratories follow ISO 15189-2012 international standards to ensure you get precise results every single time.',
+                'feature_1' => 'ISO Certified',
+                'feature_2' => 'Accredited Lab',
+                'button_text' => 'Explore Our Services',
+                'button_url' => '/lab-test',
+                'image' => 'assets/front/images/index/diagnosis.jpg',
+            ],
+            'experience_imperial' => [
+                'badge' => 'Experience Imperial',
+                'title_html' => 'Take a Virtual Tour of Our Facility',
+                'description' => 'Step inside our world-class medical center. From our luxury waiting areas to state-of-the-art diagnostic labs, experience the Imperial difference.',
+                'button_text' => 'Start The Tour',
+                'button_url' => '#',
+                'image' => 'assets/front/images/index/tour.jpg',
+            ],
+            'continuous_care' => [
+                'title_html' => 'Continuous Care for <br><span class="text-indigo-600">Your Family</span>',
+                'description' => 'Our membership plans are designed to provide proactive health management with unlimited family doctor consultations, health checks, and exclusive discounts.',
+                'button_text' => 'Explore Membership',
+                'button_url' => '/membership',
+            ],
+            'expert_advice' => [
+                'title_html' => 'Expert Advice from <br><span class="text-indigo-400">Comfort of Home</span>',
+                'description' => "Can't visit the hub? Connect with our world-class specialists via high-definition, secure video consultations. Reliable care, anywhere you are.",
+                'button_text' => 'Book Video Consult',
+                'button_url' => '/video-consultation',
+            ],
+        ];
+
+        $saved = setting('home_page');
+        if (!is_array($saved)) {
+            return $defaults;
+        }
+
+        $merged = array_replace_recursive($defaults, $saved);
+
+        if (isset($saved['hero']['slides']) && is_array($saved['hero']['slides'])) {
+            $merged['hero']['slides'] = $saved['hero']['slides'];
+        }
+
+        return $merged;
+    }
+}
+
+if (!function_exists('diagonostic_page_settings'))
+{
+    function diagonostic_page_settings()
+    {
+        $defaults = [
+            'page_name' => 'Diagnostics & Lab Tests',
+            'hero_title_html' => 'Precision <span class="text-indigo-400">Diagnostics</span> for Better Health',
+            'hero_description' => 'Experience world-class laboratory services with international quality standards and 99.9% accuracy in results.',
+            'hero_image' => 'assets/front/images/index/diagnosis.jpg',
+            'feature_1_title' => 'Quality Assured',
+            'feature_1_desc' => 'International standards & ISO protocols.',
+            'feature_2_title' => 'Rapid Turnaround',
+            'feature_2_desc' => 'Fast & reliable test result delivery.',
+            'feature_3_title' => 'Home Collection',
+            'feature_3_desc' => 'Sample collection from your doorstep.',
+            'search_placeholder' => 'Search for tests or procedures...',
+            'all_tests_label' => 'All Tests',
+            'laboratory_label' => 'Laboratory',
+            'imaging_label' => 'Imaging',
+            'procedures_label' => 'Procedures',
+            'catalog_footer_prefix' => 'End of Test Catalog',
+            'catalog_footer_suffix' => 'Investigations',
+        ];
+
+        $saved = setting('diagonostic_page');
+        if (!is_array($saved)) {
+            return $defaults;
+        }
+
+        return array_replace_recursive($defaults, $saved);
+    }
+}
+
+if (!function_exists('health_check_page_settings'))
+{
+    function health_check_page_settings()
+    {
+        $defaults = [
+            'page_name' => 'Health Check',
+            'hero_title_html' => 'Invest in Your <span class="text-indigo-400">Future Health</span> Today',
+            'hero_description' => 'Comprehensive health screenings designed to detect risks early and provide you with a roadmap to long-term wellness.',
+            'hero_image' => 'assets/front/images/healthcheck/1.jpg',
+            'feature_1_title' => 'Expert Analysis',
+            'feature_1_desc' => 'Consultations with top clinical specialists.',
+            'feature_2_title' => 'Affordable Care',
+            'feature_2_desc' => 'Best-in-class tests at transparent prices.',
+            'feature_3_title' => 'Instant Digital Reports',
+            'feature_3_desc' => 'Access your data anytime via our portal.',
+            'faq_title' => 'Common Questions',
+            'faq_subtitle' => 'Everything you need to know about our health checks.',
+            'faq_1_question' => 'What is a Health Check?',
+            'faq_1_answer' => 'A health check is a comprehensive examination of your current physical condition. It involves a series of tests and screenings to detect potential health issues before they become symptoms.',
+            'faq_2_question' => 'How does a health check help me?',
+            'faq_2_answer' => 'Regular health checks help in early detection of diseases, increase the chances for effective treatment, and allow you to track your health progress over time.',
+            'faq_3_question' => 'How will I receive my reports?',
+            'faq_3_answer' => 'Reports are typically delivered digitally via email or through a secure patient portal within 24-48 hours of the tests being completed.',
+        ];
+
+        $saved = setting('health_check_page');
+        if (!is_array($saved)) {
+            return $defaults;
+        }
+
+        return array_replace_recursive($defaults, $saved);
+    }
+}
+
 //generate  pdf
 if (!function_exists('generate_pdf')) 
 {  
