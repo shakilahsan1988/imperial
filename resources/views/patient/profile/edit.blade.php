@@ -23,6 +23,45 @@
 @endsection
 
 @section('content')
+<div class="row">
+  <div class="col-md-3">
+    <div class="small-box bg-info">
+      <div class="inner">
+        <h4 class="mb-1">{{ formated_price($financialSummary['health']->due ?? 0) }}</h4>
+        <p class="mb-0">Health Check Due</p>
+      </div>
+      <div class="icon"><i class="fas fa-heartbeat"></i></div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="small-box bg-primary">
+      <div class="inner">
+        <h4 class="mb-1">{{ formated_price($financialSummary['membership']->due ?? 0) }}</h4>
+        <p class="mb-0">Membership Due</p>
+      </div>
+      <div class="icon"><i class="fas fa-id-card"></i></div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="small-box bg-warning">
+      <div class="inner">
+        <h4 class="mb-1">{{ formated_price($financialSummary['video']->due ?? 0) }}</h4>
+        <p class="mb-0">Video Consultant Due</p>
+      </div>
+      <div class="icon"><i class="fas fa-video"></i></div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="small-box bg-danger">
+      <div class="inner">
+        <h4 class="mb-1">{{ formated_price($financialSummary['grand']->due ?? 0) }}</h4>
+        <p class="mb-0">Total Outstanding</p>
+      </div>
+      <div class="icon"><i class="fas fa-file-invoice-dollar"></i></div>
+    </div>
+  </div>
+</div>
+
 <div class="card card-primary">
   <div class="card-header">
     <h3 class="card-title">{{__('Edit Profile')}}</h3>

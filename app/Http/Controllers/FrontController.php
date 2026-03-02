@@ -240,6 +240,10 @@ if (auth()->guard('patient')->check()) {
         $data['patient_id'] = $patient->id;
         $data['email'] = $email;
         $data['status'] = 'pending';
+        $data['total_amount'] = $package->price;
+        $data['paid_amount'] = 0;
+        $data['due_amount'] = $package->price;
+        $data['payment_status'] = 'pending';
 
         HealthPackageBooking::create($data);
 
@@ -334,6 +338,10 @@ if (auth()->guard('patient')->check()) {
             'dob' => $data['dob'],
             'preferred_start_date' => $data['preferred_start_date'] ?? null,
             'notes' => $data['notes'] ?? null,
+            'total_amount' => $plan->price,
+            'paid_amount' => 0,
+            'due_amount' => $plan->price,
+            'payment_status' => 'pending',
             'status' => 'pending',
         ]);
 

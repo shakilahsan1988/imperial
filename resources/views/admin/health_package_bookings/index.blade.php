@@ -17,6 +17,10 @@
                         <th>Package</th>
                         <th>Patient</th>
                         <th>Phone</th>
+                        <th>Total</th>
+                        <th>Paid</th>
+                        <th>Due</th>
+                        <th>Payment</th>
                         <th>Status</th>
                         <th class="text-right">Actions</th>
                     </tr>
@@ -28,6 +32,10 @@
                         <td>{{ $booking->package->name ?? '-' }}</td>
                         <td>{{ $booking->patient_name }}</td>
                         <td>{{ $booking->phone }}</td>
+                        <td>{{ formated_price($booking->total_amount) }}</td>
+                        <td>{{ formated_price($booking->paid_amount) }}</td>
+                        <td>{{ formated_price($booking->due_amount) }}</td>
+                        <td><span class="badge {{ $booking->payment_status === 'paid' ? 'bg-success' : ($booking->payment_status === 'partial' ? 'bg-warning' : 'bg-secondary') }}">{{ ucfirst($booking->payment_status) }}</span></td>
                         <td>
                             <form action="{{ route('admin.health_package_bookings.update', $booking->id) }}" method="POST" class="form-inline">
                                 @csrf
@@ -42,10 +50,11 @@
                         </td>
                         <td class="text-right">
                             <a href="{{ route('admin.health_package_bookings.show', $booking->id) }}" class="btn btn-sm btn-info">View</a>
+                            <a href="{{ route('admin.health_package_bookings.invoice', $booking->id) }}" class="btn btn-sm btn-secondary" target="_blank">Invoice</a>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6" class="text-center text-muted">No bookings found.</td></tr>
+                    <tr><td colspan="10" class="text-center text-muted">No bookings found.</td></tr>
                 @endforelse
                 </tbody>
             </table>

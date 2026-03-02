@@ -15,12 +15,23 @@ class MembershipPlanBooking extends Model
         'dob',
         'preferred_start_date',
         'notes',
+        'total_amount',
+        'paid_amount',
+        'due_amount',
+        'payment_status',
+        'payment_type',
+        'paid_at',
+        'payment_notes',
         'status',
     ];
 
     protected $casts = [
         'dob' => 'date',
         'preferred_start_date' => 'date',
+        'total_amount' => 'decimal:2',
+        'paid_amount' => 'decimal:2',
+        'due_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
     ];
 
     public function plan()
@@ -31,5 +42,10 @@ class MembershipPlanBooking extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(MembershipPlanBookingPayment::class)->latest();
     }
 }

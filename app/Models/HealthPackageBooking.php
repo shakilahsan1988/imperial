@@ -15,11 +15,22 @@ class HealthPackageBooking extends Model
         'dob',
         'preferred_date',
         'notes',
+        'total_amount',
+        'paid_amount',
+        'due_amount',
+        'payment_status',
+        'payment_type',
+        'paid_at',
+        'payment_notes',
         'status',
     ];
 
     protected $casts = [
         'preferred_date' => 'date',
+        'total_amount' => 'decimal:2',
+        'paid_amount' => 'decimal:2',
+        'due_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
     ];
 
     public function package()
@@ -30,5 +41,10 @@ class HealthPackageBooking extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(HealthPackageBookingPayment::class)->latest();
     }
 }

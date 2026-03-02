@@ -179,6 +179,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('health_package_categories', HealthPackageCategoriesController::class)->except(['show']);
     Route::resource('health_packages', HealthPackagesController::class)->except(['show']);
     Route::resource('health_package_bookings', HealthPackageBookingsController::class)->only(['index', 'show', 'update']);
+    Route::post('health_package_bookings/{health_package_booking}/payments', [HealthPackageBookingsController::class, 'addPayment'])->name('health_package_bookings.payments.store');
+    Route::get('health_package_bookings/{health_package_booking}/invoice', [HealthPackageBookingsController::class, 'invoice'])->name('health_package_bookings.invoice');
 
     // Membership
     Route::get('video_consultant/packages', [MembershipPlansController::class, 'consultantIndex'])->name('video_consultant_packages.index');
@@ -186,6 +188,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('membership_categories', MembershipCategoriesController::class)->except(['show']);
     Route::resource('membership_plans', MembershipPlansController::class)->except(['show']);
     Route::resource('membership_plan_bookings', MembershipPlanBookingsController::class)->only(['index', 'show', 'update']);
+    Route::post('membership_plan_bookings/{membership_plan_booking}/payments', [MembershipPlanBookingsController::class, 'addPayment'])->name('membership_plan_bookings.payments.store');
+    Route::get('membership_plan_bookings/{membership_plan_booking}/invoice', [MembershipPlanBookingsController::class, 'invoice'])->name('membership_plan_bookings.invoice');
 
     // Manage Doctors
     Route::resource('doctor_specialties', DoctorSpecialtiesController::class)->except(['show']);

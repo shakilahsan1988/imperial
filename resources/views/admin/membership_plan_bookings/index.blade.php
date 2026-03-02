@@ -20,6 +20,10 @@
                         <th>Plan</th>
                         <th>Patient</th>
                         <th>Phone</th>
+                        <th>Total</th>
+                        <th>Paid</th>
+                        <th>Due</th>
+                        <th>Payment</th>
                         <th>Status</th>
                         <th class="text-right">Actions</th>
                     </tr>
@@ -31,10 +35,15 @@
                         <td>{{ $booking->plan->name ?? '-' }}</td>
                         <td>{{ $booking->patient_name }}</td>
                         <td>{{ $booking->phone }}</td>
+                        <td>{{ formated_price($booking->total_amount) }}</td>
+                        <td>{{ formated_price($booking->paid_amount) }}</td>
+                        <td>{{ formated_price($booking->due_amount) }}</td>
+                        <td><span class="badge {{ $booking->payment_status === 'paid' ? 'bg-success' : ($booking->payment_status === 'partial' ? 'bg-warning' : 'bg-secondary') }}">{{ ucfirst($booking->payment_status) }}</span></td>
                         <td>
                             <form action="{{ route('admin.membership_plan_bookings.update', $booking->id) }}" method="POST" class="form-inline">
                                 @csrf
                                 @method('PUT')
+                                <input type="hidden" name="module" value="{{ $isVideoModule ? 'video_consultant' : 'membership' }}">
                                 <select name="status" class="form-control form-control-sm mr-2">
                                     @foreach(['pending','confirmed','completed','cancelled'] as $status)
                                         <option value="{{ $status }}" {{ $booking->status === $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
@@ -45,10 +54,11 @@
                         </td>
                         <td class="text-right">
                             <a href="{{ route('admin.membership_plan_bookings.show', ['membership_plan_booking' => $booking->id, 'module' => $isVideoModule ? 'video_consultant' : 'membership']) }}" class="btn btn-sm btn-info">View</a>
+                            <a href="{{ route('admin.membership_plan_bookings.invoice', ['membership_plan_booking' => $booking->id, 'module' => $isVideoModule ? 'video_consultant' : 'membership']) }}" target="_blank" class="btn btn-sm btn-secondary">Invoice</a>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6" class="text-center text-muted">No membership bookings found.</td></tr>
+                    <tr><td colspan="10" class="text-center text-muted">No membership bookings found.</td></tr>
                 @endforelse
                 </tbody>
             </table>
