@@ -48,8 +48,8 @@
                                     <p class="text-indigo-600 font-bold text-sm">{{ $model->designation ?: 'Consultant' }}</p>
                                 </div>
                                 <div class="text-right hidden md:block">
-                                    <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Consultation Fee</p>
-                                    <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ formated_price($model->consultation_fee ?? 0) }}</p>
+                                    <p id="hero-fee-label" class="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Consultation Fee (In-Hub)</p>
+                                    <p id="hero-fee-value" class="text-3xl font-black text-slate-900 tracking-tighter">{{ formated_price($model->consultation_fee ?? 0) }}</p>
                                 </div>
                             </div>
 
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border border-slate-50">
-                    <form method="POST" action="{{ route('book-doctor.submit', ['doctor' => $model->slug ?: $model->id]) }}">
+                    <form id="doctor-booking-form" method="POST" action="{{ route('book-doctor.submit', ['doctor' => $model->slug ?: $model->id]) }}">
                         @csrf
                         <div class="flex items-center gap-3 mb-8">
                             <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold">1</div>
@@ -94,10 +94,22 @@
                         @endif
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                            <input type="text" name="patient_name" class="form-control" placeholder="Patient Name" value="{{ old('patient_name', $patient->name ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
-                            <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
-                            <input type="email" name="email" class="form-control" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
-                            <input type="date" name="dob" class="form-control" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Patient Name</label>
+                                <input type="text" name="patient_name" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Patient Name" value="{{ old('patient_name', $patient->name ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number</label>
+                                <input type="text" name="phone" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                                <input type="email" name="email" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Date Of Birth</label>
+                                <input type="date" name="dob" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            </div>
                         </div>
 
                         <div class="flex flex-wrap gap-4 mb-6">
@@ -127,52 +139,68 @@
 
                         <div class="mb-6" id="branch-wrap">
                             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Hub</label>
-                            <select name="branch_id" id="branch_id" class="form-control">
-                                <option value="">Select Hub</option>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 @foreach($branches as $branch)
-                                <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="branch_id" value="{{ $branch->id }}" class="peer sr-only branch-radio" {{ old('branch_id') == $branch->id ? 'checked' : '' }}>
+                                    <div class="p-4 border-2 border-slate-100 rounded-2xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                        <p class="text-sm font-bold text-slate-900">{{ $branch->name }}</p>
+                                        @if(!empty($branch->address))
+                                        <p class="text-[11px] text-slate-500 mt-1">{{ $branch->address }}</p>
+                                        @endif
+                                    </div>
+                                </label>
                                 @endforeach
-                            </select>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Appointment Date</label>
-                                <input type="date" name="appointment_date" class="form-control" min="{{ date('Y-m-d') }}" value="{{ old('appointment_date') }}" required>
+                                <input type="date" id="appointment_date" name="appointment_date" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" min="{{ date('Y-m-d') }}" value="{{ old('appointment_date') }}" required>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Time Slot</label>
-                                <select name="doctor_consultation_slot_id" class="form-control" required>
-                                    <option value="">Select Slot</option>
+                                <div class="grid grid-cols-2 gap-2 max-h-[180px] overflow-auto pr-1">
                                     @foreach($slots as $slot)
-                                    <option value="{{ $slot->id }}" {{ old('doctor_consultation_slot_id') == $slot->id ? 'selected' : '' }}>{{ $slot->label }}</option>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="doctor_consultation_slot_id" value="{{ $slot->id }}" class="peer sr-only" {{ old('doctor_consultation_slot_id') == $slot->id ? 'checked' : '' }} required>
+                                        <span class="block text-center p-3 rounded-xl border-2 border-slate-100 text-xs font-semibold text-slate-700 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">{{ $slot->label }}</span>
+                                    </label>
                                     @endforeach
-                                </select>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="mb-8">
-                            <textarea name="notes" class="form-control" rows="3" placeholder="Notes (optional)">{{ old('notes') }}</textarea>
-                        </div>
-
-                        <div class="text-right">
-                            <button type="submit" class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-2xl font-black uppercase tracking-widest text-sm transition-all">
-                                Confirm Appointment Request
-                            </button>
+                        <div class="mb-2">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Notes (Optional)</label>
+                            <textarea name="notes" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" rows="4" placeholder="Notes (optional)">{{ old('notes') }}</textarea>
                         </div>
                     </form>
                 </div>
             </div>
 
             <div class="lg:col-span-4">
-                <div class="sticky top-24 bg-indigo-900 rounded-[32px] p-8 text-white">
+                <div class="sticky top-24 space-y-4">
+                <div class="bg-indigo-900 rounded-[32px] p-8 text-white">
                     <h3 class="text-lg font-bold mb-6">Booking Summary</h3>
                     <div class="space-y-4 text-sm">
                         <div class="flex justify-between"><span>Doctor</span><span>{{ $model->name }}</span></div>
                         <div class="flex justify-between"><span>Department</span><span>{{ optional($model->department)->name ?: '-' }}</span></div>
                         <div class="flex justify-between"><span>Specialty</span><span>{{ optional($model->specialty)->name ?: '-' }}</span></div>
-                        <div class="flex justify-between"><span>Fee</span><span>{{ formated_price($model->consultation_fee ?? 0) }}</span></div>
+                        <div class="flex justify-between"><span>In-Hub Fee</span><span>{{ formated_price($model->consultation_fee ?? 0) }}</span></div>
+                        <div class="flex justify-between"><span>Video Fee</span><span>{{ $model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A' }}</span></div>
+                        <div class="flex justify-between pt-2 border-t border-indigo-700">
+                            <span id="summary-fee-label">Selected Fee</span>
+                            <span id="summary-fee-value">{{ formated_price($model->consultation_fee ?? 0) }}</span>
+                        </div>
                     </div>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-lg shadow-slate-200/40">
+                    <button type="submit" form="doctor-booking-form" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-xl font-black uppercase tracking-widest text-xs transition-all">
+                        Confirm Appointment Request
+                    </button>
+                </div>
                 </div>
             </div>
         </div>
@@ -185,15 +213,68 @@
 (function(){
   const radios = document.querySelectorAll('input[name="visit_type"]');
   const branchWrap = document.getElementById('branch-wrap');
-  const branchInput = document.getElementById('branch_id');
+  const branchInputs = document.querySelectorAll('.branch-radio');
+  const appointmentDate = document.getElementById('appointment_date');
+  const bookingForm = document.getElementById('doctor-booking-form');
+  const summaryFeeLabel = document.getElementById('summary-fee-label');
+  const summaryFeeValue = document.getElementById('summary-fee-value');
+  const heroFeeLabel = document.getElementById('hero-fee-label');
+  const heroFeeValue = document.getElementById('hero-fee-value');
+  const inHubFee = @json(formated_price($model->consultation_fee ?? 0));
+  const videoFee = @json($model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A');
   function toggleBranch(){
     const selected = document.querySelector('input[name="visit_type"]:checked');
     const inHub = selected && selected.value === 'in_hub';
     if (branchWrap) branchWrap.style.display = inHub ? '' : 'none';
-    if (branchInput) branchInput.required = inHub;
+    branchInputs.forEach((input, index) => {
+      input.disabled = !inHub;
+      input.required = inHub && index === 0;
+      if (!inHub) input.checked = false;
+    });
+    if (summaryFeeLabel && summaryFeeValue) {
+      if (inHub) {
+        summaryFeeLabel.textContent = 'Selected Fee (In-Hub)';
+        summaryFeeValue.textContent = inHubFee;
+      } else {
+        summaryFeeLabel.textContent = 'Selected Fee (Video)';
+        summaryFeeValue.textContent = videoFee;
+      }
+    }
+    if (heroFeeLabel && heroFeeValue) {
+      if (inHub) {
+        heroFeeLabel.textContent = 'Consultation Fee (In-Hub)';
+        heroFeeValue.textContent = inHubFee;
+      } else {
+        heroFeeLabel.textContent = 'Consultation Fee (Video)';
+        heroFeeValue.textContent = videoFee;
+      }
+    }
   }
   radios.forEach(r => r.addEventListener('change', toggleBranch));
   toggleBranch();
+
+  if (appointmentDate) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const today = year + '-' + month + '-' + day;
+    appointmentDate.min = today;
+  }
+
+  if (bookingForm && appointmentDate) {
+    bookingForm.addEventListener('submit', function(e) {
+      if (!appointmentDate.value) return;
+      const selected = new Date(appointmentDate.value + 'T00:00:00');
+      const current = new Date();
+      current.setHours(0, 0, 0, 0);
+      if (selected < current) {
+        e.preventDefault();
+        alert('Past dates are not allowed for appointment booking.');
+        appointmentDate.focus();
+      }
+    });
+  }
 })();
 </script>
 @endpush

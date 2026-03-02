@@ -23,6 +23,7 @@ class Doctor extends Model
         'email',
         'commission',
         'consultation_fee',
+        'video_consultation_fee',
         'video_consultation_available',
         'address',
         'designation',
@@ -38,6 +39,7 @@ class Doctor extends Model
         'video_consultation_available' => 'boolean',
         'commission' => 'decimal:2',
         'consultation_fee' => 'decimal:2',
+        'video_consultation_fee' => 'decimal:2',
     ];
 
     /**

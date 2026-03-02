@@ -96,6 +96,12 @@ class DoctorsController extends Controller
             ->addColumn('consultation_fee', function($doctor) {
                 return formated_price($doctor->consultation_fee ?? 0);
             })
+            ->addColumn('video_consultation_fee', function($doctor) {
+                if (!$doctor->video_consultation_available) {
+                    return '-';
+                }
+                return formated_price($doctor->video_consultation_fee ?? $doctor->consultation_fee ?? 0);
+            })
             ->addColumn('video_consultation', function($doctor) {
                 return $doctor->video_consultation_available
                     ? '<span class="badge bg-success">Yes</span>'
@@ -146,6 +152,9 @@ class DoctorsController extends Controller
             $data['code'] = doctor_code();
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['video_consultation_available'] = $request->boolean('video_consultation_available');
+            $data['video_consultation_fee'] = $request->boolean('video_consultation_available')
+                ? ($request->video_consultation_fee ?? $request->consultation_fee)
+                : null;
             $data['status'] = $request->boolean('status', true);
 
             if ($request->hasFile('image')) {
@@ -206,6 +215,9 @@ class DoctorsController extends Controller
             $data = $request->except('_token', '_method', 'image');
             $data['slug'] = Str::slug($request->name) . '-' . $doctor->id;
             $data['video_consultation_available'] = $request->boolean('video_consultation_available');
+            $data['video_consultation_fee'] = $request->boolean('video_consultation_available')
+                ? ($request->video_consultation_fee ?? $request->consultation_fee)
+                : null;
             $data['status'] = $request->boolean('status');
 
             if ($request->hasFile('image')) {

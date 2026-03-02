@@ -333,6 +333,35 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item has-treeview" id="membership_module">
+        <a href="#" class="nav-link" id="membership_module_link">
+          <i class="nav-icon fas fa-id-card"></i>
+          <p>
+            Membership
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ route('admin.membership_categories.index') }}" class="nav-link" id="membership_categories">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Category</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.membership_plans.index') }}" class="nav-link" id="membership_plans">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Create Plan</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.membership_plan_bookings.index') }}" class="nav-link" id="membership_plan_bookings">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Plan Booking</p>
+            </a>
+          </li>
+        </ul>
+      </li>
       @endif
 
       @if($u && ($isSuper || $u->hasPermission('view_activity_log')))

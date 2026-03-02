@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Artisan;
     Route::post('/package-details/{slug}/book', [FrontController::class, 'package_booking_submit'])->name('package-booking.submit');
     Route::get('/membership', [FrontController::class, 'membership'])->name('membership');
     Route::get('/membership-details/{id?}', [FrontController::class, 'membership_details'])->name('membership-details');
+    Route::post('/membership-details/{slug}/book', [FrontController::class, 'membership_plan_booking_submit'])->name('membership-booking.submit');
     Route::get('/lab-test', [FrontController::class, 'lab_test'])->name('lab-test');
     
     // Cart Routes

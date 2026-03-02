@@ -57,6 +57,7 @@
          {data:"phone"},
          {data:"email"},
          {data:"consultation_fee"},
+         {data:"video_consultation_fee"},
          {data:"video_consultation"},
          {data:"commission"},
          {data:"total"},

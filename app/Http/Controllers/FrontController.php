@@ -15,6 +15,9 @@ use App\Models\DoctorDepartment;
 use App\Models\DoctorConsultationSlot;
 use App\Models\DoctorConsultationBooking;
 use App\Models\Branch;
+use App\Models\MembershipCategory;
+use App\Models\MembershipPlan;
+use App\Models\MembershipPlanBooking;
 use Carbon\Carbon;
 
 class FrontController extends Controller
@@ -244,11 +247,97 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function membership(){
-     	return view('frontend.services.membership-plan');
+        $categories = MembershipCategory::where('status', true)
+            ->with(['plans' => function ($q) {
+                $q->where('status', true)->where('show_on_frontend', true);
+            }])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+     	return view('frontend.services.membership-plan', compact('categories'));
     }
 
     public function membership_details(Request $request, $id = null){
-		return view('frontend.services.membership-details', compact('id'));
+        abort_unless($id, 404);
+
+        $plan = MembershipPlan::with('category')
+            ->where('status', true)
+            ->where('show_on_frontend', true)
+            ->where('slug', $id)
+            ->first();
+
+        if (!$plan && ctype_digit((string) $id)) {
+            $plan = MembershipPlan::with('category')
+                ->where('status', true)
+                ->where('show_on_frontend', true)
+                ->findOrFail((int) $id);
+        }
+
+        abort_unless($plan, 404);
+
+        $relatedPlans = MembershipPlan::where('status', true)
+            ->where('show_on_frontend', true)
+            ->where('id', '!=', $plan->id)
+            ->where('membership_category_id', $plan->membership_category_id)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->take(3)
+            ->get();
+
+		return view('frontend.services.membership-details', compact('plan', 'relatedPlans'));
+    }
+
+    public function membership_plan_booking_submit(Request $request, $slug)
+    {
+        $plan = MembershipPlan::where('slug', $slug)->first();
+        if (!$plan && ctype_digit((string) $slug)) {
+            $plan = MembershipPlan::findOrFail((int) $slug);
+        }
+        abort_unless($plan, 404);
+
+        $data = $request->validate([
+            'patient_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:30',
+            'email' => 'required|email|max:255',
+            'dob' => 'required|date',
+            'preferred_start_date' => 'nullable|date|after_or_equal:today',
+            'notes' => 'nullable|string|max:2000',
+        ]);
+
+        $email = strtolower(trim($data['email']));
+        $patient = Patient::where('email', $email)->first();
+
+        if (!$patient) {
+            $patient = Patient::create([
+                'code' => patient_code(),
+                'name' => $data['patient_name'],
+                'gender' => 'male',
+                'dob' => $data['dob'],
+                'email' => $email,
+                'phone' => $data['phone'],
+            ]);
+        } else {
+            $patient->update([
+                'name' => $data['patient_name'],
+                'phone' => $data['phone'],
+                'dob' => $data['dob'],
+            ]);
+        }
+
+        MembershipPlanBooking::create([
+            'membership_plan_id' => $plan->id,
+            'patient_id' => $patient->id,
+            'patient_name' => $data['patient_name'],
+            'phone' => $data['phone'],
+            'email' => $email,
+            'dob' => $data['dob'],
+            'preferred_start_date' => $data['preferred_start_date'] ?? null,
+            'notes' => $data['notes'] ?? null,
+            'status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Membership plan booking submitted successfully.');
     }
 
     public function lab_test(){
@@ -423,6 +512,9 @@ if (auth()->guard('patient')->check()) {
         }
 
         DoctorConsultationBooking::create([
+            'consultation_fee' => $data['visit_type'] === 'video'
+                ? ($doctorModel->video_consultation_fee ?? $doctorModel->consultation_fee)
+                : $doctorModel->consultation_fee,
             'doctor_id' => $doctorModel->id,
             'patient_id' => $patient->id ?? null,
             'doctor_consultation_slot_id' => $slot->id,
@@ -434,7 +526,6 @@ if (auth()->guard('patient')->check()) {
             'visit_type' => $data['visit_type'],
             'appointment_date' => $data['appointment_date'],
             'notes' => $data['notes'] ?? null,
-            'consultation_fee' => $doctorModel->consultation_fee,
             'commission_percentage' => $doctorModel->commission,
             'status' => 'pending',
         ]);

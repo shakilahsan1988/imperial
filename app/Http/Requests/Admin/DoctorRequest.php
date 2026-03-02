@@ -46,6 +46,7 @@ class DoctorRequest extends FormRequest
                 'address'=>'required',
                 'commission'=>'required|numeric|min:0|max:100',
                 'consultation_fee' => 'required|numeric|min:0',
+                'video_consultation_fee' => 'required_if:video_consultation_available,1|nullable|numeric|min:0',
                 'experience_years' => 'nullable|integer|min:0|max:60',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             ];
@@ -70,6 +71,7 @@ class DoctorRequest extends FormRequest
                 'address'=>'required',
                 'commission'=>'required|numeric|min:0|max:100',
                 'consultation_fee' => 'required|numeric|min:0',
+                'video_consultation_fee' => 'required_if:video_consultation_available,1|nullable|numeric|min:0',
                 'experience_years' => 'nullable|integer|min:0|max:60',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             ];

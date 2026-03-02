@@ -83,12 +83,30 @@
                             <h4 class="font-bold text-slate-800 mb-4">Book This Package</h4>
                             @php($patient = auth()->guard('patient')->user())
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <input type="text" name="patient_name" class="form-control" placeholder="Your Name" value="{{ old('patient_name', $patient->name ?? '') }}" required>
-                                <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" required>
-                                <input type="email" name="email" class="form-control" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
-                                <input type="date" name="dob" class="form-control" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
-                                <input type="date" name="preferred_date" class="form-control md:col-span-2" value="{{ old('preferred_date') }}">
-                                <textarea name="notes" class="form-control md:col-span-2" rows="2" placeholder="Notes"></textarea>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Patient Name</label>
+                                    <input type="text" name="patient_name" class="form-control" placeholder="Your Name" value="{{ old('patient_name', $patient->name ?? '') }}" required>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" required>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Date Of Birth</label>
+                                    <input type="date" name="dob" class="form-control" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Preferred Date (Optional)</label>
+                                    <input type="date" name="preferred_date" class="form-control" value="{{ old('preferred_date') }}">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Notes (Optional)</label>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Notes"></textarea>
+                                </div>
                             </div>
                             <button type="submit" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-black uppercase tracking-widest text-xs transition-all">Submit Booking Request</button>
                         </form>

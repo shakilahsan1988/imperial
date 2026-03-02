@@ -33,6 +33,9 @@ use App\Http\Controllers\Admin\DoctorSpecialtiesController;
 use App\Http\Controllers\Admin\DoctorDepartmentsController;
 use App\Http\Controllers\Admin\DoctorConsultationSlotsController;
 use App\Http\Controllers\Admin\DoctorConsultationBookingsController;
+use App\Http\Controllers\Admin\MembershipCategoriesController;
+use App\Http\Controllers\Admin\MembershipPlansController;
+use App\Http\Controllers\Admin\MembershipPlanBookingsController;
 
 // Admin Authentication (Guest)
 Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.'], function() {
@@ -176,6 +179,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('health_package_categories', HealthPackageCategoriesController::class)->except(['show']);
     Route::resource('health_packages', HealthPackagesController::class)->except(['show']);
     Route::resource('health_package_bookings', HealthPackageBookingsController::class)->only(['index', 'show', 'update']);
+
+    // Membership
+    Route::resource('membership_categories', MembershipCategoriesController::class)->except(['show']);
+    Route::resource('membership_plans', MembershipPlansController::class)->except(['show']);
+    Route::resource('membership_plan_bookings', MembershipPlanBookingsController::class)->only(['index', 'show', 'update']);
 
     // Manage Doctors
     Route::resource('doctor_specialties', DoctorSpecialtiesController::class)->except(['show']);

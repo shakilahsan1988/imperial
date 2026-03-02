@@ -112,7 +112,20 @@
                       <i class="fas fa-money-bill-wave"></i>
                   </span>
               </div>
-              <input type="number" step="0.01" class="form-control" placeholder="{{__('Consultation Fee')}}" name="consultation_fee" id="consultation_fee" @if(isset($doctor)) value="{{$doctor->consultation_fee}}" @endif min="0" required>
+              <input type="number" step="0.01" class="form-control" placeholder="{{__('In-Hub Consultation Fee')}}" name="consultation_fee" id="consultation_fee" @if(isset($doctor)) value="{{$doctor->consultation_fee}}" @endif min="0" required>
+          </div>
+      </div>
+  </div>
+
+  <div class="col-lg-4">
+      <div class="form-group">
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                      <i class="fas fa-video"></i>
+                  </span>
+              </div>
+              <input type="number" step="0.01" class="form-control" placeholder="{{__('Video Consultation Fee')}}" name="video_consultation_fee" id="video_consultation_fee" @if(isset($doctor)) value="{{$doctor->video_consultation_fee}}" @endif min="0">
           </div>
       </div>
   </div>

@@ -91,11 +91,17 @@
                             <p class="text-sm text-slate-500 font-medium leading-snug">{{ $doc->designation ?: 'Consultant' }}</p>
                             <p class="text-xs text-indigo-600 font-bold mt-1">{{ optional($doc->specialty)->name ?: 'Specialist' }}</p>
                         </div>
-                        <div class="text-xs text-slate-400 mb-6">
-                            Fee: <strong class="text-slate-700">{{ formated_price($doc->consultation_fee ?? 0) }}</strong>
-                            @if($doc->video_consultation_available)
-                            <span class="ml-2 text-emerald-600 font-bold">Video Consult</span>
-                            @endif
+                        <div class="text-xs text-slate-500 mb-6 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span>In-Hub Fee</span>
+                                <strong class="text-slate-700">{{ formated_price($doc->consultation_fee ?? 0) }}</strong>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Video Fee</span>
+                                <strong class="{{ $doc->video_consultation_available ? 'text-emerald-700' : 'text-slate-400' }}">
+                                    {{ $doc->video_consultation_available ? formated_price($doc->video_consultation_fee ?? $doc->consultation_fee ?? 0) : 'N/A' }}
+                                </strong>
+                            </div>
                         </div>
                         <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-xl font-bold text-sm tracking-wide transition-all">
                             Book Appointment

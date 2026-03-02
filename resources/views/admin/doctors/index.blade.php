@@ -49,7 +49,8 @@
                                     <th class="border-0 text-xs text-uppercase text-muted">{{ __('Department') }}</th>
                                     <th class="border-0 text-xs text-uppercase text-muted">{{ __('Phone') }}</th>
                                     <th class="border-0 text-xs text-uppercase text-muted">{{ __('Email') }}</th>
-                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Consultation Fee') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('In-Hub Fee') }}</th>
+                                    <th class="border-0 text-xs text-uppercase text-muted">{{ __('Video Fee') }}</th>
                                     <th class="border-0 text-xs text-uppercase text-muted">{{ __('Video Consult') }}</th>
                                     <th class="border-0 text-xs text-uppercase text-muted">{{ __('Commission') }}</th>
                                     <th class="border-0 text-xs text-uppercase text-muted">{{ __('Total') }}</th>
