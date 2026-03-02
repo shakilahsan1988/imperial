@@ -1,23 +1,24 @@
 @extends('layouts.front')
 
-@section('title', 'Find a Doctor - Imperial Health Bangladesh')
+@section('title', ($pageSettings['page_name'] ?? 'Our Doctors') . ' - Imperial Health Bangladesh')
 
 @section('content')
 
 <main class="min-h-screen bg-[#F8FAFC] font-sans">
     <section class="relative py-20 md:py-32 bg-[#1E293B] overflow-hidden">
         <div class="absolute inset-0 opacity-20">
-            <img src="{{ asset('assets/front/images/doctor/1.jpg') }}" class="w-full h-full object-cover">
+            <img src="{{ asset($pageSettings['hero_image']) }}" class="w-full h-full object-cover">
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
 
         <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-3xl">
+                <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                 <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                    Expert Care from <span class="text-indigo-400">World-Class</span> Specialists
+                    {!! $pageSettings['hero_title_html'] !!}
                 </h1>
                 <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl mb-10">
-                    Connect with highly experienced specialists dedicated to providing compassionate, personalized healthcare.
+                    {{ $pageSettings['hero_description'] }}
                 </p>
             </div>
         </div>

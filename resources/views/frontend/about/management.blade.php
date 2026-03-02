@@ -1,22 +1,22 @@
 @extends('layouts.front')
 
-@section('title', 'Management Team - Imperial Health Bangladesh')
+@section('title', ($pageSettings['page_name'] ?? 'Management') . ' - Imperial Health Bangladesh')
 
 @section('content')
 
     <!-- Main Content Start -->
     <main class="font-sans text-imperial-text bg-gray-50 pb-20">
-
-        <!-- Breadcrumbs -->
-        <section class="bg-white border-b border-gray-200 py-3">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <nav class="flex text-sm text-gray-500">
-                    <a href="{{ route('fhome') }}" class="hover:text-imperial-primary transition">Home</a>
-                    <span class="mx-2 text-gray-400">/</span>
-                    <a href="{{ route('about') }}" class="hover:text-imperial-primary transition">About</a>
-                    <span class="mx-2 text-gray-400">/</span>
-                    <span class="text-gray-900 font-medium">Management Team</span>
-                </nav>
+        <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
+            <div class="absolute inset-0 opacity-20">
+                <img src="{{ asset($pageSettings['hero_image']) }}" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-3xl">
+                    <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $pageSettings['hero_title_html'] !!}</h1>
+                    <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl">{{ $pageSettings['hero_description'] }}</p>
+                </div>
             </div>
         </section>
 
@@ -25,7 +25,7 @@
             
             <!-- Title -->
             <div class="mb-12 text-center">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Our Management Team</h1>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ $pageSettings['page_name'] }}</h2>
             </div>
 
             <!-- Grid Container -->

@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'Contact Us - Imperial Health Bangladesh')
+@section('title', ($pageSettings['page_name'] ?? 'Contact') . ' - Imperial Health Bangladesh')
 
 @section('content')
 
@@ -8,17 +8,18 @@
         <!-- MODERN HERO SECTION -->
         <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
             <div class="absolute inset-0 opacity-20">
-                <img src="https://picsum.photos/id/4/1920/1080" class="w-full h-full object-cover">
+                <img src="{{ asset($pageSettings['hero_image']) }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-3xl">
+                    <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                        We're Here to <span class="text-indigo-400">Help</span> You
+                        {!! $pageSettings['hero_title_html'] !!}
                     </h1>
                     <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl mb-12">
-                        Whether you have a question about our services, need assistance with a booking, or want to provide feedback, our team is ready to listen.
+                        {{ $pageSettings['hero_description'] }}
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,9 +126,6 @@
                             </div>
                         </div>
 
-                        <div class="rounded-3xl overflow-hidden h-64 shadow-2xl border-4 border-white">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.389736832745!2d90.3983!3d23.7954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c8c16e0e643b%3A0x6a466d658b8a5e0!2sBanani%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                        </div>
                     </div>
 
                 </div>

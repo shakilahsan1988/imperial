@@ -35,7 +35,6 @@
                     <li><a href="{{ route('doctor') }}" class="hover:text-indigo-400 transition-colors">Find a Specialist</a></li>
                     <li><a href="{{ route('blog') }}" class="hover:text-indigo-400 transition-colors">Health Blog</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-indigo-400 transition-colors">Support & FAQ</a></li>
-                    <li><a href="{{ route('career') }}" class="hover:text-indigo-400 transition-colors">Careers</a></li>
                 </ul>
             </div>
 

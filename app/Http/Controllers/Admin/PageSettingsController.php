@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DiagonosticPageSettingRequest;
 use App\Http\Requests\Admin\HealthCheckPageSettingRequest;
 use App\Http\Requests\Admin\HomePageSettingRequest;
+use App\Http\Requests\Admin\InnerPageSettingRequest;
 use App\Models\Setting;
 use Illuminate\Support\Facades\File;
 
@@ -219,6 +220,176 @@ class PageSettingsController extends Controller
                 ->with('success', 'Health Check page settings updated successfully');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Failed to update Health Check page settings: ' . $e->getMessage());
+        }
+    }
+
+    public function membershipSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Membership Settings',
+            '/membership Page Settings',
+            'admin.pages.membership_settings_submit',
+            membership_page_settings(),
+            'pages_membership'
+        );
+    }
+
+    public function updateMembershipSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'membership_page', 'membership', 'admin.pages.membership_settings');
+    }
+
+    public function videoConsultationSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Video Consultation Settings',
+            '/video-consultation Page Settings',
+            'admin.pages.video_consultation_settings_submit',
+            video_consultation_page_settings(),
+            'pages_video_consultation'
+        );
+    }
+
+    public function updateVideoConsultationSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'video_consultation_page', 'video-consultation', 'admin.pages.video_consultation_settings');
+    }
+
+    public function doctorsSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Our Doctors Settings',
+            '/doctor Page Settings',
+            'admin.pages.doctors_settings_submit',
+            doctors_page_settings(),
+            'pages_our_doctors'
+        );
+    }
+
+    public function updateDoctorsSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'doctors_page', 'doctor', 'admin.pages.doctors_settings');
+    }
+
+    public function gallerySettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Gallery Settings',
+            '/gallery Page Settings',
+            'admin.pages.gallery_settings_submit',
+            gallery_page_settings(),
+            'pages_gallery'
+        );
+    }
+
+    public function updateGallerySettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'gallery_page', 'gallery', 'admin.pages.gallery_settings');
+    }
+
+    public function missionVisionSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Mission & Vision Settings',
+            '/mission-vision-value Page Settings',
+            'admin.pages.mission_vision_settings_submit',
+            mission_vision_page_settings(),
+            'pages_mission_vision'
+        );
+    }
+
+    public function updateMissionVisionSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'mission_vision_page', 'mission-vision', 'admin.pages.mission_vision_settings');
+    }
+
+    public function managementSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Management Settings',
+            '/management Page Settings',
+            'admin.pages.management_settings_submit',
+            management_page_settings(),
+            'pages_management'
+        );
+    }
+
+    public function updateManagementSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'management_page', 'management', 'admin.pages.management_settings');
+    }
+
+    public function contactSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Contact Settings',
+            '/contact Page Settings',
+            'admin.pages.contact_settings_submit',
+            contact_page_settings(),
+            'pages_contact'
+        );
+    }
+
+    public function updateContactSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'contact_page', 'contact', 'admin.pages.contact_settings');
+    }
+
+    public function blogSettings()
+    {
+        return $this->renderInnerPageSettings(
+            'Blog Settings',
+            '/blog Page Settings',
+            'admin.pages.blog_settings_submit',
+            blog_page_settings(),
+            'pages_blog'
+        );
+    }
+
+    public function updateBlogSettings(InnerPageSettingRequest $request)
+    {
+        return $this->updateInnerPageSettings($request, 'blog_page', 'blog', 'admin.pages.blog_settings');
+    }
+
+    private function renderInnerPageSettings(
+        string $title,
+        string $subtitle,
+        string $submitRoute,
+        array $settings,
+        string $activeMenuId
+    ) {
+        return view('admin.pages.inner_page_settings', compact('title', 'subtitle', 'submitRoute', 'settings', 'activeMenuId'));
+    }
+
+    private function updateInnerPageSettings(
+        InnerPageSettingRequest $request,
+        string $settingKey,
+        string $uploadFolder,
+        string $redirectRoute
+    ) {
+        try {
+            $payload = $request->validated();
+
+            $targetDir = 'uploads/pages/' . $uploadFolder;
+            if (!File::isDirectory($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            if ($request->hasFile('hero_image_file')) {
+                $image = $request->file('hero_image_file');
+                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['hero_image'] = $targetDir . '/' . $imageName;
+            }
+            
+            Setting::updateOrCreate(
+                ['key' => $settingKey],
+                ['value' => json_encode($payload)]
+            );
+
+            return redirect()->route($redirectRoute)->with('success', 'Page settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update page settings: ' . $e->getMessage());
         }
     }
 }

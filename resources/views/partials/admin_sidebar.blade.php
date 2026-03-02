@@ -237,6 +237,12 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
+            <a href="{{ route('admin.dynamic_pages.index') }}" class="nav-link" id="pages_dynamic_pages">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Dynamic Pages</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('admin.pages.home_settings') }}" class="nav-link" id="pages_home_settings">
               <i class="far fa-circle nav-icon"></i>
               <p>Home Settings</p>
@@ -255,60 +261,60 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_membership">
+            <a href="{{ route('admin.pages.membership_settings') }}" class="nav-link" id="pages_membership">
               <i class="far fa-circle nav-icon"></i>
               <p>Membership</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_video_consultation">
+            <a href="{{ route('admin.pages.video_consultation_settings') }}" class="nav-link" id="pages_video_consultation">
               <i class="far fa-circle nav-icon"></i>
               <p>Video Consultation</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_our_doctors">
+            <a href="{{ route('admin.pages.doctors_settings') }}" class="nav-link" id="pages_our_doctors">
               <i class="far fa-circle nav-icon"></i>
               <p>Our Doctors</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_blog">
+            <a href="{{ route('admin.pages.blog_settings') }}" class="nav-link" id="pages_blog">
               <i class="far fa-circle nav-icon"></i>
               <p>Blog</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_gallery">
+            <a href="{{ route('admin.pages.gallery_settings') }}" class="nav-link" id="pages_gallery">
               <i class="far fa-circle nav-icon"></i>
               <p>Gallery</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_mission_vission">
+            <a href="{{ route('admin.pages.mission_vision_settings') }}" class="nav-link" id="pages_mission_vision">
               <i class="far fa-circle nav-icon"></i>
-              <p>Mission &amp; Vission</p>
+              <p>Mission &amp; Vision</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_management">
+            <a href="{{ route('admin.pages.management_settings') }}" class="nav-link" id="pages_management">
               <i class="far fa-circle nav-icon"></i>
               <p>Management</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" id="pages_contact">
+            <a href="{{ route('admin.pages.contact_settings') }}" class="nav-link" id="pages_contact">
               <i class="far fa-circle nav-icon"></i>
               <p>Contact</p>
             </a>
           </li>
         </ul>
       </li>
-      <li class="nav-item has-treeview" id="helth_check">
-        <a href="#" class="nav-link" id="helth_check_link">
+      <li class="nav-item has-treeview" id="health_check">
+        <a href="#" class="nav-link" id="health_check_link">
           <i class="nav-icon fas fa-heartbeat"></i>
           <p>
-            Helth Check
+            Health Check
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>

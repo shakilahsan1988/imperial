@@ -259,7 +259,9 @@ if (auth()->guard('patient')->check()) {
             ->orderBy('name')
             ->get();
 
-     	return view('frontend.services.membership-plan', compact('categories'));
+        $pageSettings = membership_page_settings();
+
+    	return view('frontend.services.membership-plan', compact('categories', 'pageSettings'));
     }
 
     public function membership_details(Request $request, $id = null){
@@ -369,7 +371,9 @@ if (auth()->guard('patient')->check()) {
             ->orderBy('name')
             ->get();
 
-    	return view('frontend.services.video-consultation', compact('plans'));
+        $pageSettings = video_consultation_page_settings();
+
+    	return view('frontend.services.video-consultation', compact('plans', 'pageSettings'));
     }
 
     public function beauty(){
@@ -401,7 +405,8 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function contact(){
-    	return view('frontend.about.contact');
+        $pageSettings = contact_page_settings();
+    	return view('frontend.about.contact', compact('pageSettings'));
     }
 
     public function client(){
@@ -409,7 +414,8 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function management(){
-    	return view('frontend.about.management');
+        $pageSettings = management_page_settings();
+    	return view('frontend.about.management', compact('pageSettings'));
     }
 
     public function management_details(){
@@ -417,7 +423,8 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function mission_vision_value(){
-    	return view('frontend.about.mission-vision-values');
+        $pageSettings = mission_vision_page_settings();
+    	return view('frontend.about.mission-vision-values', compact('pageSettings'));
     }
 
     public function privacy_notice(){
@@ -445,8 +452,9 @@ if (auth()->guard('patient')->check()) {
         $groupedDoctors = $doctors->groupBy(function ($doctor) {
             return optional($doctor->department)->name ?: 'General';
         });
+        $pageSettings = doctors_page_settings();
 
-    	return view('frontend.doctor.doctors', compact('doctors', 'specialties', 'departments', 'groupedDoctors'));
+    	return view('frontend.doctor.doctors', compact('doctors', 'specialties', 'departments', 'groupedDoctors', 'pageSettings'));
     }
 
     public function book_doctor($doctor = null){
@@ -550,7 +558,8 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function blog(){
-    	return view('frontend.community.blog');
+        $pageSettings = blog_page_settings();
+    	return view('frontend.community.blog', compact('pageSettings'));
     }
 
     public function blog_details(){
@@ -574,6 +583,7 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function gallery(){
-    	return view('frontend.community.gallery');
+        $pageSettings = gallery_page_settings();
+    	return view('frontend.community.gallery', compact('pageSettings'));
     }
 }

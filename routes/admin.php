@@ -36,6 +36,7 @@ use App\Http\Controllers\Admin\DoctorConsultationBookingsController;
 use App\Http\Controllers\Admin\MembershipCategoriesController;
 use App\Http\Controllers\Admin\MembershipPlansController;
 use App\Http\Controllers\Admin\MembershipPlanBookingsController;
+use App\Http\Controllers\Admin\DynamicPagesController;
 
 // Admin Authentication (Guest)
 Route::group(['prefix' => 'admin', 'middleware' => 'AdminGuest', 'as' => 'admin.'], function() {
@@ -170,7 +171,25 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
         Route::post('diagonostic-settings', [PageSettingsController::class, 'updateDiagonosticSettings'])->name('diagonostic_settings_submit');
         Route::get('health-check-settings', [PageSettingsController::class, 'healthCheckSettings'])->name('health_check_settings');
         Route::post('health-check-settings', [PageSettingsController::class, 'updateHealthCheckSettings'])->name('health_check_settings_submit');
+        Route::get('membership-settings', [PageSettingsController::class, 'membershipSettings'])->name('membership_settings');
+        Route::post('membership-settings', [PageSettingsController::class, 'updateMembershipSettings'])->name('membership_settings_submit');
+        Route::get('video-consultation-settings', [PageSettingsController::class, 'videoConsultationSettings'])->name('video_consultation_settings');
+        Route::post('video-consultation-settings', [PageSettingsController::class, 'updateVideoConsultationSettings'])->name('video_consultation_settings_submit');
+        Route::get('our-doctors-settings', [PageSettingsController::class, 'doctorsSettings'])->name('doctors_settings');
+        Route::post('our-doctors-settings', [PageSettingsController::class, 'updateDoctorsSettings'])->name('doctors_settings_submit');
+        Route::get('gallery-settings', [PageSettingsController::class, 'gallerySettings'])->name('gallery_settings');
+        Route::post('gallery-settings', [PageSettingsController::class, 'updateGallerySettings'])->name('gallery_settings_submit');
+        Route::get('mission-vision-settings', [PageSettingsController::class, 'missionVisionSettings'])->name('mission_vision_settings');
+        Route::post('mission-vision-settings', [PageSettingsController::class, 'updateMissionVisionSettings'])->name('mission_vision_settings_submit');
+        Route::get('management-settings', [PageSettingsController::class, 'managementSettings'])->name('management_settings');
+        Route::post('management-settings', [PageSettingsController::class, 'updateManagementSettings'])->name('management_settings_submit');
+        Route::get('contact-settings', [PageSettingsController::class, 'contactSettings'])->name('contact_settings');
+        Route::post('contact-settings', [PageSettingsController::class, 'updateContactSettings'])->name('contact_settings_submit');
+        Route::get('blog-settings', [PageSettingsController::class, 'blogSettings'])->name('blog_settings');
+        Route::post('blog-settings', [PageSettingsController::class, 'updateBlogSettings'])->name('blog_settings_submit');
     });
+
+    Route::resource('dynamic_pages', DynamicPagesController::class)->except(['show']);
 
     // Translations
     Route::resource('translations', TranslationsController::class);

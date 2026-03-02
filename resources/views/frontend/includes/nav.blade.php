@@ -45,7 +45,6 @@
                     <div class="absolute left-0 top-full mt-2 w-64 bg-white shadow-2xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform group-hover:translate-y-0 translate-y-2 duration-300 z-50 py-4">
                         <a href="{{ route('mission-vision-value') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Mission & Vision</a>
                         <a href="{{ route('management') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Management</a>
-                        <a href="{{ route('career') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Careers</a>
                         <a href="{{ route('contact') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Contact Us</a>
                     </div>
                 </div>
@@ -142,7 +141,6 @@
         <div id="mobile-about" class="hidden pl-4 pb-4 space-y-4 mt-2">
             <a href="{{ route('mission-vision-value') }}" class="block text-sm font-bold text-slate-500 hover:text-indigo-600">Mission & Vision</a>
             <a href="{{ route('management') }}" class="block text-sm font-bold text-slate-500 hover:text-indigo-600">Management</a>
-            <a href="{{ route('career') }}" class="block text-sm font-bold text-slate-500 hover:text-indigo-600">Careers</a>
             <a href="{{ route('contact') }}" class="block text-sm font-bold text-slate-500 hover:text-indigo-600">Contact Us</a>
         </div>
     </div>

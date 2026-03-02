@@ -67,7 +67,7 @@
 @push('scripts')
 <script>
     $('#health_package_bookings').addClass('active');
-    $('#helth_check_link').addClass('active');
-    $('#helth_check').addClass('menu-open');
+    $('#health_check_link').addClass('active');
+    $('#health_check').addClass('menu-open');
 </script>
 @endpush

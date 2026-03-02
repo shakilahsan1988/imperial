@@ -1,8 +1,22 @@
 @extends('layouts.front')
 
-@section('title', 'Gallery - Imperial Health Bangladesh')
+@section('title', ($pageSettings['page_name'] ?? 'Gallery') . ' - Imperial Health Bangladesh')
 
 @section('content')
+
+<section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+        <img src="{{ asset($pageSettings['hero_image']) }}" alt="Gallery" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="max-w-3xl">
+            <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $pageSettings['hero_title_html'] !!}</h1>
+            <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl">{{ $pageSettings['hero_description'] }}</p>
+        </div>
+    </div>
+</section>
 
 <!-- Gallery Section -->
 <section class="py-16 lg:py-24 bg-white">
@@ -10,8 +24,8 @@
         
         <!-- Header -->
         <div class="text-center mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-imperial-text mb-4">Our Gallery</h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">Explore moments from our hospital, events, and healthcare services.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-imperial-text mb-4">{{ $pageSettings['page_name'] }}</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">{{ strip_tags($pageSettings['hero_description']) }}</p>
         </div>
 
         <!-- Masonry Grid -->
@@ -305,3 +319,44 @@
 </div>
 
 @endsection
+
+@push('styles')
+<style>
+    .gallery-overlay {
+        background: linear-gradient(to top, rgba(15, 23, 42, 0.78), rgba(15, 23, 42, 0.2));
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #fff;
+        transition: opacity 0.3s ease;
+    }
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+    .gallery-overlay-title {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    document.querySelectorAll('.gallery-item').forEach(function(item) {
+        var image = item.querySelector('img');
+        var overlay = item.querySelector('.gallery-overlay');
+        if (!image || !overlay || overlay.querySelector('.gallery-overlay-title')) return;
+        var title = document.createElement('span');
+        title.className = 'gallery-overlay-title';
+        title.textContent = image.getAttribute('alt') || 'Gallery';
+        overlay.appendChild(title);
+    });
+</script>
+@endpush

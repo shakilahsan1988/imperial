@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\DynamicPageController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -42,8 +43,6 @@ use Illuminate\Support\Facades\Artisan;
     Route::get('/about', [FrontController::class, 'about'])->name('about');
     Route::get('/about-details', [FrontController::class, 'about_details'])->name('about-details');
     Route::get('/bill-of-right', [FrontController::class, 'bill_of_rights'])->name('bill-of-right');
-    Route::get('/career', [FrontController::class, 'career'])->name('career');
-    Route::get('/career-details', [FrontController::class, 'career_details'])->name('career-details');
     Route::get('/code-of-ethics', [FrontController::class, 'code_ethics'])->name('code-of-ethics');
     Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
     Route::get('/client', [FrontController::class, 'client'])->name('client');
@@ -105,3 +104,7 @@ Route::get('clear-cache', function () {
     
     return "System cache cleared successfully!";
 });
+
+Route::get('/{slug}', [DynamicPageController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('dynamic-page.show');

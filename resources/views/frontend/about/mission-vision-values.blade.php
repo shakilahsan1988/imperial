@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'Mission, Vision & Values - Imperial Health Bangladesh')
+@section('title', ($pageSettings['page_name'] ?? 'Mission & Vision') . ' - Imperial Health Bangladesh')
 
 @section('content')
 
@@ -8,17 +8,18 @@
         <!-- HERO SECTION -->
         <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
             <div class="absolute inset-0 opacity-30">
-                <img src="https://media.istockphoto.com/id/482858629/photo/doctors-hospital-corridor-nurse-pushing-gurney-stretcher-bed.jpg?s=1024x1024&w=is&k=20&c=hla99x9I9ea2sfYNi-ZSQWjjDdfQ0YrcZppZ1jLhde0" class="w-full h-full object-cover">
+                <img src="{{ asset($pageSettings['hero_image']) }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
             <div class="container mx-auto px-4 relative z-10 text-center">
                 <div class="max-w-4xl mx-auto">
+                    <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                     <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                        Our <span class="text-indigo-400">Mission, Vision</span> & Values
+                        {!! $pageSettings['hero_title_html'] !!}
                     </h1>
                     <p class="text-xl md:text-2xl text-slate-300 font-light leading-relaxed">
-                        Imperial exists to provide a better patient experience. We have built a healthcare system where you come first.
+                        {{ $pageSettings['hero_description'] }}
                     </p>
                 </div>
             </div>
