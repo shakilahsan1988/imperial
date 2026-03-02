@@ -78,7 +78,12 @@ class Patient extends Authenticatable
     protected function total(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->groups->sum('total'),
+            get: fn () => $this->groups()
+                ->where(function($q) {
+                    $q->whereDoesntHave('booking')
+                      ->orWhereHas('booking', fn($b) => $b->where('status', '!=', 'cancelled'));
+                })
+                ->sum('total'),
         );
     }
 
@@ -88,7 +93,12 @@ class Patient extends Authenticatable
     protected function paid(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->groups->sum('paid'),
+            get: fn () => $this->groups()
+                ->where(function($q) {
+                    $q->whereDoesntHave('booking')
+                      ->orWhereHas('booking', fn($b) => $b->where('status', '!=', 'cancelled'));
+                })
+                ->sum('paid'),
         );
     }
 
@@ -98,7 +108,12 @@ class Patient extends Authenticatable
     protected function due(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->groups->sum('due'),
+            get: fn () => $this->groups()
+                ->where(function($q) {
+                    $q->whereDoesntHave('booking')
+                      ->orWhereHas('booking', fn($b) => $b->where('status', '!=', 'cancelled'));
+                })
+                ->sum('due'),
         );
     }
 

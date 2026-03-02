@@ -148,7 +148,7 @@
     
     <!-- Slide 1 -->
     <div class="slide active h-full w-full absolute inset-0" data-index="0">
-        <img src="{{ asset('assets/front/images/index/slide-1.jpeg') }}" onerror="this.src='https://picsum.photos/seed/h1/1920/1080'" class="slide-bg">
+        <img src="{{ asset('assets/front/images/index/slide-1.jpg') }}" onerror="this.src='https://picsum.photos/seed/h1/1920/1080'" class="slide-bg">
         <div class="slide-overlay"></div>
         <div class="container mx-auto px-6 slide-content">
             <div class="max-w-2xl">
@@ -164,7 +164,7 @@
 
     <!-- Slide 2 -->
     <div class="slide h-full w-full absolute inset-0" data-index="1">
-        <img src="{{ asset('assets/front/images/index/slide-2.jpeg') }}" onerror="this.src='https://picsum.photos/seed/h2/1920/1080'" class="slide-bg">
+        <img src="{{ asset('assets/front/images/index/slide-2.jpg') }}" onerror="this.src='https://picsum.photos/seed/h2/1920/1080'" class="slide-bg">
         <div class="slide-overlay"></div>
         <div class="container mx-auto px-6 slide-content">
             <div class="max-w-2xl">
@@ -180,7 +180,7 @@
 
     <!-- Slide 3 -->
     <div class="slide h-full w-full absolute inset-0" data-index="2">
-        <img src="{{ asset('assets/front/images/index/slide-3.jpeg') }}" onerror="this.src='https://picsum.photos/seed/h3/1920/1080'" class="slide-bg">
+        <img src="{{ asset('assets/front/images/index/slide-3.jpg') }}" onerror="this.src='https://picsum.photos/seed/h3/1920/1080'" class="slide-bg">
         <div class="slide-overlay"></div>
         <div class="container mx-auto px-6 slide-content">
             <div class="max-w-2xl">

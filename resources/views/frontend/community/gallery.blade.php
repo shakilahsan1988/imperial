@@ -227,7 +227,7 @@
             
             <div class="masonry-item">
                 <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/index/diagnosis.jpeg') }}" 
+                    <img src="{{ asset('assets/front/images/index/diagnosis.jpg') }}" 
                          alt="Diagnosis" 
                          class="w-full h-auto object-cover"
                          loading="lazy">

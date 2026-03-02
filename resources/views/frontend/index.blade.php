@@ -85,7 +85,7 @@
                     </a>
                 </div>
                 <div class="lg:w-1/2 relative reveal-left">
-                    <img src="{{ asset('assets/front/images/index/diagnosis.jpeg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full hover:scale-[1.02] transition-transform duration-700">
+                    <img src="{{ asset('assets/front/images/index/diagnosis.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full hover:scale-[1.02] transition-transform duration-700">
                 </div>
             </div>
         </div>

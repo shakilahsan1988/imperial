@@ -92,14 +92,16 @@
             </thead>
             <tbody>
               @foreach($patient->groups as $group)
-              <tr>
+              <tr @if($group->booking && $group->booking->status === 'cancelled') class="bg-light text-muted" @endif>
                 <td>{{$group->barcode}}</td>
                 <td>{{$group->created_at}}</td>
                 <td>{{formated_price($group->total)}}</td>
                 <td>{{formated_price($group->paid)}}</td>
                 <td>{{formated_price($group->due)}}</td>
                 <td>
-                  @if($group->done)
+                  @if($group->booking && $group->booking->status === 'cancelled')
+                    <span class="badge badge-danger">{{__('Cancelled')}}</span>
+                  @elseif($group->done)
                     <span class="badge badge-success">{{__('Done')}}</span>
                   @else
                     <span class="badge badge-warning">{{__('Pending')}}</span>
@@ -113,6 +115,15 @@
               </tr>
               @endforeach
             </tbody>
+            <tfoot>
+              <tr class="bg-light">
+                <th colspan="2" class="text-right">{{__('Total Balance (Active Only)')}}</th>
+                <th>{{formated_price($patient->total)}}</th>
+                <th>{{formated_price($patient->paid)}}</th>
+                <th>{{formated_price($patient->due)}}</th>
+                <th colspan="2"></th>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
