@@ -635,6 +635,18 @@ label:not(.form-check-label):not(.custom-file-label) {
     border-bottom: 2px solid var(--primary) !important;
 }
 
+.nav-tabs.flex-column .nav-link.active {
+    color: #fff !important;
+    background-color: var(--primary) !important;
+    border-radius: 8px !important;
+    border-bottom: none !important;
+}
+
+.nav-tabs.flex-column .nav-link:hover:not(.active) {
+    background-color: var(--slate-100) !important;
+    border-radius: 8px !important;
+}
+
 /* --- Dashboard Specific --- */
 .online_list .product-info {
     margin-left: 60px !important;

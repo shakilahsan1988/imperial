@@ -9,6 +9,56 @@
   <link rel="stylesheet" href="{{url('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}">
   <!-- Switch -->
   <link rel="stylesheet" href="{{url('plugins/swtich-netliva/css/netliva_switch.css')}}">
+  <style>
+    /* WordPress-like Menu Builder Styles */
+    .wp-menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-height: 10px;
+    }
+    .wp-menu-list .wp-menu-list {
+        margin-left: 30px;
+        border-left: 2px dashed #ddd;
+        padding-left: 10px;
+        min-height: 20px; /* Essential for dropping into empty children */
+        padding-top: 5px;
+    }
+    .wp-menu-item {
+        position: relative;
+    }
+    .wp-menu-item-handle {
+        border: 1px solid #ddd !important;
+        background: #f8f9fa !important;
+        transition: all 0.2s;
+        z-index: 10;
+    }
+    .wp-menu-item-handle:hover {
+        background: #fff !important;
+        border-color: #aaa !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+    }
+    .transition-icon {
+        transition: transform 0.3s;
+    }
+    .expanded .transition-icon {
+        transform: rotate(180deg);
+    }
+    .max-h-200 { max-height: 200px; }
+    .min-h-400 { min-height: 400px; }
+    .ui-sortable-placeholder {
+        border: 2px dashed #007bff !important;
+        background: rgba(0, 123, 255, 0.05) !important;
+        height: 45px !important;
+        margin-bottom: 0.5rem !important;
+        visibility: visible !important;
+        width: 100% !important;
+    }
+    .ui-sortable-helper {
+        width: 100% !important;
+        height: auto !important;
+    }
+  </style>
 @endsection
 
 @section('breadcrumb')
@@ -49,6 +99,7 @@
                 <a class="nav-link active"  data-toggle="pill" href="#general_settings" role="tab" aria-controls="general_settingse" aria-selected="true"><i class="fas fa-cog"></i> {{__('General Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#emails_settings" role="tab" aria-controls="emails_settings" aria-selected="true"><i class="fas fa-envelope"></i> {{__('Email Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#reports_settings" role="tab" aria-controls="reports_settings" aria-selected="true"><i class="fas fa-file-alt"></i> {{__('Reports Settings')}}</a>
+                <a class="nav-link"  data-toggle="pill" href="#menu_settings" role="tab" aria-controls="menu_settings" aria-selected="true"><i class="fas fa-bars"></i> {{__('Menu Settings')}}</a>
 
               </div>
             </div>
@@ -99,7 +150,7 @@
                                               <div class="input-group form-group mb-3">
                                                 <div class="input-group-prepend">
                                                   <span class="input-group-text">
-                                                    <i class="fas fa-pound-sign"></i>
+                                                    ট
                                                   </span>
                                                 </div>
                                                 <select name="currency" id="currency" class="form-control select2">
@@ -213,15 +264,16 @@
                                           <div class="row">
                                               <div class="col-lg-12">
                                                 <div class="form-group">
+                                                  <label>{{__('Report Logo')}}</label>
                                                   <div class="input-group">
                                                     <div class="custom-file">
                                                       <input type="file" name="reports_logo" class="custom-file-input" id="reports_logo">
-                                                      <label class="custom-file-label" for="reports_logo">{{__('Choose Report Logo')}} [100 X 100]</label>
+                                                      <label class="custom-file-label" for="reports_logo">{{__('Choose Report Logo')}}</label>
                                                     </div>
                                                     <div class="input-group-append">
-                                                      <span class="input-group-text" id="">
-                                                        <a href="{{url('img/reports_logo.png')}}" data-toggle="lightbox" data-title="Reports logo">
-                                                          <i class="fa fa-image"></i>
+                                                      <span class="input-group-text p-1" id="">
+                                                        <a href="{{ !empty($settings['reports_logo']) ? 'data:image/png;base64,'.$settings['reports_logo'] : url('img/reports_logo.png') }}" data-toggle="lightbox" data-title="Reports logo">
+                                                          <img src="{{ !empty($settings['reports_logo']) ? 'data:image/png;base64,'.$settings['reports_logo'] : url('img/reports_logo.png') }}" style="max-height: 30px; max-width: 50px;" alt="Reports logo">
                                                         </a>
                                                       </span>
                                                     </div>
@@ -232,15 +284,36 @@
                                           <div class="row">
                                               <div class="col-lg-12">
                                                 <div class="form-group">
+                                                  <label>{{__('Logo')}}</label>
                                                   <div class="input-group">
                                                     <div class="custom-file">
                                                       <input type="file" name="logo" class="custom-file-input" id="logo">
-                                                      <label class="custom-file-label" for="logo">{{__('Choose Logo')}} [100 X 100]</label>
+                                                      <label class="custom-file-label" for="logo">{{__('Choose Logo')}}</label>
                                                     </div>
                                                     <div class="input-group-append">
-                                                      <span class="input-group-text" id="">
-                                                        <a href="{{url('img/logo.png')}}"  data-toggle="lightbox" data-title="Logo">
-                                                          <i class="fa fa-image"></i>
+                                                      <span class="input-group-text p-1" id="">
+                                                        <a href="{{url('img/'.($settings['logo'] ?? 'logo.png'))}}"  data-toggle="lightbox" data-title="Logo">
+                                                          <img src="{{url('img/'.($settings['logo'] ?? 'logo.png'))}}" style="max-height: 30px; max-width: 50px;" alt="Logo">
+                                                        </a>
+                                                      </span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="col-lg-12">
+                                                <div class="form-group">
+                                                  <label>{{__('Favicon')}}</label>
+                                                  <div class="input-group">
+                                                    <div class="custom-file">
+                                                      <input type="file" name="favicon" class="custom-file-input" id="favicon">
+                                                      <label class="custom-file-label" for="favicon">{{__('Choose Favicon')}}</label>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                      <span class="input-group-text p-1" id="">
+                                                        <a href="{{url('img/'.($settings['favicon'] ?? 'favicon.png'))}}"  data-toggle="lightbox" data-title="Favicon">
+                                                          <img src="{{url('img/'.($settings['favicon'] ?? 'favicon.png'))}}" style="max-height: 30px; max-width: 50px;" alt="Favicon">
                                                         </a>
                                                       </span>
                                                     </div>
@@ -1381,13 +1454,158 @@
                 </div>
                 <!-- \Reports Settings -->
 
+                <!-- Menu Settings -->
+                <div class="tab-pane text-left fade show" id="menu_settings" role="tabpanel" aria-labelledby="menu_settings">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-bars mr-1"></i> {{__('Menu Settings')}}</h3>
+                        </div>
+                        <form action="{{ route('admin.settings.menus_submit') }}" method="POST" id="menu-settings-form">
+                            @csrf
+                            <div class="card-body p-3">
+                                <div class="alert alert-info py-2 small mb-3">
+                                    <i class="fas fa-info-circle mr-1"></i> {{__('Drag and drop items to reorder and nest them. Expand items to edit details.')}}
+                                </div>
+
+                                <div class="row">
+                                    <!-- Sidebar: Add Items -->
+                                    <div class="col-lg-4">
+                                        <div id="menu-sidebar-accordion">
+                                            <!-- Custom Links -->
+                                            <div class="card card-outline card-secondary mb-2">
+                                                <div class="card-header p-2" id="headingCustom">
+                                                    <h6 class="mb-0">
+                                                        <button class="btn btn-link btn-block text-left p-0 font-weight-bold text-dark" type="button" data-toggle="collapse" data-target="#collapseCustom" aria-expanded="true">
+                                                            {{__('Custom Links')}} <i class="fas fa-chevron-down float-right mt-1 small"></i>
+                                                        </button>
+                                                    </h6>
+                                                </div>
+                                                <div id="collapseCustom" class="collapse show" data-parent="#menu-sidebar-accordion">
+                                                    <div class="card-body p-2">
+                                                        <div class="form-group mb-2">
+                                                            <label class="small">{{__('URL')}}</label>
+                                                            <input type="text" id="custom-url" class="form-control form-control-sm" placeholder="https://...">
+                                                        </div>
+                                                        <div class="form-group mb-2">
+                                                            <label class="small">{{__('Label')}}</label>
+                                                            <input type="text" id="custom-label" class="form-control form-control-sm" placeholder="{{__('Menu Item')}}">
+                                                        </div>
+                                                        <button type="button" class="btn btn-xs btn-primary float-right add-to-menu" data-type="custom">{{__('Add to Menu')}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Pages -->
+                                            <div class="card card-outline card-secondary mb-2">
+                                                <div class="card-header p-2" id="headingPages">
+                                                    <h6 class="mb-0">
+                                                        <button class="btn btn-link btn-block text-left p-0 font-weight-bold text-dark collapsed" type="button" data-toggle="collapse" data-target="#collapsePages">
+                                                            {{__('Pages')}} <i class="fas fa-chevron-down float-right mt-1 small"></i>
+                                                        </button>
+                                                    </h6>
+                                                </div>
+                                                <div id="collapsePages" class="collapse" data-parent="#menu-sidebar-accordion">
+                                                    <div class="card-body p-2 max-h-200 overflow-auto">
+                                                        @foreach($pages as $page)
+                                                        <div class="custom-control custom-checkbox mb-1">
+                                                            <input class="custom-control-input sidebar-check" type="checkbox" id="page-{{$page->id}}" data-label="{{$page->title}}" data-url="/page/{{$page->slug}}">
+                                                            <label for="page-{{$page->id}}" class="custom-control-label small font-weight-normal">{{$page->title}}</label>
+                                                        </div>
+                                                        @endforeach
+                                                        <hr class="my-2">
+                                                        <button type="button" class="btn btn-xs btn-primary float-right add-to-menu" data-type="pages">{{__('Add to Menu')}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Services -->
+                                            <div class="card card-outline card-secondary mb-2">
+                                                <div class="card-header p-2" id="headingServices">
+                                                    <h6 class="mb-0">
+                                                        <button class="btn btn-link btn-block text-left p-0 font-weight-bold text-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseServices">
+                                                            {{__('Services')}} <i class="fas fa-chevron-down float-right mt-1 small"></i>
+                                                        </button>
+                                                    </h6>
+                                                </div>
+                                                <div id="collapseServices" class="collapse" data-parent="#menu-sidebar-accordion">
+                                                    <div class="card-body p-2 max-h-200 overflow-auto">
+                                                        @foreach($services as $service)
+                                                        <div class="custom-control custom-checkbox mb-1">
+                                                            <input class="custom-control-input sidebar-check" type="checkbox" id="service-{{$service->id}}" data-label="{{$service->name}}" data-url="/services/{{$service->id}}">
+                                                            <label for="service-{{$service->id}}" class="custom-control-label small font-weight-normal">{{$service->name}}</label>
+                                                        </div>
+                                                        @endforeach
+                                                        <hr class="my-2">
+                                                        <button type="button" class="btn btn-xs btn-primary float-right add-to-menu" data-type="services">{{__('Add to Menu')}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Doctors -->
+                                            <div class="card card-outline card-secondary mb-2">
+                                                <div class="card-header p-2">
+                                                    <h6 class="mb-0">
+                                                        <button class="btn btn-link btn-block text-left p-0 font-weight-bold text-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseDoctors">
+                                                            {{__('Doctors')}} <i class="fas fa-chevron-down float-right mt-1 small"></i>
+                                                        </button>
+                                                    </h6>
+                                                </div>
+                                                <div id="collapseDoctors" class="collapse" data-parent="#menu-sidebar-accordion">
+                                                    <div class="card-body p-2 max-h-200 overflow-auto">
+                                                        @foreach($doctors as $doctor)
+                                                        <div class="custom-control custom-checkbox mb-1">
+                                                            <input class="custom-control-input sidebar-check" type="checkbox" id="doctor-{{$doctor->id}}" data-label="{{$doctor->name}}" data-url="/doctor/{{$doctor->id}}">
+                                                            <label for="doctor-{{$doctor->id}}" class="custom-control-label small font-weight-normal">{{$doctor->name}}</label>
+                                                        </div>
+                                                        @endforeach
+                                                        <hr class="my-2">
+                                                        <button type="button" class="btn btn-xs btn-primary float-right add-to-menu" data-type="doctors">{{__('Add to Menu')}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Main: Menu Structure -->
+                                    <div class="col-lg-8">
+                                        <div class="card card-outline card-primary">
+                                            <div class="card-header py-2 px-3">
+                                                <h6 class="card-title font-weight-bold small text-uppercase">{{__('Menu Structure')}}</h6>
+                                            </div>
+                                            <div class="card-body p-3 bg-light min-h-400">
+                                                <ul class="wp-menu-list sortable-list" id="main-menu-builder" data-prefix="main_menu">
+                                                    @foreach(($menu_settings['main_menu'] ?? []) as $item)
+                                                        @include('admin.settings.partials.menu_item', ['item' => $item, 'prefix' => 'main_menu', 'is_child' => false])
+                                                    @endforeach
+                                                </ul>
+                                                
+                                                <div class="mt-4 pt-3 border-top">
+                                                    <h6 class="font-weight-bold small text-uppercase">{{__('Footer Menu')}} ({{__('Single Level')}})</h6>
+                                                    <ul class="wp-menu-list sortable-list no-nesting" id="footer-menu-builder" data-prefix="footer_menu">
+                                                        @foreach(($menu_settings['footer_menu'] ?? []) as $item)
+                                                            @include('admin.settings.partials.menu_item', ['item' => $item, 'prefix' => 'footer_menu', 'is_child' => false, 'no_nesting' => true])
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary float-right"><i class="fa fa-check mr-1"></i> {{__('Save Menu Changes')}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- \Menu Settings -->
+
             </div>
           </div>
     </div>
 </div>
 
 @endsection
-
 
 @section('scripts')
     <!-- Colorpicker -->
@@ -1398,26 +1616,176 @@
     <script src="{{url('plugins/swtich-netliva/js/netliva_switch.js')}}"></script>
     <script src="{{url('js/admin/settings.js')}}"></script>
     <script src="{{url('plugins/ekko-lightbox/ekko-lightbox.js')}}"></script>
+    <!-- jQuery UI is already included in partials.scripts -->
 
     <script>
-      $(document).ready(function(){
-        $('#branch_name_font_family').val('{{$reports_settings["branch_name"]["font-family"]}}');
-        $('#branch_info_font_family').val('{{$reports_settings["branch_info"]["font-family"]}}');
-        $('#patient_title_font_family').val('{{$reports_settings["patient_title"]["font-family"]}}');
-        $('#patient_data_font_family').val('{{$reports_settings["patient_data"]["font-family"]}}');
-        $('#test_title_font_family').val('{{$reports_settings["test_title"]["font-family"]}}');
-        $('#test_name_font_family').val('{{$reports_settings["test_name"]["font-family"]}}');
-        $('#test_head_font_family').val('{{$reports_settings["test_head"]["font-family"]}}');
-        $('#result_font_family').val('{{$reports_settings["result"]["font-family"]}}');
-        $('#unit_font_family').val('{{$reports_settings["unit"]["font-family"]}}');
-        $('#reference_range_font_family').val('{{$reports_settings["reference_range"]["font-family"]}}');
-        $('#status_font_family').val('{{$reports_settings["status"]["font-family"]}}');
-        $('#comment_font_family').val('{{$reports_settings["comment"]["font-family"]}}');
-        $('#signature_font_family').val('{{$reports_settings["signature"]["font-family"]}}');
-        $('#antibiotic_name_font_family').val('{{$reports_settings["antibiotic_name"]["font-family"]}}');
-        $('#sensitivity_font_family').val('{{$reports_settings["sensitivity"]["font-family"]}}');
-        $('#commercial_name_font_family').val('{{$reports_settings["commercial_name"]["font-family"]}}');
-        $('#report_footer_font_family').val('{{$reports_settings["report_footer"]["font-family"]}}');
-      });
+      (function ($) {
+        "use strict";
+
+        $(function () {
+          // Initialize Sortable with nesting support
+          function initSortable() {
+            $(".sortable-list").each(function() {
+                if ($(this).data('ui-sortable')) {
+                    $(this).sortable('refresh');
+                } else {
+                    $(this).sortable({
+                        connectWith: ".sortable-list",
+                        handle: ".wp-menu-item-handle",
+                        placeholder: "ui-sortable-placeholder",
+                        tolerance: "pointer",
+                        cursor: "move",
+                        opacity: 0.7,
+                        receive: function(event, ui) {
+                            // Prevent nesting in footer
+                            if ($(this).hasClass('no-nesting') && ui.item.find('ul li').length > 0) {
+                                $(ui.sender).sortable('cancel');
+                                if (typeof toastr_error === 'function') toastr_error("{{__('Nesting is not allowed in Footer Menu')}}");
+                            }
+                        }
+                    });
+                }
+            });
+          }
+
+          initSortable();
+
+          // Toggle Details
+          $(document).on('click', '.toggle-menu-details', function(e) {
+            e.preventDefault();
+            var $item = $(this).closest('.wp-menu-item');
+            $item.find('.wp-menu-item-details').first().slideToggle(200);
+            $(this).toggleClass('expanded');
+          });
+
+          // Live update labels
+          $(document).on('input', '.edit-menu-label', function() {
+            var $item = $(this).closest('.wp-menu-item');
+            var val = $(this).val() || "{{__('Menu Item')}}";
+            $item.find('.menu-item-title').first().text(val);
+            $item.data('label', $(this).val());
+          });
+
+          $(document).on('change', '.edit-menu-url', function() {
+            $(this).closest('.wp-menu-item').data('url', $(this).val());
+          });
+
+          $(document).on('change', '.edit-menu-new-tab', function() {
+            $(this).closest('.wp-menu-item').data('new-tab', this.checked ? "1" : "0");
+          });
+
+          // Remove Item
+          $(document).on('click', '.remove-menu-item', function() {
+            var $item = $(this).closest('.wp-menu-item');
+            $item.fadeOut(200, function() { $(this).remove(); });
+          });
+
+          // Add to Menu
+          $('.add-to-menu').on('click', function() {
+            var type = $(this).data('type');
+            var $target = $('#main-menu-builder');
+            
+            if (type === 'custom') {
+              var label = $('#custom-label').val();
+              var url = $('#custom-url').val();
+              if (!label || !url) {
+                  if (typeof toastr_error === 'function') toastr_error("{{__('Label and URL are required')}}");
+                  return;
+              }
+              addItemToMenu($target, label, url);
+              $('#custom-label, #custom-url').val('');
+            } else {
+              var $checks = $(this).closest('.collapse').find('.sidebar-check:checked');
+              if ($checks.length === 0) {
+                  if (typeof toastr_error === 'function') toastr_error("{{__('Select at least one item')}}");
+                  return;
+              }
+              
+              $checks.each(function() {
+                addItemToMenu($target, $(this).data('label'), $(this).data('url'));
+                $(this).prop('checked', false);
+              });
+            }
+          });
+
+          function addItemToMenu($list, label, url) {
+            var id = 'new_' + Math.random().toString(36).substr(2, 9);
+            var html = `
+              <li class="wp-menu-item mb-2" data-label="${label}" data-url="${url}" data-new-tab="0">
+                <div class="wp-menu-item-handle d-flex align-items-center justify-content-between p-2 bg-white border rounded shadow-sm" style="cursor: move;">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-arrows-alt text-muted mr-2 handle-icon"></i>
+                        <span class="menu-item-title font-weight-bold small">${label}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge badge-light text-muted border mr-2 small font-weight-normal"></span>
+                        <button type="button" class="btn btn-xs btn-link p-0 text-dark toggle-menu-details">
+                            <i class="fas fa-chevron-down transition-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="wp-menu-item-details bg-white border border-top-0 rounded-bottom p-3 shadow-sm" style="display: none;">
+                    <div class="form-group mb-2">
+                        <label class="small mb-1">{{ __('Navigation Label') }}</label>
+                        <input type="text" class="form-control form-control-sm edit-menu-label" value="${label}">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="small mb-1">{{ __('URL') }}</label>
+                        <input type="text" class="form-control form-control-sm edit-menu-url" value="${url}">
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input edit-menu-new-tab" id="tab-${id}">
+                        <label class="custom-control-label small font-weight-normal" for="tab-${id}">{{ __('Open link in a new tab') }}</label>
+                    </div>
+                    <div class="d-flex justify-content-between border-top pt-2">
+                        <button type="button" class="btn btn-xs btn-link text-danger p-0 remove-menu-item">{{ __('Remove') }}</button>
+                        <button type="button" class="btn btn-xs btn-link text-primary p-0 toggle-menu-details">{{ __('Cancel') }}</button>
+                    </div>
+                </div>
+                <ul class="wp-menu-list sortable-list mt-2 ml-4"></ul>
+              </li>`;
+            
+            var $newItem = $(html).hide();
+            $list.append($newItem);
+            $newItem.fadeIn(300);
+            initSortable();
+          }
+
+          // Form Submission - Serialization
+          $('#menu-settings-form').on('submit', function (e) {
+            e.preventDefault();
+            var form = this;
+            
+            // Clean old hidden inputs
+            $(form).find('input[type="hidden"]').not('[name="_token"]').remove();
+
+            // Serialize Main Menu
+            $('#main-menu-builder > .wp-menu-item').each(function(index) {
+                var $item = $(this);
+                $(form).append(`<input type="hidden" name="main_menu[${index}][label]" value="${$item.data('label')}">`);
+                $(form).append(`<input type="hidden" name="main_menu[${index}][url]" value="${$item.data('url')}">`);
+                $(form).append(`<input type="hidden" name="main_menu[${index}][new_tab]" value="${$item.data('new-tab')}">`);
+                
+                // Children
+                $item.find('> ul > .wp-menu-item').each(function(cIndex) {
+                    var $child = $(this);
+                    $(form).append(`<input type="hidden" name="main_menu[${index}][children][${cIndex}][label]" value="${$child.data('label')}">`);
+                    $(form).append(`<input type="hidden" name="main_menu[${index}][children][${cIndex}][url]" value="${$child.data('url')}">`);
+                    $(form).append(`<input type="hidden" name="main_menu[${index}][children][${cIndex}][new_tab]" value="${$child.data('new-tab')}">`);
+                });
+            });
+
+            // Serialize Footer Menu
+            $('#footer-menu-builder > .wp-menu-item').each(function(index) {
+                var $item = $(this);
+                $(form).append(`<input type="hidden" name="footer_menu[${index}][label]" value="${$item.data('label')}">`);
+                $(form).append(`<input type="hidden" name="footer_menu[${index}][url]" value="${$item.data('url')}">`);
+                $(form).append(`<input type="hidden" name="footer_menu[${index}][new_tab]" value="${$item.data('new-tab')}">`);
+            });
+
+            form.submit();
+          });
+        });
+      })(jQuery);
     </script>
 @endsection

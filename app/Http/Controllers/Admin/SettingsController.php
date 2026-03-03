@@ -12,6 +12,9 @@ use App\Http\Requests\Admin\ReportSettingRequest;
 use App\Http\Requests\Admin\SmsSettingRequest;
 use App\Http\Requests\Admin\WhatsappSettingRequest;
 use App\Http\Requests\Admin\ApiSettingRequest;
+use App\Models\Service;
+use App\Models\Doctor;
+use App\Models\Page;
 
 class SettingsController extends Controller
 {
@@ -58,6 +61,14 @@ class SettingsController extends Controller
         //api keys
         $api_keys_settings=setting('api_keys');
 
+        //menus
+        $menu_settings = menu_settings();
+
+        // Extra for menu builder
+        $services = Service::select('id', 'name')->get();
+        $doctors = Doctor::select('id', 'name')->get();
+        $pages = Page::select('id', 'title', 'slug')->get();
+
         return view('admin.settings.index',compact(
             'settings',
             'currencies',
@@ -65,7 +76,11 @@ class SettingsController extends Controller
             'reports_settings',
             'sms_settings',
             'whatsapp_settings',
-            'api_keys_settings'
+            'api_keys_settings',
+            'menu_settings',
+            'services',
+            'doctors',
+            'pages'
         ));
     }
 
@@ -78,43 +93,64 @@ class SettingsController extends Controller
     public function info_submit(GeneralSettingRequest $request)
     {
         try {
-            //old settings
-            $old_settings=Setting::where('key','info')->first();
-            $old_settings=json_decode($old_settings['value'],true);
-            $settings=$request->except('logo','_token');
+            // Get old settings
+            $setting_record = Setting::where('key', 'info')->first();
+            $old_settings = json_decode($setting_record->value, true);
             
-            //social links
-            $settings['socials']['facebook']=$request['facebook'];
-            $settings['socials']['twitter']=$request['twitter'];
-            $settings['socials']['instagram']=$request['instagram'];
-            $settings['socials']['youtube']=$request['youtube'];
+            // Prepare settings data
+            $settings = $request->except(['logo', 'reports_logo', 'favicon', '_token']);
+            
+            // Social links
+            $settings['socials'] = [
+                'facebook'  => $request->facebook,
+                'twitter'   => $request->twitter,
+                'instagram' => $request->instagram,
+                'youtube'   => $request->youtube,
+            ];
 
-            //update currency cache
-            cache()->put('currency',$request['currency']);
+            // Update currency cache
+            cache()->put('currency', $request->currency);
         
-            //update logo
-            if($request->hasFile('logo'))
-            {
-                $logo=$request->file('logo');
-                $logo->move('img','logo.png');
+            // Ensure img directory exists
+            if (!file_exists(public_path('img'))) {
+                mkdir(public_path('img'), 0777, true);
             }
 
-            //update reports logo
-            if($request->hasFile('reports_logo'))
-            {
-                $image = base64_encode(file_get_contents($request->file('reports_logo')));
-
-                $settings['reports_logo']=$image;
-
-                $logo=$request->file('reports_logo')->move('img','reports_logo.png');
-            }
-            else{
-                $settings['reports_logo']=$old_settings['reports_logo'];
+            // Handle Logo
+            if ($request->hasFile('logo')) {
+                $logo = $request->file('logo');
+                $logo_name = 'logo.' . $logo->getClientOriginalExtension();
+                $logo->move(public_path('img'), $logo_name);
+                $settings['logo'] = $logo_name;
+            } else {
+                $settings['logo'] = $old_settings['logo'] ?? 'logo.png';
             }
 
-            $info=Setting::where('key','info')->firstOrFail();
-            $info->update([
-                'value'=>json_encode($settings)
+            // Handle Reports Logo
+            if ($request->hasFile('reports_logo')) {
+                $reports_logo = $request->file('reports_logo');
+                $reports_logo_name = 'reports_logo.' . $reports_logo->getClientOriginalExtension();
+                $reports_logo->move(public_path('img'), $reports_logo_name);
+                
+                // Keep base64 for reports if currently used, but also save file
+                $settings['reports_logo'] = base64_encode(file_get_contents(public_path('img/' . $reports_logo_name)));
+            } else {
+                $settings['reports_logo'] = $old_settings['reports_logo'] ?? '';
+            }
+
+            // Handle Favicon
+            if ($request->hasFile('favicon')) {
+                $favicon = $request->file('favicon');
+                $favicon_name = 'favicon.' . $favicon->getClientOriginalExtension();
+                $favicon->move(public_path('img'), $favicon_name);
+                $settings['favicon'] = $favicon_name;
+            } else {
+                $settings['favicon'] = $old_settings['favicon'] ?? 'favicon.png';
+            }
+
+            // Update database
+            $setting_record->update([
+                'value' => json_encode($settings)
             ]);
             
             return redirect()->route('admin.settings.index')->with('success', __('Settings Updated successfully'));
@@ -268,6 +304,60 @@ class SettingsController extends Controller
             return redirect()->route('admin.settings.index')->with('success', __('Settings Updated successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update API keys: ') . $e->getMessage());
+        }
+    }
+
+    public function menus_submit(Request $request)
+    {
+        try {
+            $main = collect($request->input('main_menu', []))
+                ->map(function ($item) {
+                    $children = collect($item['children'] ?? [])
+                        ->map(function ($child) {
+                            return [
+                                'label' => trim((string) ($child['label'] ?? '')),
+                                'url' => trim((string) ($child['url'] ?? '')),
+                                'new_tab' => !empty($child['new_tab']),
+                            ];
+                        })
+                        ->filter(fn ($child) => $child['label'] !== '' && $child['url'] !== '')
+                        ->values()
+                        ->all();
+
+                    return [
+                        'label' => trim((string) ($item['label'] ?? '')),
+                        'url' => trim((string) ($item['url'] ?? '')),
+                        'new_tab' => !empty($item['new_tab']),
+                        'children' => $children,
+                    ];
+                })
+                ->filter(fn ($item) => $item['label'] !== '' && $item['url'] !== '')
+                ->values()
+                ->all();
+
+            $footer = collect($request->input('footer_menu', []))
+                ->map(function ($item) {
+                    return [
+                        'label' => trim((string) ($item['label'] ?? '')),
+                        'url' => trim((string) ($item['url'] ?? '')),
+                        'new_tab' => !empty($item['new_tab']),
+                    ];
+                })
+                ->filter(fn ($item) => $item['label'] !== '' && $item['url'] !== '')
+                ->values()
+                ->all();
+
+            Setting::updateOrCreate(
+                ['key' => 'menus'],
+                ['value' => json_encode([
+                    'main_menu' => $main,
+                    'footer_menu' => $footer,
+                ])]
+            );
+
+            return redirect()->route('admin.settings.index')->with('success', __('Menu settings updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update menu settings: ') . $e->getMessage());
         }
     }
 }

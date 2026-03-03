@@ -290,7 +290,7 @@ return [
     'office_accounting' => 'Office Accounting',
     'users_and_roles' => 'Users & Roles',
     'role_list' => 'Role List',
-    'software_settings' => 'Software Settings',
+    'software_settings' => 'Settings',
     'database_backup' => 'Database Backup',
     'active_users' => 'Active Users',
     'my_dashboard' => 'My Dashboard',

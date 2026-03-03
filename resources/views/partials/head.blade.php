@@ -1,6 +1,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>{{$info['name']}} | @yield('title')</title>
+
+@if(isset($info['favicon']))
+<link rel="icon" type="image/png" href="{{url('img/'.$info['favicon'])}}">
+@else
+<link rel="icon" type="image/png" href="{{url('img/favicon.png')}}">
+@endif
+
 <link rel="apple-touch-icon" sizes="57x57" href="{{url('img/apple-icon-57x57.png')}}">
 <link rel="apple-touch-icon" sizes="60x60" href="{{url('img/apple-icon-60x60.png')}}">
 <link rel="apple-touch-icon" sizes="72x72" href="{{url('img/apple-icon-72x72.png')}}">

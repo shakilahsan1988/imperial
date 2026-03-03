@@ -622,7 +622,7 @@
     "admin.role_list": "রোলের তালিকা",
     "admin.user_list": "ইউজারের তালিকা",
     "admin.change_password": "পাসওয়ার্ড পরিবর্তন",
-    "admin.software_settings": "সফটওয়্যার সেটিংস",
+    "admin.software_settings": "সেটিংস",
     "admin.activity_log": "অ্যাক্টিভিটি লগ",
     "admin.database_backup": "ডাটাবেস ব্যাকআপ",
     "admin.my_dashboard": "আমার ড্যাশবোর্ড",

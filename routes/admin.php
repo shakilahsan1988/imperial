@@ -161,6 +161,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
         Route::post('sms', [SettingsController::class, 'sms_submit'])->name('sms_submit');
         Route::post('whatsapp', [SettingsController::class, 'whatsapp_submit'])->name('whatsapp_submit');
         Route::post('api_keys', [SettingsController::class, 'api_keys_submit'])->name('api_keys_submit');
+        Route::post('menus', [SettingsController::class, 'menus_submit'])->name('menus_submit');
     });
 
     // Page Settings

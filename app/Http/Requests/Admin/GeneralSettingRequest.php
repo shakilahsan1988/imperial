@@ -30,8 +30,9 @@ class GeneralSettingRequest extends FormRequest
             'phone'=>'required',
             'website'=>'required',
             'footer'=>'required',
-            'reports_logo'=>'mimes:png|dimensions:max_width=100,max_height=100',
-            'logo'=>'mimes:png|dimensions:max_width=100,max_height=100',
+            'reports_logo'=>'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'logo'=>'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'favicon'=>'nullable|image|mimes:png,ico,jpg,jpeg|max:512',
         ];
     }
 

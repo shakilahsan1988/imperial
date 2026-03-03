@@ -1,3 +1,8 @@
+@php
+    $menuSettings = menu_settings();
+    $footerMenu = $menuSettings['footer_menu'] ?? [];
+@endphp
+
 <footer class="bg-[#0F172A] text-slate-400 pt-20 pb-10">
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-16">
@@ -32,9 +37,13 @@
             <div>
                 <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-xs">Patient Resources</h4>
                 <ul class="space-y-4 text-sm font-medium">
-                    <li><a href="{{ route('doctor') }}" class="hover:text-indigo-400 transition-colors">Find a Specialist</a></li>
-                    <li><a href="{{ route('blog') }}" class="hover:text-indigo-400 transition-colors">Health Blog</a></li>
-                    <li><a href="{{ route('contact') }}" class="hover:text-indigo-400 transition-colors">Support & FAQ</a></li>
+                    @foreach($footerMenu as $item)
+                        @php
+                            $url = $item['url'] ?? '#';
+                            $href = preg_match('/^https?:\\/\\//i', $url) ? $url : url($url);
+                        @endphp
+                        <li><a href="{{ $href }}" class="hover:text-indigo-400 transition-colors" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>{{ $item['label'] ?? 'Menu' }}</a></li>
+                    @endforeach
                 </ul>
             </div>
 

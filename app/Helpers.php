@@ -143,6 +143,38 @@ if (!function_exists('setting'))
     }
 }
 
+if (!function_exists('menu_settings'))
+{
+    function menu_settings()
+    {
+        $defaults = [
+            'main_menu' => [
+                ['label' => 'Home', 'url' => '/', 'new_tab' => false, 'children' => []],
+                ['label' => 'Services', 'url' => '/services', 'new_tab' => false, 'children' => []],
+                ['label' => 'Our Doctors', 'url' => '/doctor', 'new_tab' => false, 'children' => []],
+                ['label' => 'Community', 'url' => '/blog', 'new_tab' => false, 'children' => []],
+                ['label' => 'About', 'url' => '/about', 'new_tab' => false, 'children' => []],
+                ['label' => 'Contact', 'url' => '/contact', 'new_tab' => false, 'children' => []],
+            ],
+            'footer_menu' => [
+                ['label' => 'Privacy', 'url' => '/privacy-notice', 'new_tab' => false],
+                ['label' => 'Ethics', 'url' => '/code-of-ethics', 'new_tab' => false],
+                ['label' => 'Rights', 'url' => '/bill-of-right', 'new_tab' => false],
+            ],
+        ];
+
+        $saved = setting('menus');
+        if (!is_array($saved)) {
+            return $defaults;
+        }
+
+        return [
+            'main_menu' => isset($saved['main_menu']) ? $saved['main_menu'] : $defaults['main_menu'],
+            'footer_menu' => isset($saved['footer_menu']) ? $saved['footer_menu'] : $defaults['footer_menu'],
+        ];
+    }
+}
+
 if (!function_exists('home_page_settings'))
 {
     function home_page_settings()
