@@ -1,63 +1,75 @@
 @extends('layouts.front')
 
-@section('title', 'About Us - Imperial Health Bangladesh')
+@section('title', ($blog->meta_title ?? $blog->title) . ' - Imperial Health Bangladesh')
 
 @section('content')
-
 <article class="w-full bg-white">
-    <section class="py-16 lg:py-24">
+    <section class="relative py-20 md:py-28 bg-[#1E293B] overflow-hidden">
+        <div class="absolute inset-0 opacity-25">
+            <img src="{{ !empty($blog->featured_image) ? asset($blog->featured_image) : asset('assets/front/images/management/1.jpg') }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/85 to-transparent"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl">
+                <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-indigo-200 text-[10px] md:text-xs font-black uppercase tracking-widest mb-5">
+                    <i class="fa-solid fa-book-open"></i>
+                    {{ optional($blog->category)->name ?? 'Blog' }}
+                </p>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                    {{ $blog->title }}
+                </h1>
+                <div class="flex flex-wrap items-center gap-5 text-slate-300 text-sm font-medium">
+                    <span class="inline-flex items-center gap-2"><i class="fa-regular fa-calendar"></i> {{ optional($blog->published_at)->format('M d, Y') ?? optional($blog->created_at)->format('M d, Y') }}</span>
+                    <span class="inline-flex items-center gap-2"><i class="fa-regular fa-user"></i> {{ $blog->author_name ?: 'Imperial Editorial Desk' }}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-14 md:py-20">
         <div class="container mx-auto px-6">
-            
-            <!-- Row 1: Top Text (Full Width / Span 12) -->
-            <div class="mb-12 lg:mb-16">
-                <div class="max-w-4xl mx-auto text-center lg:text-left">
-                    <h1 class="text-3xl md:text-5xl font-bold text-imperial-text mb-8 font-sans leading-tight">
-                        Meet Our Founder &amp; Chair of the Board
-                    </h1>
-                    <div class="richtext-cont">
-                        <p class="text-lg md:text-xl text-gray-700 leading-loose font-light">
-                            Six years ago, my mother was hospitalized at one of Bangladesh’s top hospitals for a basic operation. We expected that the routine procedure would go smoothly, yet she suffered such dramatic complications that we nearly lost her. The most harrowing part of the experience was the doctor’s cavalier attitude. On my mother’s worst day, my sister and I desperately needed to understand why our mother was vomiting bile, but the doctor ignored our queries and walked out of the room. I distinctly remember chasing him up two flights of stairs to demand answers to our simple questions. His indifference to our mother’s suffering made us feel completely helpless. Eventually, our family had no choice but to take my mother to Bangkok, where she had a second surgery. A year later, she had to have a third surgery, all because of complications arising from the original operation.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
 
-            <!-- Row 2: Image (9 Cols) + Side Text (3 Cols) -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                
-                <!-- Left Column: Founder Image (Span 9) -->
-                <div class="lg:col-span-9">
-                    <div class="car-imgcont relative w-full rounded-lg overflow-hidden shadow-xl">
-                        <picture>
-                            <source srcset="https://www.praavahealth.com/media-images/TfkQsuzDuRlWVvAq13FXMfnDOv4=/527/fill-1188x670-c0/Sylvana_Quader_Sinha_Blog_content_Image1.png" media="(min-width: 1024px)">
-                            <source srcset="https://www.praavahealth.com/media-images/TfkQsuzDuRlWVvAq13FXMfnDOv4=/527/fill-1188x670-c0/Sylvana_Quader_Sinha_Blog_content_Image1.png" media="(min-width: 768px)">
-                            <img 
-                                src="https://www.praavahealth.com/media-images/TfkQsuzDuRlWVvAq13FXMfnDOv4=/527/fill-1188x670-c0/Sylvana_Quader_Sinha_Blog_content_Image1.png" 
-                                alt="Sylvana Quader Sinha" 
-                                class="w-full h-auto object-cover block"
-                                width="1188" 
-                                height="670" 
-                                loading="lazy"
-                            >
-                        </picture>
+                <div class="lg:col-span-8">
+                    <figure class="overflow-hidden rounded-3xl shadow-2xl border border-slate-100 mb-10">
+                        <img src="{{ !empty($blog->featured_image) ? asset($blog->featured_image) : asset('assets/front/images/management/1.jpg') }}" alt="{{ $blog->title }}" class="w-full h-[320px] md:h-[480px] object-cover">
+                    </figure>
+
+                    <div class="prose prose-lg max-w-none prose-p:text-slate-700 prose-p:leading-8 prose-headings:text-slate-900">
+                        {!! $blog->content !!}
                     </div>
                 </div>
 
-                <!-- Right Column: Side Text (Span 3) -->
-                <div class="lg:col-span-3">
-                    <div class="car-textcont bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
-                        <div class="text-card">
-                            <div class="richtext-cont">
-                                <p class="text-base text-gray-700 leading-relaxed">
-                                    Like most Bangladeshis, I could share dozens of other shocking incidents like this one, experienced by my own family in private health facilities. I am an American by birth and Bangladeshi by blood. I studied international law and international development at top universities in the United States. My passion for development and impact was inspired by my visits to Bangladesh growing up and led me to a rewarding career in New York City and beyond. For the past 15 years, I have worked to ensure human rights and justice for individuals all over the world, through the private and public sectors, at international law firms and global organizations. After my mother’s experience, I spent a great deal of time thinking about the tremendous need to revolutionize the health sector in Bangladesh. I wanted to be part of that revolution. So, I moved to Bangladesh to found Praava Health.
-                                </p>
+                <aside class="lg:col-span-4">
+                    <div class="sticky top-28 space-y-6">
+                        @if(!empty($blog->meta_description))
+                            <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                                <h4 class="text-sm font-black uppercase tracking-widest text-slate-500 mb-4">Summary</h4>
+                                <p class="text-sm text-slate-700 leading-relaxed">{{ $blog->meta_description }}</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        @endif
 
+                        @if(isset($relatedBlogs) && $relatedBlogs->count() > 0)
+                            <div class="rounded-3xl border border-slate-200 bg-white p-6">
+                                <h4 class="text-sm font-black uppercase tracking-widest text-slate-500 mb-4">Related Blogs</h4>
+                                <div class="space-y-4">
+                                    @foreach($relatedBlogs as $related)
+                                        <a href="{{ route('blog-details', ['slug' => $related->slug]) }}" class="block group">
+                                            <p class="text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition">{{ $related->title }}</p>
+                                            <p class="text-xs text-slate-400 mt-1">{{ optional($related->published_at)->format('M d, Y') ?? optional($related->created_at)->format('M d, Y') }}</p>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        <a href="{{ route('blog') }}" class="block text-center rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 font-black uppercase tracking-widest text-xs transition">
+                            Back To Blog List
+                        </a>
+                    </div>
+                </aside>
             </div>
-            
         </div>
     </section>
 </article>

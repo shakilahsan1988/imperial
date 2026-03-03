@@ -150,10 +150,22 @@ if (!function_exists('menu_settings'))
         $defaults = [
             'main_menu' => [
                 ['label' => 'Home', 'url' => '/', 'new_tab' => false, 'children' => []],
-                ['label' => 'Services', 'url' => '/services', 'new_tab' => false, 'children' => []],
+                ['label' => 'Services', 'url' => '/services', 'new_tab' => false, 'children' => [
+                    ['label' => 'Diagnostics & Lab', 'url' => '/lab-test', 'new_tab' => false],
+                    ['label' => 'Health Checks', 'url' => '/health-check', 'new_tab' => false],
+                    ['label' => 'Membership Plan', 'url' => '/membership', 'new_tab' => false],
+                    ['label' => 'Video Consultation', 'url' => '/video-consultation', 'new_tab' => false],
+                ]],
                 ['label' => 'Our Doctors', 'url' => '/doctor', 'new_tab' => false, 'children' => []],
-                ['label' => 'Community', 'url' => '/blog', 'new_tab' => false, 'children' => []],
-                ['label' => 'About', 'url' => '/about', 'new_tab' => false, 'children' => []],
+                ['label' => 'Community', 'url' => '/blog', 'new_tab' => false, 'children' => [
+                    ['label' => 'Blog', 'url' => '/blog', 'new_tab' => false],
+                    ['label' => 'Gallery', 'url' => '/gallery', 'new_tab' => false],
+                ]],
+                ['label' => 'About', 'url' => '/about', 'new_tab' => false, 'children' => [
+                    ['label' => 'Mission & Vision', 'url' => '/mission-vision-value', 'new_tab' => false],
+                    ['label' => 'Management', 'url' => '/management', 'new_tab' => false],
+                    ['label' => 'Contact Us', 'url' => '/contact', 'new_tab' => false],
+                ]],
                 ['label' => 'Contact', 'url' => '/contact', 'new_tab' => false, 'children' => []],
             ],
             'footer_menu' => [
@@ -379,6 +391,81 @@ if (!function_exists('video_consultation_page_settings'))
             'hero_title_html' => 'Video <span class="text-indigo-400">Consultation</span>',
             'hero_description' => 'Consult our doctors from the comfort of your home.',
             'hero_image' => 'assets/front/images/services/consult.jpg',
+            'plans_section_title' => 'Affordable Video Consultation Packages',
+            'plans_section_description' => 'Choose a flexible plan for regular online doctor consultations for you and your family.',
+            'plans_empty_text' => 'No video consultation packages available now.',
+            'why_title' => 'Why choose Amar Jotno Plan?',
+            'why_image' => 'assets/front/images/services/con4.jpg',
+            'why_item_1' => 'Access to experienced, internationally trained doctors',
+            'why_item_2' => 'Secure access through our own consultation platform',
+            'why_item_3' => 'Confidentiality for patient and doctor communications',
+            'why_item_4' => 'Minimum 15 minutes quality consultation per session',
+            'why_item_5' => 'Electronic Health Records to track your health journey',
+            'faq_title' => 'Frequently Asked Questions',
+            'faq_subtitle' => 'Take a look at the most commonly asked questions. We are here to help.',
+            'faq_1_question' => 'How do I book a video consultation?',
+            'faq_1_answer' => 'You can book through our website by selecting a plan and following the booking process.',
+            'faq_2_question' => 'How long does a consultation last?',
+            'faq_2_answer' => 'Each consultation is typically around 15 minutes, depending on your needs.',
+            'faq_3_question' => 'How do I receive prescriptions?',
+            'faq_3_answer' => 'Doctors provide digital prescriptions in your profile after the consultation.',
+        ]);
+    }
+}
+
+if (!function_exists('about_page_settings'))
+{
+    function about_page_settings()
+    {
+        return inner_page_settings('about_page', [
+            'page_name' => 'About Us',
+            'hero_title_html' => 'Welcome to <span class="text-indigo-400">Imperial Private Health Care</span>',
+            'hero_description' => 'Welcome to Imperial private health care ltd, where precision meets care, and health mysteries find solutions. We are a state-of-the-art diagnostic facility committed to providing unparalleled insights into your well-being.',
+            'hero_image' => 'assets/front/images/about/1.jpg',
+            'intro_title' => 'Our Vision',
+            'intro_description' => 'Empowering individuals to take control of their health through accurate and timely diagnostics, Imperial private health care ltd envisions a future where every person has access to the information they need to make informed decisions about their well-being.',
+            'intro_image' => 'assets/front/images/about/1.jpg',
+            'feature_1_title' => 'Digitalisation of Services',
+            'feature_1_desc' => 'Accompanied by innovative service strategies to enhance customer experience.',
+            'feature_2_title' => 'Value-Added Services',
+            'feature_2_desc' => 'Offering house call phlebotomy services where blood samples are collected at the patient home or workplace, including better accessibility and visibility of pathologists.',
+            'feature_3_title' => 'Community Wellness Engagement',
+            'feature_3_desc' => 'Organizing health camps at residential apartment blocks, promoting wellness, and providing exposure to consulting doctors and pathologists.',
+            'leadership_title' => 'Our Management Team',
+            'leadership_description' => 'We are proud to have a team of compassionate, dedicated, and highly skilled professionals committed to delivering exceptional care.',
+            'partners_title' => 'Our Happy Clients',
+            'partners_subtitle' => 'Patient and Partner Testimonials',
+        ]);
+    }
+}
+
+if (!function_exists('services_page_settings'))
+{
+    function services_page_settings()
+    {
+        return inner_page_settings('services_page', [
+            'page_name' => 'Our Services',
+            'hero_title_html' => 'Comprehensive <span class="text-indigo-400">Healthcare</span> Solutions',
+            'hero_description' => 'From primary consultations to advanced diagnostics, we provide all your outpatient needs under one professional roof.',
+            'hero_image' => 'assets/front/images/services/services.jpg',
+            'section_badge' => 'Patient-Centered Care',
+            'section_title' => 'Integrated Services for Everyday Health Needs',
+            'section_description' => 'We combine consultation, diagnostics, preventive screening, and digital follow-up to ensure every patient receives complete and coordinated care.',
+            'block_1_badge' => 'Expert Guidance',
+            'block_1_title' => 'Personalized Consultations',
+            'block_1_description' => 'Our doctors spend meaningful time understanding each patient. Consult in person or virtually and receive practical care plans tailored to your condition and goals.',
+            'block_1_button_text' => 'Explore Specialities',
+            'block_1_button_url' => '/service-details',
+            'block_1_image' => 'assets/front/images/services/con4.jpg',
+            'block_2_badge' => 'Advanced Diagnostics',
+            'block_2_title' => 'Reliable Testing with Modern Technology',
+            'block_2_description' => 'Our laboratories and diagnostics workflow are designed for consistency, speed, and clinical accuracy, helping doctors and patients make timely decisions with confidence.',
+            'block_2_button_text' => 'View Lab Tests',
+            'block_2_button_url' => '/lab-test',
+            'block_2_image' => 'assets/front/images/services/con3.jpeg',
+            'catalog_title' => 'Available Services',
+            'catalog_description' => 'Browse our active services below. Each test or procedure includes essential details to help you choose the right care path.',
+            'empty_state_text' => 'No services are available right now. Please check again shortly.',
         ]);
     }
 }
@@ -457,6 +544,14 @@ if (!function_exists('blog_page_settings'))
             'hero_title_html' => 'Health <span class="text-indigo-400">Insights</span> & Stories',
             'hero_description' => 'Read expert perspectives, wellness tips, and updates from Imperial Health.',
             'hero_image' => 'assets/front/images/services/services.jpg',
+            'founder_badge' => 'Our Story',
+            'founder_title' => 'Meet Our Founder & Chair of the Board',
+            'founder_description' => 'Six years ago, my mother was hospitalized at one of Bangladesh\'s top hospitals for a basic operation. We expected that the routine procedure would go smoothly, yet she suffered dramatic complications. That experience taught us that empathy, transparency, and quality must come first in healthcare.',
+            'founder_button_text' => 'See Details',
+            'founder_button_url' => '#',
+            'founder_image' => 'assets/front/images/management/1.jpg',
+            'blog_list_title' => 'Blog list',
+            'blogs_per_page' => 8,
         ]);
     }
 }

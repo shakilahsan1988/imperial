@@ -18,6 +18,8 @@ use App\Models\Branch;
 use App\Models\MembershipCategory;
 use App\Models\MembershipPlan;
 use App\Models\MembershipPlanBooking;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use Carbon\Carbon;
 
 class FrontController extends Controller
@@ -37,7 +39,8 @@ class FrontController extends Controller
         }
         
         $services = $query->orderBy('category')->orderBy('name')->get();
-        return view('frontend.services.services', compact('services', 'category'));
+        $pageSettings = services_page_settings();
+        return view('frontend.services.services', compact('services', 'category', 'pageSettings'));
     }
 
     public function service_details(){
@@ -381,7 +384,8 @@ if (auth()->guard('patient')->check()) {
     }
 
     public function about(){
-    	return view('frontend.about.about');
+        $pageSettings = about_page_settings();
+    	return view('frontend.about.about', compact('pageSettings'));
     }
 
     public function about_details(){
@@ -557,13 +561,58 @@ if (auth()->guard('patient')->check()) {
         return back()->with('success', 'Consultation booking request submitted successfully.');
     }
 
-    public function blog(){
+    public function blog(Request $request){
         $pageSettings = blog_page_settings();
-    	return view('frontend.community.blog', compact('pageSettings'));
+        $q = trim((string) $request->query('q', ''));
+        $categorySlug = trim((string) $request->query('category', ''));
+
+        $perPage = (int) ($pageSettings['blogs_per_page'] ?? 8);
+        if ($perPage < 1 || $perPage > 50) {
+            $perPage = 8;
+        }
+
+        $query = Blog::with('category')->published()->orderByDesc('published_at')->orderByDesc('created_at');
+
+        if ($q !== '') {
+            $query->where(function ($builder) use ($q) {
+                $builder->where('title', 'like', '%' . $q . '%')
+                    ->orWhere('excerpt', 'like', '%' . $q . '%')
+                    ->orWhere('content', 'like', '%' . $q . '%');
+            });
+        }
+
+        if ($categorySlug !== '') {
+            $query->whereHas('category', function ($builder) use ($categorySlug) {
+                $builder->where('slug', $categorySlug);
+            });
+        }
+
+        $blogs = $query->paginate($perPage)->withQueryString();
+        $categories = BlogCategory::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+
+    	return view('frontend.community.blog', compact('pageSettings', 'blogs', 'q', 'categories', 'categorySlug'));
     }
 
-    public function blog_details(){
-    	return view('frontend.community.blog-details');
+    public function blog_details($slug = null){
+        $query = Blog::with('category')->published()->orderByDesc('published_at')->orderByDesc('created_at');
+
+        if ($slug) {
+            $blog = (clone $query)->where('slug', $slug)->firstOrFail();
+        } else {
+            $blog = (clone $query)->firstOrFail();
+        }
+
+        $relatedBlogs = Blog::published()
+            ->where('id', '!=', $blog->id)
+            ->when($blog->blog_category_id, function ($builder) use ($blog) {
+                $builder->where('blog_category_id', $blog->blog_category_id);
+            })
+            ->orderByDesc('published_at')
+            ->orderByDesc('created_at')
+            ->take(4)
+            ->get();
+
+    	return view('frontend.community.blog-details', compact('blog', 'relatedBlogs'));
     }
 
     public function event(){

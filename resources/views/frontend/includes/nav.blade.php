@@ -1,6 +1,8 @@
 @php
     $menuSettings = menu_settings();
     $mainMenu = $menuSettings['main_menu'] ?? [];
+    $infoSettings = setting('info') ?? [];
+    $logoSrc = !empty($infoSettings['logo']) ? asset('img/' . $infoSettings['logo']) : asset('assets/front/images/logo.png');
 @endphp
 
 <header class="bg-white sticky top-0 z-[1000] shadow-lg shadow-slate-200/50" id="main-header">
@@ -9,50 +11,39 @@
             
             <!-- Logo -->
             <a href="{{ route('fhome') }}" class="flex-shrink-0 relative z-[110]">
-                <img src="{{ asset('assets/front/images/logo.png') }}" alt="Imperial Health Logo" class="h-9 md:h-12 w-auto" onerror="this.src='https://placehold.co/150x50/007caa/ffffff?text=Imperial+Health'">
+                <img src="{{ $logoSrc }}" alt="Imperial Health Logo" class="h-9 md:h-12 w-auto" onerror="this.src='https://placehold.co/150x50/007caa/ffffff?text=Imperial+Health'">
             </a>
 
             <nav class="hidden lg:flex gap-8 items-center">
-                <a href="{{ route('fhome') }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors tracking-tight">Home</a>
-
-                <!-- Services -->
-                <div class="relative group py-2">
-                    <a href="{{ route('services') }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1 tracking-tight">
-                        Services <i class="fa-solid fa-chevron-down text-[8px] mt-0.5"></i>
-                    </a>
-                    <div class="absolute left-0 top-full mt-2 w-64 bg-white shadow-2xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform group-hover:translate-y-0 translate-y-2 duration-300 z-50 py-4">
-                        <a href="{{ route('lab-test') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Diagnostics &amp; Lab</a>
-                        <a href="{{ route('health-check') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Health Checks</a>
-                        <a href="{{ route('membership') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Membership Plan</a>
-                        <a href="{{ route('video-consultation') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Video Consultation</a>
-                    </div>
-                </div>
-
-                <a href="{{ route('doctor') }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors tracking-tight">Our Doctors</a>
-
-                <!-- Community -->
-                <div class="relative group py-2">
-                    <a href="#" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1 tracking-tight">
-                        Community <i class="fa-solid fa-chevron-down text-[8px] mt-0.5"></i>
-                    </a>
-                    <div class="absolute left-0 top-full mt-2 w-64 bg-white shadow-2xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform group-hover:translate-y-0 translate-y-2 duration-300 z-50 py-4">
-                        <a href="{{ route('blog') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Blog</a>
-                        <a href="{{ route('gallery') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Gallery</a>
-                    </div>
-                </div>
-
-                <!-- About -->
-                <div class="relative group py-2">
-                    <a href="{{ route('about') }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1 tracking-tight">
-                        About <i class="fa-solid fa-chevron-down text-[8px] mt-0.5"></i>
-                    </a>
-                    <div class="absolute left-0 top-full mt-2 w-64 bg-white shadow-2xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform group-hover:translate-y-0 translate-y-2 duration-300 z-50 py-4">
-                        <a href="{{ route('mission-vision-value') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Mission &amp; Vision</a>
-                        <a href="{{ route('management') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Management</a>
-                        <a href="{{ url('/career') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Careers</a>
-                        <a href="{{ route('contact') }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Contact Us</a>
-                    </div>
-                </div>
+                @foreach($mainMenu as $item)
+                    @php
+                        $url = $item['url'] ?? '#';
+                        $href = preg_match('/^https?:\\/\\//i', $url) ? $url : url($url);
+                        $children = is_array($item['children'] ?? null) ? $item['children'] : [];
+                    @endphp
+                    @if(count($children) > 0)
+                        <div class="relative group py-2">
+                            <a href="{{ $href }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1 tracking-tight" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
+                                {{ $item['label'] ?? 'Menu' }} <i class="fa-solid fa-chevron-down text-[8px] mt-0.5"></i>
+                            </a>
+                            <div class="absolute left-0 top-full mt-2 w-64 bg-white shadow-2xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform group-hover:translate-y-0 translate-y-2 duration-300 z-50 py-4">
+                                @foreach($children as $child)
+                                    @php
+                                        $childUrl = $child['url'] ?? '#';
+                                        $childHref = preg_match('/^https?:\\/\\//i', $childUrl) ? $childUrl : url($childUrl);
+                                    @endphp
+                                    <a href="{{ $childHref }}" class="block px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all" {{ !empty($child['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
+                                        {{ $child['label'] ?? 'Sub Menu' }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ $href }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors tracking-tight" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
+                            {{ $item['label'] ?? 'Menu' }}
+                        </a>
+                    @endif
+                @endforeach
 
                 <!-- Desktop CTA -->
                 <div class="flex items-center gap-4 border-l border-slate-100 pl-8">

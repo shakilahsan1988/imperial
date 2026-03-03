@@ -57,7 +57,7 @@ use Illuminate\Support\Facades\Artisan;
     Route::get('/book-doctor/{doctor?}', [FrontController::class, 'book_doctor'])->name('book-doctor');
     Route::post('/book-doctor/{doctor}/submit', [FrontController::class, 'submit_doctor_booking'])->name('book-doctor.submit');
     Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
-    Route::get('/blog-details', [FrontController::class, 'blog_details'])->name('blog-details');
+    Route::get('/blog-details/{slug?}', [FrontController::class, 'blog_details'])->name('blog-details');
     Route::get('/event', [FrontController::class, 'event'])->name('event');
     Route::get('/event-details', [FrontController::class, 'event_details'])->name('event-details');
     Route::get('/press', [FrontController::class, 'press'])->name('press');

@@ -273,6 +273,18 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('admin.pages.about_settings') }}" class="nav-link" id="pages_about">
+              <i class="far fa-circle nav-icon"></i>
+              <p>About Us</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.pages.services_settings') }}" class="nav-link" id="pages_services">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Services</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('admin.pages.doctors_settings') }}" class="nav-link" id="pages_our_doctors">
               <i class="far fa-circle nav-icon"></i>
               <p>Our Doctors</p>
@@ -306,6 +318,29 @@
             <a href="{{ route('admin.pages.contact_settings') }}" class="nav-link" id="pages_contact">
               <i class="far fa-circle nav-icon"></i>
               <p>Contact</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item has-treeview" id="blogs_module">
+        <a href="#" class="nav-link" id="blogs_module_link">
+          <i class="nav-icon fas fa-blog"></i>
+          <p>
+            Blogs
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ route('admin.blog_categories.index') }}" class="nav-link" id="blog_categories">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Blog Category</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.blogs.index') }}" class="nav-link" id="blogs">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Blogs</p>
             </a>
           </li>
         </ul>

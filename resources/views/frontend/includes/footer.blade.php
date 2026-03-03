@@ -1,6 +1,13 @@
 @php
     $menuSettings = menu_settings();
     $footerMenu = $menuSettings['footer_menu'] ?? [];
+    $infoSettings = setting('info') ?? [];
+    $socials = $infoSettings['socials'] ?? [];
+    $address = trim((string) ($infoSettings['address'] ?? ''));
+    $phone = trim((string) ($infoSettings['phone'] ?? ''));
+    $footerText = trim((string) ($infoSettings['footer'] ?? ''));
+    $logoSrc = !empty($infoSettings['logo']) ? asset('img/' . $infoSettings['logo']) : asset('assets/front/images/logo.png');
+    $phoneHref = $phone !== '' ? ('tel:' . preg_replace('/\s+/', '', $phone)) : '#';
 @endphp
 
 <footer class="bg-[#0F172A] text-slate-400 pt-20 pb-10">
@@ -9,7 +16,7 @@
             
             <!-- Brand & Newsletter -->
             <div class="col-span-1 md:col-span-2 lg:col-span-1">
-                <img src="{{ asset('assets/front/images/logo.png') }}" alt="Imperial Health" class="w-auto h-12 mb-8 filter brightness-0 invert" onerror="this.src='https://placehold.co/150x50/ffffff/333333?text=Imperial+Health'">
+                <img src="{{ $logoSrc }}" alt="Imperial Health" class="w-auto h-12 mb-8 filter brightness-0 invert" onerror="this.src='https://placehold.co/150x50/ffffff/333333?text=Imperial+Health'">
                 
                 <h4 class="text-white font-bold mb-4">Stay informed</h4>
                 <p class="text-sm mb-6 leading-relaxed">Join our mailing list for the latest health insights and laboratory updates.</p>
@@ -55,21 +62,36 @@
                         <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0 text-indigo-400">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <span class="leading-relaxed">House 12, Road 11, Banani<br>Dhaka - 1213, Bangladesh</span>
+                        <span class="leading-relaxed">{{ $address !== '' ? $address : 'Address not configured' }}</span>
                     </li>
                     <li class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0 text-indigo-400">
                             <i class="fa-solid fa-phone"></i>
                         </div>
-                        <a href="tel:10648" class="hover:text-white transition font-bold">10648 (Hotline)</a>
+                        <a href="{{ $phoneHref }}" class="hover:text-white transition font-bold">{{ $phone !== '' ? $phone : 'Phone not configured' }}</a>
                     </li>
                 </ul>
                 <div class="flex gap-3 mt-8">
-                    @foreach(['facebook-f', 'linkedin-in', 'youtube', 'instagram'] as $social)
-                    <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
-                        <i class="fa-brands fa-{{$social}} text-sm"></i>
-                    </a>
-                    @endforeach
+                    @if(!empty($socials['facebook']))
+                        <a href="{{ $socials['facebook'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
+                        </a>
+                    @endif
+                    @if(!empty($socials['twitter']))
+                        <a href="{{ $socials['twitter'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-twitter text-sm"></i>
+                        </a>
+                    @endif
+                    @if(!empty($socials['youtube']))
+                        <a href="{{ $socials['youtube'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-youtube text-sm"></i>
+                        </a>
+                    @endif
+                    @if(!empty($socials['instagram']))
+                        <a href="{{ $socials['instagram'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -77,11 +99,15 @@
         <!-- Footer Bottom -->
         <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs font-bold uppercase tracking-widest text-slate-500">
             <div class="flex gap-8 mb-6 md:mb-0">
-                <a href="{{ route('privacy-notice') }}" class="hover:text-white transition">Privacy</a>
-                <a href="{{ route('code-of-ethics') }}" class="hover:text-white transition">Ethics</a>
-                <a href="{{ route('bill-of-right') }}" class="hover:text-white transition">Rights</a>
+                @foreach($footerMenu as $item)
+                    @php
+                        $url = $item['url'] ?? '#';
+                        $href = preg_match('/^https?:\\/\\//i', $url) ? $url : url($url);
+                    @endphp
+                    <a href="{{ $href }}" class="hover:text-white transition" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>{{ $item['label'] ?? 'Menu' }}</a>
+                @endforeach
             </div>
-            <p>&copy; {{ date('Y') }} Imperial Health Bangladesh Ltd.</p>
+            <p>{!! $footerText !== '' ? e($footerText) : ('&copy; ' . date('Y') . ' Imperial Health Bangladesh Ltd.') !!}</p>
         </div>
     </div>
 </footer>

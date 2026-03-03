@@ -1,3 +1,10 @@
+@php
+    $infoSettings = setting('info') ?? [];
+    $phone = trim((string) ($infoSettings['phone'] ?? '10648'));
+    $email = trim((string) ($infoSettings['email'] ?? ''));
+    $phoneHref = $phone !== '' ? ('tel:' . preg_replace('/\s+/', '', $phone)) : '#';
+@endphp
+
 <!-- ============================================ -->
 <!-- TOP BAR (Desktop Only)                      -->
 <!-- ============================================ -->
@@ -6,11 +13,11 @@
         <div class="flex gap-8 text-slate-500 font-bold uppercase tracking-widest">
             <span class="flex items-center gap-2">
                 <i class="fa-solid fa-phone text-indigo-600"></i> 
-                <a href="tel:10648" class="hover:text-indigo-600 transition">Hotline: 10648</a>
+                <a href="{{ $phoneHref }}" class="hover:text-indigo-600 transition">Hotline: {{ $phone }}</a>
             </span>
             <span class="flex items-center gap-2">
                 <i class="fa-solid fa-envelope text-indigo-600"></i> 
-                <a href="mailto:imperiallistens@imperialhealth.com" class="hover:text-indigo-600 transition">Support Center</a>
+                <a href="mailto:{{ $email !== '' ? $email : 'support@example.com' }}" class="hover:text-indigo-600 transition">Support Center</a>
             </span>
         </div>
         <div class="flex gap-8 items-center">

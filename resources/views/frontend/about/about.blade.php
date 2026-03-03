@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'About Us - Imperial Health Bangladesh')
+@section('title', ($pageSettings['page_name'] ?? 'About Us') . ' - Imperial Health Bangladesh')
 
 @section('content')
 
@@ -8,17 +8,17 @@
         <!-- MODERN HERO SECTION -->
         <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
             <div class="absolute inset-0 opacity-30">
-                <img src="{{ asset('assets/front/images/about/1.jpg') }}" class="w-full h-full object-cover">
+                <img src="{{ asset($pageSettings['hero_image'] ?? 'assets/front/images/about/1.jpg') }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
             <div class="container mx-auto px-4 relative z-10 text-center">
                 <div class="max-w-4xl mx-auto">
                     <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-8 tracking-tight leading-tight">
-                        Redefining the <span class="text-indigo-400">Patient Experience</span>
+                        {!! $pageSettings['hero_title_html'] ?? 'Redefining the <span class="text-indigo-400">Patient Experience</span>' !!}
                     </h1>
                     <p class="text-xl md:text-2xl text-slate-300 font-light leading-relaxed">
-                        Imperial Health exists to bridge the gap between world-class technology and compassionate human care. We build healthcare where you come first.
+                        {{ $pageSettings['hero_description'] ?? 'Imperial Health exists to bridge the gap between world-class technology and compassionate human care. We build healthcare where you come first.' }}
                     </p>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <div class="relative">
                         <div class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
-                        <img src="{{ asset('assets/front/images/about/1.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10">
+                        <img src="{{ asset($pageSettings['intro_image'] ?? 'assets/front/images/about/1.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10">
                         <div class="absolute -bottom-6 -right-6 bg-white p-8 rounded-3xl shadow-xl z-20 hidden md:block">
                             <p class="text-4xl font-black text-indigo-600 mb-1">99.9%</p>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Accuracy Rate</p>
@@ -39,8 +39,8 @@
 
                     <div class="space-y-12">
                         <div>
-                            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">What Sets Us Apart</h2>
-                            <p class="text-slate-600 leading-relaxed font-medium">We don't just treat symptoms; we care for people. Our approach combines rigorous international standards with local empathy.</p>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">{{ $pageSettings['intro_title'] ?? 'What Sets Us Apart' }}</h2>
+                            <p class="text-slate-600 leading-relaxed font-medium">{{ $pageSettings['intro_description'] ?? "We don't just treat symptoms; we care for people. Our approach combines rigorous international standards with local empathy." }}</p>
                         </div>
 
                         <div class="space-y-8">
@@ -50,8 +50,8 @@
                                     <i class="fa-solid fa-medal text-xl"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-bold text-slate-900 mb-2 uppercase tracking-wide">Uncompromising Quality</h3>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Accredited by the Bangladesh Accreditation Board (BAB) and ISO 15189-2012. We participate in RIQAS, the world’s largest international quality assessment scheme.</p>
+                                    <h3 class="text-lg font-bold text-slate-900 mb-2 uppercase tracking-wide">{{ $pageSettings['feature_1_title'] ?? 'Uncompromising Quality' }}</h3>
+                                    <p class="text-sm text-slate-500 leading-relaxed">{{ $pageSettings['feature_1_desc'] ?? "Accredited by the Bangladesh Accreditation Board (BAB) and ISO 15189-2012. We participate in RIQAS, the world's largest international quality assessment scheme." }}</p>
                                 </div>
                             </div>
 
@@ -61,8 +61,8 @@
                                     <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-bold text-slate-900 mb-2 uppercase tracking-wide">Accessible & Affordable</h3>
-                                    <p class="text-sm text-slate-500 leading-relaxed">We believe high-quality care should be available to everyone. We continuously optimize our processes to keep costs low while maintaining premium standards.</p>
+                                    <h3 class="text-lg font-bold text-slate-900 mb-2 uppercase tracking-wide">{{ $pageSettings['feature_2_title'] ?? 'Accessible & Affordable' }}</h3>
+                                    <p class="text-sm text-slate-500 leading-relaxed">{{ $pageSettings['feature_2_desc'] ?? 'We believe high-quality care should be available to everyone. We continuously optimize our processes to keep costs low while maintaining premium standards.' }}</p>
                                 </div>
                             </div>
 
@@ -72,8 +72,8 @@
                                     <i class="fa-solid fa-microchip text-xl"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-bold text-slate-900 mb-2 uppercase tracking-wide">Technological Innovation</h3>
-                                    <p class="text-sm text-slate-500 leading-relaxed">From digital health records to AI-driven diagnostics and e-pharmacy, we use the best technology to make your health journey seamless.</p>
+                                    <h3 class="text-lg font-bold text-slate-900 mb-2 uppercase tracking-wide">{{ $pageSettings['feature_3_title'] ?? 'Technological Innovation' }}</h3>
+                                    <p class="text-sm text-slate-500 leading-relaxed">{{ $pageSettings['feature_3_desc'] ?? 'From digital health records to AI-driven diagnostics and e-pharmacy, we use the best technology to make your health journey seamless.' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -86,17 +86,16 @@
         <section class="py-24">
             <div class="container mx-auto px-4">
                 <div class="text-center max-w-2xl mx-auto mb-16">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Our Leadership</h2>
-                    <p class="text-slate-500 font-medium leading-relaxed">Our diverse management team brings together decades of local and international expertise in medicine, technology, and business.</p>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">{{ $pageSettings['leadership_title'] ?? 'Our Leadership' }}</h2>
+                    <p class="text-slate-500 font-medium leading-relaxed">{{ $pageSettings['leadership_description'] ?? 'Our diverse management team brings together decades of local and international expertise in medicine, technology, and business.' }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     @php
                         $team = [
-                            ['name' => 'Sylvana Quader Sinha', 'role' => 'Founder & Chair', 'img' => '2.jpg'],
-                            ['name' => 'Mohammad Abdul Matin Emon', 'role' => 'Chief Executive Officer', 'img' => '3.jpg'],
-                            ['name' => 'Dr. Simeen M. Akhtar', 'role' => 'Chief Operating Officer', 'img' => '4.jpg'],
-                            ['name' => 'Dr. Zaheed Husain, Ph.D.', 'role' => 'Senior Lab Director', 'img' => '5.jpg'],
+                            ['name' => 'Md. Mahbubor Rahman', 'role' => 'Chief Advisor', 'img' => '2.jpg'],
+                            ['name' => 'Mehedi Hasan Chowdhury', 'role' => 'Managing Director', 'img' => '3.jpg'],
+                            ['name' => 'Md. Arif Hasan', 'role' => 'Founder and Chairman', 'img' => '4.jpg'],
                         ];
                     @endphp
                     @foreach($team as $member)
@@ -121,8 +120,8 @@
         <section class="py-24 bg-slate-900">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
-                    <h2 class="text-white text-2xl font-bold mb-2">Trusted by Industry Leaders</h2>
-                    <p class="text-slate-500 text-sm font-medium uppercase tracking-[0.3em]">Corporate Health Partners</p>
+                    <h2 class="text-white text-2xl font-bold mb-2">{{ $pageSettings['partners_title'] ?? 'Trusted by Industry Leaders' }}</h2>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-[0.3em]">{{ $pageSettings['partners_subtitle'] ?? 'Corporate Health Partners' }}</p>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">

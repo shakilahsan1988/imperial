@@ -21,9 +21,9 @@
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-6">
         <div class="max-w-4xl mx-auto text-center mb-10">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Affordable Video Consultation Packages</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ $pageSettings['plans_section_title'] ?? 'Affordable Video Consultation Packages' }}</h2>
             <p class="text-lg text-gray-600 leading-relaxed">
-                Choose a flexible plan for regular online doctor consultations for you and your family.
+                {{ $pageSettings['plans_section_description'] ?? 'Choose a flexible plan for regular online doctor consultations for you and your family.' }}
             </p>
         </div>
 
@@ -50,7 +50,7 @@
                 </div>
             </article>
             @empty
-            <div class="col-span-full text-center py-8 text-gray-500">No video consultation packages available now.</div>
+            <div class="col-span-full text-center py-8 text-gray-500">{{ $pageSettings['plans_empty_text'] ?? 'No video consultation packages available now.' }}</div>
             @endforelse
         </div>
     </div>
@@ -60,30 +60,30 @@
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-                <img src="{{ asset('assets/front/images/services/con4.jpg') }}" alt="Why choose Amar Jotno Plan" class="rounded-2xl shadow-lg w-full h-auto object-cover">
+                <img src="{{ asset($pageSettings['why_image'] ?? 'assets/front/images/services/con4.jpg') }}" alt="Why choose plan" class="rounded-2xl shadow-lg w-full h-auto object-cover">
             </div>
             <div>
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Why choose Amar Jotno Plan?</h2>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">{{ $pageSettings['why_title'] ?? 'Why choose Amar Jotno Plan?' }}</h2>
                 <ul class="space-y-4">
                     <li class="flex items-start gap-3 text-gray-700">
                         <i class="fa-solid fa-check-circle text-imperial-primary mt-1"></i>
-                        <span>Access to experienced, internationally trained doctors</span>
+                        <span>{{ $pageSettings['why_item_1'] ?? 'Access to experienced, internationally trained doctors' }}</span>
                     </li>
                     <li class="flex items-start gap-3 text-gray-700">
                         <i class="fa-solid fa-check-circle text-imperial-primary mt-1"></i>
-                        <span>Secure access through our own consultation platform</span>
+                        <span>{{ $pageSettings['why_item_2'] ?? 'Secure access through our own consultation platform' }}</span>
                     </li>
                     <li class="flex items-start gap-3 text-gray-700">
                         <i class="fa-solid fa-check-circle text-imperial-primary mt-1"></i>
-                        <span>Confidentiality for patient and doctor communications</span>
+                        <span>{{ $pageSettings['why_item_3'] ?? 'Confidentiality for patient and doctor communications' }}</span>
                     </li>
                     <li class="flex items-start gap-3 text-gray-700">
                         <i class="fa-solid fa-check-circle text-imperial-primary mt-1"></i>
-                        <span>Minimum 15 minutes quality consultation per session</span>
+                        <span>{{ $pageSettings['why_item_4'] ?? 'Minimum 15 minutes quality consultation per session' }}</span>
                     </li>
                     <li class="flex items-start gap-3 text-gray-700">
                         <i class="fa-solid fa-check-circle text-imperial-primary mt-1"></i>
-                        <span>Electronic Health Records to track your health journey</span>
+                        <span>{{ $pageSettings['why_item_5'] ?? 'Electronic Health Records to track your health journey' }}</span>
                     </li>
                 </ul>
             </div>
@@ -94,19 +94,19 @@
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-6 max-w-4xl">
         <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Frequently Asked Questions</h2>
-            <p class="text-gray-600">Take a look at the most commonly asked questions. We are here to help.</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ $pageSettings['faq_title'] ?? 'Frequently Asked Questions' }}</h2>
+            <p class="text-gray-600">{{ $pageSettings['faq_subtitle'] ?? 'Take a look at the most commonly asked questions. We are here to help.' }}</p>
         </div>
 
         <div class="space-y-4">
             <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <details class="group">
                     <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-gray-50 transition">
-                        <span class="font-semibold text-gray-900">How do I book a video consultation?</span>
+                        <span class="font-semibold text-gray-900">{{ $pageSettings['faq_1_question'] ?? 'How do I book a video consultation?' }}</span>
                         <i class="fa-solid fa-chevron-down text-imperial-primary transition-transform group-open:rotate-180"></i>
                     </summary>
                     <div class="px-5 pb-5 text-gray-600 leading-relaxed">
-                        <p>You can book through our website by selecting a plan and following the booking process.</p>
+                        <p>{{ $pageSettings['faq_1_answer'] ?? 'You can book through our website by selecting a plan and following the booking process.' }}</p>
                     </div>
                 </details>
             </div>
@@ -114,11 +114,11 @@
             <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <details class="group">
                     <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-gray-50 transition">
-                        <span class="font-semibold text-gray-900">How long does a consultation last?</span>
+                        <span class="font-semibold text-gray-900">{{ $pageSettings['faq_2_question'] ?? 'How long does a consultation last?' }}</span>
                         <i class="fa-solid fa-chevron-down text-imperial-primary transition-transform group-open:rotate-180"></i>
                     </summary>
                     <div class="px-5 pb-5 text-gray-600 leading-relaxed">
-                        <p>Each consultation is typically around 15 minutes, depending on your needs.</p>
+                        <p>{{ $pageSettings['faq_2_answer'] ?? 'Each consultation is typically around 15 minutes, depending on your needs.' }}</p>
                     </div>
                 </details>
             </div>
@@ -126,11 +126,11 @@
             <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <details class="group">
                     <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-gray-50 transition">
-                        <span class="font-semibold text-gray-900">How do I receive prescriptions?</span>
+                        <span class="font-semibold text-gray-900">{{ $pageSettings['faq_3_question'] ?? 'How do I receive prescriptions?' }}</span>
                         <i class="fa-solid fa-chevron-down text-imperial-primary transition-transform group-open:rotate-180"></i>
                     </summary>
                     <div class="px-5 pb-5 text-gray-600 leading-relaxed">
-                        <p>Doctors provide digital prescriptions in your profile after the consultation.</p>
+                        <p>{{ $pageSettings['faq_3_answer'] ?? 'Doctors provide digital prescriptions in your profile after the consultation.' }}</p>
                     </div>
                 </details>
             </div>

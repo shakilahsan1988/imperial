@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AboutPageSettingRequest;
 use App\Http\Requests\Admin\DiagonosticPageSettingRequest;
+use App\Http\Requests\Admin\BlogPageSettingRequest;
 use App\Http\Requests\Admin\HealthCheckPageSettingRequest;
 use App\Http\Requests\Admin\HomePageSettingRequest;
 use App\Http\Requests\Admin\InnerPageSettingRequest;
+use App\Http\Requests\Admin\ServicesPageSettingRequest;
+use App\Http\Requests\Admin\VideoConsultationPageSettingRequest;
 use App\Models\Setting;
 use Illuminate\Support\Facades\File;
 
@@ -241,18 +245,135 @@ class PageSettingsController extends Controller
 
     public function videoConsultationSettings()
     {
-        return $this->renderInnerPageSettings(
-            'Video Consultation Settings',
-            '/video-consultation Page Settings',
-            'admin.pages.video_consultation_settings_submit',
-            video_consultation_page_settings(),
-            'pages_video_consultation'
-        );
+        $settings = video_consultation_page_settings();
+
+        return view('admin.pages.video_consultation_settings', compact('settings'));
     }
 
-    public function updateVideoConsultationSettings(InnerPageSettingRequest $request)
+    public function updateVideoConsultationSettings(VideoConsultationPageSettingRequest $request)
     {
-        return $this->updateInnerPageSettings($request, 'video_consultation_page', 'video-consultation', 'admin.pages.video_consultation_settings');
+        try {
+            $payload = $request->validated();
+
+            $targetDir = 'uploads/pages/video-consultation';
+            if (!File::isDirectory($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            if ($request->hasFile('hero_image_file')) {
+                $image = $request->file('hero_image_file');
+                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['hero_image'] = $targetDir . '/' . $imageName;
+            }
+
+            if ($request->hasFile('why_image_file')) {
+                $image = $request->file('why_image_file');
+                $imageName = 'why_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['why_image'] = $targetDir . '/' . $imageName;
+            }
+
+            Setting::updateOrCreate(
+                ['key' => 'video_consultation_page'],
+                ['value' => json_encode($payload)]
+            );
+
+            return redirect()->route('admin.pages.video_consultation_settings')->with('success', 'Video Consultation settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update Video Consultation settings: ' . $e->getMessage());
+        }
+    }
+
+    public function aboutSettings()
+    {
+        $settings = about_page_settings();
+
+        return view('admin.pages.about_settings', compact('settings'));
+    }
+
+    public function updateAboutSettings(AboutPageSettingRequest $request)
+    {
+        try {
+            $payload = $request->validated();
+
+            $targetDir = 'uploads/pages/about';
+            if (!File::isDirectory($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            if ($request->hasFile('hero_image_file')) {
+                $image = $request->file('hero_image_file');
+                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['hero_image'] = $targetDir . '/' . $imageName;
+            }
+
+            if ($request->hasFile('intro_image_file')) {
+                $image = $request->file('intro_image_file');
+                $imageName = 'intro_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['intro_image'] = $targetDir . '/' . $imageName;
+            }
+
+            Setting::updateOrCreate(
+                ['key' => 'about_page'],
+                ['value' => json_encode($payload)]
+            );
+
+            return redirect()->route('admin.pages.about_settings')->with('success', 'About page settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update About page settings: ' . $e->getMessage());
+        }
+    }
+
+    public function servicesSettings()
+    {
+        $settings = services_page_settings();
+
+        return view('admin.pages.services_settings', compact('settings'));
+    }
+
+    public function updateServicesSettings(ServicesPageSettingRequest $request)
+    {
+        try {
+            $payload = $request->validated();
+
+            $targetDir = 'uploads/pages/services';
+            if (!File::isDirectory($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            if ($request->hasFile('hero_image_file')) {
+                $image = $request->file('hero_image_file');
+                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['hero_image'] = $targetDir . '/' . $imageName;
+            }
+
+            if ($request->hasFile('block_1_image_file')) {
+                $image = $request->file('block_1_image_file');
+                $imageName = 'block1_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['block_1_image'] = $targetDir . '/' . $imageName;
+            }
+
+            if ($request->hasFile('block_2_image_file')) {
+                $image = $request->file('block_2_image_file');
+                $imageName = 'block2_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['block_2_image'] = $targetDir . '/' . $imageName;
+            }
+
+            Setting::updateOrCreate(
+                ['key' => 'services_page'],
+                ['value' => json_encode($payload)]
+            );
+
+            return redirect()->route('admin.pages.services_settings')->with('success', 'Services page settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update Services page settings: ' . $e->getMessage());
+        }
     }
 
     public function doctorsSettings()
@@ -337,18 +458,44 @@ class PageSettingsController extends Controller
 
     public function blogSettings()
     {
-        return $this->renderInnerPageSettings(
-            'Blog Settings',
-            '/blog Page Settings',
-            'admin.pages.blog_settings_submit',
-            blog_page_settings(),
-            'pages_blog'
-        );
+        $settings = blog_page_settings();
+
+        return view('admin.pages.blog_settings', compact('settings'));
     }
 
-    public function updateBlogSettings(InnerPageSettingRequest $request)
+    public function updateBlogSettings(BlogPageSettingRequest $request)
     {
-        return $this->updateInnerPageSettings($request, 'blog_page', 'blog', 'admin.pages.blog_settings');
+        try {
+            $payload = $request->validated();
+
+            $targetDir = 'uploads/pages/blog';
+            if (!File::isDirectory($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            if ($request->hasFile('hero_image_file')) {
+                $image = $request->file('hero_image_file');
+                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['hero_image'] = $targetDir . '/' . $imageName;
+            }
+
+            if ($request->hasFile('founder_image_file')) {
+                $image = $request->file('founder_image_file');
+                $imageName = 'founder_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['founder_image'] = $targetDir . '/' . $imageName;
+            }
+
+            Setting::updateOrCreate(
+                ['key' => 'blog_page'],
+                ['value' => json_encode($payload)]
+            );
+
+            return redirect()->route('admin.pages.blog_settings')->with('success', 'Blog page settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update Blog page settings: ' . $e->getMessage());
+        }
     }
 
     private function renderInnerPageSettings(
