@@ -41,7 +41,7 @@
 
     <!-- CEO'S MESSAGE SECTION -->
     @if(!empty($homeSettings['ceo_message']['enabled']))
-    <section class="py-24 bg-slate-50 overflow-hidden">
+    <section class="py-24 bg-indigo-50 overflow-hidden">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
                 <!-- Left: CEO Image -->
@@ -76,7 +76,7 @@
     @endif
 
     <!-- SECTION 1: TEXT LEFT / IMAGE RIGHT -->
-    <section class="py-24 bg-slate-50 overflow-hidden">
+    <section class="py-24 bg-slate-100 overflow-hidden">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row gap-20 items-center">
                 <div class="lg:w-1/2 reveal-left">
