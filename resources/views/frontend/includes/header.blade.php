@@ -21,14 +21,6 @@
             </span>
         </div>
         <div class="flex gap-8 items-center">
-            <a href="{{ route('cart.index') }}" class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-indigo-600 transition group font-bold uppercase tracking-widest relative">
-                <i class="fa-solid fa-cart-shopping group-hover:scale-110 transition-transform"></i> 
-                <span>Cart</span>
-                <span id="cart-count-badge" class="absolute -top-2 -right-3 bg-indigo-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border border-white {{ session()->get('cart') ? '' : 'hidden' }}">
-                    {{ session()->get('cart') ? count(session()->get('cart')) : 0 }}
-                </span>
-            </a>
-            
             <!-- MY ACCOUNT (Desktop) -->
             <div class="relative h-full flex items-center" id="account-wrapper">
                 @if(auth()->guard('patient')->check())

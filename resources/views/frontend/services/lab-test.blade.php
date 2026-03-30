@@ -267,7 +267,7 @@
                     service_id: serviceId
                 },
                 success: function(response) {
-                    $('#cart-count-badge').text(response.cart_count).removeClass('hidden');
+                    $('#cart-count-badge, #cart-count-badge-mobile').text(response.cart_count).removeClass('hidden');
                     
                     // Professional SweetAlert Toast
                     const Toast = Swal.mixin({

@@ -47,6 +47,13 @@
 
                 <!-- Desktop CTA -->
                 <div class="flex items-center gap-4 border-l border-slate-100 pl-8">
+                    <a href="{{ route('cart.index') }}" class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-indigo-600 transition group font-bold uppercase tracking-widest relative">
+                        <i class="fa-solid fa-cart-shopping group-hover:scale-110 transition-transform"></i> 
+                        <span>Cart</span>
+                        <span id="cart-count-badge" class="absolute -top-2 -right-3 bg-indigo-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border border-white {{ session()->get('cart') ? '' : 'hidden' }}">
+                            {{ session()->get('cart') ? count(session()->get('cart')) : 0 }}
+                        </span>
+                    </a>
                     <a href="{{ route('book-doctor') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2">
                         <i class="fa-regular fa-calendar-check text-sm"></i>
                         <span>Book Now</span>
@@ -55,17 +62,25 @@
             </nav>
 
             <!-- Mobile Action Row (Visible only on Mobile) -->
-            <div class="flex lg:hidden items-center gap-3 relative z-[110]">
+            <div class="flex lg:hidden items-center gap-2 relative z-[110]">
+                <!-- Mobile Cart Link -->
+                <a href="{{ route('cart.index') }}" class="relative p-2 text-slate-500 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cart-count-badge-mobile" class="absolute -top-0 -right-0.5 bg-indigo-600 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center border border-white {{ session()->get('cart') ? '' : 'hidden' }}">
+                        {{ session()->get('cart') ? count(session()->get('cart')) : 0 }}
+                    </span>
+                </a>
+                
                 <!-- Account/Login Link -->
                 @if(auth()->guard('patient')->check())
-                    <a href="{{ route('patient.index') }}" class="text-indigo-600 font-bold p-2"><i class="fa-regular fa-user-circle text-2xl"></i></a>
+                    <a href="{{ route('patient.index') }}" class="text-indigo-600 font-bold p-2"><i class="fa-regular fa-user-circle text-xl"></i></a>
                 @else
-                    <a href="{{ route('patient.auth.login') }}" class="text-indigo-600 text-[10px] font-black uppercase tracking-widest bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 transition-all active:scale-95">Sign In</a>
+                    <a href="{{ route('patient.auth.login') }}" class="text-indigo-600 text-[10px] font-black uppercase tracking-widest bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-100 transition-all active:scale-95">Sign In</a>
                 @endif
 
                 <!-- Hamburger Button -->
-                <button id="mobile-menu-btn" class="w-11 h-11 flex items-center justify-center text-slate-600 focus:outline-none bg-slate-50 rounded-xl border border-slate-100 transition-all active:bg-slate-100">
-                    <i class="fa-solid fa-bars text-xl transition-all duration-300" id="menu-icon"></i>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center text-slate-600 focus:outline-none bg-slate-50 rounded-xl border border-slate-100 transition-all active:bg-slate-100">
+                    <i class="fa-solid fa-bars text-lg transition-all duration-300" id="menu-icon"></i>
                 </button>
             </div>
         </div>

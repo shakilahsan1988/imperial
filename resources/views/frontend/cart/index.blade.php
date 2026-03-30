@@ -62,7 +62,7 @@
                                 <span class="text-slate-900">{{ formated_price($total) }}</span>
                             </div>
                             <div class="flex justify-between text-slate-500 font-medium pb-4 border-bottom border-slate-50">
-                                <span>Handling Fee</span>
+                                <span>Processing Fee</span>
                                 <span class="text-emerald-600 font-bold">FREE</span>
                             </div>
                             <div class="flex justify-between items-center pt-4 border-t-2 border-slate-50">
