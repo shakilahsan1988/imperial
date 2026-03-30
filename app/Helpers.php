@@ -1,58 +1,55 @@
 <?php
-use Twilio\Rest\Client;
-use App\Models\Setting;
-use App\Models\Patient;
-use App\Models\Group;
-use App\Models\Doctor;
+
 use App\Mail\PatientCode;
 use App\Mail\TestsNotification;
+use App\Models\Doctor;
+use App\Models\Group;
+use App\Models\Patient;
+use App\Models\Setting;
+use Twilio\Rest\Client;
 
-//get system currency
-if (!function_exists('get_currency')) 
-{
-   function get_currency()
-   {
-        if(cache()->has('currency'))
-        {
-            $currency=cache('currency');
+// get system currency
+if (! function_exists('get_currency')) {
+    function get_currency()
+    {
+        if (cache()->has('currency')) {
+            $currency = cache('currency');
+        } else {
+            $setting = setting('info');
+            $currency = $setting['currency'];
+            cache()->put('currency', $currency);
         }
-        else{
-            $setting=setting('info');
-            $currency=$setting['currency'];
-            cache()->put('currency',$currency);
-        }
+
         return $currency;
-   }
+    }
 
 }
 
-//get formated price of things
-if (!function_exists('formated_price')) 
-{
-   function formated_price($price)
-   {
+// get formated price of things
+if (! function_exists('formated_price')) {
+    function formated_price($price)
+    {
         $currency = get_currency();
+
         return $currency.' '.number_format($price, 2);
-   }
+    }
 
 }
 
-//send sms
-if (!function_exists('send_sms')) 
-{
-   function send_sms($to,$message)
-   {
-        $sms_setting=setting('sms');
+// send sms
+if (! function_exists('send_sms')) {
+    function send_sms($to, $message)
+    {
+        $sms_setting = setting('sms');
 
-        if(!empty($sms_setting['sid'])&&!empty($sms_setting['token'])&&!empty($sms_setting['from']))
-        {
+        if (! empty($sms_setting['sid']) && ! empty($sms_setting['token']) && ! empty($sms_setting['from'])) {
             // Your Account SID and Auth Token from twilio.com/console
             $sid = $sms_setting['sid'];
             $token = $sms_setting['token'];
             $client = new Client($sid, $token);
 
             // Use the client to do fun stuff like send text messages!
-            try{
+            try {
                 $client->messages->create(
                     // the number you'd like to send the message to
                     $to,
@@ -60,91 +57,75 @@ if (!function_exists('send_sms'))
                         // A Twilio phone number you purchased at twilio.com/console
                         'from' => $sms_setting['from'],
                         // the body of the text message you'd like to send
-                        'body' => $message
+                        'body' => $message,
                     ]
                 );
-            }
-            catch(\Exception $e){
-               //error
+            } catch (\Exception $e) {
+                // error
             }
         }
 
     }
 }
 
+// send notifications via mail and sms
+if (! function_exists('send_notification')) {
+    function send_notification($type, $patient)
+    {
+        // send mail notification
+        $email_settings = setting('emails');
 
-//send notifications via mail and sms
-if (!function_exists('send_notification')) 
-{
-   function send_notification($type,$patient)
-   {
-       //send mail notification 
-       $email_settings=setting('emails');
-
-       if($email_settings[$type]['active']==true)
-       {
-           if(!empty($patient['email']))
-           {
-               if($type=='patient_code')
-               {
-                   try{
+        if ($email_settings[$type]['active'] == true) {
+            if (! empty($patient['email'])) {
+                if ($type == 'patient_code') {
+                    try {
                         \Mail::to($patient['email'])->send(new PatientCode($patient));
-                   }
-                   catch(\Exception $e)
-                   {
-                       //
-                   }
-               }
-               elseif($type=='tests_notification')
-               {
-                    try{
-                        \Mail::to($patient['email'])->send(new TestsNotification($patient));
-                    }
-                    catch(\Exception $e){
+                    } catch (\Exception $e) {
                         //
                     }
-               }
-           }
+                } elseif ($type == 'tests_notification') {
+                    try {
+                        \Mail::to($patient['email'])->send(new TestsNotification($patient));
+                    } catch (\Exception $e) {
+                        //
+                    }
+                }
+            }
 
-       }
+        }
 
-       //send sms
-       $sms_settings=setting('sms');
+        // send sms
+        $sms_settings = setting('sms');
 
-       if($sms_settings[$type]['active']==true)
-       {
-           if(!empty($patient['phone']))
-           {
-                $message=str_replace(
-                    ['{patient_code}','{patient_name}'],
-                    [$patient['code'],$patient['name']],
+        if ($sms_settings[$type]['active'] == true) {
+            if (! empty($patient['phone'])) {
+                $message = str_replace(
+                    ['{patient_code}', '{patient_name}'],
+                    [$patient['code'], $patient['name']],
                     $sms_settings[$type]['message']
                 );
 
-                send_sms($patient['phone'],$message);
-           }
-       }
+                send_sms($patient['phone'], $message);
+            }
+        }
 
-   }
+    }
 }
 
-//get json setting as array
-if (!function_exists('setting')) 
-{  
+// get json setting as array
+if (! function_exists('setting')) {
     function setting($key)
     {
-         $setting=Setting::where('key',$key)->first();
-		 if($setting){
-			  $setting=json_decode($setting['value'],true);
-		 }
-       
+        $setting = Setting::where('key', $key)->first();
+        if ($setting) {
+            $setting = json_decode($setting['value'], true);
+        }
 
         return $setting;
     }
 }
 
-if (!function_exists('menu_settings'))
-{
+if (! function_exists('menu_settings')) {
     function menu_settings()
     {
         $defaults = [
@@ -176,7 +157,7 @@ if (!function_exists('menu_settings'))
         ];
 
         $saved = setting('menus');
-        if (!is_array($saved)) {
+        if (! is_array($saved)) {
             return $defaults;
         }
 
@@ -187,8 +168,7 @@ if (!function_exists('menu_settings'))
     }
 }
 
-if (!function_exists('home_page_settings'))
-{
+if (! function_exists('home_page_settings')) {
     function home_page_settings()
     {
         $defaults = [
@@ -272,10 +252,19 @@ if (!function_exists('home_page_settings'))
                 'button_text' => 'Book Video Consult',
                 'button_url' => '/video-consultation',
             ],
+            'ceo_message' => [
+                'enabled' => true,
+                'badge' => "CEO's Message",
+                'title_html' => 'A Message from Our <span class="text-indigo-600">CEO</span>',
+                'message' => 'At Imperial Health, we believe that every patient deserves world-class healthcare delivered with compassion and excellence. Our mission is to redefine the healthcare experience in Bangladesh by combining cutting-edge medical technology with a patient-first approach. We are committed to providing accessible, affordable, and high-quality care to every individual who walks through our doors.',
+                'name' => 'Mohammad Abdul Matin Emon',
+                'designation' => 'Chief Executive Officer',
+                'image' => 'assets/front/images/management/2.jpg',
+            ],
         ];
 
         $saved = setting('home_page');
-        if (!is_array($saved)) {
+        if (! is_array($saved)) {
             return $defaults;
         }
 
@@ -289,8 +278,7 @@ if (!function_exists('home_page_settings'))
     }
 }
 
-if (!function_exists('diagonostic_page_settings'))
-{
+if (! function_exists('diagonostic_page_settings')) {
     function diagonostic_page_settings()
     {
         $defaults = [
@@ -314,7 +302,7 @@ if (!function_exists('diagonostic_page_settings'))
         ];
 
         $saved = setting('diagonostic_page');
-        if (!is_array($saved)) {
+        if (! is_array($saved)) {
             return $defaults;
         }
 
@@ -322,8 +310,7 @@ if (!function_exists('diagonostic_page_settings'))
     }
 }
 
-if (!function_exists('health_check_page_settings'))
-{
+if (! function_exists('health_check_page_settings')) {
     function health_check_page_settings()
     {
         $defaults = [
@@ -348,7 +335,7 @@ if (!function_exists('health_check_page_settings'))
         ];
 
         $saved = setting('health_check_page');
-        if (!is_array($saved)) {
+        if (! is_array($saved)) {
             return $defaults;
         }
 
@@ -356,12 +343,11 @@ if (!function_exists('health_check_page_settings'))
     }
 }
 
-if (!function_exists('inner_page_settings'))
-{
+if (! function_exists('inner_page_settings')) {
     function inner_page_settings($key, array $defaults)
     {
         $saved = setting($key);
-        if (!is_array($saved)) {
+        if (! is_array($saved)) {
             return $defaults;
         }
 
@@ -369,8 +355,7 @@ if (!function_exists('inner_page_settings'))
     }
 }
 
-if (!function_exists('membership_page_settings'))
-{
+if (! function_exists('membership_page_settings')) {
     function membership_page_settings()
     {
         return inner_page_settings('membership_page', [
@@ -382,8 +367,7 @@ if (!function_exists('membership_page_settings'))
     }
 }
 
-if (!function_exists('video_consultation_page_settings'))
-{
+if (! function_exists('video_consultation_page_settings')) {
     function video_consultation_page_settings()
     {
         return inner_page_settings('video_consultation_page', [
@@ -413,8 +397,7 @@ if (!function_exists('video_consultation_page_settings'))
     }
 }
 
-if (!function_exists('about_page_settings'))
-{
+if (! function_exists('about_page_settings')) {
     function about_page_settings()
     {
         return inner_page_settings('about_page', [
@@ -439,8 +422,7 @@ if (!function_exists('about_page_settings'))
     }
 }
 
-if (!function_exists('services_page_settings'))
-{
+if (! function_exists('services_page_settings')) {
     function services_page_settings()
     {
         return inner_page_settings('services_page', [
@@ -470,8 +452,7 @@ if (!function_exists('services_page_settings'))
     }
 }
 
-if (!function_exists('doctors_page_settings'))
-{
+if (! function_exists('doctors_page_settings')) {
     function doctors_page_settings()
     {
         return inner_page_settings('doctors_page', [
@@ -483,8 +464,7 @@ if (!function_exists('doctors_page_settings'))
     }
 }
 
-if (!function_exists('gallery_page_settings'))
-{
+if (! function_exists('gallery_page_settings')) {
     function gallery_page_settings()
     {
         return inner_page_settings('gallery_page', [
@@ -496,8 +476,7 @@ if (!function_exists('gallery_page_settings'))
     }
 }
 
-if (!function_exists('mission_vision_page_settings'))
-{
+if (! function_exists('mission_vision_page_settings')) {
     function mission_vision_page_settings()
     {
         return inner_page_settings('mission_vision_page', [
@@ -509,8 +488,7 @@ if (!function_exists('mission_vision_page_settings'))
     }
 }
 
-if (!function_exists('management_page_settings'))
-{
+if (! function_exists('management_page_settings')) {
     function management_page_settings()
     {
         return inner_page_settings('management_page', [
@@ -522,8 +500,7 @@ if (!function_exists('management_page_settings'))
     }
 }
 
-if (!function_exists('contact_page_settings'))
-{
+if (! function_exists('contact_page_settings')) {
     function contact_page_settings()
     {
         return inner_page_settings('contact_page', [
@@ -535,8 +512,7 @@ if (!function_exists('contact_page_settings'))
     }
 }
 
-if (!function_exists('blog_page_settings'))
-{
+if (! function_exists('blog_page_settings')) {
     function blog_page_settings()
     {
         return inner_page_settings('blog_page', [
@@ -556,25 +532,24 @@ if (!function_exists('blog_page_settings'))
     }
 }
 
-//generate  pdf
-if (!function_exists('generate_pdf')) 
-{  
-    //type (1) => tests report 
-    //type (2) => receipt
-    //type (3) => accounting report
-    //type (4) => accounting doctor report
+// generate  pdf
+if (! function_exists('generate_pdf')) {
+    // type (1) => tests report
+    // type (2) => receipt
+    // type (3) => accounting report
+    // type (4) => accounting doctor report
 
-    function generate_pdf($data='',$type=1)
+    function generate_pdf($data = '', $type = 1)
     {
-        //reports settings
-        $reports_settings=setting('reports');
+        // reports settings
+        $reports_settings = setting('reports');
 
-        //info setting
-        $info_settings=setting('info');
+        // info setting
+        $info_settings = setting('info');
 
-        $pdf_name=time().'.pdf';
-		        
-		//get header , body , footer
+        $pdf_name = time().'.pdf';
+
+        // get header , body , footer
         $report_header = '';
         $report_background = '';
         $report_footer = '';
@@ -591,128 +566,108 @@ if (!function_exists('generate_pdf'))
             $report_footer = 'data:'.mime_content_type('img/report_footer.jpg').';base64,'.$report_footer;
         }
 
-        if($type==1)
-        {
-            $group=$data;
-            $pdf = PDF::loadView('pdf.report',compact('group','reports_settings','info_settings','type','report_header','report_background','report_footer'));
+        if ($type == 1) {
+            $group = $data;
+            $pdf = PDF::loadView('pdf.report', compact('group', 'reports_settings', 'info_settings', 'type', 'report_header', 'report_background', 'report_footer'));
+        } elseif ($type == 2) {
+            $group = $data;
+            $pdf = PDF::loadView('pdf.receipt', compact('group', 'reports_settings', 'info_settings', 'type', 'report_header', 'report_background', 'report_footer'));
+        } elseif ($type == 3) {
+            $pdf = PDF::loadView('pdf.accounting', compact('data', 'reports_settings', 'info_settings', 'type'));
+        } elseif ($type == 4) {
+            $pdf = PDF::loadView('pdf.doctor_report', compact('data', 'reports_settings', 'info_settings', 'type'));
         }
-        elseif($type==2){
-            $group=$data;
-            $pdf = PDF::loadView('pdf.receipt',compact('group','reports_settings','info_settings','type','report_header','report_background','report_footer'));
-        }
-        elseif($type==3)
-        {
-            $pdf = PDF::loadView('pdf.accounting',compact('data','reports_settings','info_settings','type'));
-        }
-        elseif($type==4)
-        {
-            $pdf = PDF::loadView('pdf.doctor_report',compact('data','reports_settings','info_settings','type'));
-        }
-        
-        $pdf->save('uploads/pdf/'.$pdf_name);//save pdf file
 
-        return url('uploads/pdf/'.$pdf_name);//return pdf url
+        $pdf->save('uploads/pdf/'.$pdf_name); // save pdf file
+
+        return url('uploads/pdf/'.$pdf_name); // return pdf url
     }
 }
 
-if (!function_exists('print_barcode')) 
-{  
-    function print_barcode($group,$number,$barcode_image)
+if (! function_exists('print_barcode')) {
+    function print_barcode($group, $number, $barcode_image)
     {
-        $pdf_name=time().'.pdf';
+        $pdf_name = time().'.pdf';
 
-        $pdf = PDF::loadView('pdf.barcode',compact('group','number','barcode_image'));
+        $pdf = PDF::loadView('pdf.barcode', compact('group', 'number', 'barcode_image'));
 
-        $pdf->save('uploads/pdf/'.$pdf_name);//save pdf file
+        $pdf->save('uploads/pdf/'.$pdf_name); // save pdf file
 
         return url('uploads/pdf/'.$pdf_name);
     }
 }
 
-
-//check if report all subtests are done
-if (!function_exists('check_group_done')) 
-{  
+// check if report all subtests are done
+if (! function_exists('check_group_done')) {
     function check_group_done($group_id)
     {
-        $group=\App\Models\Group::with(['tests'])->where('id',$group_id)->first();
+        $group = \App\Models\Group::with(['tests'])->where('id', $group_id)->first();
 
-        $done=true;
+        $done = true;
 
-        if(isset($group))
-        {
-            //check tests
-            foreach($group['tests'] as $test)
-            {
-                if(!$test['done'])
-                {
-                    $done=false;
+        if (isset($group)) {
+            // check tests
+            foreach ($group['tests'] as $test) {
+                if (! $test['done']) {
+                    $done = false;
                 }
             }
         }
 
-        $group->update(['done'=>$done]);
+        $group->update(['done' => $done]);
 
         return $done;
     }
 }
 
-
-//group test calculations
-if (!function_exists('group_test_calculations')) 
-{
+// group test calculations
+if (! function_exists('group_test_calculations')) {
     function group_test_calculations($id)
     {
-        $group=Group::with('tests','contract')->where('id',$id)->first();
+        $group = Group::with('tests', 'contract')->where('id', $id)->first();
 
-        $subtotal=0;
-        $discount=0;
-        $paid=$group['paid'];
-        $doctor_commission=0;
+        $subtotal = 0;
+        $discount = 0;
+        $paid = $group['paid'];
+        $doctor_commission = 0;
 
-        if(isset($group['tests']))
-        {
-            foreach($group['tests'] as $test)
-            {
-                $subtotal+=$test['price'];
+        if (isset($group['tests'])) {
+            foreach ($group['tests'] as $test) {
+                $subtotal += $test['price'];
             }
         }
 
-        if(isset($group['contract']))
-        {
-            $discount=($group['contract']['discount']*$subtotal)/100;
+        if (isset($group['contract'])) {
+            $discount = ($group['contract']['discount'] * $subtotal) / 100;
         }
 
-        $total=$subtotal-$discount;
-        $due=$total-$paid;
+        $total = $subtotal - $discount;
+        $due = $total - $paid;
 
-        if(isset($group['doctor']))
-        {
-            $doctor_commission=$total*$group['doctor']['commission']/100;
+        if (isset($group['doctor'])) {
+            $doctor_commission = $total * $group['doctor']['commission'] / 100;
         }
 
         $group->update([
-            'subtotal'=>$subtotal,
-            'discount'=>$discount,
-            'total'=>$subtotal-$discount,
-            'paid'=>$paid,
-            'due'=>$due,
-            'doctor_commission'=>$doctor_commission
+            'subtotal' => $subtotal,
+            'discount' => $discount,
+            'total' => $subtotal - $discount,
+            'paid' => $paid,
+            'due' => $due,
+            'doctor_commission' => $doctor_commission,
         ]);
 
     }
 }
 
-if (!function_exists('patient_code')) 
-{
+if (! function_exists('patient_code')) {
     function patient_code()
     {
-        $code=time().mt_rand(1,1000);
+        $code = time().mt_rand(1, 1000);
 
-        $patient=Patient::where('code',$code)->first();
+        $patient = Patient::where('code', $code)->first();
 
-        if(isset($patient))
-        {
+        if (isset($patient)) {
             patient_code();
         }
 
@@ -720,21 +675,17 @@ if (!function_exists('patient_code'))
     }
 }
 
-if (!function_exists('doctor_code')) 
-{
+if (! function_exists('doctor_code')) {
     function doctor_code()
     {
-        $code=time().mt_rand(1,1000);
+        $code = time().mt_rand(1, 1000);
 
-        $doctor=Doctor::where('code',$code)->first();
+        $doctor = Doctor::where('code',$code)->first();
 
-        if(isset($doctor))
-        {
+        if (isset($doctor)) {
             doctor_code();
         }
 
         return $code;
     }
 }
-
-?>

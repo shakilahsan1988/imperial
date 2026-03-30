@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AboutPageSettingRequest;
-use App\Http\Requests\Admin\DiagonosticPageSettingRequest;
 use App\Http\Requests\Admin\BlogPageSettingRequest;
+use App\Http\Requests\Admin\DiagonosticPageSettingRequest;
 use App\Http\Requests\Admin\HealthCheckPageSettingRequest;
 use App\Http\Requests\Admin\HomePageSettingRequest;
 use App\Http\Requests\Admin\InnerPageSettingRequest;
@@ -26,7 +26,7 @@ class PageSettingsController extends Controller
                 return $next($request);
             }
 
-            if (!$u || !$u->hasPermission('view_setting')) {
+            if (! $u || ! $u->hasPermission('view_setting')) {
                 abort(403, 'You do not have permission to manage page settings.');
             }
 
@@ -65,10 +65,10 @@ class PageSettingsController extends Controller
                 count($uploadedImages)
             );
 
-            if (!File::isDirectory('uploads/home/hero')) {
+            if (! File::isDirectory('uploads/home/hero')) {
                 File::makeDirectory('uploads/home/hero', 0755, true);
             }
-            if (!File::isDirectory('uploads/home/sections')) {
+            if (! File::isDirectory('uploads/home/sections')) {
                 File::makeDirectory('uploads/home/sections', 0755, true);
             }
 
@@ -82,9 +82,9 @@ class PageSettingsController extends Controller
 
                 if (isset($uploadedImages[$i]) && $uploadedImages[$i]) {
                     $image = $uploadedImages[$i];
-                    $imageName = 'hero_' . time() . '_' . $i . '.' . $image->getClientOriginalExtension();
+                    $imageName = 'hero_'.time().'_'.$i.'.'.$image->getClientOriginalExtension();
                     $image->move('uploads/home/hero', $imageName);
-                    $imagePath = 'uploads/home/hero/' . $imageName;
+                    $imagePath = 'uploads/home/hero/'.$imageName;
                 }
 
                 if (
@@ -119,27 +119,35 @@ class PageSettingsController extends Controller
                 'experience_imperial' => $validated['experience_imperial'],
                 'continuous_care' => $validated['continuous_care'],
                 'expert_advice' => $validated['expert_advice'],
+                'ceo_message' => $validated['ceo_message'],
             ];
 
             if ($request->hasFile('our_approach_image')) {
                 $image = $request->file('our_approach_image');
-                $imageName = 'our_approach_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'our_approach_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move('uploads/home/sections', $imageName);
-                $payload['our_approach']['image'] = 'uploads/home/sections/' . $imageName;
+                $payload['our_approach']['image'] = 'uploads/home/sections/'.$imageName;
             }
 
             if ($request->hasFile('lab_excellence_image')) {
                 $image = $request->file('lab_excellence_image');
-                $imageName = 'lab_excellence_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'lab_excellence_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move('uploads/home/sections', $imageName);
-                $payload['lab_excellence']['image'] = 'uploads/home/sections/' . $imageName;
+                $payload['lab_excellence']['image'] = 'uploads/home/sections/'.$imageName;
             }
 
             if ($request->hasFile('experience_imperial_image')) {
                 $image = $request->file('experience_imperial_image');
-                $imageName = 'experience_imperial_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'experience_imperial_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move('uploads/home/sections', $imageName);
-                $payload['experience_imperial']['image'] = 'uploads/home/sections/' . $imageName;
+                $payload['experience_imperial']['image'] = 'uploads/home/sections/'.$imageName;
+            }
+
+            if ($request->hasFile('ceo_message_image')) {
+                $image = $request->file('ceo_message_image');
+                $imageName = 'ceo_message_'.time().'.'.$image->getClientOriginalExtension();
+                $image->move('uploads/home/sections', $imageName);
+                $payload['ceo_message']['image'] = 'uploads/home/sections/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -151,7 +159,7 @@ class PageSettingsController extends Controller
                 ->route('admin.pages.home_settings')
                 ->with('success', 'Home page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update home page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update home page settings: '.$e->getMessage());
         }
     }
 
@@ -167,15 +175,15 @@ class PageSettingsController extends Controller
         try {
             $payload = $request->validated();
 
-            if (!File::isDirectory('uploads/pages/diagonostic')) {
+            if (! File::isDirectory('uploads/pages/diagonostic')) {
                 File::makeDirectory('uploads/pages/diagonostic', 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move('uploads/pages/diagonostic', $imageName);
-                $payload['hero_image'] = 'uploads/pages/diagonostic/' . $imageName;
+                $payload['hero_image'] = 'uploads/pages/diagonostic/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -187,7 +195,7 @@ class PageSettingsController extends Controller
                 ->route('admin.pages.diagonostic_settings')
                 ->with('success', 'Diagonostic page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update Diagonostic page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update Diagonostic page settings: '.$e->getMessage());
         }
     }
 
@@ -203,15 +211,15 @@ class PageSettingsController extends Controller
         try {
             $payload = $request->validated();
 
-            if (!File::isDirectory('uploads/pages/health-check')) {
+            if (! File::isDirectory('uploads/pages/health-check')) {
                 File::makeDirectory('uploads/pages/health-check', 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move('uploads/pages/health-check', $imageName);
-                $payload['hero_image'] = 'uploads/pages/health-check/' . $imageName;
+                $payload['hero_image'] = 'uploads/pages/health-check/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -223,7 +231,7 @@ class PageSettingsController extends Controller
                 ->route('admin.pages.health_check_settings')
                 ->with('success', 'Health Check page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update Health Check page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update Health Check page settings: '.$e->getMessage());
         }
     }
 
@@ -256,22 +264,22 @@ class PageSettingsController extends Controller
             $payload = $request->validated();
 
             $targetDir = 'uploads/pages/video-consultation';
-            if (!File::isDirectory($targetDir)) {
+            if (! File::isDirectory($targetDir)) {
                 File::makeDirectory($targetDir, 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['hero_image'] = $targetDir . '/' . $imageName;
+                $payload['hero_image'] = $targetDir.'/'.$imageName;
             }
 
             if ($request->hasFile('why_image_file')) {
                 $image = $request->file('why_image_file');
-                $imageName = 'why_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'why_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['why_image'] = $targetDir . '/' . $imageName;
+                $payload['why_image'] = $targetDir.'/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -281,7 +289,7 @@ class PageSettingsController extends Controller
 
             return redirect()->route('admin.pages.video_consultation_settings')->with('success', 'Video Consultation settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update Video Consultation settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update Video Consultation settings: '.$e->getMessage());
         }
     }
 
@@ -298,22 +306,22 @@ class PageSettingsController extends Controller
             $payload = $request->validated();
 
             $targetDir = 'uploads/pages/about';
-            if (!File::isDirectory($targetDir)) {
+            if (! File::isDirectory($targetDir)) {
                 File::makeDirectory($targetDir, 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['hero_image'] = $targetDir . '/' . $imageName;
+                $payload['hero_image'] = $targetDir.'/'.$imageName;
             }
 
             if ($request->hasFile('intro_image_file')) {
                 $image = $request->file('intro_image_file');
-                $imageName = 'intro_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'intro_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['intro_image'] = $targetDir . '/' . $imageName;
+                $payload['intro_image'] = $targetDir.'/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -323,7 +331,7 @@ class PageSettingsController extends Controller
 
             return redirect()->route('admin.pages.about_settings')->with('success', 'About page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update About page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update About page settings: '.$e->getMessage());
         }
     }
 
@@ -340,29 +348,29 @@ class PageSettingsController extends Controller
             $payload = $request->validated();
 
             $targetDir = 'uploads/pages/services';
-            if (!File::isDirectory($targetDir)) {
+            if (! File::isDirectory($targetDir)) {
                 File::makeDirectory($targetDir, 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['hero_image'] = $targetDir . '/' . $imageName;
+                $payload['hero_image'] = $targetDir.'/'.$imageName;
             }
 
             if ($request->hasFile('block_1_image_file')) {
                 $image = $request->file('block_1_image_file');
-                $imageName = 'block1_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'block1_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['block_1_image'] = $targetDir . '/' . $imageName;
+                $payload['block_1_image'] = $targetDir.'/'.$imageName;
             }
 
             if ($request->hasFile('block_2_image_file')) {
                 $image = $request->file('block_2_image_file');
-                $imageName = 'block2_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'block2_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['block_2_image'] = $targetDir . '/' . $imageName;
+                $payload['block_2_image'] = $targetDir.'/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -372,7 +380,7 @@ class PageSettingsController extends Controller
 
             return redirect()->route('admin.pages.services_settings')->with('success', 'Services page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update Services page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update Services page settings: '.$e->getMessage());
         }
     }
 
@@ -469,22 +477,22 @@ class PageSettingsController extends Controller
             $payload = $request->validated();
 
             $targetDir = 'uploads/pages/blog';
-            if (!File::isDirectory($targetDir)) {
+            if (! File::isDirectory($targetDir)) {
                 File::makeDirectory($targetDir, 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['hero_image'] = $targetDir . '/' . $imageName;
+                $payload['hero_image'] = $targetDir.'/'.$imageName;
             }
 
             if ($request->hasFile('founder_image_file')) {
                 $image = $request->file('founder_image_file');
-                $imageName = 'founder_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'founder_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['founder_image'] = $targetDir . '/' . $imageName;
+                $payload['founder_image'] = $targetDir.'/'.$imageName;
             }
 
             Setting::updateOrCreate(
@@ -494,7 +502,7 @@ class PageSettingsController extends Controller
 
             return redirect()->route('admin.pages.blog_settings')->with('success', 'Blog page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update Blog page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update Blog page settings: '.$e->getMessage());
         }
     }
 
@@ -517,18 +525,18 @@ class PageSettingsController extends Controller
         try {
             $payload = $request->validated();
 
-            $targetDir = 'uploads/pages/' . $uploadFolder;
-            if (!File::isDirectory($targetDir)) {
+            $targetDir = 'uploads/pages/'.$uploadFolder;
+            if (! File::isDirectory($targetDir)) {
                 File::makeDirectory($targetDir, 0755, true);
             }
 
             if ($request->hasFile('hero_image_file')) {
                 $image = $request->file('hero_image_file');
-                $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move($targetDir, $imageName);
-                $payload['hero_image'] = $targetDir . '/' . $imageName;
+                $payload['hero_image'] = $targetDir.'/'.$imageName;
             }
-            
+
             Setting::updateOrCreate(
                 ['key' => $settingKey],
                 ['value' => json_encode($payload)]
@@ -536,7 +544,7 @@ class PageSettingsController extends Controller
 
             return redirect()->route($redirectRoute)->with('success', 'Page settings updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update page settings: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update page settings: '.$e->getMessage());
         }
     }
 }

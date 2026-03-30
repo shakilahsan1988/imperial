@@ -219,8 +219,14 @@
           </ul>
         </li>
       @endif
-      
+
       @if($u && ($isSuper || $u->hasPermission('view_setting')))
+      <li class="nav-item">
+        <a href="{{route('admin.team_members.index')}}" class="nav-link" id="team_members">
+          <i class="nav-icon fas fa-users"></i>
+          <p>Management Team</p>
+        </a>
+      </li>
       <li class="nav-item">
         <a href="{{route('admin.settings.index')}}" class="nav-link" id="settings">
           <i class="fa fa-cogs nav-icon"></i>

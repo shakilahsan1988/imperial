@@ -2,57 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Booking;
-use App\Models\Patient;
+use App\Models\Branch;
+use App\Models\Doctor;
+use App\Models\DoctorConsultationBooking;
+use App\Models\DoctorConsultationSlot;
+use App\Models\DoctorDepartment;
+use App\Models\DoctorSpecialty;
 use App\Models\HealthPackage;
 use App\Models\HealthPackageBooking;
 use App\Models\HealthPackageCategory;
-use App\Models\Doctor;
-use App\Models\DoctorSpecialty;
-use App\Models\DoctorDepartment;
-use App\Models\DoctorConsultationSlot;
-use App\Models\DoctorConsultationBooking;
-use App\Models\Branch;
 use App\Models\MembershipCategory;
 use App\Models\MembershipPlan;
 use App\Models\MembershipPlanBooking;
-use App\Models\Blog;
-use App\Models\BlogCategory;
-use Carbon\Carbon;
+use App\Models\Patient;
+use App\Models\Service;
+use App\Models\TeamMember;
+use Illuminate\Http\Request;
 
 class FrontController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $homeSettings = home_page_settings();
 
         return view('frontend.index', compact('homeSettings'));
     }
 
-    public function services(Request $request){
+    public function services(Request $request)
+    {
         $category = $request->category ?? $request->segment(2);
         $query = Service::active()->showOnFrontend();
-        
+
         if ($category && in_array($category, ['laboratory', 'imaging', 'procedure'])) {
             $query->where('category', $category);
         }
-        
+
         $services = $query->orderBy('category')->orderBy('name')->get();
         $pageSettings = services_page_settings();
+
         return view('frontend.services.services', compact('services', 'category', 'pageSettings'));
     }
 
-    public function service_details(){
-    	return view('frontend.services.service-details');
+    public function service_details()
+    {
+        return view('frontend.services.service-details');
     }
 
-    public function service_detail(Request $request, $id){
+    public function service_detail(Request $request, $id)
+    {
         $service = Service::with('components')->findOrFail($id);
+
         return view('frontend.services.service-detail', compact('service'));
     }
 
-    public function store_booking(Request $request){
+    public function store_booking(Request $request)
+    {
         $request->validate([
             'patient_name' => 'required|string|max:255',
             'patient_phone' => 'required|string|max:20',
@@ -87,35 +94,35 @@ class FrontController extends Controller
             }
             $totalAmount += $extraFee;
         }
-// Get or Create Patient
-$patientId = null;
-if (auth()->guard('patient')->check()) {
-    $patientId = auth()->guard('patient')->id();
-} else {
-    // Check by phone OR email
-    $existingPatient = Patient::where('phone', $request->patient_phone)
-        ->when($request->patient_email, function($q) use ($request) {
-            return $q->orWhere('email', $request->patient_email);
-        })
-        ->first();
+        // Get or Create Patient
+        $patientId = null;
+        if (auth()->guard('patient')->check()) {
+            $patientId = auth()->guard('patient')->id();
+        } else {
+            // Check by phone OR email
+            $existingPatient = Patient::where('phone', $request->patient_phone)
+                ->when($request->patient_email, function ($q) use ($request) {
+                    return $q->orWhere('email', $request->patient_email);
+                })
+                ->first();
 
-    if ($existingPatient) {
-        $patientId = $existingPatient->id;
-        // Optionally update their info if it was missing
-        if (empty($existingPatient->email) && $request->patient_email) {
-            $existingPatient->update(['email' => $request->patient_email]);
+            if ($existingPatient) {
+                $patientId = $existingPatient->id;
+                // Optionally update their info if it was missing
+                if (empty($existingPatient->email) && $request->patient_email) {
+                    $existingPatient->update(['email' => $request->patient_email]);
+                }
+            } else {
+                $newPatient = Patient::create([
+                    'code' => patient_code(),
+                    'name' => $request->patient_name,
+                    'phone' => $request->patient_phone,
+                    'email' => $request->patient_email,
+                    'gender' => 'male',
+                ]);
+                $patientId = $newPatient->id;
+            }
         }
-    } else {
-        $newPatient = Patient::create([
-            'code' => patient_code(),
-            'name' => $request->patient_name,
-            'phone' => $request->patient_phone,
-            'email' => $request->patient_email,
-            'gender' => 'male',
-        ]);
-        $patientId = $newPatient->id;
-    }
-}
 
         $booking = Booking::create([
             'patient_id' => $patientId,
@@ -143,31 +150,37 @@ if (auth()->guard('patient')->check()) {
         return redirect()->route('bookings.confirmation', $booking->id)->with('success', 'Booking placed successfully!');
     }
 
-    public function booking_confirmation(Request $request, $id){
+    public function booking_confirmation(Request $request, $id)
+    {
         $booking = Booking::with('services', 'patient', 'branch')->findOrFail($id);
+
         return view('frontend.booking.confirmation', compact('booking'));
     }
 
     public function booking_receipt($id)
     {
         $booking = Booking::with(['services', 'patient', 'branch'])->findOrFail($id);
-        
+
         // We can reuse the generate_pdf helper or create a specific one for receipts
         // Since we want it professional, let's pass a specific type
         $pdf_url = generate_pdf($booking, 2); // Type 2 for Receipt/Invoice
+
         return redirect($pdf_url);
     }
 
-    public function my_bookings(Request $request){
+    public function my_bookings(Request $request)
+    {
         $patientId = auth()->guard('patient')->id();
         $bookings = Booking::with('services')
             ->where('patient_id', $patientId)
             ->orderBy('created_at', 'desc')
             ->get();
+
         return view('frontend.booking.my-bookings', compact('bookings'));
     }
 
-    public function health_check(){
+    public function health_check()
+    {
         $categories = HealthPackageCategory::where('status', true)
             ->with(['packages' => function ($q) {
                 $q->where('status', true)->where('show_on_frontend', true);
@@ -178,17 +191,18 @@ if (auth()->guard('patient')->check()) {
 
         $healthCheckSettings = health_check_page_settings();
 
-		return view('frontend.services.health-check', compact('categories', 'healthCheckSettings'));
+        return view('frontend.services.health-check', compact('categories', 'healthCheckSettings'));
     }
 
-    public function package_details(Request $request, $slug){
+    public function package_details(Request $request, $slug)
+    {
         $package = HealthPackage::with('category')
             ->where('status', true)
             ->where('show_on_frontend', true)
             ->where('slug', $slug)
             ->first();
 
-        if (!$package && ctype_digit((string) $slug)) {
+        if (! $package && ctype_digit((string) $slug)) {
             $package = HealthPackage::with('category')
                 ->where('status', true)
                 ->where('show_on_frontend', true)
@@ -199,13 +213,13 @@ if (auth()->guard('patient')->check()) {
 
         abort_unless($package, 404);
 
-		return view('frontend.services.package-details', compact('package'));
+        return view('frontend.services.package-details', compact('package'));
     }
 
     public function package_booking_submit(Request $request, $slug)
     {
         $package = HealthPackage::where('slug', $slug)->first();
-        if (!$package && ctype_digit((string) $slug)) {
+        if (! $package && ctype_digit((string) $slug)) {
             $package = HealthPackage::findOrFail((int) $slug);
         }
         abort_unless($package, 404);
@@ -222,7 +236,7 @@ if (auth()->guard('patient')->check()) {
         $email = strtolower(trim($data['email']));
         $patient = Patient::where('email', $email)->first();
 
-        if (!$patient) {
+        if (! $patient) {
             $patient = Patient::create([
                 'code' => patient_code(),
                 'name' => $data['patient_name'],
@@ -253,7 +267,8 @@ if (auth()->guard('patient')->check()) {
         return back()->with('success', 'Package booking request submitted successfully.');
     }
 
-    public function membership(){
+    public function membership()
+    {
         $categories = MembershipCategory::where('status', true)
             ->with(['plans' => function ($q) {
                 $q->where('status', true)->where('show_on_frontend', true);
@@ -264,10 +279,11 @@ if (auth()->guard('patient')->check()) {
 
         $pageSettings = membership_page_settings();
 
-    	return view('frontend.services.membership-plan', compact('categories', 'pageSettings'));
+        return view('frontend.services.membership-plan', compact('categories', 'pageSettings'));
     }
 
-    public function membership_details(Request $request, $id = null){
+    public function membership_details(Request $request, $id = null)
+    {
         abort_unless($id, 404);
 
         $plan = MembershipPlan::with('category')
@@ -276,7 +292,7 @@ if (auth()->guard('patient')->check()) {
             ->where('slug', $id)
             ->first();
 
-        if (!$plan && ctype_digit((string) $id)) {
+        if (! $plan && ctype_digit((string) $id)) {
             $plan = MembershipPlan::with('category')
                 ->where('status', true)
                 ->where('show_on_frontend', true)
@@ -294,13 +310,13 @@ if (auth()->guard('patient')->check()) {
             ->take(3)
             ->get();
 
-		return view('frontend.services.membership-details', compact('plan', 'relatedPlans'));
+        return view('frontend.services.membership-details', compact('plan', 'relatedPlans'));
     }
 
     public function membership_plan_booking_submit(Request $request, $slug)
     {
         $plan = MembershipPlan::where('slug', $slug)->first();
-        if (!$plan && ctype_digit((string) $slug)) {
+        if (! $plan && ctype_digit((string) $slug)) {
             $plan = MembershipPlan::findOrFail((int) $slug);
         }
         abort_unless($plan, 404);
@@ -317,7 +333,7 @@ if (auth()->guard('patient')->check()) {
         $email = strtolower(trim($data['email']));
         $patient = Patient::where('email', $email)->first();
 
-        if (!$patient) {
+        if (! $patient) {
             $patient = Patient::create([
                 'code' => patient_code(),
                 'name' => $data['patient_name'],
@@ -353,7 +369,8 @@ if (auth()->guard('patient')->check()) {
         return back()->with('success', 'Membership plan booking submitted successfully.');
     }
 
-    public function lab_test(){
+    public function lab_test()
+    {
         $services = Service::active()
             ->showOnFrontend()
             ->with(['serviceCategory', 'subCategory', 'components'])
@@ -362,10 +379,11 @@ if (auth()->guard('patient')->check()) {
 
         $diagSettings = diagonostic_page_settings();
 
-    	return view('frontend.services.lab-test', compact('services', 'diagSettings'));
+        return view('frontend.services.lab-test', compact('services', 'diagSettings'));
     }
 
-    public function video_consultation(){
+    public function video_consultation()
+    {
         $plans = MembershipPlan::with('category')
             ->where('status', true)
             ->where('show_on_frontend', true)
@@ -376,66 +394,87 @@ if (auth()->guard('patient')->check()) {
 
         $pageSettings = video_consultation_page_settings();
 
-    	return view('frontend.services.video-consultation', compact('plans', 'pageSettings'));
+        return view('frontend.services.video-consultation', compact('plans', 'pageSettings'));
     }
 
-    public function beauty(){
-    	return view('frontend.services.beauty');
+    public function beauty()
+    {
+        return view('frontend.services.beauty');
     }
 
-    public function about(){
+    public function about()
+    {
         $pageSettings = about_page_settings();
-    	return view('frontend.about.about', compact('pageSettings'));
+
+        return view('frontend.about.about', compact('pageSettings'));
     }
 
-    public function about_details(){
-    	return view('frontend.about.about-details');
+    public function about_details()
+    {
+        return view('frontend.about.about-details');
     }
 
-    public function bill_of_rights(){
-    	return view('frontend.about.bill-of-right');
+    public function bill_of_rights()
+    {
+        return view('frontend.about.bill-of-right');
     }
 
-    public function career(){
-    	return view('frontend.about.career');
+    public function career()
+    {
+        return view('frontend.about.career');
     }
 
-    public function career_details(){
-    	return view('frontend.about.career-details');
+    public function career_details()
+    {
+        return view('frontend.about.career-details');
     }
 
-    public function code_ethics(){
-    	return view('frontend.about.code-of-ethics');
+    public function code_ethics()
+    {
+        return view('frontend.about.code-of-ethics');
     }
 
-    public function contact(){
+    public function contact()
+    {
         $pageSettings = contact_page_settings();
-    	return view('frontend.about.contact', compact('pageSettings'));
+
+        return view('frontend.about.contact', compact('pageSettings'));
     }
 
-    public function client(){
-    	return view('frontend.about.corporate-clients');
+    public function client()
+    {
+        return view('frontend.about.corporate-clients');
     }
 
-    public function management(){
+    public function management()
+    {
         $pageSettings = management_page_settings();
-    	return view('frontend.about.management', compact('pageSettings'));
+        $teamMembers = TeamMember::active()->ordered()->get();
+
+        return view('frontend.about.management', compact('pageSettings', 'teamMembers'));
     }
 
-    public function management_details(){
-    	return view('frontend.about.management-details');
+    public function management_details($slug)
+    {
+        $member = TeamMember::where('slug', $slug)->firstOrFail();
+
+        return view('frontend.about.management-details', compact('member'));
     }
 
-    public function mission_vision_value(){
+    public function mission_vision_value()
+    {
         $pageSettings = mission_vision_page_settings();
-    	return view('frontend.about.mission-vision-values', compact('pageSettings'));
+
+        return view('frontend.about.mission-vision-values', compact('pageSettings'));
     }
 
-    public function privacy_notice(){
-    	return view('frontend.about.privacy-notice');
+    public function privacy_notice()
+    {
+        return view('frontend.about.privacy-notice');
     }
 
-    public function doctor(){
+    public function doctor()
+    {
         $query = Doctor::with(['specialty', 'department'])->where('status', true);
 
         if (request('specialty_id')) {
@@ -447,7 +486,7 @@ if (auth()->guard('patient')->check()) {
         }
 
         if (request('name')) {
-            $query->where('name', 'like', '%' . request('name') . '%');
+            $query->where('name', 'like', '%'.request('name').'%');
         }
 
         $doctors = $query->orderBy('name')->get();
@@ -458,10 +497,11 @@ if (auth()->guard('patient')->check()) {
         });
         $pageSettings = doctors_page_settings();
 
-    	return view('frontend.doctor.doctors', compact('doctors', 'specialties', 'departments', 'groupedDoctors', 'pageSettings'));
+        return view('frontend.doctor.doctors', compact('doctors', 'specialties', 'departments', 'groupedDoctors', 'pageSettings'));
     }
 
-    public function book_doctor($doctor = null){
+    public function book_doctor($doctor = null)
+    {
         if ($doctor) {
             $model = Doctor::with(['specialty', 'department'])
                 ->where('status', true)
@@ -476,7 +516,7 @@ if (auth()->guard('patient')->check()) {
         $slots = DoctorConsultationSlot::where('status', true)->orderBy('sort_order')->orderBy('start_time')->get();
         $branches = Branch::orderBy('name')->get();
 
-    	return view('frontend.doctor.book-doctor', compact('model', 'slots', 'branches'));
+        return view('frontend.doctor.book-doctor', compact('model', 'slots', 'branches'));
     }
 
     public function submit_doctor_booking(Request $request, $doctor)
@@ -499,7 +539,7 @@ if (auth()->guard('patient')->check()) {
             'notes' => 'nullable|string|max:2000',
         ]);
 
-        if ($data['visit_type'] === 'video' && !$doctorModel->video_consultation_available) {
+        if ($data['visit_type'] === 'video' && ! $doctorModel->video_consultation_available) {
             return back()->withInput()->withErrors([
                 'visit_type' => 'Video consultation is not available for this doctor.',
             ]);
@@ -521,7 +561,7 @@ if (auth()->guard('patient')->check()) {
             ]);
         } else {
             $patient = Patient::where('email', $email)->first();
-            if (!$patient) {
+            if (! $patient) {
                 $patient = Patient::create([
                     'code' => patient_code(),
                     'name' => $data['patient_name'],
@@ -561,7 +601,8 @@ if (auth()->guard('patient')->check()) {
         return back()->with('success', 'Consultation booking request submitted successfully.');
     }
 
-    public function blog(Request $request){
+    public function blog(Request $request)
+    {
         $pageSettings = blog_page_settings();
         $q = trim((string) $request->query('q', ''));
         $categorySlug = trim((string) $request->query('category', ''));
@@ -575,9 +616,9 @@ if (auth()->guard('patient')->check()) {
 
         if ($q !== '') {
             $query->where(function ($builder) use ($q) {
-                $builder->where('title', 'like', '%' . $q . '%')
-                    ->orWhere('excerpt', 'like', '%' . $q . '%')
-                    ->orWhere('content', 'like', '%' . $q . '%');
+                $builder->where('title', 'like', '%'.$q.'%')
+                    ->orWhere('excerpt', 'like', '%'.$q.'%')
+                    ->orWhere('content', 'like', '%'.$q.'%');
             });
         }
 
@@ -590,10 +631,11 @@ if (auth()->guard('patient')->check()) {
         $blogs = $query->paginate($perPage)->withQueryString();
         $categories = BlogCategory::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
 
-    	return view('frontend.community.blog', compact('pageSettings', 'blogs', 'q', 'categories', 'categorySlug'));
+        return view('frontend.community.blog', compact('pageSettings', 'blogs', 'q', 'categories', 'categorySlug'));
     }
 
-    public function blog_details($slug = null){
+    public function blog_details($slug = null)
+    {
         $query = Blog::with('category')->published()->orderByDesc('published_at')->orderByDesc('created_at');
 
         if ($slug) {
@@ -612,27 +654,33 @@ if (auth()->guard('patient')->check()) {
             ->take(4)
             ->get();
 
-    	return view('frontend.community.blog-details', compact('blog', 'relatedBlogs'));
+        return view('frontend.community.blog-details', compact('blog', 'relatedBlogs'));
     }
 
-    public function event(){
-    	return view('frontend.community.event');
+    public function event()
+    {
+        return view('frontend.community.event');
     }
 
-    public function event_details(){
-    	return view('frontend.community.event-details');
+    public function event_details()
+    {
+        return view('frontend.community.event-details');
     }
 
-    public function press(){
-    	return view('frontend.community.press');
+    public function press()
+    {
+        return view('frontend.community.press');
     }
 
-    public function press_details(){
-    	return view('frontend.community.press-details');
+    public function press_details()
+    {
+        return view('frontend.community.press-details');
     }
 
-    public function gallery(){
+    public function gallery()
+    {
         $pageSettings = gallery_page_settings();
-    	return view('frontend.community.gallery', compact('pageSettings'));
+
+        return view('frontend.community.gallery', compact('pageSettings'));
     }
 }

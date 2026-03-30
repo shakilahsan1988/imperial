@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\FrontController;
 use App\Http\Controllers\DynamicPageController;
+use App\Http\Controllers\FrontController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,64 +14,63 @@ use Illuminate\Support\Facades\Artisan;
 | Here is where you can register web routes for your application.
 |
 */
-    Route::get('/', [FrontController::class, 'index'])->name('fhome');
-    Route::get('/services', [FrontController::class, 'services'])->name('services');
-    Route::get('/services/{category?}', [FrontController::class, 'services'])->name('services.category');
-    Route::get('/service-details', [FrontController::class, 'service_details'])->name('service-details');
-    Route::get('/service/{id}', [FrontController::class, 'service_detail'])->name('service.detail');
-    Route::post('/bookings', [FrontController::class, 'store_booking'])->name('bookings.store');
-    Route::get('/booking/confirmation/{id}', [FrontController::class, 'booking_confirmation'])->name('bookings.confirmation');
-    Route::get('/booking/receipt/{id}', [FrontController::class, 'booking_receipt'])->name('bookings.receipt');
-    Route::get('/my-bookings', [FrontController::class, 'my_bookings'])->name('my-bookings')->middleware('patient');
-    Route::get('/health-check', [FrontController::class, 'health_check'])->name('health-check');
-    Route::get('/package-details/{slug}', [FrontController::class, 'package_details'])->name('package-details');
-    Route::post('/package-details/{slug}/book', [FrontController::class, 'package_booking_submit'])->name('package-booking.submit');
-    Route::get('/membership', [FrontController::class, 'membership'])->name('membership');
-    Route::get('/membership-details/{id?}', [FrontController::class, 'membership_details'])->name('membership-details');
-    Route::post('/membership-details/{slug}/book', [FrontController::class, 'membership_plan_booking_submit'])->name('membership-booking.submit');
-    Route::get('/lab-test', [FrontController::class, 'lab_test'])->name('lab-test');
-    
-    // Cart Routes
-    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
-    Route::get('/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
-    Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
-    Route::post('/cart/remove', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/cart/count', [\App\Http\Controllers\CartController::class, 'getCount'])->name('cart.count');
+Route::get('/', [FrontController::class, 'index'])->name('fhome');
+Route::get('/services', [FrontController::class, 'services'])->name('services');
+Route::get('/services/{category?}', [FrontController::class, 'services'])->name('services.category');
+Route::get('/service-details', [FrontController::class, 'service_details'])->name('service-details');
+Route::get('/service/{id}', [FrontController::class, 'service_detail'])->name('service.detail');
+Route::post('/bookings', [FrontController::class, 'store_booking'])->name('bookings.store');
+Route::get('/booking/confirmation/{id}', [FrontController::class, 'booking_confirmation'])->name('bookings.confirmation');
+Route::get('/booking/receipt/{id}', [FrontController::class, 'booking_receipt'])->name('bookings.receipt');
+Route::get('/my-bookings', [FrontController::class, 'my_bookings'])->name('my-bookings')->middleware('patient');
+Route::get('/health-check', [FrontController::class, 'health_check'])->name('health-check');
+Route::get('/package-details/{slug}', [FrontController::class, 'package_details'])->name('package-details');
+Route::post('/package-details/{slug}/book', [FrontController::class, 'package_booking_submit'])->name('package-booking.submit');
+Route::get('/membership', [FrontController::class, 'membership'])->name('membership');
+Route::get('/membership-details/{id?}', [FrontController::class, 'membership_details'])->name('membership-details');
+Route::post('/membership-details/{slug}/book', [FrontController::class, 'membership_plan_booking_submit'])->name('membership-booking.submit');
+Route::get('/lab-test', [FrontController::class, 'lab_test'])->name('lab-test');
 
-    Route::get('/video-consultation', [FrontController::class, 'video_consultation'])->name('video-consultation');
-    Route::get('/beauty', [FrontController::class, 'beauty'])->name('beauty');
-    Route::get('/about', [FrontController::class, 'about'])->name('about');
-    Route::get('/about-details', [FrontController::class, 'about_details'])->name('about-details');
-    Route::get('/bill-of-right', [FrontController::class, 'bill_of_rights'])->name('bill-of-right');
-    Route::get('/code-of-ethics', [FrontController::class, 'code_ethics'])->name('code-of-ethics');
-    Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
-    Route::get('/client', [FrontController::class, 'client'])->name('client');
-    Route::get('/management', [FrontController::class, 'management'])->name('management');
-    Route::get('/management-details', [FrontController::class, 'management_details'])->name('management-details');
-    Route::get('/mission-vision-value', [FrontController::class, 'mission_vision_value'])->name('mission-vision-value');
-    
- 
-    Route::get('/privacy-notice', [FrontController::class, 'privacy_notice'])->name('privacy-notice');
-    
-    Route::get('/doctor', [FrontController::class, 'doctor'])->name('doctor');
-    Route::get('/book-doctor/{doctor?}', [FrontController::class, 'book_doctor'])->name('book-doctor');
-    Route::post('/book-doctor/{doctor}/submit', [FrontController::class, 'submit_doctor_booking'])->name('book-doctor.submit');
-    Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
-    Route::get('/blog-details/{slug?}', [FrontController::class, 'blog_details'])->name('blog-details');
-    Route::get('/event', [FrontController::class, 'event'])->name('event');
-    Route::get('/event-details', [FrontController::class, 'event_details'])->name('event-details');
-    Route::get('/press', [FrontController::class, 'press'])->name('press');
-    Route::get('/press-details', [FrontController::class, 'press_details'])->name('press-details');
-    Route::get('/gallery', [FrontController::class, 'gallery'])->name('gallery');
+// Cart Routes
+Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+Route::get('/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart/count', [\App\Http\Controllers\CartController::class, 'getCount'])->name('cart.count');
+
+Route::get('/video-consultation', [FrontController::class, 'video_consultation'])->name('video-consultation');
+Route::get('/beauty', [FrontController::class, 'beauty'])->name('beauty');
+Route::get('/about', [FrontController::class, 'about'])->name('about');
+Route::get('/about-details', [FrontController::class, 'about_details'])->name('about-details');
+Route::get('/bill-of-right', [FrontController::class, 'bill_of_rights'])->name('bill-of-right');
+Route::get('/code-of-ethics', [FrontController::class, 'code_ethics'])->name('code-of-ethics');
+Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
+Route::get('/client', [FrontController::class, 'client'])->name('client');
+Route::get('/management', [FrontController::class, 'management'])->name('management');
+Route::get('/management-details/{slug}', [FrontController::class, 'management_details'])->name('management-details');
+Route::get('/mission-vision-value', [FrontController::class, 'mission_vision_value'])->name('mission-vision-value');
+
+ Route::get('/privacy-notice', [FrontController::class, 'privacy_notice'])->name('privacy-notice');
+
+Route::get('/doctor', [FrontController::class, 'doctor'])->name('doctor');
+Route::get('/book-doctor/{doctor?}', [FrontController::class, 'book_doctor'])->name('book-doctor');
+Route::post('/book-doctor/{doctor}/submit', [FrontController::class, 'submit_doctor_booking'])->name('book-doctor.submit');
+Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
+Route::get('/blog-details/{slug?}', [FrontController::class, 'blog_details'])->name('blog-details');
+Route::get('/event', [FrontController::class, 'event'])->name('event');
+Route::get('/event-details', [FrontController::class, 'event_details'])->name('event-details');
+Route::get('/press', [FrontController::class, 'press'])->name('press');
+Route::get('/press-details', [FrontController::class, 'press_details'])->name('press-details');
+Route::get('/gallery', [FrontController::class, 'gallery'])->name('gallery');
 
 Route::middleware(['Install', 'Locale'])->group(function () {
-    
+
     // Loading sub-route files
     // Ensure these files exist in the routes directory
     require __DIR__.'/admin.php';
     require __DIR__.'/ajax.php';
     require __DIR__.'/patient.php';
-    
+
 });
 
 // Localization Route
@@ -80,7 +79,7 @@ Route::get('change_locale/{lang}', [HomeController::class, 'change_locale'])->na
 // System Utility Routes
 Route::get('run-otp-migration', function () {
     try {
-        if (!\Illuminate\Support\Facades\Schema::hasTable('patient_otps')) {
+        if (! \Illuminate\Support\Facades\Schema::hasTable('patient_otps')) {
             \Illuminate\Support\Facades\Schema::create('patient_otps', function ($table) {
                 $table->id();
                 $table->string('email');
@@ -88,11 +87,13 @@ Route::get('run-otp-migration', function () {
                 $table->timestamp('expires_at');
                 $table->timestamps();
             });
-            return "Success: patient_otps table created!";
+
+            return 'Success: patient_otps table created!';
         }
-        return "Table already exists.";
+
+        return 'Table already exists.';
     } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        return 'Error: '.$e->getMessage();
     }
 });
 
@@ -101,8 +102,8 @@ Route::get('clear-cache', function () {
     Artisan::call('config:clear');
     Artisan::call('view:clear');
     Artisan::call('optimize:clear');
-    
-    return "System cache cleared successfully!";
+
+    return 'System cache cleared successfully!';
 });
 
 Route::get('/{slug}', [DynamicPageController::class, 'show'])

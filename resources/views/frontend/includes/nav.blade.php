@@ -54,7 +54,7 @@
                             {{ session()->get('cart') ? count(session()->get('cart')) : 0 }}
                         </span>
                     </a>
-                    <a href="{{ route('book-doctor') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2">
+                    <a href="{{ route('doctor') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2">
                         <i class="fa-regular fa-calendar-check text-sm"></i>
                         <span>Book Now</span>
                     </a>

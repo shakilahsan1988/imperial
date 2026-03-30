@@ -76,6 +76,15 @@ class HomePageSettingRequest extends FormRequest
             'expert_advice.description' => 'required|string|max:1000',
             'expert_advice.button_text' => 'required|string|max:120',
             'expert_advice.button_url' => 'required|string|max:255',
+
+            'ceo_message.enabled' => 'nullable|in:1',
+            'ceo_message.badge' => 'required|string|max:120',
+            'ceo_message.title_html' => 'required|string|max:1000',
+            'ceo_message.message' => 'required|string|max:2000',
+            'ceo_message.name' => 'required|string|max:200',
+            'ceo_message.designation' => 'required|string|max:200',
+            'ceo_message.image' => 'nullable|string|max:255',
+            'ceo_message_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ];
     }
 }
