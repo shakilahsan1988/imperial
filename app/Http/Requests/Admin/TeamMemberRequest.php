@@ -16,6 +16,7 @@ class TeamMemberRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:200',
+            'branch_id' => 'nullable|exists:branches,id',
             'designation' => 'required|string|max:200',
             'bio' => 'nullable|string|max:5000',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',

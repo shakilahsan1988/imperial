@@ -12,6 +12,7 @@ class TeamMember extends Model
     protected $fillable = [
         'name',
         'slug',
+        'branch_id',
         'designation',
         'image',
         'bio',
@@ -31,5 +32,10 @@ class TeamMember extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 }

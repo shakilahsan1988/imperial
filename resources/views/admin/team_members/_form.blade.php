@@ -16,6 +16,25 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
+            <label>Branch</label>
+            <select name="branch_id" class="form-control @error('branch_id') is-invalid @enderror">
+                <option value="">Select Branch (Optional)</option>
+                @foreach($branches as $branch)
+                    <option value="{{ $branch->id }}" {{ old('branch_id', isset($team_member) ? $team_member->branch_id : '') == $branch->id ? 'selected' : '' }}>
+                        {{ $branch->title ?: $branch->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('branch_id')
+                <span class="invalid-feedback">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
             <label>Designation <span class="text-danger">*</span></label>
             <input type="text" name="designation" class="form-control @error('designation') is-invalid @enderror" 
                    value="{{ old('designation', isset($team_member) ? $team_member->designation : '') }}" 

@@ -22,6 +22,24 @@
       <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">
+                <i class="fa fa-map-marked-alt"></i>
+            </span>
+          </div>
+          <select class="form-control" name="branch_id">
+            <option value="">{{ __('Select Branch (Optional)') }}</option>
+            @foreach($branches as $branch)
+              <option value="{{ $branch->id }}" @if(old('branch_id', isset($doctor) ? $doctor->branch_id : '') == $branch->id) selected @endif>{{ $branch->title ?: $branch->name }}</option>
+            @endforeach
+          </select>
+      </div>
+     </div>
+  </div>
+
+  <div class="col-lg-4">
+      <div class="form-group">
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
                 <i class="fa fa-building"></i>
             </span>
           </div>

@@ -27,13 +27,17 @@ class FrontController extends Controller
     public function index()
     {
         $homeSettings = home_page_settings();
+        $homeBranches = Branch::withCount(['galleries', 'doctors', 'managementTeams'])
+            ->orderBy('id')
+            ->take(2)
+            ->get();
         $homeDoctors = Doctor::with('specialty')
             ->where('status', true)
             ->inRandomOrder()
             ->take(10)
             ->get();
 
-        return view('frontend.index', compact('homeSettings', 'homeDoctors'));
+        return view('frontend.index', compact('homeSettings', 'homeDoctors', 'homeBranches'));
     }
 
     public function services(Request $request)
@@ -461,16 +465,31 @@ class FrontController extends Controller
     public function management()
     {
         $pageSettings = management_page_settings();
-        $teamMembers = TeamMember::active()->ordered()->get();
+        $teamMembers = TeamMember::with('branch')->active()->ordered()->get();
 
         return view('frontend.about.management', compact('pageSettings', 'teamMembers'));
     }
 
     public function management_details($slug)
     {
-        $member = TeamMember::where('slug', $slug)->firstOrFail();
+        $member = TeamMember::with('branch')->where('slug', $slug)->firstOrFail();
 
         return view('frontend.about.management-details', compact('member'));
+    }
+
+    public function branch_details($slug)
+    {
+        $branch = Branch::with([
+            'galleries',
+            'managementTeams' => function ($query) {
+                $query->where('status', true)->orderBy('sort_order')->orderBy('id');
+            },
+            'doctors' => function ($query) {
+                $query->with('specialty')->where('status', true)->orderBy('name');
+            },
+        ])->where('slug', $slug)->firstOrFail();
+
+        return view('frontend.branches.details', compact('branch'));
     }
 
     public function mission_vision_value()

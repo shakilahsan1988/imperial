@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TeamMemberRequest;
+use App\Models\Branch;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -30,14 +31,16 @@ class TeamMembersController extends Controller
 
     public function index()
     {
-        $teamMembers = TeamMember::ordered()->paginate(20);
+        $teamMembers = TeamMember::with('branch')->ordered()->paginate(20);
 
         return view('admin.team_members.index', compact('teamMembers'));
     }
 
     public function create()
     {
-        return view('admin.team_members.create');
+        $branches = Branch::orderByRaw('coalesce(title, name)')->get();
+
+        return view('admin.team_members.create', compact('branches'));
     }
 
     public function store(TeamMemberRequest $request)
@@ -64,7 +67,9 @@ class TeamMembersController extends Controller
 
     public function edit(TeamMember $team_member)
     {
-        return view('admin.team_members.edit', compact('team_member'));
+        $branches = Branch::orderByRaw('coalesce(title, name)')->get();
+
+        return view('admin.team_members.edit', compact('team_member', 'branches'));
     }
 
     public function update(TeamMemberRequest $request, TeamMember $team_member)

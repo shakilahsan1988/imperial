@@ -20,6 +20,7 @@
                 <tr>
                     <th width="60">Image</th>
                     <th>Name</th>
+                    <th>Branch</th>
                     <th>Designation</th>
                     <th>Sort Order</th>
                     <th>Status</th>
@@ -39,6 +40,7 @@
                         @endif
                     </td>
                     <td><strong>{{ $member->name }}</strong></td>
+                    <td>{{ optional($member->branch)->title ?: optional($member->branch)->name ?: '-' }}</td>
                     <td>{{ $member->designation }}</td>
                     <td>{{ $member->sort_order }}</td>
                     <td>
@@ -63,7 +65,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="7" class="text-center text-muted py-4">
                         No team members found. <a href="{{ route('admin.team_members.create') }}">Add one now</a>
                     </td>
                 </tr>

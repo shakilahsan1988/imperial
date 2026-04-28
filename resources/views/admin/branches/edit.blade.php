@@ -31,7 +31,7 @@
     <div class="card-header">
       <h3 class="card-title">{{__('Edit Branch')}}</h3>
     </div>
-    <form method="POST" action="{{route('admin.branches.update',$branch['id'])}}">
+    <form method="POST" action="{{route('admin.branches.update',$branch['id'])}}" enctype="multipart/form-data">
         <!-- /.card-header -->
         <div class="card-body">
             @csrf

@@ -5,6 +5,7 @@
 @section('content')
     
     @include('frontend.includes.slider')
+    @include('frontend.includes.branch-section')
 
     <!-- STATS SECTION -->
     <section class="py-24 bg-white relative overflow-hidden">

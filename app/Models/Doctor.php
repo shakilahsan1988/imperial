@@ -17,6 +17,7 @@ class Doctor extends Model
         'code',
         'doctor_specialty_id',
         'doctor_department_id',
+        'branch_id',
         'name',
         'slug',
         'phone',
@@ -75,6 +76,11 @@ class Doctor extends Model
     public function department()
     {
         return $this->belongsTo(DoctorDepartment::class, 'doctor_department_id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 
     public function consultationBookings()

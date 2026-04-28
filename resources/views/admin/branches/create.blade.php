@@ -31,7 +31,7 @@
     <div class="card-header">
       <h3 class="card-title">{{__('Create Branch')}}</h3>
     </div>
-    <form method="POST" action="{{route('admin.branches.store')}}" id="branch_form">
+    <form method="POST" action="{{route('admin.branches.store')}}" id="branch_form" enctype="multipart/form-data">
         <!-- /.card-header -->
         <div class="card-body">
             @csrf

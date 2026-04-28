@@ -49,6 +49,7 @@ Route::get('/client', [FrontController::class, 'client'])->name('client');
 Route::get('/management', [FrontController::class, 'management'])->name('management');
 Route::get('/management-details/{slug}', [FrontController::class, 'management_details'])->name('management-details');
 Route::get('/mission-vision-value', [FrontController::class, 'mission_vision_value'])->name('mission-vision-value');
+Route::get('/branches/{slug}', [FrontController::class, 'branch_details'])->name('branch-details');
 
  Route::get('/privacy-notice', [FrontController::class, 'privacy_notice'])->name('privacy-notice');
 

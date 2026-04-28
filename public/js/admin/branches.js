@@ -48,9 +48,10 @@
       fixedHeader: true,
       "columns": [
          {data:"id"},
-         {data:"name"},
-         {data:"phone"},
+         {data:"feature_image", searchable:false, orderable:false, sortable:false},
+         {data:"title"},
          {data:"address"},
+         {data:"gallery_count"},
          {data:"action",searchable:false,orderable:false,sortable:false}//action
       ],
       "language": {

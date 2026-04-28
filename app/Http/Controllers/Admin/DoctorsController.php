@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\DoctorRequest;
 use App\Http\Requests\Admin\ExcelImportRequest;
 use App\Exports\DoctorExport;
 use App\Imports\DoctorImport;
+use App\Models\Branch;
 use App\Models\Doctor;
 use App\Models\DoctorSpecialty;
 use App\Models\DoctorDepartment;
@@ -144,8 +145,9 @@ class DoctorsController extends Controller
     {
         $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
         $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $branches = Branch::orderByRaw('coalesce(title, name)')->get();
 
-        return view('admin.doctors.create', compact('specialties', 'departments'));
+        return view('admin.doctors.create', compact('specialties', 'departments', 'branches'));
     }
 
     /**
@@ -206,8 +208,9 @@ class DoctorsController extends Controller
         $doctor=Doctor::findOrFail($id);
         $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
         $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $branches = Branch::orderByRaw('coalesce(title, name)')->get();
 
-        return view('admin.doctors.edit',compact('doctor', 'specialties', 'departments'));
+        return view('admin.doctors.edit', compact('doctor', 'specialties', 'departments', 'branches'));
     }
 
     /**
