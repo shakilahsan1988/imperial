@@ -178,6 +178,50 @@
   </div>
 
   <div class="col-lg-4">
+    <div class="form-group">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-hospital"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Schedule Branch" name="schedule_branch" id="schedule_branch" @if(isset($doctor)) value="{{$doctor->schedule_branch}}" @endif>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="form-group">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Schedule Consultant" name="schedule_consultant" id="schedule_consultant" @if(isset($doctor)) value="{{$doctor->schedule_consultant}}" @endif>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="form-group">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Schedule Days" name="schedule_days" id="schedule_days" @if(isset($doctor)) value="{{$doctor->schedule_days}}" @endif>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="form-group">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-clock"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Schedule Time" name="schedule_time" id="schedule_time" @if(isset($doctor)) value="{{$doctor->schedule_time}}" @endif>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
       <div class="form-group mt-2">
           <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="video_consultation_available" name="video_consultation_available" value="1" @if(isset($doctor) ? $doctor->video_consultation_available : false) checked @endif>

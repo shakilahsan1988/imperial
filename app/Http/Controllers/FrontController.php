@@ -27,8 +27,13 @@ class FrontController extends Controller
     public function index()
     {
         $homeSettings = home_page_settings();
+        $homeDoctors = Doctor::with('specialty')
+            ->where('status', true)
+            ->inRandomOrder()
+            ->take(10)
+            ->get();
 
-        return view('frontend.index', compact('homeSettings'));
+        return view('frontend.index', compact('homeSettings', 'homeDoctors'));
     }
 
     public function services(Request $request)
@@ -374,6 +379,13 @@ class FrontController extends Controller
         $services = Service::active()
             ->showOnFrontend()
             ->with(['serviceCategory', 'subCategory', 'components'])
+            ->orderByRaw("case
+                when category = 'laboratory' then 1
+                when category = 'imaging' then 2
+                when category = 'procedure' then 3
+                else 4
+            end")
+            ->orderBy('sub_category')
             ->orderBy('name')
             ->get();
 
@@ -464,8 +476,9 @@ class FrontController extends Controller
     public function mission_vision_value()
     {
         $pageSettings = mission_vision_page_settings();
+        $homeSettings = home_page_settings();
 
-        return view('frontend.about.mission-vision-values', compact('pageSettings'));
+        return view('frontend.about.mission-vision-values', compact('pageSettings', 'homeSettings'));
     }
 
     public function privacy_notice()

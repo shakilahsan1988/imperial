@@ -25,6 +25,8 @@
             </div>
         </section>
 
+        @include('frontend.includes.ceo-message')
+
         <!-- MISSION & VISION SECTION -->
         <section class="py-24 bg-slate-50">
             <div class="container mx-auto px-4">

@@ -213,6 +213,14 @@ if (! function_exists('home_page_settings')) {
                 'patients_count' => '914K',
                 'patients_label' => 'Patients Served',
             ],
+            'doctor_carousel' => [
+                'enabled' => true,
+                'badge' => 'Our Specialists',
+                'title_html' => 'Meet Our <span class="text-indigo-600">Expert Doctors</span>',
+                'description' => 'Browse a fresh selection of Imperial Health specialists on every visit and connect with the right doctor for your care needs.',
+                'button_text' => 'View All Doctors',
+                'button_url' => '/doctor',
+            ],
             'our_approach' => [
                 'badge' => 'Our Approach',
                 'title_html' => 'Doctors Who <span class="text-indigo-600">Actually</span> Listen',

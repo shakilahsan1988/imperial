@@ -93,6 +93,15 @@ class DoctorsController extends Controller
             ->addColumn('department', function($doctor) {
                 return optional($doctor->department)->name ?: '-';
             })
+            ->addColumn('schedule', function($doctor) {
+                $parts = array_filter([
+                    $doctor->schedule_branch,
+                    $doctor->schedule_days,
+                    $doctor->schedule_time,
+                ]);
+
+                return $parts ? implode(' | ', $parts) : '-';
+            })
             ->addColumn('consultation_fee', function($doctor) {
                 return formated_price($doctor->consultation_fee ?? 0);
             })

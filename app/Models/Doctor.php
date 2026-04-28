@@ -31,6 +31,10 @@ class Doctor extends Model
         'experience_years',
         'bio',
         'image',
+        'schedule_branch',
+        'schedule_consultant',
+        'schedule_days',
+        'schedule_time',
         'status',
     ];
 

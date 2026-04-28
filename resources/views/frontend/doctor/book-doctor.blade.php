@@ -62,6 +62,14 @@
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Experience</p>
                                     <p class="text-sm font-bold text-slate-700">{{ $model->experience_years ? $model->experience_years . '+ Years' : '-' }}</p>
                                 </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Schedule Days</p>
+                                    <p class="text-sm font-bold text-slate-700">{{ $model->schedule_days ?: '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Schedule Time</p>
+                                    <p class="text-sm font-bold text-slate-700">{{ $model->schedule_time ?: '-' }}</p>
+                                </div>
                             </div>
 
                             <div class="text-slate-500 text-sm leading-relaxed italic">{{ $model->bio ?: 'Professional consultation available.' }}</div>
@@ -188,6 +196,9 @@
                         <div class="flex justify-between"><span>Doctor</span><span>{{ $model->name }}</span></div>
                         <div class="flex justify-between"><span>Department</span><span>{{ optional($model->department)->name ?: '-' }}</span></div>
                         <div class="flex justify-between"><span>Specialty</span><span>{{ optional($model->specialty)->name ?: '-' }}</span></div>
+                        <div class="flex justify-between"><span>Branch</span><span>{{ $model->schedule_branch ?: '-' }}</span></div>
+                        <div class="flex justify-between"><span>Schedule</span><span>{{ $model->schedule_days ?: '-' }}</span></div>
+                        <div class="flex justify-between"><span>Time</span><span>{{ $model->schedule_time ?: '-' }}</span></div>
                         <div class="flex justify-between"><span>In-Hub Fee</span><span>{{ formated_price($model->consultation_fee ?? 0) }}</span></div>
                         <div class="flex justify-between"><span>Video Fee</span><span>{{ $model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A' }}</span></div>
                         <div class="flex justify-between pt-2 border-t border-indigo-700">

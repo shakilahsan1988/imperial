@@ -56,6 +56,7 @@
          {data:"department"},
          {data:"phone"},
          {data:"email"},
+         {data:"schedule"},
          {data:"consultation_fee"},
          {data:"video_consultation_fee"},
          {data:"video_consultation"},

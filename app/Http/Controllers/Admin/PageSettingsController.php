@@ -45,6 +45,7 @@ class PageSettingsController extends Controller
     {
         try {
             $validated = $request->validated();
+            $currentSettings = home_page_settings();
 
             $heroSlides = [];
             $badges = $request->input('hero_badge', []);
@@ -114,12 +115,13 @@ class PageSettingsController extends Controller
                 ],
                 'about' => $validated['about'],
                 'stats' => $validated['stats'],
+                'doctor_carousel' => $validated['doctor_carousel'],
                 'our_approach' => $validated['our_approach'],
                 'lab_excellence' => $validated['lab_excellence'],
                 'experience_imperial' => $validated['experience_imperial'],
                 'continuous_care' => $validated['continuous_care'],
                 'expert_advice' => $validated['expert_advice'],
-                'ceo_message' => $validated['ceo_message'],
+                'ceo_message' => $currentSettings['ceo_message'] ?? [],
             ];
 
             if ($request->hasFile('our_approach_image')) {
@@ -141,13 +143,6 @@ class PageSettingsController extends Controller
                 $imageName = 'experience_imperial_'.time().'.'.$image->getClientOriginalExtension();
                 $image->move('uploads/home/sections', $imageName);
                 $payload['experience_imperial']['image'] = 'uploads/home/sections/'.$imageName;
-            }
-
-            if ($request->hasFile('ceo_message_image')) {
-                $image = $request->file('ceo_message_image');
-                $imageName = 'ceo_message_'.time().'.'.$image->getClientOriginalExtension();
-                $image->move('uploads/home/sections', $imageName);
-                $payload['ceo_message']['image'] = 'uploads/home/sections/'.$imageName;
             }
 
             Setting::updateOrCreate(

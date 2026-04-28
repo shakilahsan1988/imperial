@@ -161,54 +161,44 @@ Home Settings
             </div>
 
             <hr>
-            <h5>CEO's Message Section</h5>
+            <h5>Doctor Carousel Section</h5>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="ceo_message_enabled" name="ceo_message[enabled]" value="1" {{ old('ceo_message.enabled', $homeSettings['ceo_message']['enabled'] ?? true) ? 'checked' : '' }}>
-                            <label class="custom-control-label" for="ceo_message_enabled">Enable this section</label>
+                            <input type="checkbox" class="custom-control-input" id="doctor_carousel_enabled" name="doctor_carousel[enabled]" value="1" {{ old('doctor_carousel.enabled', $homeSettings['doctor_carousel']['enabled'] ?? true) ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="doctor_carousel_enabled">Enable this section</label>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Badge</label>
-                        <input type="text" name="ceo_message[badge]" class="form-control" value="{{ old('ceo_message.badge', $homeSettings['ceo_message']['badge']) }}" required>
+                        <input type="text" name="doctor_carousel[badge]" class="form-control" value="{{ old('doctor_carousel.badge', $homeSettings['doctor_carousel']['badge']) }}" required>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="form-group">
                         <label>Title (HTML allowed)</label>
-                        <textarea name="ceo_message[title_html]" class="form-control" rows="2" required>{{ old('ceo_message.title_html', $homeSettings['ceo_message']['title_html']) }}</textarea>
+                        <textarea name="doctor_carousel[title_html]" class="form-control" rows="2" required>{{ old('doctor_carousel.title_html', $homeSettings['doctor_carousel']['title_html']) }}</textarea>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>CEO's Message</label>
-                        <textarea name="ceo_message[message]" class="form-control" rows="4" required>{{ old('ceo_message.message', $homeSettings['ceo_message']['message']) }}</textarea>
+                        <label>Description</label>
+                        <textarea name="doctor_carousel[description]" class="form-control" rows="4" required>{{ old('doctor_carousel.description', $homeSettings['doctor_carousel']['description']) }}</textarea>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>CEO's Name</label>
-                        <input type="text" name="ceo_message[name]" class="form-control" value="{{ old('ceo_message.name', $homeSettings['ceo_message']['name']) }}" required>
+                        <label>Button Text</label>
+                        <input type="text" name="doctor_carousel[button_text]" class="form-control" value="{{ old('doctor_carousel.button_text', $homeSettings['doctor_carousel']['button_text']) }}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
-                        <label>Designation</label>
-                        <input type="text" name="ceo_message[designation]" class="form-control" value="{{ old('ceo_message.designation', $homeSettings['ceo_message']['designation']) }}" required>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>CEO's Image</label>
-                        <input type="hidden" name="ceo_message_existing_image" value="{{ $homeSettings['ceo_message']['image'] ?? '' }}">
-                        <input type="file" name="ceo_message_image" class="form-control-file" accept="image/*">
-                        @if(!empty($homeSettings['ceo_message']['image']))
-                            <img src="{{ asset($homeSettings['ceo_message']['image']) }}" alt="CEO Image" class="img-thumbnail mt-2" style="max-height: 90px;">
-                        @endif
+                        <label>Button URL</label>
+                        <input type="text" name="doctor_carousel[button_url]" class="form-control" value="{{ old('doctor_carousel.button_url', $homeSettings['doctor_carousel']['button_url']) }}" required>
                     </div>
                 </div>
             </div>

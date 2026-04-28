@@ -93,6 +93,20 @@
                             <p class="text-xs text-indigo-600 font-bold mt-1">{{ optional($doc->specialty)->name ?: 'Specialist' }}</p>
                         </div>
                         <div class="text-xs text-slate-500 mb-6 space-y-1">
+                            @if($doc->schedule_days || $doc->schedule_time)
+                            <div class="flex items-start justify-between gap-3">
+                                <span>Schedule</span>
+                                <strong class="text-right text-slate-700">
+                                    {{ $doc->schedule_days ?: 'On request' }}@if($doc->schedule_time), {{ $doc->schedule_time }}@endif
+                                </strong>
+                            </div>
+                            @endif
+                            @if($doc->schedule_branch)
+                            <div class="flex items-center justify-between">
+                                <span>Branch</span>
+                                <strong class="text-slate-700">{{ $doc->schedule_branch }}</strong>
+                            </div>
+                            @endif
                             <div class="flex items-center justify-between">
                                 <span>In-Hub Fee</span>
                                 <strong class="text-slate-700">{{ formated_price($doc->consultation_fee ?? 0) }}</strong>
