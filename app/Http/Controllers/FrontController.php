@@ -11,6 +11,7 @@ use App\Models\DoctorConsultationBooking;
 use App\Models\DoctorConsultationSlot;
 use App\Models\DoctorDepartment;
 use App\Models\DoctorSpecialty;
+use App\Models\GalleryGroup;
 use App\Models\HealthPackage;
 use App\Models\HealthPackageBooking;
 use App\Models\HealthPackageCategory;
@@ -726,7 +727,11 @@ class FrontController extends Controller
     public function gallery()
     {
         $pageSettings = gallery_page_settings();
+        $galleryGroups = GalleryGroup::with('images')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
 
-        return view('frontend.community.gallery', compact('pageSettings'));
+        return view('frontend.community.gallery', compact('pageSettings', 'galleryGroups'));
     }
 }

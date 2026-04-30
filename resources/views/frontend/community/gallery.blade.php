@@ -2,6 +2,10 @@
 
 @section('title', ($pageSettings['page_name'] ?? 'Gallery') . ' - Imperial Health Bangladesh')
 
+@php
+    $hasManagedGroups = $galleryGroups->contains(fn ($group) => $group->images->isNotEmpty());
+@endphp
+
 @section('content')
 
 <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
@@ -18,301 +22,66 @@
     </div>
 </section>
 
-<!-- Gallery Section -->
 <section class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-6">
-        
-        <!-- Header -->
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold text-imperial-text mb-4">{{ $pageSettings['page_name'] }}</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">{{ strip_tags($pageSettings['hero_description']) }}</p>
         </div>
 
-        <!-- Masonry Grid -->
-        <div class="masonry-grid" id="galleryGrid">
-            
-            <!-- Event Images -->
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/1.jpg') }}" 
-                         alt="Event 1" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/2.webp') }}" 
-                         alt="Event 2" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/3.jpg') }}" 
-                         alt="Event 3" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/4.jpg') }}" 
-                         alt="Event 4" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/5.jpg') }}" 
-                         alt="Event 5" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/6.jpg') }}" 
-                         alt="Event 6" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
+        @if($hasManagedGroups)
+            @foreach($galleryGroups as $group)
+                @continue($group->images->isEmpty())
 
-            <!-- About Images -->
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/about/1.jpg') }}" 
-                         alt="About 1" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
+                <div class="mb-16">
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-900">{{ $group->name }}</h3>
+                        <span class="text-sm uppercase tracking-[0.2em] text-slate-400">{{ $group->images->count() }} Images</span>
                     </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/about/2.jpg') }}" 
-                         alt="About 2" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/about/3.jpg') }}" 
-                         alt="About 3" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/about/4.jpg') }}" 
-                         alt="About 4" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/about/5.jpg') }}" 
-                         alt="About 5" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/about/6.jpg') }}" 
-                         alt="About 6" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Services Images -->
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/services/services.jpg') }}" 
-                         alt="Services" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
+                    <div class="masonry-grid">
+                        @foreach($group->images as $image)
+                            <div class="masonry-item">
+                                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
+                                    <img
+                                        src="{{ asset($image->image) }}"
+                                        alt="{{ $image->name ?: $group->name }}"
+                                        class="w-full h-auto object-cover"
+                                        loading="lazy"
+                                    >
+                                    <div class="gallery-overlay">
+                                        <i class="fa-solid fa-magnifying-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
+            @endforeach
+        @else
+            <div class="max-w-2xl mx-auto text-center py-16 border border-slate-200 rounded-[32px] bg-slate-50">
+                <h3 class="text-2xl font-bold text-slate-900 mb-3">No gallery images yet</h3>
+                <p class="text-slate-600">Add gallery groups and images from the admin gallery settings page to publish them here.</p>
             </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/services/cardiology.jpg') }}" 
-                         alt="Cardiology" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/services/consult.jpg') }}" 
-                         alt="Consultation" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Index/Facility Images -->
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/index/tour.jpg') }}" 
-                         alt="Facility Tour" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/index/why-imperial.jpg') }}" 
-                         alt="Why Imperial" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/index/diagnosis.jpg') }}" 
-                         alt="Diagnosis" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- More Event Images -->
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/7.jpg') }}" 
-                         alt="Event 7" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/8.jpg') }}" 
-                         alt="Event 8" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="masonry-item">
-                <div class="gallery-item group cursor-pointer" onclick="openLightbox(this)">
-                    <img src="{{ asset('assets/front/images/event/9.jpg') }}" 
-                         alt="Event 9" 
-                         class="w-full h-auto object-cover"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <i class="fa-solid fa-magnifying-plus"></i>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        @endif
     </div>
 </section>
 
-<!-- Lightbox Modal -->
 <div id="lightbox" class="fixed inset-0 bg-black/90 z-[9999] hidden items-center justify-center opacity-0 transition-opacity duration-300">
-    <!-- Close Button -->
     <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 z-10">
         <i class="fa-solid fa-times"></i>
     </button>
-    
-    <!-- Prev/Next Buttons -->
     <button onclick="navigateLightbox(-1)" class="absolute left-4 text-white text-3xl hover:text-gray-300 z-10">
         <i class="fa-solid fa-chevron-left"></i>
     </button>
     <button onclick="navigateLightbox(1)" class="absolute right-4 text-white text-3xl hover:text-gray-300 z-10">
         <i class="fa-solid fa-chevron-right"></i>
     </button>
-    
-    <!-- Image Container -->
+
     <div class="max-w-5xl max-h-[90vh] px-16">
         <img id="lightbox-img" src="" alt="Gallery Image" class="max-w-full max-h-[90vh] object-contain">
     </div>
-    
-    <!-- Image Counter -->
+
     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm">
         <span id="lightbox-counter">1 / 1</span>
     </div>
@@ -349,14 +118,74 @@
 
 @push('scripts')
 <script>
-    document.querySelectorAll('.gallery-item').forEach(function(item) {
-        var image = item.querySelector('img');
-        var overlay = item.querySelector('.gallery-overlay');
-        if (!image || !overlay || overlay.querySelector('.gallery-overlay-title')) return;
-        var title = document.createElement('span');
-        title.className = 'gallery-overlay-title';
-        title.textContent = image.getAttribute('alt') || 'Gallery';
-        overlay.appendChild(title);
+    let galleryItems = [];
+    let galleryIndex = 0;
+
+    document.querySelectorAll('.gallery-item').forEach(function (item, index) {
+        const image = item.querySelector('img');
+        const overlay = item.querySelector('.gallery-overlay');
+        if (!image || !overlay) return;
+
+        galleryItems.push({
+            src: image.getAttribute('src'),
+            alt: image.getAttribute('alt') || 'Gallery',
+        });
+
+        if (!overlay.querySelector('.gallery-overlay-title')) {
+            const title = document.createElement('span');
+            title.className = 'gallery-overlay-title';
+            title.textContent = image.getAttribute('alt') || 'Gallery';
+            overlay.appendChild(title);
+        }
+
+        item.dataset.galleryIndex = index;
+    });
+
+    function openLightbox(element) {
+        galleryIndex = parseInt(element.dataset.galleryIndex || '0', 10);
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        requestAnimationFrame(() => lightbox.classList.remove('opacity-0'));
+        renderLightbox();
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.add('opacity-0');
+        setTimeout(function () {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }, 300);
+    }
+
+    function navigateLightbox(direction) {
+        if (!galleryItems.length) return;
+        galleryIndex = (galleryIndex + direction + galleryItems.length) % galleryItems.length;
+        renderLightbox();
+    }
+
+    function renderLightbox() {
+        if (!galleryItems.length) return;
+        const current = galleryItems[galleryIndex];
+        document.getElementById('lightbox-img').src = current.src;
+        document.getElementById('lightbox-img').alt = current.alt;
+        document.getElementById('lightbox-counter').textContent = (galleryIndex + 1) + ' / ' + galleryItems.length;
+    }
+
+    document.addEventListener('keydown', function (event) {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox.classList.contains('hidden')) return;
+
+        if (event.key === 'Escape') closeLightbox();
+        if (event.key === 'ArrowLeft') navigateLightbox(-1);
+        if (event.key === 'ArrowRight') navigateLightbox(1);
+    });
+
+    document.getElementById('lightbox').addEventListener('click', function (event) {
+        if (event.target === this) {
+            closeLightbox();
+        }
     });
 </script>
 @endpush

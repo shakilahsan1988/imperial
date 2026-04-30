@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AboutPageSettingRequest;
 use App\Http\Requests\Admin\BlogPageSettingRequest;
 use App\Http\Requests\Admin\DiagonosticPageSettingRequest;
+use App\Http\Requests\Admin\GalleryPageSettingRequest;
 use App\Http\Requests\Admin\HealthCheckPageSettingRequest;
 use App\Http\Requests\Admin\HomePageSettingRequest;
 use App\Http\Requests\Admin\InnerPageSettingRequest;
 use App\Http\Requests\Admin\ServicesPageSettingRequest;
 use App\Http\Requests\Admin\VideoConsultationPageSettingRequest;
+use App\Models\GalleryGroup;
 use App\Models\Setting;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 
 class PageSettingsController extends Controller
@@ -397,18 +402,59 @@ class PageSettingsController extends Controller
 
     public function gallerySettings()
     {
-        return $this->renderInnerPageSettings(
-            'Gallery Settings',
-            '/gallery Page Settings',
-            'admin.pages.gallery_settings_submit',
-            gallery_page_settings(),
-            'pages_gallery'
-        );
+        $title = 'Gallery Settings';
+        $subtitle = '/gallery Page Settings';
+        $submitRoute = 'admin.pages.gallery_settings_submit';
+        $settings = gallery_page_settings();
+        $activeMenuId = 'pages_gallery';
+        $galleryGroups = GalleryGroup::with('images')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+
+        return view('admin.pages.gallery_settings', compact(
+            'title',
+            'subtitle',
+            'submitRoute',
+            'settings',
+            'activeMenuId',
+            'galleryGroups'
+        ));
     }
 
-    public function updateGallerySettings(InnerPageSettingRequest $request)
+    public function updateGallerySettings(GalleryPageSettingRequest $request)
     {
-        return $this->updateInnerPageSettings($request, 'gallery_page', 'gallery', 'admin.pages.gallery_settings');
+        try {
+            $payload = Arr::only($request->validated(), [
+                'page_name',
+                'hero_title_html',
+                'hero_description',
+                'hero_image',
+            ]);
+
+            $targetDir = 'uploads/pages/gallery';
+            if (! File::isDirectory($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            if ($request->hasFile('hero_image_file')) {
+                $image = $request->file('hero_image_file');
+                $imageName = 'hero_'.time().'.'.$image->getClientOriginalExtension();
+                $image->move($targetDir, $imageName);
+                $payload['hero_image'] = $targetDir.'/'.$imageName;
+            }
+
+            Setting::updateOrCreate(
+                ['key' => 'gallery_page'],
+                ['value' => json_encode($payload)]
+            );
+
+            $this->syncGalleryGroups($request);
+
+            return redirect()->route('admin.pages.gallery_settings')->with('success', 'Gallery page settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update gallery page settings: '.$e->getMessage());
+        }
     }
 
     public function missionVisionSettings()
@@ -540,6 +586,134 @@ class PageSettingsController extends Controller
             return redirect()->route($redirectRoute)->with('success', 'Page settings updated successfully');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Failed to update page settings: '.$e->getMessage());
+        }
+    }
+
+    private function syncGalleryGroups(GalleryPageSettingRequest $request): void
+    {
+        $submittedGroups = collect($request->input('gallery_groups', []));
+        $originalGroupIds = GalleryGroup::pluck('id')->all();
+        $persistedGroupIds = [];
+
+        foreach ($submittedGroups->values() as $groupIndex => $groupData) {
+            if ((bool) ($groupData['delete_group'] ?? false)) {
+                $this->deleteGalleryGroup((int) ($groupData['id'] ?? 0));
+                continue;
+            }
+
+            $group = GalleryGroup::updateOrCreate(
+                ['id' => $groupData['id'] ?? null],
+                [
+                    'name' => trim((string) $groupData['name']),
+                    'sort_order' => $groupIndex,
+                ]
+            );
+
+            $persistedGroupIds[] = $group->id;
+            $this->syncGalleryImages(
+                $group->load('images'),
+                collect($groupData['existing_images'] ?? [])->values(),
+                (array) $request->file("gallery_groups.$groupIndex.new_images", [])
+            );
+        }
+
+        $groupIdsToDelete = array_diff($originalGroupIds, $persistedGroupIds);
+
+        if (! empty($groupIdsToDelete)) {
+            GalleryGroup::with('images')
+                ->whereIn('id', $groupIdsToDelete)
+                ->get()
+                ->each(fn (GalleryGroup $group) => $this->deleteGalleryGroup($group->id));
+        }
+    }
+
+    private function syncGalleryImages(GalleryGroup $group, Collection $existingImages, array $newImages = []): void
+    {
+        $originalImageIds = $group->images->pluck('id')->all();
+        $persistedImageIds = [];
+
+        foreach ($existingImages as $imageIndex => $imageData) {
+            $imageId = (int) ($imageData['id'] ?? 0);
+            $galleryImage = $group->images->firstWhere('id', $imageId);
+
+            if (! $galleryImage) {
+                continue;
+            }
+
+            if ((bool) ($imageData['delete'] ?? false)) {
+                $this->deleteGalleryImageFile($galleryImage->image);
+                $galleryImage->delete();
+                continue;
+            }
+
+            $galleryImage->update([
+                'name' => trim((string) ($imageData['name'] ?? '')),
+                'sort_order' => $imageIndex,
+            ]);
+
+            $persistedImageIds[] = $galleryImage->id;
+        }
+
+        foreach (array_values($newImages) as $uploadIndex => $image) {
+            if (! $image instanceof UploadedFile) {
+                continue;
+            }
+
+            $group->images()->create([
+                'name' => pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME),
+                'image' => $this->storeGalleryImage($image),
+                'sort_order' => count($persistedImageIds) + $uploadIndex,
+            ]);
+        }
+
+        $imageIdsToDelete = array_diff($originalImageIds, $persistedImageIds);
+
+        if (! empty($imageIdsToDelete)) {
+            $group->images()
+                ->whereIn('id', $imageIdsToDelete)
+                ->get()
+                ->each(function ($galleryImage) {
+                    $this->deleteGalleryImageFile($galleryImage->image);
+                    $galleryImage->delete();
+                });
+        }
+    }
+
+    private function storeGalleryImage(UploadedFile $image): string
+    {
+        $targetDir = 'uploads/gallery/groups';
+        if (! File::isDirectory($targetDir)) {
+            File::makeDirectory($targetDir, 0755, true);
+        }
+
+        $imageName = 'gallery_'.time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+        $image->move($targetDir, $imageName);
+
+        return $targetDir.'/'.$imageName;
+    }
+
+    private function deleteGalleryGroup(int $groupId): void
+    {
+        if ($groupId <= 0) {
+            return;
+        }
+
+        $group = GalleryGroup::with('images')->find($groupId);
+        if (! $group) {
+            return;
+        }
+
+        foreach ($group->images as $image) {
+            $this->deleteGalleryImageFile($image->image);
+        }
+
+        $group->delete();
+    }
+
+    private function deleteGalleryImageFile(?string $path): void
+    {
+        if ($path && File::exists($path)) {
+            File::delete($path);
         }
     }
 }
