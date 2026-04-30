@@ -188,7 +188,8 @@ Artisan::command('doctor:sync-source {sourceDir} {--purge}', function (DoctorDat
             ['Profile rows', $summary['profiles_count']],
             ['Schedule rows', $summary['schedule_count']],
             ['Doctors imported', $summary['created_count']],
-            ['Doctors with matched schedules', $summary['scheduled_count']],
+            ['Doctors with matched profiles', $summary['matched_profile_count']],
+            ['Doctors using avatar fallback', $summary['avatar_fallback_count']],
         ]
     );
 

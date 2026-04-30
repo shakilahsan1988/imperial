@@ -31,8 +31,10 @@ class FrontController extends Controller
             ->orderBy('id')
             ->take(2)
             ->get();
-        $homeDoctors = Doctor::with('specialty')
+        $homeDoctors = Doctor::with(['specialty', 'branchSchedules.branch'])
             ->where('status', true)
+            ->whereNotNull('image')
+            ->whereNotNull('qualification')
             ->inRandomOrder()
             ->take(10)
             ->get();
@@ -485,7 +487,9 @@ class FrontController extends Controller
                 $query->where('status', true)->orderBy('sort_order')->orderBy('id');
             },
             'doctors' => function ($query) {
-                $query->with('specialty')->where('status', true)->orderBy('name');
+                $query->with(['specialty', 'branchSchedules' => function ($scheduleQuery) {
+                    $scheduleQuery->with('branch');
+                }])->where('status', true)->orderBy('name');
             },
         ])->where('slug', $slug)->firstOrFail();
 
@@ -507,7 +511,7 @@ class FrontController extends Controller
 
     public function doctor()
     {
-        $query = Doctor::with(['specialty', 'department'])->where('status', true);
+        $query = Doctor::with(['specialty', 'department', 'branchSchedules.branch'])->where('status', true);
 
         if (request('specialty_id')) {
             $query->where('doctor_specialty_id', request('specialty_id'));
@@ -536,24 +540,25 @@ class FrontController extends Controller
     {
         if ($doctor) {
             $model = Doctor::with(['specialty', 'department'])
+                ->with(['branchSchedules.branch'])
                 ->where('status', true)
                 ->where(function ($q) use ($doctor) {
                     $q->where('slug', $doctor)->orWhere('id', $doctor);
                 })
                 ->firstOrFail();
         } else {
-            $model = Doctor::with(['specialty', 'department'])->where('status', true)->firstOrFail();
+            $model = Doctor::with(['specialty', 'department', 'branchSchedules.branch'])->where('status', true)->firstOrFail();
         }
 
         $slots = DoctorConsultationSlot::where('status', true)->orderBy('sort_order')->orderBy('start_time')->get();
-        $branches = Branch::orderBy('name')->get();
+        $branches = $model->branches()->orderBy('name')->get();
 
         return view('frontend.doctor.book-doctor', compact('model', 'slots', 'branches'));
     }
 
     public function submit_doctor_booking(Request $request, $doctor)
     {
-        $doctorModel = Doctor::where('status', true)
+        $doctorModel = Doctor::with('branchSchedules')->where('status', true)
             ->where(function ($q) use ($doctor) {
                 $q->where('slug', $doctor)->orWhere('id', $doctor);
             })
@@ -574,6 +579,15 @@ class FrontController extends Controller
         if ($data['visit_type'] === 'video' && ! $doctorModel->video_consultation_available) {
             return back()->withInput()->withErrors([
                 'visit_type' => 'Video consultation is not available for this doctor.',
+            ]);
+        }
+
+        if (
+            $data['visit_type'] === 'in_hub'
+            && ! $doctorModel->branchSchedules->contains('branch_id', (int) $data['branch_id'])
+        ) {
+            return back()->withInput()->withErrors([
+                'branch_id' => 'Selected branch is not available for this doctor.',
             ]);
         }
 

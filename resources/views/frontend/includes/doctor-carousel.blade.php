@@ -65,20 +65,23 @@
                 <div class="doctor-carousel-viewport">
                     <div class="doctor-carousel-track">
                         @foreach($homeDoctors as $doctor)
-                            <article class="doctor-carousel-card group bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-                                <div class="aspect-[4/5] overflow-hidden bg-slate-100">
+                            <article class="doctor-carousel-card group bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
+                                <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}"
+                                   class="block aspect-[4/5] overflow-hidden bg-slate-100">
                                     <img src="{{ asset($doctor->image ?: 'assets/front/images/doctor/2.jpg') }}"
                                          alt="{{ $doctor->name }}"
                                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                </div>
-                                <div class="p-6">
+                                </a>
+                                <div class="p-6 flex flex-col flex-1">
                                     <p class="text-[11px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-3">
                                         {{ optional($doctor->specialty)->name ?: 'Specialist' }}
                                     </p>
                                     <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
-                                        {{ $doctor->name }}
+                                        <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}">
+                                            {{ $doctor->name }}
+                                        </a>
                                     </h3>
-                                    <p class="text-sm text-slate-500 font-medium leading-relaxed min-h-[44px]">
+                                    <p class="text-sm text-slate-500 font-medium leading-relaxed min-h-[44px] flex-1">
                                         {{ $doctor->designation ?: 'Consultant' }}
                                     </p>
                                     <div class="flex items-center justify-between text-xs text-slate-500 mt-5 mb-6">
@@ -86,7 +89,7 @@
                                         <strong class="text-slate-800">{{ formated_price($doctor->consultation_fee ?? 0) }}</strong>
                                     </div>
                                     <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}"
-                                       class="flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-2xl font-bold text-sm tracking-wide transition-all">
+                                       class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-2xl font-bold text-sm tracking-wide transition-all">
                                         Book Appointment
                                     </a>
                                 </div>

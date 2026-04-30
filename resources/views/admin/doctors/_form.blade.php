@@ -18,24 +18,6 @@
   </div>
 
   <div class="col-lg-4">
-     <div class="form-group">
-      <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-                <i class="fa fa-map-marked-alt"></i>
-            </span>
-          </div>
-          <select class="form-control" name="branch_id">
-            <option value="">{{ __('Select Branch (Optional)') }}</option>
-            @foreach($branches as $branch)
-              <option value="{{ $branch->id }}" @if(old('branch_id', isset($doctor) ? $doctor->branch_id : '') == $branch->id) selected @endif>{{ $branch->title ?: $branch->name }}</option>
-            @endforeach
-          </select>
-      </div>
-     </div>
-  </div>
-
-  <div class="col-lg-4">
       <div class="form-group">
           <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -196,50 +178,6 @@
   </div>
 
   <div class="col-lg-4">
-    <div class="form-group">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-hospital"></i></span>
-        </div>
-        <input type="text" class="form-control" placeholder="Schedule Branch" name="schedule_branch" id="schedule_branch" @if(isset($doctor)) value="{{$doctor->schedule_branch}}" @endif>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
-        </div>
-        <input type="text" class="form-control" placeholder="Schedule Consultant" name="schedule_consultant" id="schedule_consultant" @if(isset($doctor)) value="{{$doctor->schedule_consultant}}" @endif>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-        </div>
-        <input type="text" class="form-control" placeholder="Schedule Days" name="schedule_days" id="schedule_days" @if(isset($doctor)) value="{{$doctor->schedule_days}}" @endif>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-clock"></i></span>
-        </div>
-        <input type="text" class="form-control" placeholder="Schedule Time" name="schedule_time" id="schedule_time" @if(isset($doctor)) value="{{$doctor->schedule_time}}" @endif>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
       <div class="form-group mt-2">
           <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="video_consultation_available" name="video_consultation_available" value="1" @if(isset($doctor) ? $doctor->video_consultation_available : false) checked @endif>
@@ -258,5 +196,81 @@
       <div class="form-group">
           <textarea class="form-control" name="bio" rows="4" placeholder="{{__('Doctor Bio / Short Description')}}">@if(isset($doctor)){{$doctor->bio}}@endif</textarea>
       </div>
+  </div>
+
+  <div class="col-lg-12">
+    <div class="card border">
+      <div class="card-header bg-light">
+        <strong>{{ __('Branch Schedules') }}</strong>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>{{ __('Enable') }}</th>
+                <th>{{ __('Branch') }}</th>
+                <th>{{ __('Consultant') }}</th>
+                <th>{{ __('Schedule Days') }}</th>
+                <th>{{ __('Schedule Time') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($branches as $index => $branch)
+                @php
+                  $savedSchedule = $doctorBranchSchedules[$branch->id] ?? null;
+                  $oldRow = old("branch_schedules.$index", []);
+                  $isEnabled = (bool) ($oldRow['enabled'] ?? $savedSchedule);
+                @endphp
+                <tr>
+                  <td>
+                    <input type="hidden" name="branch_schedules[{{ $index }}][branch_id]" value="{{ $branch->id }}">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="branch_schedule_{{ $branch->id }}"
+                        name="branch_schedules[{{ $index }}][enabled]"
+                        value="1"
+                        {{ $isEnabled ? 'checked' : '' }}
+                      >
+                      <label class="custom-control-label" for="branch_schedule_{{ $branch->id }}"></label>
+                    </div>
+                  </td>
+                  <td>{{ $branch->title ?: $branch->name }}</td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="branch_schedules[{{ $index }}][consultant]"
+                      value="{{ $oldRow['consultant'] ?? ($savedSchedule->consultant ?? '') }}"
+                      placeholder="{{ __('Consultant') }}"
+                    >
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="branch_schedules[{{ $index }}][schedule_days]"
+                      value="{{ $oldRow['schedule_days'] ?? ($savedSchedule->schedule_days ?? '') }}"
+                      placeholder="{{ __('Schedule Days') }}"
+                    >
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="branch_schedules[{{ $index }}][schedule_time]"
+                      value="{{ $oldRow['schedule_time'] ?? ($savedSchedule->schedule_time ?? '') }}"
+                      placeholder="{{ __('Schedule Time') }}"
+                    >
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

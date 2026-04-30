@@ -82,31 +82,35 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 @foreach($doctorsInDept as $doc)
-                <div class="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative">
-                    <div class="aspect-[4/5] overflow-hidden bg-slate-100">
+                @php
+                    $scheduleItems = $doc->branchSchedules->map(function ($schedule) {
+                        $branchName = optional($schedule->branch)->title ?: optional($schedule->branch)->name ?: 'Branch';
+                        $parts = array_filter([$schedule->schedule_days, $schedule->schedule_time]);
+                        return [
+                            'branch' => $branchName,
+                            'details' => $parts ? implode(', ', $parts) : 'On request',
+                        ];
+                    });
+                @endphp
+                <div class="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative flex flex-col h-full">
+                    <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="block aspect-[4/5] overflow-hidden bg-slate-100">
                         <img src="{{ asset($doc->image ?: 'assets/front/images/doctor/2.jpg') }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    </div>
-                    <div class="p-6">
+                    </a>
+                    <div class="p-6 flex flex-col flex-1">
                         <div class="mb-4">
-                            <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $doc->name }}</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                                <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}">{{ $doc->name }}</a>
+                            </h3>
                             <p class="text-sm text-slate-500 font-medium leading-snug">{{ $doc->designation ?: 'Consultant' }}</p>
                             <p class="text-xs text-indigo-600 font-bold mt-1">{{ optional($doc->specialty)->name ?: 'Specialist' }}</p>
                         </div>
-                        <div class="text-xs text-slate-500 mb-6 space-y-1">
-                            @if($doc->schedule_days || $doc->schedule_time)
+                        <div class="text-xs text-slate-500 mb-6 space-y-1 flex-1">
+                            @foreach($scheduleItems as $scheduleItem)
                             <div class="flex items-start justify-between gap-3">
-                                <span>Schedule</span>
-                                <strong class="text-right text-slate-700">
-                                    {{ $doc->schedule_days ?: 'On request' }}@if($doc->schedule_time), {{ $doc->schedule_time }}@endif
-                                </strong>
+                                <span>{{ $scheduleItem['branch'] }}</span>
+                                <strong class="text-right text-slate-700">{{ $scheduleItem['details'] }}</strong>
                             </div>
-                            @endif
-                            @if($doc->schedule_branch)
-                            <div class="flex items-center justify-between">
-                                <span>Branch</span>
-                                <strong class="text-slate-700">{{ $doc->schedule_branch }}</strong>
-                            </div>
-                            @endif
+                            @endforeach
                             <div class="flex items-center justify-between">
                                 <span>In-Hub Fee</span>
                                 <strong class="text-slate-700">{{ formated_price($doc->consultation_fee ?? 0) }}</strong>
@@ -118,7 +122,7 @@
                                 </strong>
                             </div>
                         </div>
-                        <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-xl font-bold text-sm tracking-wide transition-all">
+                        <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-xl font-bold text-sm tracking-wide transition-all">
                             Book Appointment
                         </a>
                     </div>

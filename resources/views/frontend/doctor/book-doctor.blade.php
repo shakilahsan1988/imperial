@@ -18,6 +18,19 @@
     $doctorImage = !empty($model->image)
         ? (\Illuminate\Support\Str::startsWith($model->image, ['http://', 'https://']) ? $model->image : asset($model->image))
         : asset($fallbackImage);
+    $branchSchedules = $model->branchSchedules->mapWithKeys(function ($schedule) {
+        $branchName = optional($schedule->branch)->title ?: optional($schedule->branch)->name ?: 'Branch';
+        return [
+            $schedule->branch_id => [
+                'branch_name' => $branchName,
+                'consultant' => $schedule->consultant,
+                'schedule_days' => $schedule->schedule_days,
+                'schedule_time' => $schedule->schedule_time,
+            ],
+        ];
+    });
+    $defaultBranchId = old('branch_id') ?: optional($model->branchSchedules->first())->branch_id;
+    $defaultSchedule = $defaultBranchId ? ($branchSchedules[$defaultBranchId] ?? null) : null;
 @endphp
 <main class="min-h-screen bg-[#F8FAFC] font-sans pb-20">
     <nav class="bg-white border-b border-slate-100 py-4 mb-8">
@@ -64,11 +77,11 @@
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Schedule Days</p>
-                                    <p class="text-sm font-bold text-slate-700">{{ $model->schedule_days ?: '-' }}</p>
+                                    <p id="doctor-schedule-days" class="text-sm font-bold text-slate-700">{{ $defaultSchedule['schedule_days'] ?? '-' }}</p>
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Schedule Time</p>
-                                    <p class="text-sm font-bold text-slate-700">{{ $model->schedule_time ?: '-' }}</p>
+                                    <p id="doctor-schedule-time" class="text-sm font-bold text-slate-700">{{ $defaultSchedule['schedule_time'] ?? '-' }}</p>
                                 </div>
                             </div>
 
@@ -149,10 +162,26 @@
                             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Hub</label>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 @foreach($branches as $branch)
+                                @php($schedule = $branchSchedules[$branch->id] ?? null)
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="branch_id" value="{{ $branch->id }}" class="peer sr-only branch-radio" {{ old('branch_id') == $branch->id ? 'checked' : '' }}>
+                                    <input
+                                        type="radio"
+                                        name="branch_id"
+                                        value="{{ $branch->id }}"
+                                        class="peer sr-only branch-radio"
+                                        data-branch-name="{{ e($schedule['branch_name'] ?? ($branch->title ?: $branch->name)) }}"
+                                        data-schedule-days="{{ e($schedule['schedule_days'] ?? '') }}"
+                                        data-schedule-time="{{ e($schedule['schedule_time'] ?? '') }}"
+                                        data-consultant="{{ e($schedule['consultant'] ?? '') }}"
+                                        {{ old('branch_id', $defaultBranchId) == $branch->id ? 'checked' : '' }}
+                                    >
                                     <div class="p-4 border-2 border-slate-100 rounded-2xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
                                         <p class="text-sm font-bold text-slate-900">{{ $branch->name }}</p>
+                                        @if($schedule && ($schedule['schedule_days'] || $schedule['schedule_time']))
+                                        <p class="text-[11px] text-indigo-600 mt-1">
+                                            {{ $schedule['schedule_days'] ?: 'On request' }}@if($schedule['schedule_time']), {{ $schedule['schedule_time'] }}@endif
+                                        </p>
+                                        @endif
                                         @if(!empty($branch->address))
                                         <p class="text-[11px] text-slate-500 mt-1">{{ $branch->address }}</p>
                                         @endif
@@ -196,9 +225,9 @@
                         <div class="flex justify-between"><span>Doctor</span><span>{{ $model->name }}</span></div>
                         <div class="flex justify-between"><span>Department</span><span>{{ optional($model->department)->name ?: '-' }}</span></div>
                         <div class="flex justify-between"><span>Specialty</span><span>{{ optional($model->specialty)->name ?: '-' }}</span></div>
-                        <div class="flex justify-between"><span>Branch</span><span>{{ $model->schedule_branch ?: '-' }}</span></div>
-                        <div class="flex justify-between"><span>Schedule</span><span>{{ $model->schedule_days ?: '-' }}</span></div>
-                        <div class="flex justify-between"><span>Time</span><span>{{ $model->schedule_time ?: '-' }}</span></div>
+                        <div class="flex justify-between"><span>Branch</span><span id="summary-branch">{{ $defaultSchedule['branch_name'] ?? '-' }}</span></div>
+                        <div class="flex justify-between"><span>Schedule</span><span id="summary-schedule">{{ $defaultSchedule['schedule_days'] ?? '-' }}</span></div>
+                        <div class="flex justify-between"><span>Time</span><span id="summary-time">{{ $defaultSchedule['schedule_time'] ?? '-' }}</span></div>
                         <div class="flex justify-between"><span>In-Hub Fee</span><span>{{ formated_price($model->consultation_fee ?? 0) }}</span></div>
                         <div class="flex justify-between"><span>Video Fee</span><span>{{ $model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A' }}</span></div>
                         <div class="flex justify-between pt-2 border-t border-indigo-700">
@@ -231,16 +260,31 @@
   const summaryFeeValue = document.getElementById('summary-fee-value');
   const heroFeeLabel = document.getElementById('hero-fee-label');
   const heroFeeValue = document.getElementById('hero-fee-value');
+  const summaryBranch = document.getElementById('summary-branch');
+  const summarySchedule = document.getElementById('summary-schedule');
+  const summaryTime = document.getElementById('summary-time');
+  const doctorScheduleDays = document.getElementById('doctor-schedule-days');
+  const doctorScheduleTime = document.getElementById('doctor-schedule-time');
   const inHubFee = @json(formated_price($model->consultation_fee ?? 0));
   const videoFee = @json($model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A');
+  function updateBranchSchedule() {
+    const selectedBranch = document.querySelector('.branch-radio:checked');
+    const branchName = selectedBranch ? selectedBranch.dataset.branchName : '-';
+    const scheduleDays = selectedBranch ? (selectedBranch.dataset.scheduleDays || '-') : '-';
+    const scheduleTime = selectedBranch ? (selectedBranch.dataset.scheduleTime || '-') : '-';
+    if (summaryBranch) summaryBranch.textContent = branchName;
+    if (summarySchedule) summarySchedule.textContent = scheduleDays;
+    if (summaryTime) summaryTime.textContent = scheduleTime;
+    if (doctorScheduleDays) doctorScheduleDays.textContent = scheduleDays;
+    if (doctorScheduleTime) doctorScheduleTime.textContent = scheduleTime;
+  }
   function toggleBranch(){
     const selected = document.querySelector('input[name="visit_type"]:checked');
     const inHub = selected && selected.value === 'in_hub';
     if (branchWrap) branchWrap.style.display = inHub ? '' : 'none';
     branchInputs.forEach((input, index) => {
       input.disabled = !inHub;
-      input.required = inHub && index === 0;
-      if (!inHub) input.checked = false;
+      input.required = inHub && document.querySelectorAll('.branch-radio').length > 0 && index === 0;
     });
     if (summaryFeeLabel && summaryFeeValue) {
       if (inHub) {
@@ -260,8 +304,10 @@
         heroFeeValue.textContent = videoFee;
       }
     }
+    updateBranchSchedule();
   }
   radios.forEach(r => r.addEventListener('change', toggleBranch));
+  branchInputs.forEach((input) => input.addEventListener('change', updateBranchSchedule));
   toggleBranch();
 
   if (appointmentDate) {

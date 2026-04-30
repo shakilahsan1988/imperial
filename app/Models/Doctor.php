@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
@@ -81,6 +82,19 @@ class Doctor extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function branchSchedules(): HasMany
+    {
+        return $this->hasMany(DoctorBranchSchedule::class)->with('branch')->orderBy('branch_id');
+    }
+
+    public function branches(): BelongsToMany
+    {
+        return $this->belongsToMany(Branch::class, 'doctor_branch_schedules')
+            ->withPivot(['consultant', 'schedule_days', 'schedule_time'])
+            ->withTimestamps()
+            ->orderByRaw('coalesce(title, name)');
     }
 
     public function consultationBookings()

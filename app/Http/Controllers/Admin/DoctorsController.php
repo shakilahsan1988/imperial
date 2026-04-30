@@ -85,7 +85,7 @@ class DoctorsController extends Controller
     */
     public function ajax(Request $request)
     {
-        $model = Doctor::with(['specialty', 'department'])->select('doctors.*');
+        $model = Doctor::with(['specialty', 'department', 'branchSchedules.branch'])->select('doctors.*');
 
         return DataTables::of($model)
             ->addColumn('specialty', function($doctor) {
@@ -95,13 +95,17 @@ class DoctorsController extends Controller
                 return optional($doctor->department)->name ?: '-';
             })
             ->addColumn('schedule', function($doctor) {
-                $parts = array_filter([
-                    $doctor->schedule_branch,
-                    $doctor->schedule_days,
-                    $doctor->schedule_time,
-                ]);
+                $schedules = $doctor->branchSchedules->map(function ($schedule) {
+                    $parts = array_filter([
+                        optional($schedule->branch)->title ?: optional($schedule->branch)->name,
+                        $schedule->schedule_days,
+                        $schedule->schedule_time,
+                    ]);
 
-                return $parts ? implode(' | ', $parts) : '-';
+                    return implode(' | ', $parts);
+                })->filter()->values();
+
+                return $schedules->isNotEmpty() ? e($schedules->implode(' || ')) : '-';
             })
             ->addColumn('consultation_fee', function($doctor) {
                 return formated_price($doctor->consultation_fee ?? 0);
@@ -146,8 +150,9 @@ class DoctorsController extends Controller
         $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
         $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
         $branches = Branch::orderByRaw('coalesce(title, name)')->get();
+        $doctorBranchSchedules = [];
 
-        return view('admin.doctors.create', compact('specialties', 'departments', 'branches'));
+        return view('admin.doctors.create', compact('specialties', 'departments', 'branches', 'doctorBranchSchedules'));
     }
 
     /**
@@ -159,7 +164,7 @@ class DoctorsController extends Controller
     public function store(DoctorRequest $request)
     {
         try {
-            $data = $request->except('_token', '_method', 'image');
+            $data = $request->except('_token', '_method', 'image', 'branch_schedules', 'branch_id', 'schedule_branch', 'schedule_consultant', 'schedule_days', 'schedule_time');
             $data['code'] = doctor_code();
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['video_consultation_available'] = $request->boolean('video_consultation_available');
@@ -167,6 +172,11 @@ class DoctorsController extends Controller
                 ? ($request->video_consultation_fee ?? $request->consultation_fee)
                 : null;
             $data['status'] = $request->boolean('status', true);
+            $data['branch_id'] = null;
+            $data['schedule_branch'] = null;
+            $data['schedule_consultant'] = null;
+            $data['schedule_days'] = null;
+            $data['schedule_time'] = null;
 
             if ($request->hasFile('image')) {
                 if (!File::isDirectory('uploads/doctors')) {
@@ -178,7 +188,9 @@ class DoctorsController extends Controller
                 $data['image'] = 'uploads/doctors/' . $imageName;
             }
 
-            Doctor::create($data);
+            $doctor = Doctor::create($data);
+            $this->syncBranchSchedules($doctor, $request->input('branch_schedules', []));
+
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor created successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to create doctor: ') . $e->getMessage());
@@ -193,7 +205,7 @@ class DoctorsController extends Controller
      */
     public function show($id)
     {
-        $doctor = Doctor::findOrFail($id);
+        $doctor = Doctor::with(['specialty', 'department', 'branchSchedules.branch'])->findOrFail($id);
         return view('admin.doctors.show', compact('doctor'));
     }
 
@@ -205,12 +217,13 @@ class DoctorsController extends Controller
      */
     public function edit($id)
     {
-        $doctor=Doctor::findOrFail($id);
+        $doctor=Doctor::with('branchSchedules')->findOrFail($id);
         $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
         $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
         $branches = Branch::orderByRaw('coalesce(title, name)')->get();
+        $doctorBranchSchedules = $doctor->branchSchedules->keyBy('branch_id');
 
-        return view('admin.doctors.edit', compact('doctor', 'specialties', 'departments', 'branches'));
+        return view('admin.doctors.edit', compact('doctor', 'specialties', 'departments', 'branches', 'doctorBranchSchedules'));
     }
 
     /**
@@ -224,13 +237,18 @@ class DoctorsController extends Controller
     {
         try {
             $doctor=Doctor::findOrFail($id);
-            $data = $request->except('_token', '_method', 'image');
+            $data = $request->except('_token', '_method', 'image', 'branch_schedules', 'branch_id', 'schedule_branch', 'schedule_consultant', 'schedule_days', 'schedule_time');
             $data['slug'] = Str::slug($request->name) . '-' . $doctor->id;
             $data['video_consultation_available'] = $request->boolean('video_consultation_available');
             $data['video_consultation_fee'] = $request->boolean('video_consultation_available')
                 ? ($request->video_consultation_fee ?? $request->consultation_fee)
                 : null;
             $data['status'] = $request->boolean('status');
+            $data['branch_id'] = null;
+            $data['schedule_branch'] = null;
+            $data['schedule_consultant'] = null;
+            $data['schedule_days'] = null;
+            $data['schedule_time'] = null;
 
             if ($request->hasFile('image')) {
                 if (!File::isDirectory('uploads/doctors')) {
@@ -243,6 +261,7 @@ class DoctorsController extends Controller
             }
 
             $doctor->update($data);
+            $this->syncBranchSchedules($doctor, $request->input('branch_schedules', []));
             return redirect()->route('admin.doctors.index')->with('success', __('Doctor updated successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update doctor: ') . $e->getMessage());
@@ -310,5 +329,23 @@ class DoctorsController extends Controller
         ob_end_clean(); // this
         ob_start(); // and this
         return response()->download(storage_path('app/public/doctors_template.xlsx'),'doctors_template.xlsx');
+    }
+
+    protected function syncBranchSchedules(Doctor $doctor, array $branchSchedules): void
+    {
+        $payload = collect($branchSchedules)
+            ->filter(fn ($row) => (bool) ($row['enabled'] ?? false) && ! empty($row['branch_id']))
+            ->mapWithKeys(function ($row) {
+                return [
+                    (int) $row['branch_id'] => [
+                        'consultant' => trim((string) ($row['consultant'] ?? '')) ?: null,
+                        'schedule_days' => trim((string) ($row['schedule_days'] ?? '')) ?: null,
+                        'schedule_time' => trim((string) ($row['schedule_time'] ?? '')) ?: null,
+                    ],
+                ];
+            })
+            ->all();
+
+        $doctor->branches()->sync($payload);
     }
 }
