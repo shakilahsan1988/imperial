@@ -3,6 +3,7 @@
 use App\Http\Controllers\DynamicPageController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SslCommerzController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,9 @@ Route::get('/branches/{slug}', [FrontController::class, 'branch_details'])->name
 Route::get('/doctor', [FrontController::class, 'doctor'])->name('doctor');
 Route::get('/book-doctor/{doctor?}', [FrontController::class, 'book_doctor'])->name('book-doctor');
 Route::post('/book-doctor/{doctor}/submit', [FrontController::class, 'submit_doctor_booking'])->name('book-doctor.submit');
+Route::get('/doctor-booking/{id}/confirm', [FrontController::class, 'doctorBookingConfirm'])->name('doctor-booking.confirm');
+Route::post('/doctor-booking/{id}/confirm-cash', [FrontController::class, 'confirmCashPayment'])->name('doctor-booking.confirm-cash');
+Route::post('/doctor-booking/{id}/pay-online', [FrontController::class, 'doctorBookingPayOnline'])->name('doctor-booking.pay-online');
 Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
 Route::get('/blog-details/{slug?}', [FrontController::class, 'blog_details'])->name('blog-details');
 Route::get('/event', [FrontController::class, 'event'])->name('event');
@@ -63,6 +67,14 @@ Route::get('/event-details', [FrontController::class, 'event_details'])->name('e
 Route::get('/press', [FrontController::class, 'press'])->name('press');
 Route::get('/press-details', [FrontController::class, 'press_details'])->name('press-details');
 Route::get('/gallery', [FrontController::class, 'gallery'])->name('gallery');
+
+// SSLCommerz Payment Callback Routes
+Route::get('/payment/success', [SslCommerzController::class, 'success'])->name('payment.success');
+Route::get('/payment/fail', [SslCommerzController::class, 'fail'])->name('payment.fail');
+Route::get('/payment/cancel', [SslCommerzController::class, 'cancel'])->name('payment.cancel');
+Route::post('/payment/ipn', [SslCommerzController::class, 'ipn'])->name('payment.ipn');
+Route::get('/doctor-booking/success/{id}', [SslCommerzController::class, 'doctorBookingSuccess'])->name('doctor-booking.success');
+Route::get('/doctor-booking/fail/{id}', [SslCommerzController::class, 'doctorBookingFail'])->name('doctor-booking.fail');
 
 Route::middleware(['Install', 'Locale'])->group(function () {
 

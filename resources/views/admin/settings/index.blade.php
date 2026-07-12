@@ -100,6 +100,7 @@
                 <a class="nav-link"  data-toggle="pill" href="#emails_settings" role="tab" aria-controls="emails_settings" aria-selected="true"><i class="fas fa-envelope"></i> {{__('Email Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#reports_settings" role="tab" aria-controls="reports_settings" aria-selected="true"><i class="fas fa-file-alt"></i> {{__('Reports Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#menu_settings" role="tab" aria-controls="menu_settings" aria-selected="true"><i class="fas fa-bars"></i> {{__('Menu Settings')}}</a>
+                <a class="nav-link"  data-toggle="pill" href="#payment_settings" role="tab" aria-controls="payment_settings" aria-selected="true"><i class="fas fa-credit-card"></i> {{__('Payment Settings')}}</a>
 
               </div>
             </div>
@@ -1600,6 +1601,66 @@
                 </div>
                 <!-- \Menu Settings -->
 
+                <!-- Payment Settings (SSLCommerz) -->
+                <div class="tab-pane text-left fade show" id="payment_settings" role="tabpanel" aria-labelledby="payment_settings">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-credit-card mr-1"></i> {{__('Payment Settings')}} (SSLCommerz)</h3>
+                        </div>
+                        <form action="{{route('admin.settings.sslcommerz_submit')}}" method="POST">
+                            @csrf
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="store_id">{{__('Store ID')}}</label>
+                                            <input type="text" name="store_id" id="store_id" class="form-control" value="{{ $sslcommerz_settings['store_id'] ?? '' }}" placeholder="Enter SSLCommerz Store ID">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="store_password">{{__('Store Password')}}</label>
+                                            <input type="password" name="store_password" id="store_password" class="form-control" value="{{ $sslcommerz_settings['store_password'] ?? '' }}" placeholder="Enter SSLCommerz Store Password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>{{__('Sandbox / Live Mode')}}</label>
+                                            <div>
+                                                <input name="sandbox_mode" type="checkbox" @if(!empty($sslcommerz_settings['sandbox_mode'])) checked @endif netliva-switch data-active-text="{{__('Sandbox')}}" data-passive-text="{{__('Live')}}" />
+                                            </div>
+                                            <small class="form-text text-muted">{{__('Enable for testing, disable for production')}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>{{__('Enable Online Payment')}}</label>
+                                            <div>
+                                                <input name="enabled" type="checkbox" @if(!empty($sslcommerz_settings['enabled'])) checked @endif netliva-switch data-active-text="{{__('Enabled')}}" data-passive-text="{{__('Disabled')}}" />
+                                            </div>
+                                            <small class="form-text text-muted">{{__('Show online payment option on the booking page')}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            {{__('Configure your SSLCommerz credentials above. Use Sandbox mode for testing with test cards. When enabled, patients will see an Online Payment option on the Doctor Appointment Booking page.')}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {{__('Save')}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- \Payment Settings (SSLCommerz) -->
+
             </div>
           </div>
     </div>
@@ -1786,6 +1847,17 @@
             form.submit();
           });
         });
+      })(jQuery);
+    </script>
+
+    <!-- Payment Settings (SSLCommerz) -->
+    <script>
+      (function(){
+        @if(session('success'))
+          @if(session('success') == 'Payment settings updated successfully')
+            if (typeof toastr_success === 'function') toastr_success("{{ session('success') }}");
+          @endif
+        @endif
       })(jQuery);
     </script>
 @endsection

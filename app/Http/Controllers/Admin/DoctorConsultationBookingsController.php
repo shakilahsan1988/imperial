@@ -20,7 +20,7 @@ class DoctorConsultationBookingsController extends Controller
 
     public function show(DoctorConsultationBooking $doctor_consultation_booking)
     {
-        $booking = $doctor_consultation_booking->load(['doctor.specialty', 'doctor.department', 'slot', 'branch', 'patient']);
+        $booking = $doctor_consultation_booking->load(['doctor.specialty', 'doctor.department', 'slot', 'branch', 'patient', 'sslcommerzTransactions']);
         return view('admin.doctor_consultation_bookings.show', compact('booking'));
     }
 

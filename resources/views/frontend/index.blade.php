@@ -7,6 +7,8 @@
     @include('frontend.includes.slider')
     @include('frontend.includes.branch-section')
 
+    <!-- Test comment -->
+
     <!-- STATS SECTION -->
     <section class="py-24 bg-white relative overflow-hidden">
         <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50 -mr-48 -mt-48"></div>

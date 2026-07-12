@@ -12,6 +12,7 @@ use App\Models\DoctorConsultationSlot;
 use App\Models\DoctorDepartment;
 use App\Models\DoctorSpecialty;
 use App\Models\GalleryGroup;
+use App\Services\SslCommerzService;
 use App\Models\HealthPackage;
 use App\Models\HealthPackageBooking;
 use App\Models\HealthPackageCategory;
@@ -592,6 +593,10 @@ class FrontController extends Controller
             ]);
         }
 
+        $consultationFee = $data['visit_type'] === 'video'
+            ? ($doctorModel->video_consultation_fee ?? $doctorModel->consultation_fee)
+            : $doctorModel->consultation_fee;
+
         $slot = DoctorConsultationSlot::where('status', true)->findOrFail($data['doctor_consultation_slot_id']);
         $email = strtolower(trim($data['email']));
 
@@ -626,10 +631,8 @@ class FrontController extends Controller
             }
         }
 
-        DoctorConsultationBooking::create([
-            'consultation_fee' => $data['visit_type'] === 'video'
-                ? ($doctorModel->video_consultation_fee ?? $doctorModel->consultation_fee)
-                : $doctorModel->consultation_fee,
+        $booking = DoctorConsultationBooking::create([
+            'consultation_fee' => $consultationFee,
             'doctor_id' => $doctorModel->id,
             'patient_id' => $patient->id ?? null,
             'doctor_consultation_slot_id' => $slot->id,
@@ -642,10 +645,69 @@ class FrontController extends Controller
             'appointment_date' => $data['appointment_date'],
             'notes' => $data['notes'] ?? null,
             'commission_percentage' => $doctorModel->commission,
+            'payment_method' => null,
+            'payment_status' => 'unpaid',
+            'currency' => 'BDT',
             'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Consultation booking request submitted successfully.');
+        return redirect()->route('doctor-booking.confirm', $booking->id);
+    }
+
+    /**
+     * Show booking confirmation / payment page after booking is created
+     */
+    public function doctorBookingConfirm($id)
+    {
+        $booking = DoctorConsultationBooking::with(['doctor.specialty', 'doctor.department', 'slot', 'branch'])
+            ->whereIn('payment_status', ['unpaid', 'cancelled'])
+            ->findOrFail($id);
+
+        $sslcommerz = setting('sslcommerz');
+        $sslEnabled = is_array($sslcommerz) && ($sslcommerz['enabled'] ?? false);
+
+        return view('frontend.booking.doctor-booking-confirm', compact('booking', 'sslEnabled'));
+    }
+
+    /**
+     * Confirm cash payment for an existing booking
+     */
+    public function confirmCashPayment(Request $request, $id)
+    {
+        $booking = DoctorConsultationBooking::whereIn('payment_status', ['unpaid', 'cancelled'])->findOrFail($id);
+
+        $booking->update([
+            'payment_method' => 'cash',
+            'payment_status' => 'paid',
+            'paid_amount' => $booking->consultation_fee,
+            'payment_date' => now(),
+        ]);
+
+        $booking->load(['doctor.specialty', 'doctor.department', 'slot', 'branch']);
+
+        return view('frontend.booking.doctor-booking-success', compact('booking'));
+    }
+
+    /**
+     * Initiate SSLCommerz payment for an existing booking
+     */
+    public function doctorBookingPayOnline($id)
+    {
+        $booking = DoctorConsultationBooking::whereIn('payment_status', ['unpaid', 'cancelled'])->findOrFail($id);
+
+        $sslService = app(SslCommerzService::class);
+
+        if (!$sslService->isEnabled()) {
+            return back()->with('error', 'Online payment is currently unavailable. Please select Cash Payment.');
+        }
+
+        $paymentResult = $sslService->initiatePayment($booking);
+
+        if ($paymentResult['success']) {
+            return redirect($paymentResult['gateway_url']);
+        }
+
+        return back()->with('error', $paymentResult['message'] ?? 'Payment initiation failed. Please try again or choose Cash Payment.');
     }
 
     public function blog(Request $request)

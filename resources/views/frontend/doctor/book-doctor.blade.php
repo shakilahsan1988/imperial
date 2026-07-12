@@ -238,7 +238,7 @@
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-lg shadow-slate-200/40">
                     <button type="submit" form="doctor-booking-form" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-xl font-black uppercase tracking-widest text-xs transition-all">
-                        Confirm Appointment Request
+                        Submit Booking
                     </button>
                 </div>
                 </div>

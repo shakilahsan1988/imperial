@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\ReportSettingRequest;
 use App\Http\Requests\Admin\SmsSettingRequest;
 use App\Http\Requests\Admin\WhatsappSettingRequest;
 use App\Http\Requests\Admin\ApiSettingRequest;
+use App\Http\Requests\Admin\SslCommerzSettingRequest;
 use App\Models\Service;
 use App\Models\Doctor;
 use App\Models\Page;
@@ -64,6 +65,9 @@ class SettingsController extends Controller
         //menus
         $menu_settings = menu_settings();
 
+        //sslcommerz
+        $sslcommerz_settings=setting('sslcommerz');
+
         // Extra for menu builder
         $services = Service::select('id', 'name')->get();
         $doctors = Doctor::select('id', 'name')->get();
@@ -78,6 +82,7 @@ class SettingsController extends Controller
             'whatsapp_settings',
             'api_keys_settings',
             'menu_settings',
+            'sslcommerz_settings',
             'services',
             'doctors',
             'pages'
@@ -358,6 +363,30 @@ class SettingsController extends Controller
             return redirect()->route('admin.settings.index')->with('success', __('Menu settings updated successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update menu settings: ') . $e->getMessage());
+        }
+    }
+
+    /**
+     * update SSLCommerz payment settings
+     */
+    public function sslcommerz_submit(SslCommerzSettingRequest $request)
+    {
+        try {
+            $sslcommerz = [
+                'store_id' => trim($request->input('store_id', '')),
+                'store_password' => trim($request->input('store_password', '')),
+                'sandbox_mode' => $request->boolean('sandbox_mode'),
+                'enabled' => $request->boolean('enabled'),
+            ];
+
+            Setting::updateOrCreate(
+                ['key' => 'sslcommerz'],
+                ['value' => json_encode($sslcommerz)]
+            );
+
+            return redirect()->route('admin.settings.index')->with('success', __('Payment settings updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update payment settings: ') . $e->getMessage());
         }
     }
 }

@@ -21,12 +21,22 @@ class DoctorConsultationBooking extends Model
         'consultation_fee',
         'commission_percentage',
         'status',
+        'payment_method',
+        'payment_status',
+        'transaction_id',
+        'bank_transaction_id',
+        'currency',
+        'validation_id',
+        'paid_amount',
+        'payment_date',
     ];
 
     protected $casts = [
         'appointment_date' => 'date',
         'consultation_fee' => 'decimal:2',
         'commission_percentage' => 'decimal:2',
+        'paid_amount' => 'decimal:2',
+        'payment_date' => 'datetime',
     ];
 
     public function doctor()
@@ -47,5 +57,10 @@ class DoctorConsultationBooking extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function sslcommerzTransactions()
+    {
+        return $this->hasMany(SslCommerzTransaction::class, 'consultation_booking_id');
     }
 }
