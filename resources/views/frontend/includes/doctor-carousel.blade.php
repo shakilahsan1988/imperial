@@ -50,6 +50,9 @@
                     <a href="{{ $homeSettings['doctor_carousel']['button_url'] }}" class="hidden sm:inline-flex btn-primary text-white px-8 py-4 rounded-2xl font-bold items-center gap-3 shadow-xl shadow-indigo-200">
                         {{ $homeSettings['doctor_carousel']['button_text'] }} <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
+                    <a href="/lab-test" class="hidden sm:inline-flex btn-primary text-white px-8 py-4 rounded-2xl font-bold items-center gap-3 shadow-xl shadow-indigo-200">
+                        Explore Our Services <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
                     <div class="flex items-center gap-3">
                         <button type="button" class="doctor-carousel-prev w-12 h-12 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-900 hover:text-white transition-all" aria-label="Previous doctors">
                             <i class="fa-solid fa-arrow-left"></i>
@@ -73,7 +76,7 @@
                                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                                 </a>
                                 <div class="p-6 flex flex-col flex-1">
-                                    <p class="text-[11px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-3">
+                                    <p class="text-[15px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-3">
                                         {{ optional($doctor->specialty)->name ?: 'Specialist' }}
                                     </p>
                                     <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">

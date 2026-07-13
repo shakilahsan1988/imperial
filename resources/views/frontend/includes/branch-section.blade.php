@@ -2,7 +2,7 @@
 <section class="py-24 bg-white overflow-hidden">
     <div class="container mx-auto px-6">
         <div class="max-w-3xl mb-12">
-            <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">Our Branches</span>
+            <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">Our Branches</span>
             <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Explore Imperial <span class="text-indigo-600">Locations</span></h2>
             <p class="text-lg text-slate-600 leading-relaxed">Discover our branches, facilities, key contact information, and the teams available at each location.</p>
         </div>

@@ -176,7 +176,7 @@ if (! function_exists('home_page_settings')) {
                 'slides' => [
                     [
                         'badge' => 'Precision & Care',
-                        'title_html' => 'Healthcare <br>Anytime, <span class="text-indigo-400 italic">Anywhere</span>',
+                        'title_html' => 'Healthcare <br>Anytime, <span class="text-indigo-400">Anywhere</span>',
                         'description' => 'Experience the future of healthcare with our world-class medical facilities and home diagnostics.',
                         'button_text' => 'Explore Services',
                         'button_url' => '/services',
@@ -184,7 +184,7 @@ if (! function_exists('home_page_settings')) {
                     ],
                     [
                         'badge' => 'Wellness Packages',
-                        'title_html' => 'Affordable <br>Health <span class="text-indigo-400 italic">Checks</span>',
+                        'title_html' => 'Affordable <br>Health <span class="text-indigo-400">Checks</span>',
                         'description' => 'Tailored packages designed for every age and gender, fitting perfectly within your family budget.',
                         'button_text' => 'View Packages',
                         'button_url' => '/health-check',
@@ -192,7 +192,7 @@ if (! function_exists('home_page_settings')) {
                     ],
                     [
                         'badge' => 'Lab at Doorstep',
-                        'title_html' => 'Hassle-Free <br>Diagnostic <span class="text-indigo-400 italic">Tests</span>',
+                        'title_html' => 'Hassle-Free <br>Diagnostic <span class="text-indigo-400">Tests</span>',
                         'description' => 'Avoid the traffic and wait. Our experts come to you for sample collection in the comfort of your home.',
                         'button_text' => 'Book Home Test',
                         'button_url' => '/lab-test',

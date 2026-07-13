@@ -160,7 +160,7 @@
         <div class="slide-overlay"></div>
         <div class="container mx-auto px-6 slide-content">
             <div class="max-w-2xl">
-                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px] mb-4">{{ $slide['badge'] ?? '' }}</span>
+                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[30px] mb-4">{{ $slide['badge'] ?? '' }}</span>
                 <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $slide['title_html'] ?? '' !!}</h1>
                 <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">{{ $slide['description'] ?? '' }}</p>
                 <div class="animate-item animate-4">

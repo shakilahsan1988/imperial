@@ -11,7 +11,7 @@
             
             <!-- Logo -->
             <a href="{{ route('fhome') }}" class="flex-shrink-0 relative z-[110]">
-                <img src="{{ $logoSrc }}" alt="Imperial Health Logo" class="h-9 md:h-12 w-auto" onerror="this.src='https://placehold.co/150x50/007caa/ffffff?text=Imperial+Health'">
+                <img src="{{ $logoSrc }}" alt="Imperial Health Logo" class="h-16 md:h-20 w-auto" onerror="this.src='https://placehold.co/150x50/007caa/ffffff?text=Imperial+Health'">
             </a>
 
             <nav class="hidden lg:flex gap-8 items-center">
@@ -23,7 +23,7 @@
                     @endphp
                     @if(count($children) > 0)
                         <div class="relative group py-2">
-                            <a href="{{ $href }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1 tracking-tight" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
+                            <a href="{{ $href }}" class="text-base font-bold text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1 tracking-tight" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
                                 {{ $item['label'] ?? 'Menu' }} <i class="fa-solid fa-chevron-down text-[8px] mt-0.5"></i>
                             </a>
                             <div class="absolute left-0 top-full mt-2 w-64 bg-white shadow-2xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform group-hover:translate-y-0 translate-y-2 duration-300 z-50 py-4">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ $href }}" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors tracking-tight" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
+                        <a href="{{ $href }}" class="text-base font-bold text-slate-600 hover:text-indigo-600 transition-colors tracking-tight" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>
                             {{ $item['label'] ?? 'Menu' }}
                         </a>
                     @endif
