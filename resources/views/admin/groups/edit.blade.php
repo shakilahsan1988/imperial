@@ -55,12 +55,7 @@
 
       //selected tests
       @foreach($group['tests'] as $test)
-        test_arr.push('{{$test["test_id"]}}');
-      @endforeach
-
-      //selected cultures
-      @foreach($group['cultures'] as $culture)
-        culture_arr.push('{{$culture["culture_id"]}}');
+        test_arr.push('{{$test["service_id"]}}');
       @endforeach
 
     })(jQuery);

@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Visit;
 use App\Models\Patient;
 use App\Models\Group;
-use App\Models\Test;
-use App\Models\Culture;
+use App\Models\Service;
 use App\Models\Branch;
 use App\Models\Contract;
 use App\Http\Requests\Admin\VisitRequest;
@@ -264,10 +263,12 @@ class VisitsController extends Controller
             'status'=>true,
         ]);
 
-        $tests=Test::where('parent_id',0)->orWhere('separated',true)->get();
-        $cultures=Culture::all();
-        $branches=Branch::all();
-        $contracts=Contract::all();
+        // Lab services are the bookable "tests" in this installation; cultures
+        // are not a module here, so an empty set keeps the shared form working.
+        $tests=Service::active()->laboratory()->orderBy('name')->get();
+        $cultures=collect();
+        $branches=Branch::orderBy('name')->get();
+        $contracts=Contract::orderBy('title')->get();
 
         return view('admin.groups.create',compact('visit','tests','cultures','branches','contracts'));
     }

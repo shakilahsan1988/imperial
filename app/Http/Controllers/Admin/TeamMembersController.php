@@ -65,6 +65,13 @@ class TeamMembersController extends Controller
             ->with('success', 'Team member created successfully.');
     }
 
+    public function show(TeamMember $team_member)
+    {
+        $team_member->load('branch');
+
+        return view('admin.team_members.show', compact('team_member'));
+    }
+
     public function edit(TeamMember $team_member)
     {
         $branches = Branch::orderByRaw('coalesce(title, name)')->get();

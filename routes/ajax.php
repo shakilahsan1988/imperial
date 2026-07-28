@@ -21,23 +21,13 @@ Route::group(['prefix' => 'ajax', 'as' => 'ajax.', 'middleware' => ['web']], fun
     Route::get('get_patient', [AjaxController::class, 'get_patient'])->name('get_patient'); 
     Route::post('create_patient', [AjaxController::class, 'create_patient'])->name('create_patient');
    
-    // Test related AJAX
+    // Test (lab service) related AJAX
     Route::get('get_tests', [AjaxController::class, 'get_tests'])->name('get_tests');
-    Route::get('delete_test/{test_id}', [AjaxController::class, 'delete_test'])->name('delete_test');
-    Route::get('delete_option/{option_id}', [AjaxController::class, 'delete_option'])->name('delete_option');
 
     // Culture and Doctor AJAX
     Route::get('get_cultures', [AjaxController::class, 'get_cultures'])->name('get_cultures');
     Route::get('get_doctors', [AjaxController::class, 'get_doctors'])->name('get_doctors');
     Route::post('create_doctor', [AjaxController::class, 'create_doctor'])->name('create_doctor');
-
-    // Options management
-    Route::post('add_sample_type', [AjaxController::class, 'add_sample_type'])->name('add_sample_type');
-    Route::post('add_organism', [AjaxController::class, 'add_organism'])->name('add_organism');
-    Route::post('add_colony_count', [AjaxController::class, 'add_colony_count'])->name('add_colony_count');
-    
-    // Roles
-    Route::get('get_roles', [AjaxController::class, 'get_roles'])->name('get_roles');  
 
     // Admin authenticated AJAX
     Route::middleware(['Admin'])->group(function () {

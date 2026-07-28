@@ -93,9 +93,29 @@ class TranslationsController extends Controller
      */
     public function edit($id)
     {
-        $translations=file_get_contents(resource_path('lang/'.$id.'.json'));
-        $translations=json_decode($translations);
+        $path=$this->lang_file($id);
+
+        if(!file_exists($path))
+        {
+            return redirect()->route('admin.translations.index')
+                ->with('error', __('No translation file exists for this language'));
+        }
+
+        $translations=json_decode(file_get_contents($path));
+
         return view('admin.translations.edit',compact('translations','id'));
+    }
+
+    /**
+     * Resolve the translation file for a language, rejecting any ISO code that
+     * is not a registered language so the URL segment can never escape the
+     * lang directory.
+     */
+    protected function lang_file($id)
+    {
+        abort_unless(Language::where('iso',$id)->exists(), 404);
+
+        return resource_path('lang/'.$id.'.json');
     }
 
     /**
@@ -108,9 +128,13 @@ class TranslationsController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $translations=json_encode($request['trans'],JSON_PRETTY_PRINT);
-            file_put_contents(resource_path('lang/'.$id.'.json'),$translations);
-            
+            $path=$this->lang_file($id);
+
+            $request->validate(['trans'=>'required|array']);
+
+            $translations=json_encode($request['trans'],JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+            file_put_contents($path,$translations);
+
             return redirect()->back()->with('success', __('Translation updated successfully'));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update translation: ') . $e->getMessage());

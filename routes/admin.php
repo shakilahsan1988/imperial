@@ -79,10 +79,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('services', ServicesController::class);
 
     // Bookings
+    // Static segments must be registered before the resource, otherwise
+    // bookings/{booking} matches first and the literal path 404s.
+    Route::get('bookings/patients', [BookingsController::class, 'getPatients'])->name('bookings.patients');
     Route::resource('bookings', BookingsController::class);
     Route::get('get_bookings', [BookingsController::class, 'ajax'])->name('get_bookings');
     Route::patch('bookings/{booking}/status', [BookingsController::class, 'updateStatus'])->name('bookings.updateStatus');
-    Route::get('bookings/patients', [BookingsController::class, 'getPatients'])->name('bookings.patients');
     Route::get('bookings/{booking}/create_report', [BookingsController::class, 'createReport'])->name('bookings.create_report');
 
     // Results (Completed Bookings)
@@ -109,7 +111,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
 
     // Reports
     Route::get('reports/{id}/pdf', [ReportsController::class, 'pdf'])->name('reports.pdf');
-    Route::resource('reports', ReportsController::class);
+    Route::get('reports/{id}/sign', [ReportsController::class, 'sign'])->name('reports.sign');
+    Route::resource('reports', ReportsController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
     Route::get('get_reports', [ReportsController::class, 'ajax'])->name('get_reports');
 
     // Roles
@@ -127,6 +130,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::get('generate_doctor_report', [AccountingController::class, 'generate_doctor_report'])->name('accounting.generate_doctor_report');
 
     // Visits
+    Route::get('visits/{visit_id}/create_tests', [VisitsController::class, 'create_tests'])->name('visits.create_tests');
     Route::resource('visits', VisitsController::class);
     Route::get('get_visits', [VisitsController::class, 'ajax'])->name('get_visits');
 

@@ -91,27 +91,30 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    @php
-                        $team = [
-                            ['name' => 'Md. Mahbubor Rahman', 'role' => 'Chief Advisor', 'img' => '2.jpg'],
-                            ['name' => 'Mehedi Hasan Chowdhury', 'role' => 'Managing Director', 'img' => '3.jpg'],
-                            ['name' => 'Md. Arif Hasan', 'role' => 'Founder and Chairman', 'img' => '4.jpg'],
-                        ];
-                    @endphp
-                    @foreach($team as $member)
+                    @forelse($teamMembers as $member)
                     <div class="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                         <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
-                            <img src="{{ asset('assets/front/images/about/' . $member['img']) }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            @if($member->image)
+                                <img src="{{ asset($member->image) }}" alt="{{ $member->name }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <i class="fa-solid fa-user text-6xl text-slate-300"></i>
+                                </div>
+                            @endif
                         </div>
                         <div class="p-6 text-center">
-                            <h3 class="font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $member['name'] }}</h3>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{{ $member['role'] }}</p>
-                            <a href="{{ route('management-details') }}" class="inline-flex items-center gap-2 text-[10px] font-black uppercase text-indigo-600 group-hover:gap-3 transition-all">
+                            <h3 class="font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $member->name }}</h3>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{{ $member->designation }}</p>
+                            <a href="{{ route('management-details', $member->slug) }}" class="inline-flex items-center gap-2 text-[10px] font-black uppercase text-indigo-600 group-hover:gap-3 transition-all">
                                 Profile <i class="fa-solid fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="col-span-full text-center py-12 text-slate-500">
+                        <p>No team members found.</p>
+                    </div>
+                    @endforelse
                 </div>
             </div>
         </section>

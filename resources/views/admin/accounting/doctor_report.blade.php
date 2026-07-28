@@ -94,10 +94,7 @@
                 <td>
                   <ul class="p-2">
                     @foreach($group['tests'] as $test)
-                      <li>{{$test['test']['name']}}</li>
-                    @endforeach
-                    @foreach($group['cultures'] as $culture)
-                      <li>{{$culture['culture']['name']}}</li>
+                      <li>{{optional($test->service)->name}}</li>
                     @endforeach
                   </ul>
                 </td>

@@ -425,8 +425,9 @@ class FrontController extends Controller
     public function about()
     {
         $pageSettings = about_page_settings();
+        $teamMembers = TeamMember::with('branch')->active()->ordered()->get();
 
-        return view('frontend.about.about', compact('pageSettings'));
+        return view('frontend.about.about', compact('pageSettings', 'teamMembers'));
     }
 
     public function about_details()

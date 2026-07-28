@@ -153,7 +153,7 @@ class PatientsController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::with(['groups.tests.test', 'groups.cultures.culture', 'groups.booking'])->findOrFail($id);
+        $patient = Patient::with(['groups.tests.service', 'groups.booking'])->findOrFail($id);
         return view('admin.patients.show', compact('patient'));
     }
 

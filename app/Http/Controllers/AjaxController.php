@@ -8,19 +8,14 @@ use App\Http\Requests\Admin\DoctorRequest;
 use App\Models\Patient;
 use App\Models\Doctor;
 use App\Models\Group;
-use App\Models\Option;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Test;
-use App\Models\Culture;
-use App\Models\Antibiotic;
-use App\Models\Chat;
+use App\Models\Service;
 use App\Models\Visit;
 use App\Models\Branch;
 use App\Models\Contract;
 use App\Models\Expense;
 use App\Models\Language;
-use App\Models\TestOption;
 use App\Models\ExpenseCategory;
 use Yajra\DataTables\Html\Button;
 use App\Mail\PatientCode;
@@ -115,38 +110,28 @@ class AjaxController extends Controller
     */
     public function get_tests(Request $request)
     {
+        $tests=Service::active()->laboratory();
+
         if(isset($request->term))
         {
-            $tests=Test::where(function($q){
-              return $q->where('parent_id',0)->orWhere('separated',true);
-            })->where('name','like','%'.$request->term.'%')->take(20)->get();
-        }
-        else{
-            $tests=Test::where(function($q){
-                return $q->where('parent_id',0)->orWhere('separated',true);
-              })->take(20)->get();
+            $tests->where('name','like','%'.$request->term.'%');
         }
 
-        return response()->json($tests);
+        return response()->json($tests->orderBy('name')->take(20)->get());
     }
 
     /**
     * get cultures select2
+    *
+    * Cultures are not a module in this installation; the endpoint is kept so the
+    * select2 widgets that request it degrade to an empty list instead of erroring.
     *
     * @access public
     * @var  @Request $request
     */
     public function get_cultures(Request $request)
     {
-        if(isset($request->term))
-        {
-            $cultures=Culture::where('name','like','%'.$request->term.'%')->take(20)->get();
-        }
-        else{
-            $cultures=Culture::take(20)->get();
-        }
-
-        return response()->json($cultures);
+        return response()->json([]);
     }
 
     
@@ -266,34 +251,6 @@ class AjaxController extends Controller
 
         return response()->json($patient);
     }
-
-    /**
-    * delete test
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function delete_test($test_id)
-    {
-        $test=Test::find($test_id);
-
-        if(isset($test))
-        {
-            $test->options()->delete();
-
-            $test->delete();
-        }
-
-        return response()->json('success');
-    }
-
-    public function delete_option($option_id)
-    {
-        TestOption::where('id',$option_id)->delete();
-
-        return response()->json('success');
-    }
-
 
 }
 

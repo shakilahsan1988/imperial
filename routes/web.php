@@ -23,7 +23,7 @@ Route::get('/service/{id}', [FrontController::class, 'service_detail'])->name('s
 Route::post('/bookings', [FrontController::class, 'store_booking'])->name('bookings.store');
 Route::get('/booking/confirmation/{id}', [FrontController::class, 'booking_confirmation'])->name('bookings.confirmation');
 Route::get('/booking/receipt/{id}', [FrontController::class, 'booking_receipt'])->name('bookings.receipt');
-Route::get('/my-bookings', [FrontController::class, 'my_bookings'])->name('my-bookings')->middleware('patient');
+Route::get('/my-bookings', [FrontController::class, 'my_bookings'])->name('my-bookings')->middleware('Patient');
 Route::get('/health-check', [FrontController::class, 'health_check'])->name('health-check');
 Route::get('/package-details/{slug}', [FrontController::class, 'package_details'])->name('package-details');
 Route::post('/package-details/{slug}/book', [FrontController::class, 'package_booking_submit'])->name('package-booking.submit');
@@ -44,6 +44,8 @@ Route::get('/beauty', [FrontController::class, 'beauty'])->name('beauty');
 Route::get('/about', [FrontController::class, 'about'])->name('about');
 Route::get('/about-details', [FrontController::class, 'about_details'])->name('about-details');
 Route::get('/bill-of-right', [FrontController::class, 'bill_of_rights'])->name('bill-of-right');
+Route::get('/career', [FrontController::class, 'career'])->name('career');
+Route::get('/career-details', [FrontController::class, 'career_details'])->name('career-details');
 Route::get('/code-of-ethics', [FrontController::class, 'code_ethics'])->name('code-of-ethics');
 Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
 Route::get('/client', [FrontController::class, 'client'])->name('client');

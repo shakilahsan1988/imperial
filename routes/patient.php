@@ -27,9 +27,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'PatientGuest', 'as' => 'patie
     Route::get('verify', [PatientController::class, 'showVerifyForm'])->name('verify');
     Route::post('verify', [PatientController::class, 'verify_submit'])->name('verify_submit');
 
-    // Backward compatibility or secondary access
-    Route::get('mail', [PatientController::class, 'showMailForm'])->name('mail');
-    Route::post('mail_submit', [PatientController::class, 'mail_submit'])->name('mail_submit');
+    // NOTE: patients authenticate by emailed OTP and have no password, so the
+    // former password-reset routes (mail / mail_submit) no longer apply.
 });
 
 // Logout patient

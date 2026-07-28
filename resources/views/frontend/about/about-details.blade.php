@@ -1,4 +1,4 @@
-@extends('front')
+@extends('layouts.front')
 
 @section('title', 'Sylvana Quader Sinha - Management Team')
 

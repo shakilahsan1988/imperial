@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Expense;
 use App\Models\Doctor;
-use App\Models\Test;
-use App\Models\Culture;
+use App\Models\Service;
 
 class AccountingController extends Controller
 {
@@ -75,7 +74,7 @@ class AccountingController extends Controller
         $to=date('Y-m-d 23:59:59',strtotime($date[1]));
 
         //select groups of date between
-        $groups=($from==$to)?Group::with('patient','doctor')->whereDate('created_at',$from):Group::with('patient','doctor')->whereBetween('created_at',[$from,$to]);
+        $groups=($from==$to)?Group::with('patient','doctor','tests.service')->whereDate('created_at',$from):Group::with('patient','doctor','tests.service')->whereBetween('created_at',[$from,$to]);
 
         //filter doctors
         $doctors=[];
@@ -87,27 +86,19 @@ class AccountingController extends Controller
 
         }
 
-        //filter tests
+        //filter tests (lab services)
         $tests=[];
         if($request->has('tests'))
         {
             $groups->whereHas('tests',function($q)use($request){
-               return $q->whereIn('test_id',$request['tests']);
+               return $q->whereIn('service_id',$request['tests']);
             });
 
-            $tests=Test::whereIn('id',$request['tests'])->get();
+            $tests=Service::whereIn('id',$request['tests'])->get();
         }
 
-        //filter cultures
+        //cultures are not a module in this installation
         $cultures=[];
-        if($request->has('cultures'))
-        {
-            $groups->whereHas('cultures',function($q)use($request){
-                return $q->whereIn('culture_id',$request['cultures']);
-            });
-
-            $cultures=Culture::whereIn('id',$request['cultures'])->get();
-        }
 
         $groups=$groups->get();
 
@@ -198,7 +189,7 @@ class AccountingController extends Controller
         $to=date('Y-m-d 23:59:59',strtotime($date[1]));
 
         //select groups of date between
-        $groups=($from==$to)?Group::with('patient','doctor')->whereDate('created_at',$from):Group::with('patient','doctor')->whereBetween('created_at',[$from,$to]);
+        $groups=($from==$to)?Group::with('patient','doctor','tests.service')->whereDate('created_at',$from):Group::with('patient','doctor','tests.service')->whereBetween('created_at',[$from,$to]);
 
         //filter doctors
         if($request->has('doctor_id'))

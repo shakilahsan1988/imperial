@@ -120,22 +120,9 @@
                                 @foreach($group['tests'] as $test)
                                 <tr>
                                     <td colspan="2" class="print_title">
-                                        @if(isset($test['test'])) 
-                                            {{$test['test']['name']}}
-                                        @endif
+                                        {{optional($test->service)->name}}
                                     </td>
                                     <td>{{$test['price']}} {{get_currency()}}</td>
-                                </tr>
-                                @endforeach
-                    
-                                @foreach($group['cultures'] as $culture)
-                                <tr>
-                                    <td colspan="2" class="print_title">
-                                        @if(isset($culture['culture']))
-                                            {{$culture['culture']['name']}}
-                                        @endif
-                                    </td>
-                                    <td>{{$culture['price']}} {{get_currency()}}</td>
                                 </tr>
                                 @endforeach
                     

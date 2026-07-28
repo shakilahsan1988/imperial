@@ -23,11 +23,50 @@ class ReportsController extends Controller
             if (in_array($action, ['index', 'show', 'ajax', 'pdf'])) {
                 if (!$u->hasPermission('view_report')) abort(403, 'Denied');
             }
-            if (in_array($action, ['edit', 'update'])) {
+            if (in_array($action, ['edit', 'update', 'update_culture'])) {
                 if (!$u->hasPermission('edit_report')) abort(403, 'Denied');
+            }
+            if ($action == 'sign') {
+                if (!$u->hasPermission('sign_report')) abort(403, 'Denied');
+            }
+            if ($action == 'destroy') {
+                if (!$u->hasPermission('delete_report')) abort(403, 'Denied');
             }
             return $next($request);
         });
+    }
+
+    /**
+     * Sign the report with the signature uploaded on the signing user's profile.
+     * The stored filename is rendered into the report PDF footer.
+     */
+    public function sign($id)
+    {
+        $group = Group::findOrFail($id);
+        $user = auth()->guard('admin')->user();
+
+        if (empty($user->signature)) {
+            return back()->with('error', __('Upload a signature on your profile before signing reports'));
+        }
+
+        $group->update(['signature' => $user->signature]);
+
+        return back()->with('success', __('Report signed successfully'));
+    }
+
+    public function destroy($id)
+    {
+        $group = Group::findOrFail($id);
+
+        GroupTest::where('group_id', $group->id)->update([
+            'result' => null,
+            'comment' => null,
+            'done' => false,
+        ]);
+
+        $group->update(['done' => false, 'signature' => null, 'report_pdf' => null]);
+
+        return redirect()->route('admin.reports.index')->with('success', __('Report results cleared successfully'));
     }
 
     public function index()
