@@ -19,14 +19,20 @@ return new class extends Migration
             $table->text('payment_notes')->nullable()->after('paid_at');
         });
 
-        DB::statement("
-            UPDATE health_package_bookings hpb
-            JOIN health_packages hp ON hp.id = hpb.health_package_id
-            SET hpb.total_amount = hp.price,
-                hpb.paid_amount = 0,
-                hpb.due_amount = hp.price,
-                hpb.payment_status = 'pending'
-        ");
+        // Backfill existing rows. "UPDATE ... JOIN" is MySQL-specific syntax,
+        // so it is guarded by driver: without this, building the schema on any
+        // other connection - including the sqlite database the test suite uses
+        // - aborts with a syntax error. MySQL behaviour is unchanged.
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement("
+                UPDATE health_package_bookings hpb
+                JOIN health_packages hp ON hp.id = hpb.health_package_id
+                SET hpb.total_amount = hp.price,
+                    hpb.paid_amount = 0,
+                    hpb.due_amount = hp.price,
+                    hpb.payment_status = 'pending'
+            ");
+        }
     }
 
     public function down(): void

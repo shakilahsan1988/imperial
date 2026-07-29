@@ -172,26 +172,21 @@ Artisan::command('catalog:replace-imaging {filePath}', function () {
     return self::SUCCESS;
 })->purpose('Hard replace imaging services from a source Excel file');
 
-Artisan::command('doctor:sync-source {sourceDir} {--purge}', function (DoctorDataSyncService $service) {
-    $sourceDir = $this->argument('sourceDir');
-
-    $this->info('Syncing doctor data from source directory...');
-    $this->line('Source: ' . $sourceDir);
-    $this->line('Purge existing data: ' . ($this->option('purge') ? 'yes' : 'no'));
-
-    $summary = $service->syncFromDirectory($sourceDir, (bool) $this->option('purge'));
-
+/**
+ * @deprecated Disabled. Replaced by `doctor:audit`.
+ *
+ * This command used to purge and rebuild doctor data. It destroyed all doctors
+ * on every run and, with --purge, truncated patients, bookings, visits and
+ * expenses as well. It fails immediately and does not resolve the service, so
+ * no destructive code can run even by accident.
+ */
+Artisan::command('doctor:sync-source {sourceDir?} {--purge}', function () {
+    $this->error('doctor:sync-source is DEPRECATED and DISABLED.');
     $this->newLine();
-    $this->table(
-        ['Metric', 'Count'],
-        [
-            ['Profile rows', $summary['profiles_count']],
-            ['Schedule rows', $summary['schedule_count']],
-            ['Doctors imported', $summary['created_count']],
-            ['Doctors with matched profiles', $summary['matched_profile_count']],
-            ['Doctors using avatar fallback', $summary['avatar_fallback_count']],
-        ]
-    );
+    $this->line(DoctorDataSyncService::DEPRECATION_MESSAGE);
+    $this->newLine();
+    $this->comment('Replacement (dry-run by default, never destructive):');
+    $this->line('  php artisan doctor:audit --source="<path to source directory>"');
 
-    $this->info('Doctor sync completed.');
-})->purpose('Purge and sync doctor records from an Excel/image source directory');
+    return self::FAILURE;
+})->purpose('[DEPRECATED - DISABLED] Use doctor:audit instead');

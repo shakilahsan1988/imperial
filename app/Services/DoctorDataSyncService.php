@@ -11,11 +11,49 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use RuntimeException;
 
+/**
+ * @deprecated Superseded by App\Services\DoctorAuditService and the
+ *             `doctor:audit` command. DO NOT USE. DO NOT RE-ENABLE.
+ *
+ * This service is retained only as a reference for comparing the replacement's
+ * output against what originally produced the current data. Its execution
+ * paths are disabled by a guard because they were destructive and not
+ * idempotent:
+ *
+ *  - syncFromDirectory() called Doctor::query()->forceDelete() inside its
+ *    transaction regardless of the $purge flag, so every run destroyed all
+ *    doctors and cascaded into doctor_consultation_bookings.
+ *  - purgeApplicationData() truncated patients, bookings, visits, expenses,
+ *    groups and every payment table.
+ *  - It copied a shared gender avatar into a per-doctor path, which is why 11
+ *    doctors now reference image files that do not exist.
+ *  - It guessed gender from name tokens.
+ *
+ * Scheduled for removal once the replacement has passed production
+ * verification.
+ */
 class DoctorDataSyncService
 {
+    /**
+     * Message shown wherever this service is invoked.
+     */
+    public const DEPRECATION_MESSAGE = 'doctor:sync-source and DoctorDataSyncService are deprecated and disabled. '
+        .'They performed destructive forceDelete/truncate operations on doctors, patients, bookings, visits and expenses. '
+        .'Use the non-destructive replacement instead: php artisan doctor:audit --help';
+
+    /**
+     * @deprecated Disabled. Use `doctor:audit`.
+     *
+     * @throws RuntimeException always
+     */
     public function syncFromDirectory(string $sourceDir, bool $purge = true): array
     {
+        // Guard first: nothing below this line is reachable, which is the
+        // point. The destructive code is kept visible for reference only.
+        throw new RuntimeException(self::DEPRECATION_MESSAGE);
+
         $profiles = $this->loadDoctorProfiles($sourceDir);
         $schedules = $this->loadDoctorSchedules($sourceDir);
         $branchMap = $this->loadBranchMap();
@@ -138,8 +176,16 @@ class DoctorDataSyncService
         ];
     }
 
+    /**
+     * @deprecated Disabled. This truncated patients, bookings, visits and
+     *             expenses - data that has nothing to do with doctor imports.
+     *
+     * @throws RuntimeException always
+     */
     public function purgeApplicationData(): void
     {
+        throw new RuntimeException(self::DEPRECATION_MESSAGE);
+
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         try {

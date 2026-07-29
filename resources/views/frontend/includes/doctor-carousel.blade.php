@@ -71,7 +71,7 @@
                             <article class="doctor-carousel-card group bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
                                 <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}"
                                    class="block aspect-[4/5] overflow-hidden bg-slate-100">
-                                    <img src="{{ asset($doctor->image ?: 'assets/front/images/doctor/2.jpg') }}"
+                                    <img src="{{ $doctor->effective_image_url }}"
                                          alt="{{ $doctor->name }}"
                                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                                 </a>

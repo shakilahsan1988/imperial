@@ -12,9 +12,10 @@ use App\Models\Branch;
 use App\Models\Doctor;
 use App\Models\DoctorSpecialty;
 use App\Models\DoctorDepartment;
-use Yajra\DataTables\Facades\DataTables; 
+use App\Services\DoctorImageService;
+use App\Support\DoctorBookingGuard;
+use Yajra\DataTables\Facades\DataTables;
 use Excel;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class DoctorsController extends Controller
@@ -161,10 +162,10 @@ class DoctorsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(DoctorRequest $request)
+    public function store(DoctorRequest $request, DoctorImageService $images)
     {
         try {
-            $data = $request->except('_token', '_method', 'image', 'branch_schedules', 'branch_id', 'schedule_branch', 'schedule_consultant', 'schedule_days', 'schedule_time');
+            $data = $request->except('_token', '_method', 'image', 'remove_image', 'branch_schedules', 'branch_id', 'schedule_branch', 'schedule_consultant', 'schedule_days', 'schedule_time');
             $data['code'] = doctor_code();
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['video_consultation_available'] = $request->boolean('video_consultation_available');
@@ -178,20 +179,19 @@ class DoctorsController extends Controller
             $data['schedule_days'] = null;
             $data['schedule_time'] = null;
 
+            // The image is attached after the row exists, because the storage
+            // path is scoped by doctor id.
+            $doctor = Doctor::create($data);
+
             if ($request->hasFile('image')) {
-                if (!File::isDirectory('uploads/doctors')) {
-                    File::makeDirectory('uploads/doctors', 0755, true);
-                }
-                $image = $request->file('image');
-                $imageName = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
-                $image->move('uploads/doctors', $imageName);
-                $data['image'] = 'uploads/doctors/' . $imageName;
+                $images->store($doctor, $request->file('image'));
             }
 
-            $doctor = Doctor::create($data);
-            $this->syncBranchSchedules($doctor, $request->input('branch_schedules', []));
+            $protected = $this->syncBranchSchedules($doctor, $request->input('branch_schedules', []));
 
-            return redirect()->route('admin.doctors.index')->with('success', __('Doctor created successfully'));
+            return redirect()->route('admin.doctors.index')
+                ->with('success', __('Doctor created successfully'))
+                ->with('warning', $this->protectedScheduleWarning($protected));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to create doctor: ') . $e->getMessage());
         }
@@ -233,11 +233,11 @@ class DoctorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DoctorRequest $request, $id)
+    public function update(DoctorRequest $request, $id, DoctorImageService $images)
     {
         try {
             $doctor=Doctor::findOrFail($id);
-            $data = $request->except('_token', '_method', 'image', 'branch_schedules', 'branch_id', 'schedule_branch', 'schedule_consultant', 'schedule_days', 'schedule_time');
+            $data = $request->except('_token', '_method', 'image', 'remove_image', 'branch_schedules', 'branch_id', 'schedule_branch', 'schedule_consultant', 'schedule_days', 'schedule_time');
             $data['slug'] = Str::slug($request->name) . '-' . $doctor->id;
             $data['video_consultation_available'] = $request->boolean('video_consultation_available');
             $data['video_consultation_fee'] = $request->boolean('video_consultation_available')
@@ -250,19 +250,21 @@ class DoctorsController extends Controller
             $data['schedule_days'] = null;
             $data['schedule_time'] = null;
 
+            $doctor->update($data);
+
+            // A new upload wins over the remove checkbox; both are handled by
+            // the image service so that ownership and cleanup stay in one place.
             if ($request->hasFile('image')) {
-                if (!File::isDirectory('uploads/doctors')) {
-                    File::makeDirectory('uploads/doctors', 0755, true);
-                }
-                $image = $request->file('image');
-                $imageName = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
-                $image->move('uploads/doctors', $imageName);
-                $data['image'] = 'uploads/doctors/' . $imageName;
+                $images->store($doctor, $request->file('image'));
+            } elseif ($request->boolean('remove_image')) {
+                $images->remove($doctor);
             }
 
-            $doctor->update($data);
-            $this->syncBranchSchedules($doctor, $request->input('branch_schedules', []));
-            return redirect()->route('admin.doctors.index')->with('success', __('Doctor updated successfully'));
+            $protected = $this->syncBranchSchedules($doctor, $request->input('branch_schedules', []));
+
+            return redirect()->route('admin.doctors.index')
+                ->with('success', __('Doctor updated successfully'))
+                ->with('warning', $this->protectedScheduleWarning($protected));
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update doctor: ') . $e->getMessage());
         }
@@ -331,7 +333,25 @@ class DoctorsController extends Controller
         return response()->download(storage_path('app/public/doctors_template.xlsx'),'doctors_template.xlsx');
     }
 
-    protected function syncBranchSchedules(Doctor $doctor, array $branchSchedules): void
+    /**
+     * Apply the branch schedule rows submitted with the form.
+     *
+     * A bare sync() would silently detach any branch missing from the payload.
+     * That is destructive in two ways: it removes the doctor from that branch's
+     * public listing, and it makes the branch ineligible for booking, because
+     * FrontController::submit_doctor_booking checks branchSchedules for the
+     * selected branch. So two protections apply here:
+     *
+     *  1. Branches the form did not offer at all - a soft-deleted branch, for
+     *     instance - are preserved rather than detached.
+     *
+     *  2. A branch the admin unchecked is still preserved if the doctor has
+     *     upcoming bookings there. Editing the schedule text is left alone,
+     *     since that text is display-only; it is the detach that loses data.
+     *
+     * @return array<int, string> names of branches that were protected
+     */
+    protected function syncBranchSchedules(Doctor $doctor, array $branchSchedules): array
     {
         $payload = collect($branchSchedules)
             ->filter(fn ($row) => (bool) ($row['enabled'] ?? false) && ! empty($row['branch_id']))
@@ -346,6 +366,68 @@ class DoctorsController extends Controller
             })
             ->all();
 
+        $offered = collect($branchSchedules)
+            ->pluck('branch_id')
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $protected = [];
+
+        foreach ($doctor->branchSchedules()->get() as $schedule) {
+            $branchId = (int) $schedule->branch_id;
+
+            if (array_key_exists($branchId, $payload)) {
+                continue;
+            }
+
+            $wasOffered = in_array($branchId, $offered, true);
+            $hasBookings = $this->blockingBookingCount($doctor, $branchId) > 0;
+
+            if ($wasOffered && ! $hasBookings) {
+                continue; // Deliberately unchecked and safe to detach.
+            }
+
+            // Preserve the existing row untouched.
+            $payload[$branchId] = [
+                'consultant' => $schedule->consultant,
+                'schedule_days' => $schedule->schedule_days,
+                'schedule_time' => $schedule->schedule_time,
+            ];
+
+            if ($wasOffered && $hasBookings) {
+                $protected[] = optional($schedule->branch)->title
+                    ?: optional($schedule->branch)->name
+                    ?: ('#'.$branchId);
+            }
+        }
+
         $doctor->branches()->sync($payload);
+
+        return $protected;
+    }
+
+    /**
+     * Count bookings that make a branch schedule unsafe to remove.
+     *
+     * Delegates to DoctorBookingGuard, which is also used by the read-only
+     * audit, so both places agree on what "protected" means.
+     */
+    protected function blockingBookingCount(Doctor $doctor, int $branchId): int
+    {
+        return DoctorBookingGuard::blockingBookingCount($doctor->getKey(), $branchId);
+    }
+
+    /**
+     * Human-readable notice for schedules that were kept despite being unchecked.
+     */
+    protected function protectedScheduleWarning(array $protectedBranches): ?string
+    {
+        if (empty($protectedBranches)) {
+            return null;
+        }
+
+        return __('These branch schedules were kept because the doctor has upcoming appointments there: ')
+            .implode(', ', $protectedBranches);
     }
 }

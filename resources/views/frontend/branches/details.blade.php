@@ -56,7 +56,7 @@
                         @foreach($branch->doctors as $doctor)
                         <div class="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative flex flex-col h-full">
                             <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}" class="block aspect-[4/5] overflow-hidden bg-slate-100">
-                                <img src="{{ asset($doctor->image ?: 'assets/front/images/doctor/2.jpg') }}" alt="{{ $doctor->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <img src="{{ $doctor->effective_image_url }}" alt="{{ $doctor->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                             </a>
                             <div class="p-6 flex flex-col flex-1">
                                 <div class="mb-4">

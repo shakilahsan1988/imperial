@@ -3,16 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Support\DoctorImagePresenter;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
 class Doctor extends Model
 {
-    use SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'code',
@@ -50,6 +52,12 @@ class Doctor extends Model
 
     /**
      * The accessors to append to the model's array form.
+     *
+     * Note: `effective_image_url` is deliberately NOT appended here. Appending
+     * it would fire a filesystem check for every row serialized by the admin
+     * DataTables endpoint and would silently change the shape of the existing
+     * select2 JSON responses. Surfaces that need the resolved URL ask for it
+     * explicitly instead.
      */
     protected $appends = ['total', 'paid', 'due'];
 
@@ -100,6 +108,29 @@ class Doctor extends Model
     public function consultationBookings()
     {
         return $this->hasMany(DoctorConsultationBooking::class, 'doctor_id');
+    }
+
+    /**
+     * The image this doctor should actually display.
+     *
+     * Resolves to the personal photo when one exists on disk, and otherwise to
+     * the shared avatar for the doctor's gender. Every surface - admin, public,
+     * and JSON - must read this rather than `image`, which may be null or may
+     * point at a file that is no longer there.
+     */
+    protected function effectiveImageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => DoctorImagePresenter::url($this),
+        );
+    }
+
+    /**
+     * Whether this doctor has a usable personal photo rather than an avatar.
+     */
+    public function hasPersonalImage(): bool
+    {
+        return DoctorImagePresenter::hasPersonalImage($this);
     }
 
     /**

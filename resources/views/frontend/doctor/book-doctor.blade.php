@@ -4,20 +4,7 @@
 
 @section('content')
 @php
-    $fallbacks = [
-        'assets/front/images/doctor/1.jpg',
-        'assets/front/images/doctor/2.jpg',
-        'assets/front/images/doctor/3.jpg',
-        'assets/front/images/doctor/4.jpg',
-        'assets/front/images/doctor/5.jpg',
-        'assets/front/images/doctor/6.jpg',
-        'assets/front/images/doctor/7.jpg',
-        'assets/front/images/doctor/8.jpg',
-    ];
-    $fallbackImage = $fallbacks[$model->id % count($fallbacks)];
-    $doctorImage = !empty($model->image)
-        ? (\Illuminate\Support\Str::startsWith($model->image, ['http://', 'https://']) ? $model->image : asset($model->image))
-        : asset($fallbackImage);
+    $doctorImage = $model->effective_image_url;
     $branchSchedules = $model->branchSchedules->mapWithKeys(function ($schedule) {
         $branchName = optional($schedule->branch)->title ?: optional($schedule->branch)->name ?: 'Branch';
         return [

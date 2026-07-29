@@ -91,13 +91,28 @@ class AjaxController extends Controller
     */
     public function get_doctors(Request $request)
     {
+        $query = Doctor::query()->where('status', true);
+
         if(isset($request->term))
         {
-            $doctors=Doctor::where('name','like','%'.$request->term.'%')->take(20)->get();
+            $query->where('name','like','%'.$request->term.'%');
         }
-        else{
-            $doctors=Doctor::take(20)->get();
-        }
+
+        // An explicit projection rather than raw models: it keeps the payload
+        // small, and it means the consumer receives the resolved image URL
+        // instead of a raw `image` path that may be null or point at a file
+        // that no longer exists.
+        $doctors = $query->orderBy('name')->take(20)->get()->map(fn (Doctor $doctor) => [
+            'id' => $doctor->id,
+            'code' => $doctor->code,
+            'name' => $doctor->name,
+            'phone' => $doctor->phone,
+            'email' => $doctor->email,
+            'designation' => $doctor->designation,
+            'commission' => $doctor->commission,
+            'consultation_fee' => $doctor->consultation_fee,
+            'effective_image_url' => $doctor->effective_image_url,
+        ]);
 
         return response()->json($doctors);
     }

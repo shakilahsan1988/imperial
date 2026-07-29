@@ -38,7 +38,7 @@
       <div class="row">
         <div class="col-lg-3 text-center">
           <img class="img-thumbnail mb-3"
-               src="@if(!empty($doctor->image)){{asset($doctor->image)}}@else{{url('img/no-image.png')}}@endif"
+               src="{{ $doctor->effective_image_url }}"
                alt="{{$doctor->name}}">
         </div>
         <div class="col-lg-9">

@@ -169,10 +169,18 @@
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fas fa-image"></i></span>
         </div>
-        <input type="file" class="form-control" name="image" id="image" accept="image/*">
+        <input type="file" class="form-control" name="image" id="image" accept="image/jpeg,image/png,image/webp">
       </div>
-      @if(isset($doctor) && $doctor->image)
-        <img src="{{ asset($doctor->image) }}" alt="Doctor Image" class="img-thumbnail" style="max-height:70px;">
+      @if(isset($doctor))
+        <img src="{{ $doctor->effective_image_url }}" alt="{{ $doctor->name }}" class="img-thumbnail" style="max-height:70px;">
+        @if($doctor->hasPersonalImage())
+          <div class="custom-control custom-checkbox mt-2">
+            <input type="checkbox" class="custom-control-input" id="remove_image" name="remove_image" value="1">
+            <label class="custom-control-label text-danger" for="remove_image">{{ __('Remove photo (revert to default avatar)') }}</label>
+          </div>
+        @else
+          <small class="d-block text-muted mt-1">{{ __('Using the shared default avatar. Upload a photo to replace it.') }}</small>
+        @endif
       @endif
     </div>
   </div>
