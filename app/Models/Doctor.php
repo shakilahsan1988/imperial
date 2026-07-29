@@ -22,6 +22,7 @@ class Doctor extends Model
         'doctor_department_id',
         'branch_id',
         'name',
+        'gender',
         'slug',
         'phone',
         'email',

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\DoctorAuditService;
+use App\Services\DoctorSyncService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
@@ -10,27 +11,36 @@ use Illuminate\Support\Facades\File;
 /**
  * Non-destructive replacement for the deprecated `doctor:sync-source`.
  *
- * At Gate A this command is READ-ONLY: there is no --execute path, and it
- * cannot modify a doctor, a schedule, or a file. It compares the source
- * workbooks, the photo folder and the database, and writes a report describing
- * what a later correction step would change.
- *
- * The write flags (--fix-contacts, --fix-images, --sync-schedules, ...) are
- * added in later gates, each gated on an explicit approval.
+ * The audit itself is always read-only: DoctorAuditService never writes. The
+ * write flags below (--fix-images, --fix-contacts, --create-missing,
+ * --fill-blanks, --propose-gender, --apply-gender, --sync-schedules,
+ * --reassign-specialty) each delegate to a single DoctorSyncService method and
+ * all default to a dry run - **--execute is required to persist anything**.
+ * Every write is wrapped in a transaction and preceded by a snapshot that
+ * `doctor:audit:rollback` can undo.
  */
 class DoctorAuditCommand extends Command
 {
     protected $signature = 'doctor:audit
         {--source= : Directory containing doctors.xlsx, the schedule workbooks and images/}
         {--report-only : Explicit no-op flag; the command is read-only regardless}
+        {--execute : Persist the requested write operation(s). Without this, every write flag only previews}
         {--doctor= : Restrict the doctor sections to one doctor id or name fragment}
         {--branch= : Restrict the schedule sections to one branch token, e.g. hatirpool}
         {--workbook= : Restrict the schedule sections to one workbook filename}
+        {--propose-gender : Write gender-assignments.csv from the curated config(\'doctor_sync.gender_map\') for review}
+        {--apply-gender= : Path to a (possibly edited) gender-assignments.csv to apply}
+        {--fix-images : Null out doctors.image where the stored path does not resolve to a real file}
+        {--fix-contacts : Null out the known-fabricated email/phone values}
+        {--create-missing : Create workbook profiles that have no database doctor (inactive, no schedule)}
+        {--fill-blanks : Fill NULL/blank qualification, designation, bio, address from the workbook}
+        {--sync-schedules : Apply the schedule diff (safe rows only; see report for what is skipped)}
+        {--reassign-specialty : Apply the approved Dr. Md. Mahfuzur Rahman -> Oral & Maxillofacial Surgery correction}
         {--json : Also print the raw result as JSON}';
 
-    protected $description = 'Audit doctor records, schedules and photos against the source workbooks (read-only)';
+    protected $description = 'Audit doctor records, schedules and photos against the source workbooks; optionally apply approved corrections';
 
-    public function handle(DoctorAuditService $audit): int
+    public function handle(DoctorAuditService $audit, DoctorSyncService $sync): int
     {
         $sourceDir = $this->option('source') ?: config('doctor_sync.sources.default_directory');
 
@@ -40,7 +50,11 @@ class DoctorAuditCommand extends Command
             return self::FAILURE;
         }
 
-        $this->info('Doctor audit - READ ONLY. No record, file or workbook will be modified.');
+        $execute = (bool) $this->option('execute');
+
+        $this->info($execute
+            ? 'Doctor audit - EXECUTE MODE. Requested write operations will be persisted.'
+            : 'Doctor audit - READ ONLY / DRY RUN. No record, file or workbook will be modified.');
         $this->line('Source: '.$sourceDir);
         $this->newLine();
 
@@ -58,15 +72,239 @@ class DoctorAuditCommand extends Command
 
         $this->renderSummary($result);
 
+        $this->runWriteOperations($result, $sync, $execute, $directory);
+
         $this->newLine();
         $this->info('Report written to: '.$directory);
-        $this->line('Nothing was changed. Corrections require a later, separately approved gate.');
+        $this->line($execute
+            ? 'Requested operations above were persisted (see snapshot paths for rollback).'
+            : 'Nothing was changed. Pass --execute to persist a requested operation.');
 
         if ($this->option('json')) {
             $this->line(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         }
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Run whichever write flags were passed, in a fixed, safe order:
+     * gender proposal/application, then contact/image/profile cleanup, then
+     * missing-doctor creation, then schedules, then the specialty
+     * reassignment. Each is independently optional and independently no-ops
+     * without --execute.
+     */
+    protected function runWriteOperations(array $result, DoctorSyncService $sync, bool $execute, string $directory): void
+    {
+        if ($this->option('propose-gender')) {
+            $rows = $sync->proposeGender($result);
+            $path = $directory.'/gender-assignments.csv';
+            $this->writeCsv($path, $rows);
+
+            $missing = collect($rows)->where('in_curated_map', 'no')->count();
+            $this->newLine();
+            $this->comment("Gender proposal written: {$path}");
+            $this->line(count($rows)." rows, {$missing} with no curated mapping (review before applying).");
+        }
+
+        if ($csvPath = $this->option('apply-gender')) {
+            $rows = $this->readCsv($csvPath);
+            $outcome = $sync->applyGender($rows, $execute);
+
+            $this->newLine();
+            $this->comment('Apply gender: '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            $this->table(['Metric', 'Count'], [
+                ['Would update / updated', $outcome['updated']],
+                ['Skipped (already set)', $outcome['skipped_already_set']],
+                ['Skipped (no value)', $outcome['skipped_no_value']],
+            ]);
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+
+        if ($this->option('fix-contacts')) {
+            $outcome = $sync->fixContacts($result, $execute);
+            $this->newLine();
+            $this->comment('Fix contacts: '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            $this->line("Emails nulled: {$outcome['fixed_email']}, phones nulled: {$outcome['fixed_phone']}");
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+
+        if ($this->option('fix-images')) {
+            $outcome = $sync->fixImages($result, $execute);
+            $this->newLine();
+            $this->comment('Fix images: '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            $this->line("Broken paths nulled: {$outcome['fixed']}");
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+
+        if ($this->option('fill-blanks')) {
+            $outcome = $sync->fillBlankProfileFields($result, $execute);
+            $this->newLine();
+            $this->comment('Fill blank profile fields: '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            $this->line("Fields filled: {$outcome['filled']}");
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+
+        if ($this->option('create-missing')) {
+            $outcome = $sync->createMissingDoctors($result, $execute);
+            $this->newLine();
+            $this->comment('Create missing doctors: '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            foreach ($outcome['created'] as $row) {
+                $this->line('  '.$row['name'].($row['id'] ? " -> id {$row['id']}" : ' -> (dry run, not created)'));
+            }
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+
+        if ($this->option('sync-schedules')) {
+            $manual = $this->resolveManualScheduleCorrections($result);
+            $this->printManualScheduleCorrections($result, $manual);
+
+            $outcome = $sync->syncSchedules($result, $execute, $manual);
+            $this->newLine();
+            $this->comment('Sync schedules: '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            $this->table(['Metric', 'Count'], [
+                ['Normalized rows applied', $outcome['applied']],
+                ['Manually corrected rows applied', $outcome['corrected']],
+                ['Already current (no-op)', $outcome['already_current']],
+                ['Skipped (protected / ambiguous / unresolved)', $outcome['skipped']],
+            ]);
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+
+        if ($this->option('reassign-specialty')) {
+            $outcome = $sync->reassignSpecialty(
+                'md mahfuzur rahman',
+                'Oral & Maxillofacial Surgery',
+                'Oral & Maxillofacial Surgery',
+                $result,
+                $execute
+            );
+            $this->newLine();
+            $this->comment('Reassign specialty (Dr. Md. Mahfuzur Rahman): '.($execute ? 'EXECUTED' : 'DRY RUN'));
+            $this->line('specialty_id='.($outcome['specialty_id'] ?? 'n/a').' department_id='.($outcome['department_id'] ?? 'n/a').' doctor_updated='.($outcome['doctor_updated'] ? 'yes' : 'no'));
+            if ($outcome['snapshot']) {
+                $this->line('Rollback snapshot: '.$outcome['snapshot']);
+            }
+        }
+    }
+
+    /**
+     * Translate the curated, canonical-name-keyed manual schedule
+     * corrections in config into the (doctor_id:branch_id) keys
+     * DoctorSyncService::syncSchedules() expects, using this run's audit
+     * result so ids are always resolved fresh rather than hard-coded.
+     *
+     * @return array<string, array{days: ?string, time: string}>
+     */
+    protected function resolveManualScheduleCorrections(array $result): array
+    {
+        $curated = (array) config('doctor_sync.manual_schedule_corrections', []);
+        $resolved = [];
+
+        foreach ($result['schedules'] as $row) {
+            if (! isset($row['doctor_id'])) {
+                continue;
+            }
+
+            $canonical = collect($result['doctors'])->firstWhere('doctor_id', $row['doctor_id'])['canonical'] ?? null;
+
+            if ($canonical === null) {
+                continue;
+            }
+
+            $key = $canonical.':'.$row['branch_token'];
+
+            if (isset($curated[$key])) {
+                // Only forward the curated override as-is; DoctorSyncService
+                // owns falling back to the normalizer's value for whichever
+                // of days/time this correction doesn't specify.
+                $resolved[$row['doctor_id'].':'.$row['branch_id']] = [
+                    'days' => $curated[$key]['days'] ?? null,
+                    'time' => $curated[$key]['time'] ?? null,
+                ];
+            }
+        }
+
+        return $resolved;
+    }
+
+    /**
+     * Print original-vs-corrected values for every manually corrected row,
+     * one line per row, before the aggregate sync outcome. A count alone
+     * ("2 manually corrected") isn't enough of an audit trail for a change to
+     * a patient-facing clinic hour - the operator should see exactly which
+     * doctor, which branch, and what the text changed from and to.
+     */
+    protected function printManualScheduleCorrections(array $result, array $manual): void
+    {
+        if ($manual === []) {
+            return;
+        }
+
+        $this->newLine();
+        $this->comment('Manual schedule corrections to be applied:');
+
+        foreach ($result['schedules'] as $row) {
+            if (! isset($row['doctor_id'])) {
+                continue;
+            }
+
+            $key = $row['doctor_id'].':'.$row['branch_id'];
+
+            if (! isset($manual[$key])) {
+                continue;
+            }
+
+            $newTime = $manual[$key]['time'] ?? $row['time_proposed'];
+            $newDays = $manual[$key]['days'] ?? $row['days_proposed'];
+
+            $this->line(sprintf(
+                '  %s (branch %s): time "%s" -> "%s"%s',
+                $row['doctor_name'],
+                $row['branch_id'],
+                $row['time_workbook'],
+                $newTime,
+                $manual[$key]['days'] !== null ? sprintf(' | days "%s" -> "%s"', $row['days_workbook'], $newDays) : ''
+            ));
+        }
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    protected function readCsv(string $path): array
+    {
+        if (! is_file($path)) {
+            $this->error("CSV not found: {$path}");
+
+            return [];
+        }
+
+        $handle = fopen($path, 'r');
+        $header = fgetcsv($handle);
+        $rows = [];
+
+        while (($line = fgetcsv($handle)) !== false) {
+            $row = array_combine($header, $line);
+            $row['doctor_id'] = $row['doctor_id'] !== '' ? (int) $row['doctor_id'] : null;
+            $rows[] = $row;
+        }
+
+        fclose($handle);
+
+        return $rows;
     }
 
     /**

@@ -31,13 +31,18 @@ return [
     |
     */
     'avatars' => [
+        // The real avatar files provided by the operator, copied byte-for-byte
+        // into public/img/avatars/ (outside public/uploads/, so no upload,
+        // replace, or delete path can ever reach them).
         'male' => 'img/avatars/male-doctor-avatar.jpg',
         'female' => 'img/avatars/female-doctor-avatar.jpg',
 
-        // TEMPORARY (pending decision Q1). This currently points at the image
-        // that the public pages already used as their doctor fallback, so the
-        // visible behaviour is unchanged. Replace with a dedicated neutral
-        // doctor avatar once one has been supplied and approved.
+        // Only two avatar files were supplied (male, female). This is the
+        // fallback for a doctor whose gender is not yet set - not expected to
+        // be hit today, since every current doctor has a gender value, but
+        // kept as a safe default for any doctor added before gender is filled
+        // in. Deliberately reuses the pre-existing public doctor-card
+        // placeholder rather than inventing an unsupplied third asset.
         'unknown' => 'assets/front/images/doctor/2.jpg',
 
         // Last-resort asset used only if a configured avatar file is missing
@@ -175,6 +180,74 @@ return [
         'khaled mahmood arif' => 'khaled mahmud arif',
         'golam foysal sarkar' => 'golam faysal sarker',
         'shahid md nokib' => 'shahid md nokib',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gender assignments
+    |--------------------------------------------------------------------------
+    |
+    | A curated, human-reviewed lookup of canonical name -> gender - NOT an
+    | algorithm run against every name. The operator explicitly authorised
+    | determining gender from these specific names (reversing the project's
+    | earlier "never infer from a name" default) and reviewed this exact list,
+    | including the one lower-confidence entry (Dr. Junia jubaiba) before it
+    | was approved. Keys are canonicalName() output - lowercase, honorifics
+    | stripped, punctuation flattened, aliases applied.
+    |
+    | Extending this list follows the same rule as doctor_aliases above: only
+    | add an entry you can defend, and prefer leaving a name unmapped (which
+    | the audit reports as NEEDS_GENDER_REVIEW) over guessing.
+    |
+    */
+    'gender_map' => [
+        'md shahid hossain' => 'male',
+        'akil al islam' => 'male',
+        'murad mehedi' => 'male',
+        'marufa shahrin' => 'female',
+        'khwaja sawda tabassum' => 'female',
+        'shahid md nokib' => 'male',
+        'rudra pratap' => 'male',
+        'sharmin jahan' => 'female',
+        'samantha meherin' => 'female',
+        'khondker mahmudul hakim' => 'male',
+        'saymon sahariar' => 'male',
+        'md mahfuzur rahman' => 'male',
+        'anis ahmed biswas' => 'male',
+        'jamil siddiqui bhuiyan' => 'male',
+        'mohammad khaled bin ismaeel' => 'male',
+        'khaled mahmud arif' => 'male',
+        'mohuwa parvin' => 'female',
+        'tanjida beente' => 'female',
+        'shoaib hossain' => 'male',
+        'jakiya akter' => 'female',
+        'saidul hoque tipu' => 'male',
+        'junia jubaiba' => 'female', // lower confidence; explicitly reviewed and confirmed by the operator
+        'tania sharmin' => 'female',
+        'golam faysal sarker' => 'male',
+        'pavel chowdhuray' => 'male',
+        'karim hossain' => 'male',
+        'syeda jannatul ferdous' => 'female',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manual schedule corrections
+    |--------------------------------------------------------------------------
+    |
+    | Explicitly approved, one-off corrections to specific schedule rows that
+    | the generic normalizer correctly refuses to guess at (e.g. a time window
+    | that ends before it starts). Keyed "canonicalDoctorName:branchToken".
+    | Applying one of these is logged distinctly from the generic
+    | normalization pass in the sync report.
+    |
+    */
+    'manual_schedule_corrections' => [
+        // Both read "11pm - 1.30pm" in the source workbook, which ends before
+        // it starts. Confirmed by the operator as a transcription error for
+        // "11am".
+        'junia jubaiba:hatirpool' => ['time' => '11:00 AM - 01:30 PM'],
+        'golam faysal sarker:hatirpool' => ['time' => '11:00 AM - 01:30 PM'],
     ],
 
     /*
