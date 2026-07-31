@@ -8,7 +8,7 @@
         <!-- MODERN HERO SECTION -->
         <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
             <div class="absolute inset-0 opacity-30">
-                <img src="{{ asset($pageSettings['hero_image'] ?? 'assets/front/images/about/1.jpg') }}" class="w-full h-full object-cover">
+                <img src="{{ asset($pageSettings['hero_image'] ?? 'assets/front/images/about/reception.jpg') }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
@@ -30,7 +30,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <div class="relative">
                         <div class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
-                        <img src="{{ asset($pageSettings['intro_image'] ?? 'assets/front/images/about/1.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10">
+                        <img src="{{ asset($pageSettings['intro_image'] ?? 'assets/front/images/about/reception.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10">
                         <div class="absolute -bottom-6 -right-6 bg-white p-8 rounded-3xl shadow-xl z-20 hidden md:block">
                             <p class="text-4xl font-black text-indigo-600 mb-1">99.9%</p>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Accuracy Rate</p>

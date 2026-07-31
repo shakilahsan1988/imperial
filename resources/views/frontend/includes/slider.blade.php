@@ -160,11 +160,11 @@
         <div class="slide-overlay"></div>
         <div class="container mx-auto px-6 slide-content">
             <div class="max-w-2xl">
-                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.3em] text-[30px] mb-4">{{ $slide['badge'] ?? '' }}</span>
+                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.15em] text-[22px] md:text-[36px] mb-4">{{ $slide['badge'] ?? '' }}</span>
                 <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $slide['title_html'] ?? '' !!}</h1>
                 <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">{{ $slide['description'] ?? '' }}</p>
                 <div class="animate-item animate-4">
-                    <a href="{{ $slide['button_url'] ?? '#' }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all shadow-xl active:scale-95 inline-block">{{ $slide['button_text'] ?? 'Learn More' }}</a>
+                    <a href="{{ $slide['button_url'] ?? '#' }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-600 hover:text-white transition-all shadow-xl active:scale-95 inline-block">{{ $slide['button_text'] ?? 'Learn More' }}</a>
                 </div>
             </div>
         </div>

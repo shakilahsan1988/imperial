@@ -30,11 +30,11 @@
                     @endphp
                     @foreach($stats as $s)
                     <div class="bg-slate-50 p-8 rounded-[32px] border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group reveal">
-                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid {{$s['icon']}} text-indigo-600 text-3xl"></i>
+                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid {{$s['icon']}} text-indigo-600 text-4xl"></i>
                         </div>
                         <h3 class="text-4xl font-black text-slate-900 mb-1 tracking-tighter">{{$s['count']}}</h3>
-                        <p class="font-bold uppercase tracking-widest" style="color: #007caa; font-size: 13px">{{$s['label']}}</p>
+                        <p class="font-bold uppercase tracking-widest text-indigo-600 text-sm">{{$s['label']}}</p>
                     </div>
                     @endforeach
                 </div>
@@ -49,7 +49,7 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row gap-20 items-center">
                 <div class="lg:w-1/2 reveal-left">
-                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">{{ $homeSettings['our_approach']['badge'] }}</span>
+                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['our_approach']['badge'] }}</span>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-8 tracking-tight">{!! $homeSettings['our_approach']['title_html'] !!}</h2>
                     <p class="text-lg text-slate-600 leading-relaxed mb-6 font-medium">{{ $homeSettings['our_approach']['description_1'] }}</p>
                     <p class="text-slate-500 leading-relaxed mb-10">{{ $homeSettings['our_approach']['description_2'] }}</p>
@@ -70,17 +70,17 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row-reverse gap-20 items-center">
                 <div class="lg:w-1/2 reveal-right">
-                    <span class="text-emerald-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['lab_excellence']['badge'] }}</span>
+                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['lab_excellence']['badge'] }}</span>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-8 tracking-tight">{!! $homeSettings['lab_excellence']['title_html'] !!}</h2>
                     <p class="text-lg text-slate-600 leading-relaxed mb-8 font-medium">{{ $homeSettings['lab_excellence']['description'] }}</p>
-                    
+
                     <div class="grid grid-cols-2 gap-6 mb-10">
                         <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <i class="fa-solid fa-circle-check text-indigo-600"></i>
                             <span class="text-sm font-bold text-slate-700 uppercase tracking-tight">{{ $homeSettings['lab_excellence']['feature_1'] }}</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <i class="fa-solid fa-circle-check text-indigo-600"></i>
                             <span class="text-sm font-bold text-slate-700 uppercase tracking-tight">{{ $homeSettings['lab_excellence']['feature_2'] }}</span>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                     <img src="{{ asset($homeSettings['experience_imperial']['image']) }}" class="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110">
                 </div>
                 <div class="lg:w-1/2 p-12 lg:p-20">
-                    <span class="text-indigo-400 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['experience_imperial']['badge'] }}</span>
+                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['experience_imperial']['badge'] }}</span>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-8 tracking-tight">{!! $homeSettings['experience_imperial']['title_html'] !!}</h2>
                     <p class="text-lg text-slate-400 leading-relaxed mb-12">{{ $homeSettings['experience_imperial']['description'] }}</p>
                     <a href="{{ $homeSettings['experience_imperial']['button_url'] }}" class="inline-block bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-50 transition-all transform active:scale-95 shadow-xl">{{ $homeSettings['experience_imperial']['button_text'] }}</a>

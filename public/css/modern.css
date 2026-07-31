@@ -45,6 +45,12 @@ body {
 .text-imperial-primary { color: var(--primary) !important; }
 .bg-imperial-primary { background-color: var(--primary) !important; }
 .border-imperial-primary { border-color: var(--primary) !important; }
+.text-imperial-text { color: var(--slate-700) !important; }
+
+/* hover:bg-imperial-dark was used in membership-plan.blade.php and
+   video-consultation.blade.php but never defined, so those buttons never
+   darkened on hover. */
+.hover\:bg-imperial-dark:hover { background-color: var(--primary-dark) !important; }
 
 .btn-primary { 
     background-color: var(--primary) !important; 

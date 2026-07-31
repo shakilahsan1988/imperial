@@ -11,7 +11,7 @@
             @foreach($homeBranches as $branch)
             <article class="group bg-slate-50 rounded-[36px] overflow-hidden border border-slate-100 hover:bg-white hover:shadow-2xl transition-all duration-500">
                 <a href="{{ route('branch-details', $branch->slug) }}" class="block aspect-[16/10] overflow-hidden bg-slate-200">
-                    <img src="{{ asset($branch->feature_image ?: 'assets/front/images/about/1.jpg') }}" alt="{{ $branch->title ?: $branch->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <img src="{{ asset($branch->feature_image ?: 'assets/front/images/about/reception.jpg') }}" alt="{{ $branch->title ?: $branch->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </a>
                 <div class="p-8">
                     <p class="text-xs font-black uppercase tracking-[0.2em] text-indigo-600 mb-3">Branch Tour</p>

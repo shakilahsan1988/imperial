@@ -42,7 +42,7 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
                 <div class="max-w-3xl">
-                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">{{ $homeSettings['doctor_carousel']['badge'] }}</span>
+                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['doctor_carousel']['badge'] }}</span>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">{!! $homeSettings['doctor_carousel']['title_html'] !!}</h2>
                     <p class="text-lg text-slate-600 leading-relaxed">{{ $homeSettings['doctor_carousel']['description'] }}</p>
                 </div>
@@ -73,10 +73,10 @@
                                    class="block aspect-[4/5] overflow-hidden bg-slate-100">
                                     <img src="{{ $doctor->effective_image_url }}"
                                          alt="{{ $doctor->name }}"
-                                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                         class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
                                 </a>
                                 <div class="p-6 flex flex-col flex-1">
-                                    <p class="text-[15px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-3">
+                                    <p class="text-[13px] font-black uppercase tracking-[0.15em] text-indigo-600 mb-3">
                                         {{ optional($doctor->specialty)->name ?: 'Specialist' }}
                                     </p>
                                     <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
@@ -102,9 +102,12 @@
                 </div>
             </div>
 
-            <div class="mt-8 sm:hidden">
-                <a href="{{ $homeSettings['doctor_carousel']['button_url'] }}" class="inline-flex btn-primary text-white px-8 py-4 rounded-2xl font-bold items-center gap-3 shadow-xl shadow-indigo-200">
+            <div class="mt-8 sm:hidden flex flex-col gap-4">
+                <a href="{{ $homeSettings['doctor_carousel']['button_url'] }}" class="inline-flex btn-primary text-white px-8 py-4 rounded-2xl font-bold items-center justify-center gap-3 shadow-xl shadow-indigo-200">
                     {{ $homeSettings['doctor_carousel']['button_text'] }} <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="/lab-test" class="inline-flex btn-primary text-white px-8 py-4 rounded-2xl font-bold items-center justify-center gap-3 shadow-xl shadow-indigo-200">
+                    Explore Our Services <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
             </div>
         </div>

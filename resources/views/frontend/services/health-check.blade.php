@@ -61,7 +61,7 @@
                     @forelse($category->packages as $package)
                     <div class="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-500 flex flex-col">
                         <div class="aspect-[4/3] overflow-hidden bg-slate-100">
-                            <img src="{{ asset($package->image ?: 'assets/front/images/healthcheck/1.jpg') }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <img src="{{ asset($package->image ?: 'assets/front/images/services/services-facility.jpg') }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
                             <h3 class="text-lg font-bold text-slate-900 mb-2 leading-tight">{{ $package->name }}</h3>

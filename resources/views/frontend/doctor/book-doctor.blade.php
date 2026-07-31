@@ -206,7 +206,7 @@
 
             <div class="lg:col-span-4">
                 <div class="sticky top-24 space-y-4">
-                <div class="bg-indigo-900 rounded-[32px] p-8 text-white">
+                <div class="bg-indigo-600 rounded-[32px] p-8 text-white">
                     <h3 class="text-lg font-bold mb-6">Booking Summary</h3>
                     <div class="space-y-4 text-sm">
                         <div class="flex justify-between"><span>Doctor</span><span>{{ $model->name }}</span></div>

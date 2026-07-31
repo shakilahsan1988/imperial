@@ -325,7 +325,7 @@ if (! function_exists('health_check_page_settings')) {
             'page_name' => 'Health Check',
             'hero_title_html' => 'Invest in Your <span class="text-indigo-400">Future Health</span> Today',
             'hero_description' => 'Comprehensive health screenings designed to detect risks early and provide you with a roadmap to long-term wellness.',
-            'hero_image' => 'assets/front/images/healthcheck/1.jpg',
+            'hero_image' => 'assets/front/images/services/services-facility.jpg',
             'feature_1_title' => 'Expert Analysis',
             'feature_1_desc' => 'Consultations with top clinical specialists.',
             'feature_2_title' => 'Affordable Care',
@@ -412,10 +412,10 @@ if (! function_exists('about_page_settings')) {
             'page_name' => 'About Us',
             'hero_title_html' => 'Welcome to <span class="text-indigo-400">Imperial Private Health Care</span>',
             'hero_description' => 'Welcome to Imperial private health care ltd, where precision meets care, and health mysteries find solutions. We are a state-of-the-art diagnostic facility committed to providing unparalleled insights into your well-being.',
-            'hero_image' => 'assets/front/images/about/1.jpg',
+            'hero_image' => 'assets/front/images/about/reception.jpg',
             'intro_title' => 'Our Vision',
             'intro_description' => 'Empowering individuals to take control of their health through accurate and timely diagnostics, Imperial private health care ltd envisions a future where every person has access to the information they need to make informed decisions about their well-being.',
-            'intro_image' => 'assets/front/images/about/1.jpg',
+            'intro_image' => 'assets/front/images/index/lab-directory.jpg',
             'feature_1_title' => 'Digitalisation of Services',
             'feature_1_desc' => 'Accompanied by innovative service strategies to enhance customer experience.',
             'feature_2_title' => 'Value-Added Services',
@@ -465,7 +465,7 @@ if (! function_exists('doctors_page_settings')) {
     {
         return inner_page_settings('doctors_page', [
             'page_name' => 'Our Doctors',
-            'hero_title_html' => 'Expert Care from <span class="text-indigo-400">World-Class</span> Specialists',
+            'hero_title_html' => 'Expert Care from <span class="text-indigo-400 whitespace-nowrap">World-Class</span> Specialists',
             'hero_description' => 'Connect with experienced specialists dedicated to personalized care.',
             'hero_image' => 'assets/front/images/doctor/1.jpg',
         ]);
@@ -503,7 +503,7 @@ if (! function_exists('management_page_settings')) {
             'page_name' => 'Management',
             'hero_title_html' => 'Our <span class="text-indigo-400">Management</span> Team',
             'hero_description' => 'Meet the leadership driving patient-centered innovation.',
-            'hero_image' => 'assets/front/images/management/1.jpg',
+            'hero_image' => 'assets/front/images/index/tour.jpg',
         ]);
     }
 }
@@ -515,7 +515,7 @@ if (! function_exists('contact_page_settings')) {
             'page_name' => 'Contact',
             'hero_title_html' => "We're Here to <span class=\"text-indigo-400\">Help</span> You",
             'hero_description' => 'Reach out for services, booking support, or feedback.',
-            'hero_image' => 'assets/front/images/about/2.jpg',
+            'hero_image' => 'assets/front/images/about/reception.jpg',
         ]);
     }
 }

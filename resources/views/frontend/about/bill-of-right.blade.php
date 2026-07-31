@@ -138,6 +138,7 @@
                         </ul>
                     </div>
 
+                    @php($infoSettings = setting('info') ?? [])
                     <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="w-12 h-12 bg-imperial-primary text-white rounded-full flex items-center justify-center text-xl">
@@ -148,8 +149,8 @@
                         <p class="text-gray-600 mb-6">
                             If you feel your rights have been violated or you have a complaint regarding the service received, please reach out to our Patient Relations team.
                         </p>
-                        <a href="mailto:imperiallistens@imperialhealth.com" class="inline-flex items-center gap-2 text-imperial-primary font-bold hover:underline">
-                            <i class="fa-solid fa-envelope"></i> imperiallistens@imperialhealth.com
+                        <a href="mailto:{{ $infoSettings['email'] ?? '' }}" class="inline-flex items-center gap-2 text-imperial-primary font-bold hover:underline">
+                            <i class="fa-solid fa-envelope"></i> {{ $infoSettings['email'] ?? 'Not configured' }}
                         </a>
                     </div>
 

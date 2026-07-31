@@ -102,7 +102,7 @@
                                 <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}">{{ $doc->name }}</a>
                             </h3>
                             <p class="text-sm text-slate-500 font-medium leading-snug">{{ $doc->designation ?: 'Consultant' }}</p>
-                            <p class="text-xs text-indigo-600 font-bold mt-1">{{ optional($doc->specialty)->name ?: 'Specialist' }}</p>
+                            <p class="text-[13px] font-black uppercase tracking-[0.15em] text-indigo-600 mt-1">{{ optional($doc->specialty)->name ?: 'Specialist' }}</p>
                         </div>
                         <div class="text-xs text-slate-500 mb-6 space-y-1 flex-1">
                             @foreach($scheduleItems as $scheduleItem)

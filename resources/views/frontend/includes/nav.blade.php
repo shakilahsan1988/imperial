@@ -11,7 +11,7 @@
             
             <!-- Logo -->
             <a href="{{ route('fhome') }}" class="flex-shrink-0 relative z-[110]">
-                <img src="{{ $logoSrc }}" alt="Imperial Health Logo" class="h-16 md:h-20 w-auto" onerror="this.src='https://placehold.co/150x50/007caa/ffffff?text=Imperial+Health'">
+                <img src="{{ $logoSrc }}" alt="Imperial Health Logo" class="h-20 md:h-24 w-auto" onerror="this.src='https://placehold.co/150x50/007caa/ffffff?text=Imperial+Health'">
             </a>
 
             <nav class="hidden lg:flex gap-8 items-center">

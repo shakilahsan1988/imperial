@@ -16,7 +16,7 @@
             
             <!-- Brand & Newsletter -->
             <div class="col-span-1 md:col-span-2 lg:col-span-1">
-                <img src="{{ $logoSrc }}" alt="Imperial Health" class="w-auto h-12 mb-8 filter brightness-0 invert" onerror="this.src='https://placehold.co/150x50/ffffff/333333?text=Imperial+Health'">
+                <img src="{{ $logoSrc }}" alt="Imperial Health" class="w-auto h-16 mb-8 filter brightness-0 invert" onerror="this.src='https://placehold.co/150x50/ffffff/333333?text=Imperial+Health'">
                 
                 <h4 class="text-white font-bold mb-4">Stay informed</h4>
                 <p class="text-sm mb-6 leading-relaxed">Join our mailing list for the latest health insights and laboratory updates.</p>
@@ -31,32 +31,32 @@
 
             <!-- Services -->
             <div>
-                <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-xs">Our Services</h4>
+                <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-sm">Our Services</h4>
                 <ul class="space-y-4 text-sm font-medium">
-                    <li><a href="{{ route('lab-test') }}" class="hover:text-indigo-400 transition-colors">Diagnostics & Lab</a></li>
-                    <li><a href="{{ route('health-check') }}" class="hover:text-indigo-400 transition-colors">Health Packages</a></li>
-                    <li><a href="{{ route('membership') }}" class="hover:text-indigo-400 transition-colors">Membership Plans</a></li>
-                    <li><a href="{{ route('video-consultation') }}" class="hover:text-indigo-400 transition-colors">Virtual Consultations</a></li>
+                    <li><a href="{{ route('lab-test') }}" class="hover:text-indigo-600 transition-colors">Diagnostics & Lab</a></li>
+                    <li><a href="{{ route('health-check') }}" class="hover:text-indigo-600 transition-colors">Health Packages</a></li>
+                    <li><a href="{{ route('membership') }}" class="hover:text-indigo-600 transition-colors">Membership Plans</a></li>
+                    <li><a href="{{ route('video-consultation') }}" class="hover:text-indigo-600 transition-colors">Virtual Consultations</a></li>
                 </ul>
             </div>
 
             <!-- Resources -->
             <div>
-                <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-xs">Patient Resources</h4>
+                <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-sm">Patient Resources</h4>
                 <ul class="space-y-4 text-sm font-medium">
                     @foreach($footerMenu as $item)
                         @php
                             $url = $item['url'] ?? '#';
                             $href = preg_match('/^https?:\\/\\//i', $url) ? $url : url($url);
                         @endphp
-                        <li><a href="{{ $href }}" class="hover:text-indigo-400 transition-colors" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>{{ $item['label'] ?? 'Menu' }}</a></li>
+                        <li><a href="{{ $href }}" class="hover:text-indigo-600 transition-colors" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>{{ $item['label'] ?? 'Menu' }}</a></li>
                     @endforeach
                 </ul>
             </div>
 
             <!-- Contact Info -->
             <div>
-                <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-xs">Contact Us</h4>
+                <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-sm">Contact Us</h4>
                 <ul class="space-y-5 text-sm">
                     <li class="flex items-start gap-4">
                         <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0 text-indigo-400">

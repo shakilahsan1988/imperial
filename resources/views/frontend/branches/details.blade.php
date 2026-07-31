@@ -6,7 +6,7 @@
 <main class="bg-white font-sans">
     <section class="relative py-24 md:py-36 bg-[#1E293B] overflow-hidden">
         <div class="absolute inset-0 opacity-25">
-            <img src="{{ asset($branch->feature_image ?: 'assets/front/images/about/1.jpg') }}" class="w-full h-full object-cover">
+            <img src="{{ asset($branch->feature_image ?: 'assets/front/images/about/reception.jpg') }}" class="w-full h-full object-cover">
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/85 to-transparent"></div>
         <div class="container mx-auto px-6 relative z-10">
@@ -64,7 +64,7 @@
                                         <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}">{{ $doctor->name }}</a>
                                     </h3>
                                     <p class="text-sm text-slate-500 font-medium leading-snug">{{ $doctor->designation ?: 'Consultant' }}</p>
-                                    <p class="text-xs text-indigo-600 font-bold mt-1">{{ optional($doctor->specialty)->name ?: 'Specialist' }}</p>
+                                    <p class="text-[13px] font-black uppercase tracking-[0.15em] text-indigo-600 mt-1">{{ optional($doctor->specialty)->name ?: 'Specialist' }}</p>
                                 </div>
                                 <div class="text-xs text-slate-500 mb-6 space-y-1 flex-1">
                                     <div class="flex items-start justify-between gap-3">

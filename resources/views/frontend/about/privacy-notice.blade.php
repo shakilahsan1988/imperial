@@ -102,21 +102,22 @@
                         </div>
 
                         <!-- 6. Contact Us -->
+                        @php($infoSettings = setting('info') ?? [])
                         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 mt-12">
                             <h2 class="text-2xl font-bold text-imperial-primary mb-4">Contact Us</h2>
                             <p class="text-gray-600 mb-4">
                                 If you have questions or comments about this Privacy Notice, please contact us at:
                             </p>
                             <p class="text-gray-900 font-medium mb-1">
-                                <a href="mailto:privacy@imperialhealth.com" class="flex items-center gap-2 text-imperial-primary font-medium">
+                                <a href="mailto:{{ $infoSettings['email'] ?? '' }}" class="flex items-center gap-2 text-imperial-primary font-medium">
                                     <i class="fa-solid fa-envelope"></i>
-                                    privacy@imperialhealth.com
+                                    {{ $infoSettings['email'] ?? 'Not configured' }}
                                 </a>
                             </p>
                             <p class="text-gray-900 font-medium">
-                                <a href="tel:10648" class="flex items-center gap-2 text-imperial-primary font-medium">
+                                <a href="tel:{{ preg_replace('/\s+/', '', $infoSettings['phone'] ?? '') }}" class="flex items-center gap-2 text-imperial-primary font-medium">
                                     <i class="fa-solid fa-phone"></i>
-                                    10648
+                                    {{ $infoSettings['phone'] ?? 'Not configured' }}
                                 </a>
                             </p>
                         </div>

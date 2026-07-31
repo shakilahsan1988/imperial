@@ -4,6 +4,16 @@
 
 @section('content')
 
+    @php
+        $infoSettings = setting('info') ?? [];
+        $emergencyPhone = trim((string) ($infoSettings['emergency_phone'] ?? ''));
+        $mainPhone = trim((string) ($infoSettings['phone'] ?? ''));
+        $mainEmail = trim((string) ($infoSettings['email'] ?? ''));
+        $mainAddress = trim((string) ($infoSettings['address'] ?? ''));
+        $doctorEmail = trim((string) ($infoSettings['doctor_email'] ?? ''));
+        $doctorPhone = trim((string) ($infoSettings['doctor_phone'] ?? ''));
+    @endphp
+
     <main class="bg-white font-sans">
         <!-- MODERN HERO SECTION -->
         <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">
@@ -11,7 +21,7 @@
                 <img src="{{ asset($pageSettings['hero_image']) }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
-            
+
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-3xl">
                     <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
@@ -24,21 +34,21 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex items-center gap-4 hover:bg-white/10 transition-all">
-                            <div class="w-12 h-12 bg-indigo-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                            <div class="w-12 h-12 bg-indigo-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-indigo-600/20">
                                 <i class="fa-solid fa-phone-volume text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-400">24/7 Hotline</p>
-                                <p class="text-xl font-black text-white leading-none">10648</p>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-400">Emergency Hotline</p>
+                                <p class="text-xl font-black text-white leading-none">{{ $emergencyPhone !== '' ? $emergencyPhone : 'Not configured' }}</p>
                             </div>
                         </div>
                         <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex items-center gap-4 hover:bg-white/10 transition-all">
-                            <div class="w-12 h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <div class="w-12 h-12 bg-indigo-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-indigo-600/20">
+                                <i class="fa-solid fa-phone text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-[10px] font-black uppercase tracking-widest text-emerald-400">WhatsApp</p>
-                                <p class="text-xl font-black text-white leading-none">+880 18445 08402</p>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-400">Head Office</p>
+                                <p class="text-xl font-black text-white leading-none">{{ $mainPhone !== '' ? $mainPhone : 'Not configured' }}</p>
                             </div>
                         </div>
                     </div>
@@ -103,11 +113,29 @@
                             <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
                                 <div class="flex gap-4">
                                     <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
-                                    <p class="text-slate-600 font-medium leading-relaxed">Plot 9, Road 17, Block C, Banani<br>Dhaka - 1213, Bangladesh</p>
+                                    <p class="text-slate-600 font-medium leading-relaxed">{{ $mainAddress !== '' ? $mainAddress : 'Address not configured' }}</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone"></i></div>
+                                    <p class="text-slate-600 font-medium">{{ $mainPhone !== '' ? $mainPhone : 'Phone not configured' }}</p>
                                 </div>
                                 <div class="flex gap-4">
                                     <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div>
-                                    <p class="text-slate-600 font-medium">imperiallistens@imperialhealth.com</p>
+                                    <p class="text-slate-600 font-medium">{{ $mainEmail !== '' ? $mainEmail : 'Email not configured' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mb-6 tracking-tight">Doctor Appointments</h3>
+                            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-user-doctor"></i></div>
+                                    <p class="text-slate-600 font-medium">{{ $doctorPhone !== '' ? $doctorPhone : 'Not configured' }}</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                                    <p class="text-slate-600 font-medium">{{ $doctorEmail !== '' ? $doctorEmail : 'Not configured' }}</p>
                                 </div>
                             </div>
                         </div>

@@ -24,8 +24,8 @@
                             <div class="richtext-cont text-lg md:text-xl text-gray-600 font-roboto leading-relaxed">
                                 <p>
                                     We are looking for talented, outstanding and passionate people who want to make a difference. Imperial Health offers exciting career opportunities in Bangladesh’s fastest growing healthcare business. Get in touch at 
-                                    <a href="mailto:careers@imperialhealth.com" class="text-imperial-primary font-bold hover:text-imperial-dark hover:underline transition-colors">
-                                        careers@imperialhealth.com
+                                    <a href="mailto:careers@iphcbd.com" class="text-imperial-primary font-bold hover:text-imperial-dark hover:underline transition-colors">
+                                        careers@iphcbd.com
                                     </a>.
                                 </p>
                             </div>
@@ -78,7 +78,7 @@
                             <h3 class="text-lg font-bold text-gray-900 mb-1">General Physician</h3>
                             <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-2">
                                 <span class="flex items-center gap-1"><i class="fa-solid fa-briefcase text-imperial-primary"></i> Medical</span>
-                                <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-imperial-primary"></i> Banani, Dhaka</span>
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-imperial-primary"></i> Bangla Motor, Dhaka</span>
                                 <span class="flex items-center gap-1"><i class="fa-solid fa-clock text-imperial-primary"></i> Full Time</span>
                             </div>
                         </div>

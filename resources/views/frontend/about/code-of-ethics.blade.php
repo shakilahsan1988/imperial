@@ -105,17 +105,18 @@
                     </div>
 
                     <!-- Reporting Violations Box -->
+                    @php($infoSettings = setting('info') ?? [])
                     <div class="bg-blue-50 border border-blue-100 rounded-xl p-8 mt-12">
                         <h2 class="text-xl font-bold text-imperial-primary mb-4">Reporting Unethical Conduct</h2>
                         <p class="text-gray-700 mb-4">
                             Employees and stakeholders are encouraged to report any concerns or suspected violations of this Code. We ensure confidentiality to the extent possible by law and protect whistleblowers from retaliation.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="mailto:compliance@imperialhealth.com" class="flex items-center gap-2 text-white bg-imperial-primary hover:bg-blue-700 px-6 py-3 rounded font-bold transition text-center">
+                            <a href="mailto:{{ $infoSettings['email'] ?? '' }}" class="flex items-center gap-2 text-white bg-imperial-primary hover:bg-blue-700 px-6 py-3 rounded font-bold transition text-center">
                                 <i class="fa-solid fa-envelope"></i> Report via Email
                             </a>
-                            <a href="tel:10648" class="flex items-center gap-2 text-imperial-primary border border-imperial-primary hover:bg-imperial-light px-6 py-3 rounded font-bold transition text-center">
-                                <i class="fa-solid fa-phone"></i> Hotline: 10648
+                            <a href="tel:{{ preg_replace('/\s+/', '', $infoSettings['phone'] ?? '') }}" class="flex items-center gap-2 text-imperial-primary border border-imperial-primary hover:bg-imperial-light px-6 py-3 rounded font-bold transition text-center">
+                                <i class="fa-solid fa-phone"></i> Hotline: {{ $infoSettings['phone'] ?? 'Not configured' }}
                             </a>
                         </div>
                     </div>

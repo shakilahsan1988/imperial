@@ -13,7 +13,7 @@
             </div>
 
             <div class="lg:w-7/12 reveal-right">
-                <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-4 block">{{ $homeSettings['ceo_message']['badge'] }}</span>
+                <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['ceo_message']['badge'] }}</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-8 tracking-tight leading-tight">{!! $homeSettings['ceo_message']['title_html'] !!}</h2>
                 <p class="text-lg text-slate-600 leading-relaxed mb-8">{{ $homeSettings['ceo_message']['message'] }}</p>
                 <div class="flex items-center gap-4">

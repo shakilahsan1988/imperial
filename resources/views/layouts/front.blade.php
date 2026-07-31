@@ -36,23 +36,36 @@
     </script>
     
     <style>
-        /* Global Brand Color Overrides - Catch all Tailwind Indigo shades */
-        .text-indigo-400 { color: #38bdf8 !important; }
-        .text-indigo-500 { color: #0ea5e9 !important; }
+        /* Global Brand Color Overrides - Catch all Tailwind Indigo shades.
+           Values here must match tailwind.config's indigo scale above (300:
+           #38bdf8, 400: #0ea5e9, 500: #0284c7, 600: #007caa "Brand Teal",
+           700: #0066a1) - previously text/bg-indigo-400 and -500 were
+           swapped/off-by-one against the config, and no hover:* variant
+           existed for 400/500 at all, so classes like hover:text-indigo-400
+           silently fell through to the Tailwind CDN's own JIT-generated
+           value instead of a value declared here. */
+        .text-indigo-400 { color: #0ea5e9 !important; }
+        .text-indigo-500 { color: #0284c7 !important; }
         .text-indigo-600 { color: #007caa !important; }
         .text-indigo-700 { color: #0066a1 !important; }
-        
+
         .bg-indigo-50  { background-color: #f0f9ff !important; }
         .bg-indigo-100 { background-color: #e0f2fe !important; }
-        .bg-indigo-400 { background-color: #38bdf8 !important; }
-        .bg-indigo-500 { background-color: #0ea5e9 !important; }
+        .bg-indigo-400 { background-color: #0ea5e9 !important; }
+        .bg-indigo-500 { background-color: #0284c7 !important; }
         .bg-indigo-600 { background-color: #007caa !important; }
         .bg-indigo-700 { background-color: #0066a1 !important; }
-        
-        .hover\:bg-indigo-500:hover { background-color: #0ea5e9 !important; }
+
+        .hover\:text-indigo-400:hover { color: #0ea5e9 !important; }
+        .hover\:text-indigo-500:hover { color: #0284c7 !important; }
+        .hover\:text-indigo-600:hover { color: #007caa !important; }
+        .hover\:bg-indigo-400:hover { background-color: #0ea5e9 !important; }
+        .hover\:bg-indigo-500:hover { background-color: #0284c7 !important; }
         .hover\:bg-indigo-600:hover { background-color: #007caa !important; }
         .hover\:bg-indigo-700:hover { background-color: #0066a1 !important; }
+        .border-indigo-500 { border-color: #0284c7 !important; }
         .border-indigo-600 { border-color: #007caa !important; }
+        .hover\:border-indigo-500:hover { border-color: #0284c7 !important; }
         .focus\:ring-indigo-500:focus { --tw-ring-color: #007caa !important; }
 
         /* Ensure header is always visible on mobile */

@@ -36,7 +36,7 @@
                 <div class="p-5 flex flex-col flex-grow">
                     @if(!empty($plan->badge_text))
                     <div class="mb-2">
-                        <span class="inline-flex px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded">{{ $plan->badge_text }}</span>
+                        <span class="inline-flex px-2 py-1 bg-imperial-primary/10 text-imperial-primary text-xs font-bold uppercase tracking-wide rounded">{{ $plan->badge_text }}</span>
                     </div>
                     @endif
                     <h3 class="font-bold text-gray-900 mb-1">{{ $plan->name }}</h3>
@@ -60,7 +60,7 @@
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-                <img src="{{ asset($pageSettings['why_image'] ?? 'assets/front/images/services/con4.jpg') }}" alt="Why choose plan" class="rounded-2xl shadow-lg w-full h-auto object-cover">
+                <img src="{{ asset($pageSettings['why_image'] ?? 'assets/front/images/services/consultation-corridor.jpg') }}" alt="Why choose plan" class="rounded-2xl shadow-lg w-full h-auto object-cover">
             </div>
             <div>
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">{{ $pageSettings['why_title'] ?? 'Why choose Amar Jotno Plan?' }}</h2>

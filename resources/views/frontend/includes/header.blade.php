@@ -8,7 +8,7 @@
 <!-- ============================================ -->
 <!-- TOP BAR (Desktop Only)                      -->
 <!-- ============================================ -->
-<div class="bg-white border-b border-slate-100 hidden lg:block text-[11px] py-2.5 relative z-[60]">
+<div class="bg-white border-b border-slate-100 hidden lg:block text-sm py-2.5 relative z-[60]">
     <div class="container mx-auto px-6 flex justify-between items-center">
         <div class="flex gap-8 text-slate-500 font-bold uppercase tracking-widest">
             <span class="flex items-center gap-2">

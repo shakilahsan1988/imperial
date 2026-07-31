@@ -45,7 +45,7 @@
                                 <!-- Location -->
                                 <li class="dp-item border-l-4 border-gray-200 pl-4">
                                     <h1 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Location</h1>
-                                    <p class="text-gray-700">Imperial Health, Plot 9 Road No. 17, Dhaka 1212</p>
+                                    <p class="text-gray-700">Imperial Private Health Care (BD) Ltd., Bangla Motor, Dhaka 1000</p>
                                 </li>
                                 
                                 <!-- Deadline -->
@@ -63,7 +63,7 @@
                                 
                                 <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 text-sm text-gray-600 italic leading-relaxed">
                                     We are looking for Dynamic, self-motivated individuals to join our corporate sales team to help create and implement sales strategies and meet the company set goals. The ideal candidate should have a proven track record of success in the corporate sales sector or related fields with aggressive sales drive to meet targets. 
-                                    <a href="mailto:careers@imperialhealth.com" class="text-imperial-primary font-medium hover:underline">careers@imperialhealth.com</a>
+                                    <a href="mailto:careers@iphcbd.com" class="text-imperial-primary font-medium hover:underline">careers@iphcbd.com</a>
                                 </div>
                             </div>
                         </div>

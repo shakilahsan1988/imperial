@@ -69,9 +69,10 @@
             <p>Thank you for choosing Imperial Health Bangladesh!</p>
         </div>
         
+        @php($infoSettings = setting('info') ?? [])
         <div class="footer">
             <p>&copy; {{ date('Y') }} Imperial Health Bangladesh. All rights reserved.</p>
-            <p>Hotline: 10648 | Email: info@imperialhealth.com</p>
+            <p>Hotline: {{ $infoSettings['phone'] ?? 'N/A' }} | Email: {{ $infoSettings['email'] ?? 'N/A' }}</p>
         </div>
     </div>
 </body>

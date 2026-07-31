@@ -188,17 +188,17 @@
 
     <style>
         .category-btn.active {
-            background-color: #4f46e5 !important;
+            background-color: #007caa !important;
             color: white !important;
-            border-color: #4f46e5 !important;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+            border-color: #007caa !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 124, 170, 0.2);
         }
-        
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .toggle-btn.active {
-            background-color: #4f46e5 !important;
+            background-color: #007caa !important;
             color: white !important;
             transform: rotate(90deg);
         }

@@ -4,6 +4,13 @@
 
 @section('content')
 
+    <style>
+        /* The active category tab carries both bg-indigo-600 and text-white.
+           Without this, hovering it re-triggers .hover\:text-indigo-600,
+           putting brand-colored text on a brand-colored background. */
+        .service-tab-btn.text-white:hover { color: #ffffff !important; }
+    </style>
+
     @php
         $currencyCode = get_currency();
         $currencySymbols = [
@@ -26,6 +33,7 @@
 
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-3xl">
+                    <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] ?? 'Our Services' }}</p>
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
                         {!! $pageSettings['hero_title_html'] ?? 'Comprehensive <span class="text-indigo-400">Healthcare</span> Solutions' !!}
                     </h1>
@@ -91,7 +99,7 @@
                 <div class="mb-8 flex flex-wrap justify-center gap-3" id="service-category-tabs">
                     @foreach($categories as $key => $label)
                         <button type="button"
-                                class="service-tab-btn px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest border border-slate-200 bg-white text-slate-600 hover:border-indigo-200 hover:text-indigo-600 transition-all"
+                                class="service-tab-btn px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide border border-slate-200 bg-white text-slate-600 hover:border-indigo-200 hover:text-indigo-600 transition-all"
                                 data-category="{{ $key }}">
                             {{ $label }} ({{ $services->where('category', $key)->count() }})
                         </button>
@@ -108,9 +116,9 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 @foreach($categoryServices as $service)
-                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group">
+                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group flex flex-col">
                                         <div class="mb-4">
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest {{ $service->category_badge }}">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide bg-indigo-50 text-indigo-600">
                                                 {{ ucfirst($service->category ?? 'service') }}
                                             </span>
                                         </div>
@@ -120,9 +128,12 @@
                                         @else
                                             <p class="text-slate-400 text-sm leading-relaxed mb-6">-</p>
                                         @endif
-                                        <div class="text-sm font-semibold text-slate-500">
+                                        <div class="text-sm font-semibold text-slate-500 mb-6">
                                             {{ $currencyPrefix }}{{ number_format((float) $service->price, 2) }}
                                         </div>
+                                        <a href="{{ route('lab-test') }}" class="mt-auto block w-full py-3 bg-white group-hover:bg-indigo-600 group-hover:text-white border border-slate-200 group-hover:border-indigo-600 text-slate-600 text-center rounded-xl font-bold text-xs uppercase tracking-widest transition-all">
+                                            View Details
+                                        </a>
                                     </div>
                                 @endforeach
                             </div>

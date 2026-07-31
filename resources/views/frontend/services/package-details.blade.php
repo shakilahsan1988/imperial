@@ -7,7 +7,7 @@
     <main class="bg-white font-sans overflow-hidden">
         <section class="relative py-20 md:py-32 bg-[#1E293B] overflow-hidden">
             <div class="absolute inset-0 opacity-20">
-                <img src="{{ asset($package->image ?: 'assets/front/images/healthcheck/1.jpg') }}" class="w-full h-full object-cover">
+                <img src="{{ asset($package->image ?: 'assets/front/images/services/services-facility.jpg') }}" class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
 
@@ -29,10 +29,10 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
                     <div class="lg:col-span-5 relative">
                         <div class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
-                        <img src="{{ asset($package->image ?: 'assets/front/images/healthcheck/1.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full object-cover aspect-[4/5]">
+                        <img src="{{ asset($package->image ?: 'assets/front/images/services/services-facility.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full object-cover aspect-[4/5]">
                         @if($package->recommended)
                         <div class="absolute top-8 right-8 z-20">
-                            <span class="bg-white/90 backdrop-blur-md text-indigo-600 text-[10px] font-black px-4 py-2 rounded-2xl shadow-xl uppercase tracking-widest border border-white">Recommended</span>
+                            <span class="bg-white/90 backdrop-blur-md text-indigo-600 text-[11px] font-bold px-4 py-2 rounded-2xl shadow-xl uppercase tracking-wide border border-white">Recommended</span>
                         </div>
                         @endif
                     </div>
@@ -40,20 +40,20 @@
                     <div class="lg:col-span-7 space-y-8">
                         <div>
                             <div class="flex items-center gap-3 mb-6">
-                                <span class="bg-indigo-50 text-indigo-600 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-tighter">{{ $package->category->name ?? 'Health Package' }}</span>
+                                <span class="bg-indigo-50 text-indigo-600 text-[11px] font-bold px-3 py-1 rounded-lg uppercase tracking-tight">{{ $package->category->name ?? 'Health Package' }}</span>
                                 @if($package->immediate_availability)
-                                <span class="bg-emerald-50 text-emerald-600 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-tighter">Immediate Availability</span>
+                                <span class="bg-indigo-50 text-indigo-600 text-[11px] font-bold px-3 py-1 rounded-lg uppercase tracking-tight">Immediate Availability</span>
                                 @endif
                             </div>
                             <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">{{ $package->name }}</h2>
 
                             <div class="flex items-baseline gap-4 mb-8">
-                                <span class="text-5xl font-black text-slate-900 tracking-tighter">{{ formated_price($package->price) }}</span>
+                                <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ formated_price($package->price) }}</span>
                                 @if($package->old_price)
                                 <span class="text-xl text-slate-400 line-through">{{ formated_price($package->old_price) }}</span>
                                 @endif
                                 @if($package->discount_text)
-                                <span class="bg-rose-50 text-rose-600 text-[10px] font-black px-3 py-1.5 rounded-lg uppercase">{{ $package->discount_text }}</span>
+                                <span class="bg-rose-50 text-rose-600 text-[11px] font-bold px-3 py-1.5 rounded-lg uppercase">{{ $package->discount_text }}</span>
                                 @endif
                             </div>
 

@@ -45,8 +45,8 @@
                             <div class="absolute inset-0 bg-imperial-primary/0 group-hover:bg-imperial-primary/10 transition-colors duration-300"></div>
                         </div>
                         <div class="p-6 text-center">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">{{ $member->name }}</h3>
-                            <p class="text-sm text-imperial-primary font-medium mb-4 font-roboto">{{ $member->designation }}</p>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 font-sans group-hover:text-imperial-primary transition-colors">{{ $member->name }}</h3>
+                            <p class="text-sm text-imperial-primary font-medium mb-4">{{ $member->designation }}</p>
                             <span class="inline-block px-4 py-2 border border-imperial-primary text-imperial-primary font-bold text-xs uppercase tracking-widest rounded hover:bg-imperial-primary hover:text-white transition-colors">
                                 See Details
                             </span>
