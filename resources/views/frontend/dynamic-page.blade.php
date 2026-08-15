@@ -1,6 +1,8 @@
 @extends('layouts.front')
 
 @section('title', ($page->meta_title ?: $page->title) . ' - Imperial Health Bangladesh')
+@section('meta_description', $page->meta_description ?: null)
+@section('og_image', $page->hero_image ? asset($page->hero_image) : null)
 
 @section('content')
 <main class="bg-white font-sans overflow-hidden">

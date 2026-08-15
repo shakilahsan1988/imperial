@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Blog') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
 
 @section('content')
 
@@ -20,6 +21,7 @@
         </div>
     </section>
 
+    @if(!empty($pageSettings['founder_description']))
     <section class="py-16 lg:py-24 bg-white">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -56,6 +58,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <section class="py-16 bg-white border-t border-gray-100">
         <div class="container mx-auto px-6">

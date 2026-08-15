@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Membership') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
 
 @section('content')
 <section class="relative py-24 md:py-40 bg-[#1E293B] overflow-hidden">

@@ -1,6 +1,6 @@
 @php
     $infoSettings = setting('info') ?? [];
-    $phone = trim((string) ($infoSettings['phone'] ?? '10648'));
+    $phone = trim((string) ($infoSettings['phone'] ?? ''));
     $email = trim((string) ($infoSettings['email'] ?? ''));
     $phoneHref = $phone !== '' ? ('tel:' . preg_replace('/\s+/', '', $phone)) : '#';
 @endphp
@@ -11,10 +11,12 @@
 <div class="bg-white border-b border-slate-100 hidden lg:block text-sm py-2.5 relative z-[60]">
     <div class="container mx-auto px-6 flex justify-between items-center">
         <div class="flex gap-8 text-slate-500 font-bold uppercase tracking-widest">
+            @if($phone !== '')
             <span class="flex items-center gap-2">
-                <i class="fa-solid fa-phone text-indigo-600"></i> 
+                <i class="fa-solid fa-phone text-indigo-600"></i>
                 <a href="{{ $phoneHref }}" class="hover:text-indigo-600 transition">Hotline: {{ $phone }}</a>
             </span>
+            @endif
             <span class="flex items-center gap-2">
                 <i class="fa-solid fa-envelope text-indigo-600"></i> 
                 <a href="mailto:{{ $email !== '' ? $email : 'support@example.com' }}" class="hover:text-indigo-600 transition">Support Center</a>

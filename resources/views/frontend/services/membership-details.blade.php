@@ -1,6 +1,16 @@
 @extends('layouts.front')
 
 @section('title', ($plan->page_name ?: 'Membership Details') . ' - Imperial Health Bangladesh')
+@section('meta_description', meta_excerpt($plan->subtitle ?: $plan->description ?? ''))
+@section('og_image', !empty($plan->image) ? asset($plan->image) : asset('assets/front/images/services/con6.jpeg'))
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::faqPage([
+    ['question' => $plan->faq_1_question ?? null, 'answer' => $plan->faq_1_answer ?? null],
+    ['question' => $plan->faq_2_question ?? null, 'answer' => $plan->faq_2_answer ?? null],
+    ['question' => $plan->faq_3_question ?? null, 'answer' => $plan->faq_3_answer ?? null],
+])) !!}
+@endpush
 
 @section('content')
 @php

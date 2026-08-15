@@ -1,4 +1,4 @@
-@if(!empty($homeSettings['doctor_carousel']['enabled']) && isset($homeDoctors) && $homeDoctors->isNotEmpty())
+@if(isset($homeDoctors) && $homeDoctors->isNotEmpty())
     @once
         @push('styles')
             <style>

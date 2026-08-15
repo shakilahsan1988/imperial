@@ -37,6 +37,7 @@
                     <li><a href="{{ route('health-check') }}" class="hover:text-indigo-600 transition-colors">Health Packages</a></li>
                     <li><a href="{{ route('membership') }}" class="hover:text-indigo-600 transition-colors">Membership Plans</a></li>
                     <li><a href="{{ route('video-consultation') }}" class="hover:text-indigo-600 transition-colors">Virtual Consultations</a></li>
+                    <li><a href="{{ route('branches') }}" class="hover:text-indigo-600 transition-colors">Our Branches</a></li>
                 </ul>
             </div>
 

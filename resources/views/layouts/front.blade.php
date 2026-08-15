@@ -1,10 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    @php
+        $infoSettings = setting('info') ?? [];
+        // Blade's inline `@section('name', $value)` form already runs $value
+        // through e() (see Illuminate\View\Concerns\ManagesLayouts::startSection),
+        // so these are pre-escaped (or, on fallback, a safe hardcoded string).
+        // They must be echoed raw ({!! !!}) below - {{ }} would escape twice.
+        $pageTitle = trim($__env->yieldContent('title')) ?: 'Imperial Health Bangladesh';
+        $defaultMetaDescription = e('Imperial Health is a multi-specialty healthcare provider in Dhaka, Bangladesh, offering doctor consultations, diagnostic lab tests, health check packages, and home sample collection.');
+        // trim(...) ?: $default (not @yield's own default) so a section that
+        // was defined but rendered empty (e.g. a model with no description)
+        // still falls back, rather than emitting an empty meta tag.
+        $metaDescription = trim($__env->yieldContent('meta_description')) ?: $defaultMetaDescription;
+        $canonicalUrl = trim($__env->yieldContent('canonical')) ?: e(url()->current());
+        $ogImageDefault = e(!empty($infoSettings['logo']) ? asset('img/' . $infoSettings['logo']) : asset('assets/front/images/logo.png'));
+        $ogImage = trim($__env->yieldContent('og_image')) ?: $ogImageDefault;
+        $ogType = trim($__env->yieldContent('og_type')) ?: 'website';
+    @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Imperial Health Bangladesh')</title>
-    
+    <title>{!! $pageTitle !!}</title>
+    <meta name="description" content="{!! $metaDescription !!}">
+    <link rel="canonical" href="{!! $canonicalUrl !!}">
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="{{ $infoSettings['name'] ?? 'Imperial Health' }}">
+    <meta property="og:type" content="{!! $ogType !!}">
+    <meta property="og:title" content="{!! $pageTitle !!}">
+    <meta property="og:description" content="{!! $metaDescription !!}">
+    <meta property="og:url" content="{!! $canonicalUrl !!}">
+    <meta property="og:image" content="{!! $ogImage !!}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{!! $pageTitle !!}">
+    <meta name="twitter:description" content="{!! $metaDescription !!}">
+    <meta name="twitter:image" content="{!! $ogImage !!}">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-icon-180x180.png') }}">
+    <link rel="manifest" href="{{ asset('img/manifest.json') }}">
+
+    <!-- Organization structured data -->
+    {!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::organization($infoSettings)) !!}
+
+    @stack('schema')
+
     <!-- Fonts: Inter & Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

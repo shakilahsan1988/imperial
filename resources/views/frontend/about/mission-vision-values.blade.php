@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Mission & Vision') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
 
 @section('content')
 
@@ -43,7 +44,7 @@
                             
                             <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">Our Mission</h2>
                             <p class="text-lg text-slate-600 font-medium leading-relaxed">
-                                We aspire to be your trusted partner in health, empowering you to manage your health in a manner that is aligned with your values.
+                                To make quality healthcare in Bangladesh easier to access, easier to understand, and centered on the patient in front of us.
                             </p>
                         </div>
                     </div>
@@ -59,7 +60,7 @@
                             
                             <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">Our Vision</h2>
                             <p class="text-lg text-slate-600 font-medium leading-relaxed">
-                                We envision a world class health care system that puts Patients first.
+                                A healthcare experience where every patient leaves better informed than when they arrived.
                             </p>
                         </div>
                     </div>
@@ -72,141 +73,62 @@
         <section class="py-24">
             <div class="container mx-auto px-4">
                 <div class="text-center max-w-2xl mx-auto mb-16">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Our Values: S.M.I.L.E.</h2>
-                    <p class="text-slate-500 font-medium leading-relaxed">The core principles that guide every decision we make and every action we take.</p>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">The Imperial Standard</h2>
+                    <p class="text-slate-500 font-medium leading-relaxed">Four commitments we hold ourselves to, at every visit.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <!-- SERVICE -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    <!-- SHOW UP PREPARED -->
                     <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-indigo-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-hand-holding-heart text-xl"></i>
+                                <i class="fa-solid fa-clipboard-list text-xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900">Service</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Show Up Prepared</h3>
                         </div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">
-                            "For me and my Patients, Imperial Health is a safe place that offers a warm welcome and personalized services."
+                        <p class="text-slate-600 leading-relaxed">
+                            Your care team reviews your history before you walk in, so your visit isn't spent repeating yourself.
                         </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-indigo-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I am respectful and ready to work together to create best care.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-indigo-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I practice safe behaviors and always put safety first.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-indigo-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I project a positive image and energy.</span>
-                            </li>
-                        </ul>
                     </div>
 
-                    <!-- MY IMPERIAL -->
+                    <!-- EXPLAIN CLEARLY -->
                     <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-emerald-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-14 h-14 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-building-columns text-xl"></i>
+                                <i class="fa-solid fa-comments text-xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900">My Imperial</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Explain Clearly</h3>
                         </div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">
-                            "I am accountable for an important part of Imperial Health, no matter how big or small."
+                        <p class="text-slate-600 leading-relaxed">
+                            Every diagnosis, test, and next step is explained in plain language before you leave.
                         </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I am engaged and dedicated to making Imperial Health the best it can be.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I am constantly learning and improving.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I always challenge myself and my team to do better.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I speak up to ensure Imperial Health lives up to our promises.</span>
-                            </li>
-                        </ul>
                     </div>
 
-                    <!-- INTEGRITY -->
+                    <!-- RESPECT YOUR TIME -->
                     <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-amber-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-amber-200 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-scale-balanced text-xl"></i>
+                                <i class="fa-solid fa-clock text-xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900">Integrity</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Respect Your Time</h3>
                         </div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">
-                            "Imperial Health means quality care, that I and my Patients can trust."
+                        <p class="text-slate-600 leading-relaxed">
+                            Scheduling, testing, and follow-up are coordinated to minimize back-and-forth visits.
                         </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-amber-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">In every interaction, I am honest, trustworthy, and transparent.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-amber-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I respect the privacy of my team members and Patients.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-amber-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I use my time and resources wisely.</span>
-                            </li>
-                        </ul>
                     </div>
 
-                    <!-- LISTENING -->
+                    <!-- FOLLOW THROUGH -->
                     <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-rose-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-14 h-14 bg-rose-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-rose-200 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-ear-listen text-xl"></i>
+                                <i class="fa-solid fa-arrow-rotate-right text-xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900">Listening</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Follow Through</h3>
                         </div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">
-                            "Compassionate care starts with listening to Patients and to each other."
+                        <p class="text-slate-600 leading-relaxed">
+                            Your results and care plan don't end at the appointment; we follow up on next steps.
                         </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-rose-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I listen with empathy so I can act effectively.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-rose-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I am courteous and respectful to all.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- EXCELLENCE -->
-                    <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-violet-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-14 h-14 bg-violet-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-violet-200 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-star text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900">Excellence</h3>
-                        </div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">
-                            "Imperial Health is setting a whole new standard for Patient-centered care."
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-violet-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I perform my role efficiently so Patients get the most out of their visits.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-violet-500 mt-1"></i>
-                                <span class="text-slate-600 text-sm">I go above and beyond to exceed Patients' expectations.</span>
-                            </li>
-                        </ul>
                     </div>
 
                 </div>

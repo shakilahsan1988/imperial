@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Contact') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
 
 @section('content')
 

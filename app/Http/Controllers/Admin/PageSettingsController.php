@@ -14,6 +14,7 @@ use App\Http\Requests\Admin\ServicesPageSettingRequest;
 use App\Http\Requests\Admin\VideoConsultationPageSettingRequest;
 use App\Models\GalleryGroup;
 use App\Models\Setting;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -114,6 +115,8 @@ class PageSettingsController extends Controller
                 ];
             }
 
+            $sectionsOrder = $this->parseSectionsOrder($request, $currentSettings['sections_order']);
+
             $payload = [
                 'hero' => [
                     'slides' => $heroSlides,
@@ -127,6 +130,7 @@ class PageSettingsController extends Controller
                 'continuous_care' => $validated['continuous_care'],
                 'expert_advice' => $validated['expert_advice'],
                 'ceo_message' => $currentSettings['ceo_message'] ?? [],
+                'sections_order' => $sectionsOrder,
             ];
 
             if ($request->hasFile('our_approach_image')) {
@@ -161,6 +165,53 @@ class PageSettingsController extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Failed to update home page settings: '.$e->getMessage());
         }
+    }
+
+    // Instant AJAX save for the drag-and-drop Section Order & Visibility
+    // panel, so toggling/reordering a section takes effect immediately
+    // without submitting the rest of the (long) home-settings form.
+    public function updateHomeSectionsOrder(Request $request)
+    {
+        $request->validate([
+            'sections_order' => 'required|string',
+            'sections_enabled' => 'nullable|array',
+        ]);
+
+        try {
+            $currentSettings = home_page_settings();
+            $sectionsOrder = $this->parseSectionsOrder($request, $currentSettings['sections_order']);
+
+            $setting = Setting::where('key', 'home_page')->first();
+            $payload = $setting ? (json_decode($setting->value, true) ?? []) : [];
+            $payload['sections_order'] = $sectionsOrder;
+
+            Setting::updateOrCreate(
+                ['key' => 'home_page'],
+                ['value' => json_encode($payload)]
+            );
+
+            return response()->json(['success' => true, 'message' => 'Section order updated']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to update section order: '.$e->getMessage()], 500);
+        }
+    }
+
+    private function parseSectionsOrder(Request $request, array $fallback): array
+    {
+        $validSectionKeys = [
+            'hero', 'branches', 'about_stats', 'doctor_carousel',
+            'our_approach', 'lab_excellence', 'experience_imperial', 'membership_video_cta',
+        ];
+
+        $sectionsOrder = collect(explode(',', (string) $request->input('sections_order', '')))
+            ->map(fn ($key) => trim($key))
+            ->filter(fn ($key) => in_array($key, $validSectionKeys, true))
+            ->unique()
+            ->map(fn ($key) => ['key' => $key, 'enabled' => $request->boolean("sections_enabled.$key")])
+            ->values()
+            ->all();
+
+        return $sectionsOrder ?: $fallback;
     }
 
     public function diagonosticSettings()

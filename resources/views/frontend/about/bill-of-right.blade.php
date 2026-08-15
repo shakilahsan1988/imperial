@@ -9,8 +9,8 @@
     
         <!-- HERO SECTION -->
         <section class="relative h-[50vh] md:h-[60vh] w-full overflow-hidden">
-            <img src="https://www.praavahealth.com/media-images/z5jPhyJJMyxSGlROQ1ve7B_z04k=/316/fill-1920x634-c0/About_Us.jpg" 
-                 alt="Patient Bill of Rights" 
+            <img src="{{ asset('assets/front/images/about/reception.jpg') }}"
+                 alt="Patient Bill of Rights"
                  class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/40"></div>
             

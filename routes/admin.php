@@ -175,6 +175,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::group(['prefix' => 'pages', 'as' => 'pages.'], function () {
         Route::get('home-settings', [PageSettingsController::class, 'homeSettings'])->name('home_settings');
         Route::post('home-settings', [PageSettingsController::class, 'updateHomeSettings'])->name('home_settings_submit');
+        Route::post('home-settings/sections-order', [PageSettingsController::class, 'updateHomeSectionsOrder'])->name('home_settings.sections_order');
         Route::get('diagonostic-settings', [PageSettingsController::class, 'diagonosticSettings'])->name('diagonostic_settings');
         Route::post('diagonostic-settings', [PageSettingsController::class, 'updateDiagonosticSettings'])->name('diagonostic_settings_submit');
         Route::get('health-check-settings', [PageSettingsController::class, 'healthCheckSettings'])->name('health_check_settings');

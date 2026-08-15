@@ -38,6 +38,39 @@ Home Settings
         <div class="card-body">
             @csrf
 
+            <h5>Section Order &amp; Visibility <small id="sections-order-status" class="text-muted font-weight-normal"></small></h5>
+            <p class="text-muted">Drag a section to change where it appears on the homepage, or uncheck one to hide it. Changes here save instantly and take effect immediately - no need to use the "Save Settings" button below for this panel.</p>
+            @php
+                $sectionLabels = [
+                    'hero' => 'Hero Slider',
+                    'branches' => 'Our Branches',
+                    'about_stats' => 'About + Stats',
+                    'doctor_carousel' => 'Expert Doctors Carousel',
+                    'our_approach' => 'Our Approach',
+                    'lab_excellence' => 'Lab Excellence',
+                    'experience_imperial' => 'Virtual Tour',
+                    'membership_video_cta' => 'Membership + Video Consult CTA',
+                ];
+                $sectionsOrder = $homeSettings['sections_order'] ?? [];
+            @endphp
+            <ul id="sections-order-list" class="list-group mb-4">
+                @foreach($sectionsOrder as $section)
+                    @php($key = $section['key'] ?? null)
+                    @continue(!$key || !isset($sectionLabels[$key]))
+                    <li class="list-group-item d-flex align-items-center" data-key="{{ $key }}">
+                        <i class="fas fa-grip-vertical text-muted mr-3" style="cursor: grab;"></i>
+                        <div class="custom-control custom-switch mr-3">
+                            <input type="checkbox" class="custom-control-input" id="section_enabled_{{ $key }}" name="sections_enabled[{{ $key }}]" value="1" {{ !empty($section['enabled']) ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="section_enabled_{{ $key }}"></label>
+                        </div>
+                        <span>{{ $sectionLabels[$key] }}</span>
+                    </li>
+                @endforeach
+            </ul>
+            <input type="hidden" name="sections_order" id="sections-order-input" value="{{ collect($sectionsOrder)->pluck('key')->implode(',') }}">
+
+            <hr>
+
             <h5>Hero Section (Dynamic Slider)</h5>
             <p class="text-muted">Add/remove slides. If no slides exist, hero section will not render on homepage.</p>
             <div id="hero-slides-wrapper">
@@ -163,14 +196,6 @@ Home Settings
             <hr>
             <h5>Doctor Carousel Section</h5>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="doctor_carousel_enabled" name="doctor_carousel[enabled]" value="1" {{ old('doctor_carousel.enabled', $homeSettings['doctor_carousel']['enabled'] ?? true) ? 'checked' : '' }}>
-                            <label class="custom-control-label" for="doctor_carousel_enabled">Enable this section</label>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Badge</label>
@@ -500,5 +525,88 @@ Home Settings
     });
 
     refreshSlideNumbers();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+    (function () {
+        var list = document.getElementById('sections-order-list');
+        var input = document.getElementById('sections-order-input');
+        var status = document.getElementById('sections-order-status');
+        var tokenInput = document.querySelector('#sections-order-list').closest('form').querySelector('input[name="_token"]');
+        if (!list || !input || !tokenInput) return;
+
+        function currentKeys() {
+            return Array.prototype.map.call(list.querySelectorAll('li[data-key]'), function (li) {
+                return li.getAttribute('data-key');
+            });
+        }
+
+        function syncSectionsOrder() {
+            input.value = currentKeys().join(',');
+        }
+
+        function setStatus(text, isError) {
+            if (!status) return;
+            status.textContent = text;
+            status.classList.toggle('text-danger', !!isError);
+            status.classList.toggle('text-success', !isError && text !== '');
+            status.classList.toggle('text-muted', text === '');
+        }
+
+        function saveSectionsOrder() {
+            syncSectionsOrder();
+
+            var enabled = {};
+            list.querySelectorAll('li[data-key]').forEach(function (li) {
+                var key = li.getAttribute('data-key');
+                var checkbox = li.querySelector('input[type="checkbox"]');
+                enabled[key] = checkbox && checkbox.checked ? '1' : '0';
+            });
+
+            setStatus('Saving...', false);
+
+            var body = new URLSearchParams();
+            body.set('_token', tokenInput.value);
+            body.set('sections_order', input.value);
+            Object.keys(enabled).forEach(function (key) {
+                body.set('sections_enabled[' + key + ']', enabled[key]);
+            });
+
+            fetch('{{ route('admin.pages.home_settings.sections_order') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json',
+                },
+                body: body.toString(),
+            })
+                .then(function (response) {
+                    if (!response.ok) throw new Error('Request failed');
+                    return response.json();
+                })
+                .then(function () {
+                    setStatus('Saved', false);
+                    setTimeout(function () { setStatus('', false); }, 2000);
+                })
+                .catch(function () {
+                    setStatus('Failed to save - try again', true);
+                });
+        }
+
+        if (typeof Sortable !== 'undefined') {
+            Sortable.create(list, {
+                handle: '.fa-grip-vertical',
+                animation: 150,
+                onEnd: saveSectionsOrder,
+            });
+        }
+
+        list.addEventListener('change', function (e) {
+            if (e.target.matches('input[type="checkbox"]')) {
+                saveSectionsOrder();
+            }
+        });
+    })();
 </script>
 @endsection

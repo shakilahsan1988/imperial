@@ -14,7 +14,7 @@ class MembershipDemoSeeder extends Seeder
         $categories = [
             ['name' => 'Annual Membership Plans', 'sort_order' => 1],
             ['name' => 'Special Health Plans', 'sort_order' => 2],
-            ['name' => 'Amar Jotno Plan (Video Consultation)', 'sort_order' => 3],
+            ['name' => 'Imperial Anywhere Plan (Video Consultation)', 'sort_order' => 3],
         ];
 
         foreach ($categories as $item) {
@@ -31,7 +31,7 @@ class MembershipDemoSeeder extends Seeder
 
         $annual = MembershipCategory::where('name', 'Annual Membership Plans')->first();
         $special = MembershipCategory::where('name', 'Special Health Plans')->first();
-        $video = MembershipCategory::where('name', 'Amar Jotno Plan (Video Consultation)')->first();
+        $video = MembershipCategory::where('name', 'Imperial Anywhere Plan (Video Consultation)')->first();
 
         $plans = [
             [
@@ -95,7 +95,7 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Amar Jotno 12 Months Plan',
+                'name' => 'Imperial Anywhere 12 Months Plan',
                 'subtitle' => 'Unlimited video consultations',
                 'price' => 6250,
                 'duration' => '12 Months',
@@ -107,7 +107,7 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Amar Jotno 6 Months Plan',
+                'name' => 'Imperial Anywhere 6 Months Plan',
                 'subtitle' => 'Unlimited video consultations',
                 'price' => 5050,
                 'duration' => '6 Months',
@@ -118,7 +118,7 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Amar Jotno 3 Months Plan',
+                'name' => 'Imperial Anywhere 3 Months Plan',
                 'subtitle' => 'Unlimited video consultations',
                 'price' => 3850,
                 'duration' => '3 Months',
@@ -129,7 +129,7 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Amar Jotno Family Plus Plan',
+                'name' => 'Imperial Anywhere Family Plus Plan',
                 'subtitle' => 'Family focused video consultation package',
                 'price' => 8450,
                 'duration' => '12 Months',
@@ -141,7 +141,7 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Amar Jotno Senior Care Plan',
+                'name' => 'Imperial Anywhere Senior Care Plan',
                 'subtitle' => 'Video consultations tailored for seniors',
                 'price' => 7250,
                 'duration' => '12 Months',

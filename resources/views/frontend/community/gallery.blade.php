@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Gallery') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
 
 @php
     $hasManagedGroups = $galleryGroups->contains(fn ($group) => $group->images->isNotEmpty());

@@ -432,7 +432,10 @@ class FrontController extends Controller
 
     public function about_details()
     {
-        return view('frontend.about.about-details');
+        // Temporarily unpublished: this page hardcoded a competitor's founder
+        // bio/photo. Not linked from any nav or page. Restore once Imperial
+        // has verified founder/leadership content to publish here.
+        abort(404);
     }
 
     public function bill_of_rights()
@@ -480,6 +483,15 @@ class FrontController extends Controller
         $member = TeamMember::with('branch')->where('slug', $slug)->firstOrFail();
 
         return view('frontend.about.management-details', compact('member'));
+    }
+
+    public function branches()
+    {
+        $branches = Branch::withCount(['galleries', 'doctors', 'managementTeams'])
+            ->orderBy('id')
+            ->get();
+
+        return view('frontend.branches.index', compact('branches'));
     }
 
     public function branch_details($slug)
@@ -769,22 +781,36 @@ class FrontController extends Controller
 
     public function event()
     {
-        return view('frontend.community.event');
+        // Temporarily unpublished: hardcoded competitor's event history
+        // (verbatim in 2 entries, unverified for the rest). Not linked from
+        // any nav or page. Restore once Imperial has its own verified
+        // community-event content.
+        abort(404);
     }
 
     public function event_details()
     {
-        return view('frontend.community.event-details');
+        // Temporarily unpublished: hardcoded a competitor's event write-up
+        // naming their real staff and partner org. Not linked from any nav
+        // or page. Restore once Imperial has its own verified content.
+        abort(404);
     }
 
     public function press()
     {
-        return view('frontend.community.press');
+        // Temporarily unpublished: hardcoded a competitor's press releases
+        // and hotlinked their CDN images. Not linked from any nav or page.
+        // Restore once Imperial has its own verified press content.
+        abort(404);
     }
 
     public function press_details()
     {
-        return view('frontend.community.press-details');
+        // Temporarily unpublished: hardcoded a competitor's press release
+        // verbatim, naming real third parties unrelated to Imperial. Not
+        // linked from any nav or page. Restore once Imperial has its own
+        // verified press content.
+        abort(404);
     }
 
     public function gallery()

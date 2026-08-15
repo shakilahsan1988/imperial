@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($diagSettings['page_name'] ?? 'Diagnostics & Lab Tests') . ' - Imperial Health Bangladesh')
+@section('meta_description', $diagSettings['hero_description'] ?? null)
 
 @section('content')
 

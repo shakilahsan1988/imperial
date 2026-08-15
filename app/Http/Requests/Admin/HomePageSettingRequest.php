@@ -40,7 +40,6 @@ class HomePageSettingRequest extends FormRequest
             'stats.patients_count' => 'required|string|max:30',
             'stats.patients_label' => 'required|string|max:80',
 
-            'doctor_carousel.enabled' => 'nullable|in:1',
             'doctor_carousel.badge' => 'required|string|max:120',
             'doctor_carousel.title_html' => 'required|string|max:1000',
             'doctor_carousel.description' => 'required|string|max:1000',
@@ -84,6 +83,8 @@ class HomePageSettingRequest extends FormRequest
             'expert_advice.button_text' => 'required|string|max:120',
             'expert_advice.button_url' => 'required|string|max:255',
 
+            'sections_order' => 'required|string',
+            'sections_enabled' => 'nullable|array',
         ];
     }
 }

@@ -25,6 +25,18 @@ if (! function_exists('get_currency')) {
 
 }
 
+// plain-text excerpt for a meta description, safe against fields that
+// already store HTML-entity-encoded text (decode before stripping tags, or
+// Blade's escaping on output double-encodes "&amp;" into "&amp;amp;")
+if (! function_exists('meta_excerpt')) {
+    function meta_excerpt($text, $length = 155)
+    {
+        $text = html_entity_decode(strip_tags((string) $text), ENT_QUOTES);
+
+        return \Illuminate\Support\Str::limit(trim($text), $length);
+    }
+}
+
 // get formated price of things
 if (! function_exists('formated_price')) {
     function formated_price($price)
@@ -145,6 +157,7 @@ if (! function_exists('menu_settings')) {
                 ['label' => 'About', 'url' => '/about', 'new_tab' => false, 'children' => [
                     ['label' => 'Mission & Vision', 'url' => '/mission-vision-value', 'new_tab' => false],
                     ['label' => 'Management', 'url' => '/management', 'new_tab' => false],
+                    ['label' => 'Our Branches', 'url' => '/branches', 'new_tab' => false],
                     ['label' => 'Contact Us', 'url' => '/contact', 'new_tab' => false],
                 ]],
                 ['label' => 'Contact', 'url' => '/contact', 'new_tab' => false, 'children' => []],
@@ -175,46 +188,65 @@ if (! function_exists('home_page_settings')) {
             'hero' => [
                 'slides' => [
                     [
-                        'badge' => 'Precision & Care',
-                        'title_html' => 'Healthcare <br>Anytime, <span class="text-indigo-400">Anywhere</span>',
-                        'description' => 'Experience the future of healthcare with our world-class medical facilities and home diagnostics.',
-                        'button_text' => 'Explore Services',
-                        'button_url' => '/services',
-                        'image' => 'assets/front/images/index/slide-1.jpg',
-                    ],
-                    [
-                        'badge' => 'Wellness Packages',
-                        'title_html' => 'Affordable <br>Health <span class="text-indigo-400">Checks</span>',
-                        'description' => 'Tailored packages designed for every age and gender, fitting perfectly within your family budget.',
-                        'button_text' => 'View Packages',
-                        'button_url' => '/health-check',
-                        'image' => 'assets/front/images/index/slide-2.jpg',
-                    ],
-                    [
                         'badge' => 'Lab at Doorstep',
                         'title_html' => 'Hassle-Free <br>Diagnostic <span class="text-indigo-400">Tests</span>',
                         'description' => 'Avoid the traffic and wait. Our experts come to you for sample collection in the comfort of your home.',
                         'button_text' => 'Book Home Test',
                         'button_url' => '/lab-test',
-                        'image' => 'assets/front/images/index/slide-3.jpg',
+                        'image' => 'uploads/home/hero/home-sample-collection.png',
+                    ],
+                    [
+                        'badge' => 'Patient-Centered Care',
+                        'title_html' => 'Care That <span class="text-indigo-400">Puts You First</span>',
+                        'description' => 'From the moment you arrive, our team is here to help - with full wheelchair accessibility and attentive support for every patient.',
+                        'button_text' => 'Explore Health Checks',
+                        'button_url' => '/health-check',
+                        'image' => 'uploads/home/hero/affordable-healthchecks.png',
+                    ],
+                    [
+                        'badge' => 'In-House Pharmacy',
+                        'title_html' => 'Your Medicines, <span class="text-indigo-400">Under One Roof</span>',
+                        'description' => 'Fill your prescriptions right after your consultation at our in-house Imperial Pharmacy - no extra trips needed.',
+                        'button_text' => 'Contact Us',
+                        'button_url' => '/contact',
+                        'image' => 'uploads/home/hero/imperial-pharmacy.png',
+                    ],
+                    [
+                        'badge' => 'Welcome to Imperial',
+                        'title_html' => 'Every <span class="text-indigo-400">Patient Matters</span>',
+                        'description' => 'Step into a reception built around you - clear guidance, friendly staff, and care from the moment you walk in.',
+                        'button_text' => 'Visit Our Branches',
+                        'button_url' => '/branches',
+                        'image' => 'uploads/home/hero/reception.png',
+                    ],
+                    [
+                        'badge' => 'Family Care',
+                        'title_html' => 'Caring for Your Health, <span class="text-indigo-400">Every Step of the Way</span>',
+                        'description' => 'From routine checkups to specialist consultations, our team looks after every member of your family.',
+                        'button_text' => 'Meet Our Doctors',
+                        'button_url' => '/doctor',
+                        'image' => 'uploads/home/hero/family-consultation.png',
                     ],
                 ],
             ],
             'about' => [
                 'badge' => 'About Imperial',
                 'title_html' => 'Redefining the <span class="text-indigo-600">Patient Experience</span>',
-                'description' => 'Imperial exists to provide a better patient experience. We are a one-stop-shop for your health, offering caring doctors, world-class diagnostics, and accessible healthcare for everyone.',
+                'description' => 'At Imperial Health, your care starts with being heard. Our doctors, diagnostics, and support teams work together under one roof, so you spend less time coordinating appointments and more time focused on getting better.',
             ],
             'stats' => [
-                'specialities_count' => '27',
+                // Counts below are derived from live doctor/specialty records.
+                // 'patients_count' is left blank on purpose: no verified
+                // figure is available, and the index view hides empty stats
+                // rather than displaying an invented number.
+                'specialities_count' => '16',
                 'specialities_label' => 'Specialities',
-                'doctors_count' => '84',
+                'doctors_count' => '27',
                 'doctors_label' => 'Expert Doctors',
-                'patients_count' => '914K',
+                'patients_count' => '',
                 'patients_label' => 'Patients Served',
             ],
             'doctor_carousel' => [
-                'enabled' => true,
                 'badge' => 'Our Specialists',
                 'title_html' => 'Meet Our <span class="text-indigo-600">Expert Doctors</span>',
                 'description' => 'Browse a fresh selection of Imperial Health specialists on every visit and connect with the right doctor for your care needs.',
@@ -223,7 +255,7 @@ if (! function_exists('home_page_settings')) {
             ],
             'our_approach' => [
                 'badge' => 'Our Approach',
-                'title_html' => 'Doctors Who <span class="text-indigo-600">Actually</span> Listen',
+                'title_html' => 'Doctors Who <span class="text-indigo-600">Take the Time</span>',
                 'description_1' => 'Our specialists dedicate time to truly understand your health history. We believe in respect, empathy, and personalized advice based on international clinical protocols.',
                 'description_2' => 'With years of local and international experience, our team provides healthcare you can trust blindly.',
                 'button_text' => 'Find a Specialist',
@@ -233,9 +265,9 @@ if (! function_exists('home_page_settings')) {
             'lab_excellence' => [
                 'badge' => 'Lab Excellence',
                 'title_html' => 'Diagnostics You Can <span class="text-emerald-600">Trust</span>',
-                'description' => 'Accuracy is our top priority. Our laboratories follow ISO 15189-2012 international standards to ensure you get precise results every single time.',
-                'feature_1' => 'ISO Certified',
-                'feature_2' => 'Accredited Lab',
+                'description' => 'Accuracy is our top priority. Our lab team follows careful quality-control procedures at every step, from sample collection to reporting, so you can trust every result.',
+                'feature_1' => 'Quality-Checked',
+                'feature_2' => 'Trained Technicians',
                 'button_text' => 'Explore Our Services',
                 'button_url' => '/lab-test',
                 'image' => 'assets/front/images/index/diagnosis.jpg',
@@ -261,13 +293,30 @@ if (! function_exists('home_page_settings')) {
                 'button_url' => '/video-consultation',
             ],
             'ceo_message' => [
-                'enabled' => true,
+                // Disabled by default: do not display a named CEO/message
+                // until management confirms the real name, title, and photo.
+                'enabled' => false,
                 'badge' => "CEO's Message",
                 'title_html' => 'A Message from Our <span class="text-indigo-600">CEO</span>',
                 'message' => 'At Imperial Health, we believe that every patient deserves world-class healthcare delivered with compassion and excellence. Our mission is to redefine the healthcare experience in Bangladesh by combining cutting-edge medical technology with a patient-first approach. We are committed to providing accessible, affordable, and high-quality care to every individual who walks through our doors.',
-                'name' => 'Mohammad Abdul Matin Emon',
-                'designation' => 'Chief Executive Officer',
+                'name' => '',
+                'designation' => '',
                 'image' => 'assets/front/images/management/2.jpg',
+            ],
+            // Single source of truth for both homepage section order and
+            // visibility, independent of each section's own content fields
+            // above. A numeric list, so - like hero.slides below - it needs
+            // a wholesale replace after the recursive merge rather than an
+            // index-by-index merge.
+            'sections_order' => [
+                ['key' => 'hero', 'enabled' => true],
+                ['key' => 'branches', 'enabled' => true],
+                ['key' => 'about_stats', 'enabled' => true],
+                ['key' => 'doctor_carousel', 'enabled' => true],
+                ['key' => 'our_approach', 'enabled' => true],
+                ['key' => 'lab_excellence', 'enabled' => true],
+                ['key' => 'experience_imperial', 'enabled' => true],
+                ['key' => 'membership_video_cta', 'enabled' => true],
             ],
         ];
 
@@ -280,6 +329,10 @@ if (! function_exists('home_page_settings')) {
 
         if (isset($saved['hero']['slides']) && is_array($saved['hero']['slides'])) {
             $merged['hero']['slides'] = $saved['hero']['slides'];
+        }
+
+        if (! empty($saved['sections_order']) && is_array($saved['sections_order'])) {
+            $merged['sections_order'] = $saved['sections_order'];
         }
 
         return $merged;
@@ -386,7 +439,7 @@ if (! function_exists('video_consultation_page_settings')) {
             'plans_section_title' => 'Affordable Video Consultation Packages',
             'plans_section_description' => 'Choose a flexible plan for regular online doctor consultations for you and your family.',
             'plans_empty_text' => 'No video consultation packages available now.',
-            'why_title' => 'Why choose Amar Jotno Plan?',
+            'why_title' => 'Why choose Imperial Anywhere Plan?',
             'why_image' => 'assets/front/images/services/con4.jpg',
             'why_item_1' => 'Access to experienced, internationally trained doctors',
             'why_item_2' => 'Secure access through our own consultation platform',
@@ -490,7 +543,7 @@ if (! function_exists('mission_vision_page_settings')) {
         return inner_page_settings('mission_vision_page', [
             'page_name' => 'Mission & Vision',
             'hero_title_html' => 'Our <span class="text-indigo-400">Mission, Vision</span> & Values',
-            'hero_description' => 'Imperial exists to provide a better patient experience.',
+            'hero_description' => 'What we aim for, and how we try to get there every day.',
             'hero_image' => 'assets/front/images/about/1.jpg',
         ]);
     }
@@ -530,7 +583,9 @@ if (! function_exists('blog_page_settings')) {
             'hero_image' => 'assets/front/images/services/services.jpg',
             'founder_badge' => 'Our Story',
             'founder_title' => 'Meet Our Founder & Chair of the Board',
-            'founder_description' => 'Six years ago, my mother was hospitalized at one of Bangladesh\'s top hospitals for a basic operation. We expected that the routine procedure would go smoothly, yet she suffered dramatic complications. That experience taught us that empathy, transparency, and quality must come first in healthcare.',
+            // Left blank on purpose: hidden until Imperial has a verified
+            // founder story to publish (see frontend.community.blog view).
+            'founder_description' => '',
             'founder_button_text' => 'See Details',
             'founder_button_url' => '#',
             'founder_image' => 'assets/front/images/management/1.jpg',

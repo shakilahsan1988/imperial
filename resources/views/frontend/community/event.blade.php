@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'About Us - Imperial Health Bangladesh')
+@section('title', 'Community Events - Imperial Health Bangladesh')
 
 @section('content')
 <!-- Community Events Section -->
@@ -20,7 +20,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/1.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/1.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -36,7 +36,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/2.webp') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/2.webp') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -52,7 +52,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/3.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/3.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -68,7 +68,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/4.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/4.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -84,7 +84,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/5.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/5.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -96,27 +96,11 @@
                 </a>
             </div>
 
-            <!-- Event 6 -->
-            <div class="arcevent-col">
-                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
-                    <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/6.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="card-textblock p-6">
-                        <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
-                            <time>Aug 24, 2017</time>
-                            <span class="flex items-center gap-1 text-imperial-primary"><i class="fa-solid fa-location-dot"></i></span>
-                        </div>
-                        <h1 class="text-lg font-bold text-imperial-text group-hover:text-imperial-primary transition leading-snug">Praava Health Announces Its Ribbon Cutting Ceremony</h1>
-                    </div>
-                </a>
-            </div>
-
             <!-- Event 7 -->
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/7.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/7.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -128,27 +112,11 @@
                 </a>
             </div>
 
-            <!-- Event 8 -->
-            <div class="arcevent-col">
-                <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
-                    <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/8.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="card-textblock p-6">
-                        <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
-                            <time>Sep 26, 2017</time>
-                            <span class="flex items-center gap-1 text-imperial-primary"><i class="fa-solid fa-location-dot"></i></span>
-                        </div>
-                        <h1 class="text-lg font-bold text-imperial-text group-hover:text-imperial-primary transition leading-snug">Praava Health at the Durga Puja Fair</h1>
-                    </div>
-                </a>
-            </div>
-
             <!-- Event 9 -->
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/9.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/9.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -164,7 +132,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/10.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/10.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -180,7 +148,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/11.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/11.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -196,7 +164,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/12.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/12.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -212,7 +180,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/13.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/13.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -228,7 +196,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/14.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/14.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -244,7 +212,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/15.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/15.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">
@@ -260,7 +228,7 @@
             <div class="arcevent-col">
                 <a href="{{ route('event-details') }}" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100 overflow-hidden">
                     <div class="press-imgwrap h-56 overflow-hidden relative">
-                        <img src="{{ asset('assets/front/images/event/16.jpg') }}" alt="praava" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('assets/front/images/event/16.jpg') }}" alt="Community event photo" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="card-textblock p-6">
                         <div class="text-header flex items-center gap-4 text-sm text-gray-500 mb-3 font-medium">

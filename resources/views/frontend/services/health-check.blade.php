@@ -1,6 +1,15 @@
 @extends('layouts.front')
 
 @section('title', ($healthCheckSettings['page_name'] ?? 'Health Check') . ' - Imperial Health Bangladesh')
+@section('meta_description', $healthCheckSettings['hero_description'] ?? null)
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::faqPage([
+    ['question' => $healthCheckSettings['faq_1_question'] ?? null, 'answer' => $healthCheckSettings['faq_1_answer'] ?? null],
+    ['question' => $healthCheckSettings['faq_2_question'] ?? null, 'answer' => $healthCheckSettings['faq_2_answer'] ?? null],
+    ['question' => $healthCheckSettings['faq_3_question'] ?? null, 'answer' => $healthCheckSettings['faq_3_answer'] ?? null],
+])) !!}
+@endpush
 
 @section('content')
 

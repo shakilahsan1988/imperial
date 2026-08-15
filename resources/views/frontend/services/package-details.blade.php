@@ -1,6 +1,15 @@
 @extends('layouts.front')
 
 @section('title', ($package->page_name ?: 'Package Details') . ' - Imperial Health Bangladesh')
+@section('meta_description', meta_excerpt($package->subtitle ?: $package->description ?? ''))
+@section('og_image', $package->image ? asset($package->image) : asset('assets/front/images/services/services-facility.jpg'))
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::faqPage([
+    ['question' => $package->faq_1_question ?? null, 'answer' => $package->faq_1_answer ?? null],
+    ['question' => $package->faq_2_question ?? null, 'answer' => $package->faq_2_answer ?? null],
+])) !!}
+@endpush
 
 @section('content')
 

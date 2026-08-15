@@ -1,6 +1,15 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Video Consultation') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::faqPage([
+    ['question' => $pageSettings['faq_1_question'] ?? null, 'answer' => $pageSettings['faq_1_answer'] ?? null],
+    ['question' => $pageSettings['faq_2_question'] ?? null, 'answer' => $pageSettings['faq_2_answer'] ?? null],
+    ['question' => $pageSettings['faq_3_question'] ?? null, 'answer' => $pageSettings['faq_3_answer'] ?? null],
+])) !!}
+@endpush
 
 @section('content')
 
@@ -63,7 +72,7 @@
                 <img src="{{ asset($pageSettings['why_image'] ?? 'assets/front/images/services/consultation-corridor.jpg') }}" alt="Why choose plan" class="rounded-2xl shadow-lg w-full h-auto object-cover">
             </div>
             <div>
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">{{ $pageSettings['why_title'] ?? 'Why choose Amar Jotno Plan?' }}</h2>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">{{ $pageSettings['why_title'] ?? 'Why choose Imperial Anywhere Plan?' }}</h2>
                 <ul class="space-y-4">
                     <li class="flex items-start gap-3 text-gray-700">
                         <i class="fa-solid fa-check-circle text-imperial-primary mt-1"></i>

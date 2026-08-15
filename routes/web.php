@@ -3,6 +3,7 @@
 use App\Http\Controllers\DynamicPageController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SslCommerzController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 | Here is where you can register web routes for your application.
 |
 */
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('seo.robots');
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
+
 Route::get('/', [FrontController::class, 'index'])->name('fhome');
 Route::get('/services', [FrontController::class, 'services'])->name('services');
 Route::get('/services/{category?}', [FrontController::class, 'services'])->name('services.category');
@@ -52,6 +56,7 @@ Route::get('/client', [FrontController::class, 'client'])->name('client');
 Route::get('/management', [FrontController::class, 'management'])->name('management');
 Route::get('/management-details/{slug}', [FrontController::class, 'management_details'])->name('management-details');
 Route::get('/mission-vision-value', [FrontController::class, 'mission_vision_value'])->name('mission-vision-value');
+Route::get('/branches', [FrontController::class, 'branches'])->name('branches');
 Route::get('/branches/{slug}', [FrontController::class, 'branch_details'])->name('branch-details');
 
  Route::get('/privacy-notice', [FrontController::class, 'privacy_notice'])->name('privacy-notice');

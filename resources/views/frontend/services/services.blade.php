@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', ($pageSettings['page_name'] ?? 'Our Services') . ' - Imperial Health Bangladesh')
+@section('meta_description', $pageSettings['hero_description'] ?? null)
 
 @section('content')
 
@@ -124,7 +125,7 @@
                                         </div>
                                         <h5 class="text-lg font-bold text-slate-900 mb-3">{{ $service->name }}</h5>
                                         @if(!empty($service->description))
-                                            <p class="text-slate-500 text-sm leading-relaxed mb-6">{{ \Illuminate\Support\Str::limit(strip_tags((string) $service->description), 120, '...') }}</p>
+                                            <p class="text-slate-500 text-sm leading-relaxed mb-6">{{ meta_excerpt($service->description, 120) }}</p>
                                         @else
                                             <p class="text-slate-400 text-sm leading-relaxed mb-6">-</p>
                                         @endif

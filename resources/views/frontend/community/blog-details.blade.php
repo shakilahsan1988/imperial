@@ -1,6 +1,13 @@
 @extends('layouts.front')
 
 @section('title', ($blog->meta_title ?? $blog->title) . ' - Imperial Health Bangladesh')
+@section('meta_description', $blog->meta_description ?: meta_excerpt($blog->excerpt ?? ''))
+@section('og_type', 'article')
+@section('og_image', !empty($blog->featured_image) ? asset($blog->featured_image) : null)
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::blogPosting($blog)) !!}
+@endpush
 
 @section('content')
 <article class="w-full bg-white">

@@ -8,6 +8,9 @@
         position: relative;
         width: 100%;
         height: 100vh;
+        height: 100dvh;
+        min-height: 480px;
+        max-height: 900px;
         overflow: hidden;
         background-color: #0f172a;
     }
@@ -18,7 +21,8 @@
         inset: 0;
         width: 100%;
         height: 100%;
-        object-cover: cover;
+        object-fit: cover;
+        object-position: center;
         transform: scale(1);
         transition: transform 8s linear;
         opacity: 0;
@@ -136,11 +140,22 @@
     .arrow-right { right: 30px; }
 
     @media (max-width: 768px) {
+        #hero-slider {
+            height: 100vh;
+            height: 100svh;
+            min-height: 420px;
+            max-height: none;
+        }
         .slider-arrow { display: none; }
         .slide-overlay {
             background: rgba(15, 23, 42, 0.7);
         }
         .slide-content { text-align: center; justify-content: center; }
+        .nav-container { bottom: 20px; }
+    }
+
+    @media (max-width: 480px) {
+        #hero-slider { min-height: 380px; }
     }
 </style>
 

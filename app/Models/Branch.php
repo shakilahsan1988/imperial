@@ -20,6 +20,8 @@ class Branch extends Model
         'title',
         'slug',
         'description',
+        'meta_title',
+        'meta_description',
         'address',
         'phone',
         'contact_information',

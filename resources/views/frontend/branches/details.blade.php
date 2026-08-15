@@ -1,6 +1,15 @@
 @extends('layouts.front')
 
 @section('title', ($branch->title ?: $branch->name) . ' - Imperial Health Bangladesh')
+@section('meta_description', $branch->meta_description ?: meta_excerpt($branch->description ?? ''))
+@section('canonical', route('branch-details', $branch->slug))
+@if($branch->feature_image)
+@section('og_image', asset($branch->feature_image))
+@endif
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::medicalClinic($branch)) !!}
+@endpush
 
 @section('content')
 <main class="bg-white font-sans">
@@ -24,6 +33,12 @@
                                 <p class="text-xs uppercase tracking-[0.2em] text-indigo-300 font-black mb-2">Address</p>
                                 <p class="text-slate-200 leading-relaxed whitespace-pre-line">{{ $branch->address }}</p>
                             </div>
+                            @if($branch->phone)
+                            <div>
+                                <p class="text-xs uppercase tracking-[0.2em] text-indigo-300 font-black mb-2">Phone</p>
+                                <p class="text-slate-200 leading-relaxed whitespace-pre-line">{{ $branch->phone }}</p>
+                            </div>
+                            @endif
                             <div>
                                 <p class="text-xs uppercase tracking-[0.2em] text-indigo-300 font-black mb-2">Contact Information</p>
                                 <p class="text-slate-200 leading-relaxed whitespace-pre-line">{{ $branch->contact_information }}</p>
@@ -105,7 +120,7 @@
                                 <div>
                                     <h3 class="text-xl font-bold text-slate-900">{{ $member->name }}</h3>
                                     <p class="text-sm text-indigo-600 font-medium mb-3">{{ $member->designation }}</p>
-                                    <p class="text-sm text-slate-600 leading-relaxed">{{ \Illuminate\Support\Str::limit(strip_tags($member->bio), 180, '...') }}</p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">{{ meta_excerpt($member->bio, 180) }}</p>
                                 </div>
                             </div>
                         </div>

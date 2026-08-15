@@ -1,6 +1,12 @@
 @extends('layouts.front')
 
 @section('title', 'Book Appointment - ' . ($model->name ?? 'Doctor'))
+@section('meta_description', $model->bio ? meta_excerpt($model->bio) : null)
+@section('og_image', $model->effective_image_url ?? null)
+
+@push('schema')
+{!! \App\Support\SchemaBuilder::script(\App\Support\SchemaBuilder::physician($model)) !!}
+@endpush
 
 @section('content')
 @php
