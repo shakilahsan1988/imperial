@@ -24,6 +24,17 @@ $('#pages_link').addClass('active');
 $('#pages').addClass('menu-open');
 $('#pages_dynamic_pages').addClass('active');
 
+$('.summernote').summernote({
+    height: 360,
+    toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'italic', 'underline', 'clear']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['insert', ['link', 'picture', 'table', 'hr']],
+        ['view', ['fullscreen', 'codeview']]
+    ]
+});
+
 const slugInput = document.querySelector('input[name="slug"]');
 const slugPreview = document.getElementById('slug-preview');
 if (slugInput && slugPreview) {
@@ -33,4 +44,3 @@ if (slugInput && slugPreview) {
 }
 </script>
 @endpush
-

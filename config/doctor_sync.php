@@ -18,6 +18,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Shared doctor contact details
+    |--------------------------------------------------------------------------
+    |
+    | Doctor profiles intentionally use the central appointment desk's contact
+    | details. These values are valid shared data, not fabricated placeholders.
+    |
+    */
+    'shared_contacts' => [
+        'email' => 'doctor@iphcbd.com',
+        'phone' => '+8801332556541',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Shared avatar assets
     |--------------------------------------------------------------------------
     |
@@ -306,13 +320,8 @@ return [
     |
     */
     'fabricated' => [
-        'emails' => [
-            'doctor@iphcbd.com',
-        ],
-        'phones' => [
-            '01332556541',
-            '01335100543',
-        ],
+        'emails' => [],
+        'phones' => [],
     ],
 
     /*

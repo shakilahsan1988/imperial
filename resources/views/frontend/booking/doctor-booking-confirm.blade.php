@@ -157,7 +157,7 @@
             {{-- Free consultation --}}
             <div class="bg-emerald-50 border border-emerald-200 rounded-[2rem] p-8 text-center mb-8">
                 <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-gift text-emerald-600 text-2xl"></i>
+                    <i class="fa-solid fa-gift text-sky-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-black text-slate-900 mb-2">Free Consultation</h3>
                 <p class="text-slate-500 font-medium">No payment required. Please arrive at the clinic on your scheduled date.</p>

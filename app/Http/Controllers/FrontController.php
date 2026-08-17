@@ -19,6 +19,7 @@ use App\Models\HealthPackageCategory;
 use App\Models\MembershipCategory;
 use App\Models\MembershipPlan;
 use App\Models\MembershipPlanBooking;
+use App\Models\Page;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\TeamMember;
@@ -61,7 +62,7 @@ class FrontController extends Controller
 
     public function service_details()
     {
-        return view('frontend.services.service-details');
+        return $this->managedPageOrView('service-details', 'frontend.services.service-details');
     }
 
     public function service_detail(Request $request, $id)
@@ -419,7 +420,7 @@ class FrontController extends Controller
 
     public function beauty()
     {
-        return view('frontend.services.beauty');
+        return $this->managedPageOrView('beauty', 'frontend.services.beauty');
     }
 
     public function about()
@@ -435,27 +436,27 @@ class FrontController extends Controller
         // Temporarily unpublished: this page hardcoded a competitor's founder
         // bio/photo. Not linked from any nav or page. Restore once Imperial
         // has verified founder/leadership content to publish here.
-        abort(404);
+        return $this->managedPageOrFail('about-details');
     }
 
     public function bill_of_rights()
     {
-        return view('frontend.about.bill-of-right');
+        return $this->managedPageOrView('bill-of-right', 'frontend.about.bill-of-right');
     }
 
     public function career()
     {
-        return view('frontend.about.career');
+        return $this->managedPageOrView('career', 'frontend.about.career');
     }
 
     public function career_details()
     {
-        return view('frontend.about.career-details');
+        return $this->managedPageOrView('career-details', 'frontend.about.career-details');
     }
 
     public function code_ethics()
     {
-        return view('frontend.about.code-of-ethics');
+        return $this->managedPageOrView('code-of-ethics', 'frontend.about.code-of-ethics');
     }
 
     public function contact()
@@ -467,7 +468,7 @@ class FrontController extends Controller
 
     public function client()
     {
-        return view('frontend.about.corporate-clients');
+        return $this->managedPageOrView('client', 'frontend.about.corporate-clients');
     }
 
     public function management()
@@ -521,7 +522,7 @@ class FrontController extends Controller
 
     public function privacy_notice()
     {
-        return view('frontend.about.privacy-notice');
+        return $this->managedPageOrView('privacy-notice', 'frontend.about.privacy-notice');
     }
 
     public function doctor()
@@ -785,7 +786,7 @@ class FrontController extends Controller
         // (verbatim in 2 entries, unverified for the rest). Not linked from
         // any nav or page. Restore once Imperial has its own verified
         // community-event content.
-        abort(404);
+        return $this->managedPageOrFail('event');
     }
 
     public function event_details()
@@ -793,7 +794,7 @@ class FrontController extends Controller
         // Temporarily unpublished: hardcoded a competitor's event write-up
         // naming their real staff and partner org. Not linked from any nav
         // or page. Restore once Imperial has its own verified content.
-        abort(404);
+        return $this->managedPageOrFail('event-details');
     }
 
     public function press()
@@ -801,7 +802,7 @@ class FrontController extends Controller
         // Temporarily unpublished: hardcoded a competitor's press releases
         // and hotlinked their CDN images. Not linked from any nav or page.
         // Restore once Imperial has its own verified press content.
-        abort(404);
+        return $this->managedPageOrFail('press');
     }
 
     public function press_details()
@@ -810,7 +811,7 @@ class FrontController extends Controller
         // verbatim, naming real third parties unrelated to Imperial. Not
         // linked from any nav or page. Restore once Imperial has its own
         // verified press content.
-        abort(404);
+        return $this->managedPageOrFail('press-details');
     }
 
     public function gallery()
@@ -822,5 +823,28 @@ class FrontController extends Controller
             ->get();
 
         return view('frontend.community.gallery', compact('pageSettings', 'galleryGroups'));
+    }
+
+    /**
+     * Let an active Dynamic Page override a legacy static frontend route while
+     * retaining the existing Blade page until an administrator publishes one.
+     */
+    private function managedPageOrView(string $slug, string $fallbackView, array $data = [])
+    {
+        $page = Page::where('status', true)->where('slug', $slug)->first();
+
+        return $page
+            ? view('frontend.dynamic-page', compact('page'))
+            : view($fallbackView, $data);
+    }
+
+    /**
+     * Resolve formerly unpublished routes from Dynamic Pages only.
+     */
+    private function managedPageOrFail(string $slug)
+    {
+        $page = Page::where('status', true)->where('slug', $slug)->firstOrFail();
+
+        return view('frontend.dynamic-page', compact('page'));
     }
 }

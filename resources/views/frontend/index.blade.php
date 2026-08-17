@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
-@section('title', 'Imperial Health - World Class Healthcare in Bangladesh')
-@section('meta_description', $homeSettings['about']['description'] ?? null)
+@section('title', $homeSettings['seo']['page_title'] ?? 'Imperial Health - World Class Healthcare in Bangladesh')
+@section('meta_description', $homeSettings['seo']['meta_description'] ?? ($homeSettings['about']['description'] ?? null))
 
 @section('content')
 

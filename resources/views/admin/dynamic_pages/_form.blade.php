@@ -60,9 +60,9 @@
 
 <hr>
 <div class="form-group">
-    <label>Page Text</label>
-    <small class="form-text text-muted">Use plain text content for policy pages like privacy policy and terms of use.</small>
-    <textarea name="body_html" class="form-control" rows="10">{{ old('body_html', optional($page)->body_html) }}</textarea>
+    <label>Page Content</label>
+    <small class="form-text text-muted">Rich text and HTML are supported. Use a matching slug to replace a legacy frontend page.</small>
+    <textarea name="body_html" class="form-control summernote" rows="14">{{ old('body_html', optional($page)->body_html) }}</textarea>
 </div>
 
 <div class="form-group">

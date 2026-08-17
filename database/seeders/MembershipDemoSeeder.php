@@ -5,23 +5,22 @@ namespace Database\Seeders;
 use App\Models\MembershipCategory;
 use App\Models\MembershipPlan;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class MembershipDemoSeeder extends Seeder
 {
     public function run(): void
     {
         $categories = [
-            ['name' => 'Annual Membership Plans', 'sort_order' => 1],
-            ['name' => 'Special Health Plans', 'sort_order' => 2],
-            ['name' => 'Imperial Anywhere Plan (Video Consultation)', 'sort_order' => 3],
+            ['name' => 'Annual Membership Plans', 'slug' => 'annual-membership-plans-demo', 'sort_order' => 1],
+            ['name' => 'Special Health Plans', 'slug' => 'special-health-plans-demo', 'sort_order' => 2],
+            ['name' => 'Imperial CareConnect Plans (Video Consultation)', 'slug' => 'imperial-anywhere-plan-video-consultation-demo', 'sort_order' => 3],
         ];
 
         foreach ($categories as $item) {
             MembershipCategory::updateOrCreate(
-                ['name' => $item['name']],
+                ['slug' => $item['slug']],
                 [
-                    'slug' => Str::slug($item['name']) . '-demo',
+                    'name' => $item['name'],
                     'description' => $item['name'],
                     'sort_order' => $item['sort_order'],
                     'status' => true,
@@ -29,14 +28,16 @@ class MembershipDemoSeeder extends Seeder
             );
         }
 
-        $annual = MembershipCategory::where('name', 'Annual Membership Plans')->first();
-        $special = MembershipCategory::where('name', 'Special Health Plans')->first();
-        $video = MembershipCategory::where('name', 'Imperial Anywhere Plan (Video Consultation)')->first();
+        $annual = MembershipCategory::where('slug', 'annual-membership-plans-demo')->first();
+        $special = MembershipCategory::where('slug', 'special-health-plans-demo')->first();
+        $video = MembershipCategory::where('slug', 'imperial-anywhere-plan-video-consultation-demo')->first();
 
         $plans = [
             [
                 'category_id' => $annual?->id,
-                'name' => 'Imperial Gold Annual Plan',
+                'name' => 'Imperial Care Advantage Annual Membership',
+                'slug' => 'imperial-gold-annual-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-care-advantage-annual-membership.png',
                 'subtitle' => 'Comprehensive coverage for individuals and families',
                 'price' => 12000,
                 'old_price' => 15000,
@@ -50,7 +51,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $annual?->id,
-                'name' => 'Imperial Silver Annual Plan',
+                'name' => 'Imperial Care Essential Annual Membership',
+                'slug' => 'imperial-silver-annual-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-care-essential-annual-membership.png',
                 'subtitle' => 'Essential healthcare coverage for individuals',
                 'price' => 8400,
                 'duration' => '12 Months',
@@ -61,7 +64,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $annual?->id,
-                'name' => 'Imperial Platinum Annual Plan',
+                'name' => 'Imperial Care Premier Annual Membership',
+                'slug' => 'imperial-platinum-annual-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-care-premier-annual-membership.png',
                 'subtitle' => 'Ultimate healthcare protection for families',
                 'price' => 21000,
                 'duration' => '12 Months',
@@ -73,7 +78,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $special?->id,
-                'name' => 'Prediabetes Plan',
+                'name' => 'Imperial Prediabetes Prevention Plan',
+                'slug' => 'prediabetes-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-prediabetes-prevention-plan.png',
                 'subtitle' => 'Early intervention and regular follow-up',
                 'price' => 27000,
                 'duration' => '12 Months',
@@ -84,7 +91,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $special?->id,
-                'name' => 'Diabetes Plan',
+                'name' => 'Imperial Diabetes Care Plan',
+                'slug' => 'diabetes-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-diabetes-care-plan.png',
                 'subtitle' => 'Long-term diabetes management plan',
                 'price' => 42000,
                 'duration' => '12 Months',
@@ -95,7 +104,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Imperial Anywhere 12 Months Plan',
+                'name' => 'Imperial CareConnect 12-Month Plan',
+                'slug' => 'imperial-anywhere-12-months-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-careconnect-12-month-plan.png',
                 'subtitle' => 'Unlimited video consultations',
                 'price' => 6250,
                 'duration' => '12 Months',
@@ -107,7 +118,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Imperial Anywhere 6 Months Plan',
+                'name' => 'Imperial CareConnect 6-Month Plan',
+                'slug' => 'imperial-anywhere-6-months-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-careconnect-6-month-plan.png',
                 'subtitle' => 'Unlimited video consultations',
                 'price' => 5050,
                 'duration' => '6 Months',
@@ -118,7 +131,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Imperial Anywhere 3 Months Plan',
+                'name' => 'Imperial CareConnect 3-Month Plan',
+                'slug' => 'imperial-anywhere-3-months-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-careconnect-3-month-plan.png',
                 'subtitle' => 'Unlimited video consultations',
                 'price' => 3850,
                 'duration' => '3 Months',
@@ -129,7 +144,9 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Imperial Anywhere Family Plus Plan',
+                'name' => 'Imperial CareConnect Family Plus Plan',
+                'slug' => 'imperial-anywhere-family-plus-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-careconnect-family-plus-plan.png',
                 'subtitle' => 'Family focused video consultation package',
                 'price' => 8450,
                 'duration' => '12 Months',
@@ -141,30 +158,33 @@ class MembershipDemoSeeder extends Seeder
             ],
             [
                 'category_id' => $video?->id,
-                'name' => 'Imperial Anywhere Senior Care Plan',
+                'name' => 'Imperial CareConnect Senior Support Plan',
+                'slug' => 'imperial-anywhere-senior-care-plan-demo',
+                'image' => 'uploads/membership_plans/imperial-careconnect-senior-support-plan.png',
                 'subtitle' => 'Video consultations tailored for seniors',
                 'price' => 7250,
                 'duration' => '12 Months',
                 'doctor_visits' => 'Unlimited Video',
                 'service_discount' => '10% Off Follow-up Tests',
-                'badge_text' => 'Senior Care',
+                'badge_text' => 'Senior Support',
                 'sort_order' => 5,
                 'is_video_consultant' => true,
             ],
         ];
 
         foreach ($plans as $plan) {
-            if (!$plan['category_id']) {
+            if (! $plan['category_id']) {
                 continue;
             }
 
             MembershipPlan::updateOrCreate(
-                ['name' => $plan['name']],
+                ['slug' => $plan['slug']],
                 [
                     'membership_category_id' => $plan['category_id'],
                     'page_name' => 'Membership Details',
-                    'slug' => Str::slug($plan['name']) . '-demo',
+                    'name' => $plan['name'],
                     'subtitle' => $plan['subtitle'],
+                    'image' => $plan['image'],
                     'badge_text' => $plan['badge_text'] ?? null,
                     'price' => $plan['price'],
                     'old_price' => $plan['old_price'] ?? null,

@@ -1,32 +1,32 @@
-    <!-- STATS SECTION -->
-    <section class="py-24 bg-white relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50 -mr-48 -mt-48"></div>
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="flex flex-col lg:flex-row gap-20 items-center">
-                <div class="lg:w-5/12 reveal">
-                    <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['about']['badge'] }}</span>
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">{!! $homeSettings['about']['title_html'] !!}</h2>
-                    <p class="text-lg text-slate-500 leading-relaxed font-medium">{{ $homeSettings['about']['description'] }}</p>
-                </div>
+@php
+    $stats = collect([
+        ['count' => $homeSettings['stats']['specialities_count'], 'label' => $homeSettings['stats']['specialities_label'], 'icon' => 'fa-stethoscope'],
+        ['count' => $homeSettings['stats']['doctors_count'], 'label' => $homeSettings['stats']['doctors_label'], 'icon' => 'fa-user-doctor'],
+        ['count' => $homeSettings['stats']['patients_count'] ?? '', 'label' => $homeSettings['stats']['patients_label'], 'icon' => 'fa-users'],
+    ])->filter(fn ($stat) => trim((string) $stat['count']) !== '');
+@endphp
 
-                <div class="lg:w-7/12 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    @php
-                        $stats = collect([
-                            ['count' => $homeSettings['stats']['specialities_count'], 'label' => $homeSettings['stats']['specialities_label'], 'icon' => 'fa-stethoscope'],
-                            ['count' => $homeSettings['stats']['doctors_count'], 'label' => $homeSettings['stats']['doctors_label'], 'icon' => 'fa-user-md'],
-                            ['count' => $homeSettings['stats']['patients_count'] ?? '', 'label' => $homeSettings['stats']['patients_label'], 'icon' => 'fa-users'],
-                        ])->filter(fn ($s) => trim((string) $s['count']) !== '');
-                    @endphp
-                    @foreach($stats as $s)
-                    <div class="bg-slate-50 p-8 rounded-[32px] border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group reveal">
-                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid {{$s['icon']}} text-indigo-600 text-4xl"></i>
-                        </div>
-                        <h3 class="text-4xl font-black text-slate-900 mb-1 tracking-tighter">{{$s['count']}}</h3>
-                        <p class="font-bold uppercase tracking-widest text-indigo-600 text-sm">{{$s['label']}}</p>
-                    </div>
-                    @endforeach
-                </div>
+<section class="relative overflow-hidden bg-white py-16 md:py-20">
+    <div class="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-sky-50 blur-3xl"></div>
+    <div class="container relative z-10 mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+            <div class="lg:col-span-5">
+                <p class="mb-3 text-xs font-black uppercase tracking-[0.18em] text-sky-600">{{ $homeSettings['about']['badge'] }}</p>
+                <h2 class="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl md:text-5xl">{!! $homeSettings['about']['title_html'] !!}</h2>
+                <p class="mt-5 text-sm leading-7 text-slate-500 sm:text-base">{{ $homeSettings['about']['description'] }}</p>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-{{ max(1, $stats->count()) }}">
+                @foreach($stats as $stat)
+                    <article class="group rounded-2xl border border-slate-200/80 bg-slate-50 p-6 transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 sm:p-7">
+                        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-sky-600 shadow-sm transition group-hover:bg-sky-600 group-hover:text-white">
+                            <i class="fa-solid {{ $stat['icon'] }}" aria-hidden="true"></i>
+                        </span>
+                        <strong class="mt-6 block text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{{ $stat['count'] }}</strong>
+                        <span class="mt-1 block text-xs font-black uppercase tracking-[0.12em] text-slate-500">{{ $stat['label'] }}</span>
+                    </article>
+                @endforeach
             </div>
         </div>
-    </section>
+    </div>
+</section>

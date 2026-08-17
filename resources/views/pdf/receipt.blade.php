@@ -41,7 +41,7 @@
     .grand-total-value { font-size: 22px; font-weight: 900; text-align: right; }
 
     .status-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-top: 15px; }
-    .status-paid { background-color: #ecfdf5; color: #059669; }
+    .status-paid { background-color: #f0f9ff; color: #0284c7; }
     .status-pending { background-color: #fffbeb; color: #d97706; }
 
     .footer { position: fixed; bottom: 0; width: 100%; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 15px; font-size: 9px; color: #94a3b8; }

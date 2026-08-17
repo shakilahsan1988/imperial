@@ -10,11 +10,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * Test 19c and the correction to plan point #1: contacts are nullable, but
- * a real value must still be unique. Exercised through the actual admin route
- * and DoctorRequest, not by calling the rule in isolation - this is also what
- * proves the historic bug ("every doctor shares one email, so no doctor can be
- * saved") is fixed.
+ * Doctor contact details are nullable and intentionally shareable because the
+ * public profiles can all point to the same central appointment desk.
  */
 class DoctorValidationTest extends TestCase
 {
@@ -67,30 +64,32 @@ class DoctorValidationTest extends TestCase
         $this->assertSame(2, Doctor::whereNull('email')->whereNull('phone')->count());
     }
 
-    /** A real email must still be unique across doctors. */
-    public function test_duplicate_real_email_is_rejected(): void
+    /** Multiple doctors may share the same central email address. */
+    public function test_duplicate_real_email_is_allowed(): void
     {
         Doctor::factory()->create(['email' => 'unique@example.com']);
 
         $this->actingAs($this->admin, 'admin')
             ->post(route('admin.doctors.store'), $this->payload(['email' => 'unique@example.com']))
-            ->assertSessionHasErrors(['email']);
+            ->assertSessionDoesntHaveErrors(['email']);
+
+        $this->assertSame(2, Doctor::where('email', 'unique@example.com')->count());
     }
 
-    /** A real phone must still be unique across doctors. */
-    public function test_duplicate_real_phone_is_rejected(): void
+    /** Multiple doctors may share the same central phone number. */
+    public function test_duplicate_real_phone_is_allowed(): void
     {
         Doctor::factory()->create(['phone' => '01711111111']);
 
         $this->actingAs($this->admin, 'admin')
             ->post(route('admin.doctors.store'), $this->payload(['phone' => '01711111111']))
-            ->assertSessionHasErrors(['phone']);
+            ->assertSessionDoesntHaveErrors(['phone']);
+
+        $this->assertSame(2, Doctor::where('phone', '01711111111')->count());
     }
 
     /**
-     * The historic bug: every doctor previously shared doctor@iphcbd.com, so
-     * `required|unique` on email/phone made every edit fail. Saving a doctor
-     * unchanged must now succeed.
+     * Saving a doctor with central contact details unchanged must succeed.
      */
     public function test_an_existing_doctor_can_be_saved_without_changing_contact_fields(): void
     {
@@ -128,13 +127,31 @@ class DoctorValidationTest extends TestCase
             ->assertSessionDoesntHaveErrors(['email']);
     }
 
-    /** Email is case-normalized so "A@B.com" and "a@b.com" are recognised as the same address. */
-    public function test_email_uniqueness_is_case_insensitive(): void
+    /** Email casing is normalized without making the shared address invalid. */
+    public function test_shared_email_is_case_normalized(): void
     {
         Doctor::factory()->create(['email' => 'someone@example.com']);
 
         $this->actingAs($this->admin, 'admin')
             ->post(route('admin.doctors.store'), $this->payload(['email' => 'SOMEONE@EXAMPLE.COM']))
-            ->assertSessionHasErrors(['email']);
+            ->assertSessionDoesntHaveErrors(['email']);
+
+        $this->assertSame(2, Doctor::where('email', 'someone@example.com')->count());
+    }
+
+    /** A country-code phone is stored exactly as supplied apart from whitespace. */
+    public function test_phone_country_code_format_is_preserved(): void
+    {
+        $this->actingAs($this->admin, 'admin')
+            ->post(route('admin.doctors.store'), $this->payload([
+                'name' => 'Dr. International Phone',
+                'phone' => '  +8801332556541  ',
+            ]))
+            ->assertSessionDoesntHaveErrors(['phone']);
+
+        $this->assertDatabaseHas('doctors', [
+            'name' => 'Dr. International Phone',
+            'phone' => '+8801332556541',
+        ]);
     }
 }

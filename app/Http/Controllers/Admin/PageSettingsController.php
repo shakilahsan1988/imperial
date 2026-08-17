@@ -118,9 +118,11 @@ class PageSettingsController extends Controller
             $sectionsOrder = $this->parseSectionsOrder($request, $currentSettings['sections_order']);
 
             $payload = [
+                'seo' => $validated['seo'],
                 'hero' => [
                     'slides' => $heroSlides,
                 ],
+                'branches' => $validated['branches'],
                 'about' => $validated['about'],
                 'stats' => $validated['stats'],
                 'doctor_carousel' => $validated['doctor_carousel'],

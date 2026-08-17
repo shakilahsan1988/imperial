@@ -20,257 +20,371 @@
     $exclusions = collect(preg_split('/\r\n|\r|\n/', (string) $plan->exclusions))->filter()->values();
     $importantNotes = collect(preg_split('/\r\n|\r|\n/', (string) $plan->important_notes))->filter()->values();
     $patient = auth()->guard('patient')->user();
+    $bookingUrl = route('membership-booking.submit', ['slug' => $plan->slug ?: $plan->id]);
 @endphp
 
-<section class="relative h-[40vh] min-h-[300px]">
-    <img src="{{ $image }}" alt="{{ $plan->name }}" class="absolute inset-0 w-full h-full object-cover">
-    <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40"></div>
-    <div class="absolute inset-0 flex items-center">
-        <div class="container mx-auto px-6">
-            <div class="max-w-2xl">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ $plan->name }}</h1>
-                <p class="text-lg text-white/90">{{ $plan->subtitle ?: 'Comprehensive healthcare coverage for you and your family' }}</p>
+<main class="overflow-hidden bg-slate-50 font-sans text-slate-900">
+    <section class="relative isolate overflow-hidden bg-slate-950">
+        <div class="absolute inset-0 opacity-70" style="background: radial-gradient(circle at 12% 18%, rgba(14, 165, 233, .22), transparent 28%), radial-gradient(circle at 90% 80%, rgba(2, 132, 199, .16), transparent 30%);"></div>
+        <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent"></div>
+
+        <div class="container relative z-10 mx-auto px-5 py-14 sm:px-6 md:py-20 lg:px-8 lg:py-24">
+            <nav class="mb-10 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-400" aria-label="Breadcrumb">
+                <a href="{{ route('fhome') }}" class="transition-colors hover:text-sky-300">Home</a>
+                <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
+                <a href="{{ route('membership') }}" class="transition-colors hover:text-sky-300">Membership</a>
+                <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
+                <span class="text-sky-300">Plan details</span>
+            </nav>
+
+            <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+                <div class="lg:col-span-7">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="rounded-full border border-sky-400/25 bg-sky-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-sky-300">
+                            {{ $plan->category->name ?? 'Membership Plan' }}
+                        </span>
+                        @if(!empty($plan->badge_text))
+                            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-white">
+                                {{ $plan->badge_text }}
+                            </span>
+                        @endif
+                    </div>
+
+                    <h1 class="mt-7 max-w-4xl text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl">
+                        {{ $plan->name }}
+                    </h1>
+                    <p class="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
+                        {{ $plan->subtitle ?: 'Comprehensive healthcare coverage for you and your family.' }}
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap items-end gap-x-4 gap-y-2">
+                        <span class="text-4xl font-black tracking-tight text-sky-300 sm:text-5xl">{{ formated_price($plan->price) }}</span>
+                        @if(!empty($plan->old_price))
+                            <span class="pb-1 text-base font-semibold text-slate-500 line-through">{{ formated_price($plan->old_price) }}</span>
+                        @endif
+                        @if(!empty($plan->discount_text))
+                            <span class="mb-1 rounded-lg bg-emerald-400/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-300">{{ $plan->discount_text }}</span>
+                        @endif
+                    </div>
+
+                    <div class="mt-9 flex flex-wrap items-center gap-3">
+                        <a href="#book-membership" class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/30">
+                            Request membership
+                            <i class="fa-solid fa-arrow-down text-xs" aria-hidden="true"></i>
+                        </a>
+                        <a href="#plan-coverage" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-bold text-slate-200 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/10 hover:text-white">
+                            View coverage
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-xl">
+                        <div class="absolute -inset-5 rounded-[2.25rem] bg-sky-400/10 blur-2xl"></div>
+                        <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-2.5 shadow-2xl shadow-black/30 backdrop-blur-sm">
+                            <div class="relative aspect-[16/10] overflow-hidden rounded-[1.45rem] bg-slate-900">
+                                <img src="{{ $image }}" alt="{{ $plan->name }}" class="h-full w-full object-cover">
+                                <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+                                @if(!empty($plan->duration))
+                                    <span class="absolute bottom-4 right-4 rounded-lg border border-white/20 bg-slate-950/70 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">
+                                        {{ $plan->duration }}
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="py-16 bg-white">
-    <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div class="relative rounded-2xl overflow-hidden shadow-xl">
-                <img src="{{ $image }}" alt="{{ $plan->name }}" class="w-full h-[400px] object-cover">
-                @if($plan->badge_text)
-                <div class="absolute top-4 right-4 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold">
-                    {{ $plan->badge_text }}
+    <section class="relative z-20 -mt-1 py-14 md:py-20">
+        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+                <div class="lg:col-span-7">
+                    <div class="rounded-[1.75rem] border border-slate-200/80 bg-white p-7 shadow-sm md:p-9">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Plan overview</p>
+                        <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">About this membership plan</h2>
+                        @if(!empty($plan->description))
+                            <p class="mt-5 text-base leading-8 text-slate-600">{{ $plan->description }}</p>
+                        @endif
+
+                        @if($features->isNotEmpty())
+                            <div class="mt-8 border-t border-slate-100 pt-8">
+                                <h3 class="text-sm font-black uppercase tracking-[0.14em] text-slate-900">Key features</h3>
+                                <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    @foreach($features as $feature)
+                                        <li class="flex items-start gap-3 rounded-2xl bg-slate-50 p-4 text-sm font-semibold leading-6 text-slate-700">
+                                            <span class="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-600">
+                                                <i class="fa-solid fa-check text-[10px]" aria-hidden="true"></i>
+                                            </span>
+                                            {{ $feature }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-                @endif
+
+                <aside class="lg:col-span-5" aria-label="Membership facts">
+                    <div class="rounded-[1.75rem] border border-slate-200/80 bg-white p-7 shadow-sm md:p-8">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">At a glance</p>
+                        <dl class="mt-5 divide-y divide-slate-100">
+                            <div class="flex items-center justify-between gap-5 py-5">
+                                <dt class="flex items-center gap-3 text-sm font-semibold text-slate-500">
+                                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></span>
+                                    Duration
+                                </dt>
+                                <dd class="text-right text-sm font-black text-slate-900">{{ $plan->duration ?: 'Not specified' }}</dd>
+                            </div>
+                            <div class="flex items-center justify-between gap-5 py-5">
+                                <dt class="flex items-center gap-3 text-sm font-semibold text-slate-500">
+                                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-user-doctor" aria-hidden="true"></i></span>
+                                    Doctor access
+                                </dt>
+                                <dd class="max-w-[48%] text-right text-sm font-black text-slate-900">{{ $plan->doctor_visits ?: 'Not specified' }}</dd>
+                            </div>
+                            <div class="flex items-center justify-between gap-5 py-5">
+                                <dt class="flex items-center gap-3 text-sm font-semibold text-slate-500">
+                                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-tag" aria-hidden="true"></i></span>
+                                    Service savings
+                                </dt>
+                                <dd class="max-w-[48%] text-right text-sm font-black text-slate-900">{{ $plan->service_discount ?: 'Not specified' }}</dd>
+                            </div>
+                        </dl>
+                        <a href="#book-membership" class="mt-5 flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-4 text-sm font-bold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-100">
+                            Request this plan
+                            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10"><i class="fa-solid fa-arrow-down text-xs" aria-hidden="true"></i></span>
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <section id="book-membership" class="scroll-mt-24 border-y border-slate-200/70 bg-white py-16 md:py-20">
+        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
+                <div class="grid grid-cols-1 lg:grid-cols-12">
+                    <div class="relative overflow-hidden bg-slate-950 p-8 text-white md:p-10 lg:col-span-4 lg:p-12">
+                        <div class="absolute inset-0 opacity-60" style="background: radial-gradient(circle at 20% 15%, rgba(14, 165, 233, .28), transparent 30%);"></div>
+                        <div class="relative">
+                            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-400/15 text-xl text-sky-300">
+                                <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+                            </span>
+                            <p class="mt-8 text-xs font-black uppercase tracking-[0.18em] text-sky-300">Membership request</p>
+                            <h2 class="mt-3 text-3xl font-black tracking-tight">Start your booking request</h2>
+                            <p class="mt-5 text-sm leading-7 text-slate-300">Enter your details and preferred start date. The Imperial care team will contact you to confirm the request.</p>
+
+                            <div class="mt-9 rounded-2xl border border-white/10 bg-white/5 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Selected plan</p>
+                                <p class="mt-2 font-bold leading-6 text-white">{{ $plan->name }}</p>
+                                <p class="mt-3 text-2xl font-black text-sky-300">{{ formated_price($plan->price) }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{{ $bookingUrl }}" class="p-7 md:p-10 lg:col-span-8 lg:p-12">
+                        @csrf
+                        @if(session('success'))
+                            <div class="mb-7 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700" role="status">{{ session('success') }}</div>
+                        @endif
+                        @if($errors->any())
+                            <div class="mb-7 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700" role="alert">
+                                <p class="font-bold">Please review the highlighted fields and try again.</p>
+                                <ul class="mt-2 list-inside list-disc space-y-1">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="mb-8">
+                            <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Your information</p>
+                            <h3 class="mt-2 text-2xl font-black tracking-tight text-slate-950">Tell us who the membership is for</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-x-5 gap-y-5 md:grid-cols-2">
+                            <div>
+                                <label for="membership-patient-name" class="mb-2 block text-xs font-bold text-slate-600">Patient Name <span class="text-rose-500">*</span></label>
+                                <input id="membership-patient-name" type="text" name="patient_name" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" placeholder="Your full name" value="{{ old('patient_name', $patient->name ?? '') }}" required>
+                            </div>
+                            <div>
+                                <label for="membership-phone" class="mb-2 block text-xs font-bold text-slate-600">Phone Number <span class="text-rose-500">*</span></label>
+                                <input id="membership-phone" type="text" name="phone" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" placeholder="Phone number" value="{{ old('phone', $patient->phone ?? '') }}" required>
+                            </div>
+                            <div>
+                                <label for="membership-email" class="mb-2 block text-xs font-bold text-slate-600">Email Address <span class="text-rose-500">*</span></label>
+                                <input id="membership-email" type="email" name="email" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100 read-only:cursor-not-allowed read-only:text-slate-500" placeholder="Email address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                            </div>
+                            <div>
+                                <label for="membership-dob" class="mb-2 block text-xs font-bold text-slate-600">Date of Birth <span class="text-rose-500">*</span></label>
+                                <input id="membership-dob" type="date" name="dob" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="membership-start-date" class="mb-2 block text-xs font-bold text-slate-600">Preferred Start Date <span class="font-normal text-slate-400">(Optional)</span></label>
+                                <input id="membership-start-date" type="date" name="preferred_start_date" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" min="{{ date('Y-m-d') }}" value="{{ old('preferred_start_date') }}">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="membership-notes" class="mb-2 block text-xs font-bold text-slate-600">Notes <span class="font-normal text-slate-400">(Optional)</span></label>
+                                <textarea id="membership-notes" name="notes" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" rows="3" placeholder="Anything our care team should know?">{{ old('notes') }}</textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200">
+                            Submit booking request
+                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plan-coverage" class="scroll-mt-24 py-16 md:py-20">
+        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="mb-10 max-w-2xl">
+                <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Plan coverage</p>
+                <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Know what the plan covers</h2>
+                <p class="mt-4 text-base leading-7 text-slate-500">Review the recorded inclusions and exclusions before submitting your request.</p>
             </div>
 
-            <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="px-3 py-1 bg-imperial-primary/10 text-imperial-primary text-sm font-medium rounded-full">
-                        {{ $plan->category->name ?? 'Membership Plan' }}
-                    </span>
-                    <span class="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">Active</span>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ $plan->name }}</h2>
-
-                <div class="mb-6">
-                    <span class="text-4xl font-bold text-imperial-primary">{{ formated_price($plan->price) }}</span>
-                    @if(!empty($plan->old_price))
-                    <span class="text-gray-500 line-through ml-3">{{ formated_price($plan->old_price) }}</span>
-                    @endif
-                    @if(!empty($plan->discount_text))
-                    <span class="ml-2 text-sm bg-red-100 text-red-600 px-2 py-1 rounded">{{ $plan->discount_text }}</span>
-                    @endif
-                </div>
-
-                <p class="text-gray-600 mb-8 leading-relaxed">{{ $plan->description }}</p>
-
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-gray-50 rounded-xl p-4 text-center">
-                        <i class="fa-solid fa-calendar text-imperial-primary text-2xl mb-2"></i>
-                        <p class="text-sm text-gray-600">Duration</p>
-                        <p class="font-semibold text-gray-900">{{ $plan->duration ?: '-' }}</p>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div class="rounded-[1.75rem] border border-emerald-100 bg-white p-7 shadow-sm md:p-9">
+                    <div class="flex items-center gap-4">
+                        <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-50 text-sky-600"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+                        <div>
+                            <p class="text-xs font-black uppercase tracking-[0.14em] text-sky-600">Included</p>
+                            <h3 class="mt-1 text-xl font-black text-slate-950">What’s covered</h3>
+                        </div>
                     </div>
-                    <div class="bg-gray-50 rounded-xl p-4 text-center">
-                        <i class="fa-solid fa-user-doctor text-imperial-primary text-2xl mb-2"></i>
-                        <p class="text-sm text-gray-600">Doctor Visits</p>
-                        <p class="font-semibold text-gray-900">{{ $plan->doctor_visits ?: '-' }}</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-4 text-center">
-                        <i class="fa-solid fa-percent text-imperial-primary text-2xl mb-2"></i>
-                        <p class="text-sm text-gray-600">Discount</p>
-                        <p class="font-semibold text-gray-900">{{ $plan->service_discount ?: '-' }}</p>
-                    </div>
-                </div>
-
-                @if($features->count())
-                <div class="mb-8">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Key Features</h3>
-                    <ul class="space-y-3">
-                        @foreach($features as $feature)
-                        <li class="flex items-center gap-3">
-                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-check text-green-600 text-xs"></i>
-                            </div>
-                            <span class="text-gray-700">{{ $feature }}</span>
-                        </li>
-                        @endforeach
+                    <ul class="mt-7 space-y-4">
+                        @forelse($inclusions as $item)
+                            <li class="flex items-start gap-3 text-sm font-medium leading-6 text-slate-700">
+                                <i class="fa-solid fa-circle-check mt-1 text-emerald-500" aria-hidden="true"></i>
+                                <span>{{ $item }}</span>
+                            </li>
+                        @empty
+                            <li class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">No inclusion details provided.</li>
+                        @endforelse
                     </ul>
                 </div>
-                @endif
-            </div>
-        </div>
-    </div>
-</section>
 
-<section class="py-12 bg-gray-50">
-    <div class="container mx-auto px-6">
-        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border border-slate-50">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold">1</div>
-                <h3 class="text-2xl font-extrabold text-slate-900 tracking-tight">Book This Membership Plan</h3>
+                <div class="rounded-[1.75rem] border border-rose-100 bg-white p-7 shadow-sm md:p-9">
+                    <div class="flex items-center gap-4">
+                        <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-50 text-rose-600"><i class="fa-solid fa-xmark" aria-hidden="true"></i></span>
+                        <div>
+                            <p class="text-xs font-black uppercase tracking-[0.14em] text-rose-600">Excluded</p>
+                            <h3 class="mt-1 text-xl font-black text-slate-950">What’s not covered</h3>
+                        </div>
+                    </div>
+                    <ul class="mt-7 space-y-4">
+                        @forelse($exclusions as $item)
+                            <li class="flex items-start gap-3 text-sm font-medium leading-6 text-slate-700">
+                                <i class="fa-solid fa-circle-xmark mt-1 text-rose-500" aria-hidden="true"></i>
+                                <span>{{ $item }}</span>
+                            </li>
+                        @empty
+                            <li class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">No exclusion details provided.</li>
+                        @endforelse
+                    </ul>
+                </div>
             </div>
 
-            @if(session('success'))
-                <div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">{{ session('success') }}</div>
+            @if($importantNotes->isNotEmpty())
+                <div class="mt-6 rounded-[1.75rem] border border-amber-100 bg-amber-50/70 p-7 md:p-8">
+                    <div class="flex items-start gap-4">
+                        <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700"><i class="fa-solid fa-circle-info" aria-hidden="true"></i></span>
+                        <div>
+                            <h3 class="font-black text-slate-900">Important notes</h3>
+                            <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-600">
+                                @foreach($importantNotes as $note)
+                                    <li>{{ $note }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             @endif
-            @if($errors->any())
-                <div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                    @foreach($errors->all() as $error)
-                        <div>{{ $error }}</div>
+        </div>
+    </section>
+
+    @if($plan->faq_1_question || $plan->faq_2_question || $plan->faq_3_question)
+        <section class="border-y border-slate-200/70 bg-white py-16 md:py-20">
+            <div class="container mx-auto grid grid-cols-1 gap-10 px-5 sm:px-6 lg:grid-cols-12 lg:px-8">
+                <div class="lg:col-span-4">
+                    <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Helpful information</p>
+                    <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Common questions</h2>
+                    <p class="mt-4 text-base leading-7 text-slate-500">Answers recorded for this membership plan.</p>
+                </div>
+                <div class="space-y-4 lg:col-span-8">
+                    @foreach([1, 2, 3] as $faqNumber)
+                        @php
+                            $question = $plan->{'faq_' . $faqNumber . '_question'};
+                            $answer = $plan->{'faq_' . $faqNumber . '_answer'};
+                        @endphp
+                        @if($question)
+                            <details class="group overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70">
+                                <summary class="flex cursor-pointer list-none items-center justify-between gap-5 p-5 font-bold text-slate-900 transition hover:bg-slate-100/70 md:p-6">
+                                    {{ $question }}
+                                    <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-white text-sky-600 shadow-sm">
+                                        <i class="fa-solid fa-plus text-xs transition-transform group-open:rotate-45" aria-hidden="true"></i>
+                                    </span>
+                                </summary>
+                                <div class="border-t border-slate-200 px-5 py-5 text-sm leading-7 text-slate-600 md:px-6">{{ $answer }}</div>
+                            </details>
+                        @endif
                     @endforeach
                 </div>
-            @endif
+            </div>
+        </section>
+    @endif
 
-            <form method="POST" action="{{ route('membership-booking.submit', ['slug' => $plan->slug ?: $plan->id]) }}">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    @if($relatedPlans->isNotEmpty())
+        <section class="py-16 md:py-20">
+            <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+                <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Patient Name</label>
-                        <input type="text" name="patient_name" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Patient Name" value="{{ old('patient_name', $patient->name ?? '') }}" required>
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Keep exploring</p>
+                        <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Related membership plans</h2>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number</label>
-                        <input type="text" name="phone" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" required>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
-                        <input type="email" name="email" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Date Of Birth</label>
-                        <input type="date" name="dob" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Preferred Start Date (Optional)</label>
-                        <input type="date" name="preferred_start_date" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" min="{{ date('Y-m-d') }}" value="{{ old('preferred_start_date') }}">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Notes (Optional)</label>
-                        <textarea name="notes" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" rows="3" placeholder="Notes (optional)">{{ old('notes') }}</textarea>
-                    </div>
+                    <a href="{{ route('membership') }}" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 transition hover:text-sky-900">
+                        View all plans
+                        <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                    </a>
                 </div>
 
-                <div class="text-right">
-                    <button type="submit" class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-2xl font-black uppercase tracking-widest text-sm transition-all">
-                        Submit Plan Booking
-                    </button>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach($relatedPlans as $related)
+                        @php
+                            $relatedUrl = route('membership-details', ['id' => $related->slug ?: $related->id]);
+                            $relatedImage = !empty($related->image) ? asset($related->image) : asset('assets/front/images/services/con7.jpeg');
+                        @endphp
+                        <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-slate-900/10">
+                            <a href="{{ $relatedUrl }}" class="relative block aspect-[16/9] overflow-hidden bg-slate-100" aria-label="View {{ $related->name }}">
+                                <img src="{{ $relatedImage }}" alt="{{ $related->name }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]">
+                                @if(!empty($related->duration))
+                                    <span class="absolute bottom-4 right-4 rounded-lg border border-white/20 bg-slate-950/65 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">{{ $related->duration }}</span>
+                                @endif
+                            </a>
+                            <div class="flex flex-1 flex-col p-6">
+                                <h3 class="text-lg font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-sky-700">
+                                    <a href="{{ $relatedUrl }}">{{ $related->name }}</a>
+                                </h3>
+                                <p class="mt-2 text-sm leading-6 text-slate-500">{{ $related->subtitle ?: 'Membership Plan' }}</p>
+                                <p class="mt-5 text-2xl font-black tracking-tight text-sky-700">{{ formated_price($related->price) }}</p>
+                                <a href="{{ $relatedUrl }}" class="mt-6 flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-600">
+                                    Explore plan
+                                    <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10"><i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i></span>
+                                </a>
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
-            </form>
-        </div>
-    </div>
-</section>
-
-<section class="py-16 bg-white">
-    <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div class="bg-green-50 rounded-2xl p-8">
-                <h3 class="text-lg font-bold text-green-700 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-check"></i>
-                    What's Included
-                </h3>
-                <ul class="space-y-3">
-                    @forelse($inclusions as $item)
-                    <li class="flex items-start gap-3 text-gray-700">
-                        <i class="fa-solid fa-circle-check text-green-500 mt-1"></i>
-                        <span>{{ $item }}</span>
-                    </li>
-                    @empty
-                    <li class="text-gray-500">No inclusion details provided.</li>
-                    @endforelse
-                </ul>
             </div>
-
-            <div class="bg-red-50 rounded-2xl p-8">
-                <h3 class="text-lg font-bold text-red-700 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-xmark"></i>
-                    What's Not Covered
-                </h3>
-                <ul class="space-y-3">
-                    @forelse($exclusions as $item)
-                    <li class="flex items-start gap-3 text-gray-700">
-                        <i class="fa-solid fa-circle-xmark text-red-500 mt-1"></i>
-                        <span>{{ $item }}</span>
-                    </li>
-                    @empty
-                    <li class="text-gray-500">No exclusion details provided.</li>
-                    @endforelse
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-6 max-w-4xl">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">Frequently Asked Questions</h2>
-
-        <div class="space-y-4">
-            @if($plan->faq_1_question)
-            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                <details class="group">
-                    <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-gray-50 transition">
-                        <span class="font-semibold text-gray-900">{{ $plan->faq_1_question }}</span>
-                        <i class="fa-solid fa-chevron-down text-imperial-primary transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <div class="px-5 pb-5 text-gray-600 leading-relaxed"><p>{{ $plan->faq_1_answer }}</p></div>
-                </details>
-            </div>
-            @endif
-            @if($plan->faq_2_question)
-            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                <details class="group">
-                    <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-gray-50 transition">
-                        <span class="font-semibold text-gray-900">{{ $plan->faq_2_question }}</span>
-                        <i class="fa-solid fa-chevron-down text-imperial-primary transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <div class="px-5 pb-5 text-gray-600 leading-relaxed"><p>{{ $plan->faq_2_answer }}</p></div>
-                </details>
-            </div>
-            @endif
-            @if($plan->faq_3_question)
-            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                <details class="group">
-                    <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-gray-50 transition">
-                        <span class="font-semibold text-gray-900">{{ $plan->faq_3_question }}</span>
-                        <i class="fa-solid fa-chevron-down text-imperial-primary transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <div class="px-5 pb-5 text-gray-600 leading-relaxed"><p>{{ $plan->faq_3_answer }}</p></div>
-                </details>
-            </div>
-            @endif
-        </div>
-    </div>
-</section>
-
-@if($relatedPlans->count())
-<section class="py-16 bg-white">
-    <div class="container mx-auto px-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Plans</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach($relatedPlans as $related)
-            <article class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
-                <a href="{{ route('membership-details', ['id' => $related->slug ?: $related->id]) }}" class="block h-44 overflow-hidden">
-                    <img src="{{ !empty($related->image) ? asset($related->image) : asset('assets/front/images/services/con7.jpeg') }}" alt="{{ $related->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                </a>
-                <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="font-bold text-gray-900 mb-1">{{ $related->name }}</h3>
-                    <p class="text-gray-500 text-xs mb-3">{{ $related->subtitle ?: 'Membership Plan' }}</p>
-                    <div class="mb-3">
-                        <span class="text-xl font-bold text-imperial-primary">{{ formated_price($related->price) }}</span>
-                    </div>
-                    <div class="mt-auto">
-                        <a href="{{ route('membership-details', ['id' => $related->slug ?: $related->id]) }}" class="block w-full bg-imperial-primary hover:bg-imperial-dark text-white text-center py-2.5 rounded-lg font-medium transition">View Details</a>
-                    </div>
-                </div>
-            </article>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
+        </section>
+    @endif
+</main>
 @endsection

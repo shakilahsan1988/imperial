@@ -72,7 +72,7 @@
             <!-- Block 2 -->
             <div class="flex flex-col md:flex-row-reverse items-center gap-16 mb-24 reveal">
                 <div class="md:w-1/2">
-                    <div class="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-6">{{ $pageSettings['block_2_badge'] ?? 'Advanced Diagnostics' }}</div>
+                    <div class="inline-block px-4 py-1.5 bg-sky-50 text-sky-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-6">{{ $pageSettings['block_2_badge'] ?? 'Advanced Diagnostics' }}</div>
                     <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">{{ $pageSettings['block_2_title'] ?? 'Reliable Testing with Modern Technology' }}</h2>
                     <p class="text-lg text-slate-600 leading-relaxed mb-8">{{ $pageSettings['block_2_description'] ?? 'Our laboratories and diagnostics workflow are designed for consistency, speed, and clinical accuracy, helping doctors and patients make timely decisions with confidence.' }}</p>
                     <a href="{{ $pageSettings['block_2_button_url'] ?? '/lab-test' }}" class="btn-primary text-white px-8 py-4 rounded-2xl font-bold inline-block shadow-xl shadow-indigo-200">{{ $pageSettings['block_2_button_text'] ?? 'View Lab Tests' }}</a>

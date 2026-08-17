@@ -63,7 +63,7 @@
                             </div>
                             <div class="flex justify-between text-slate-500 font-medium pb-4 border-bottom border-slate-50">
                                 <span>Processing Fee</span>
-                                <span class="text-emerald-600 font-bold">FREE</span>
+                                <span class="text-sky-600 font-bold">FREE</span>
                             </div>
                             <div class="flex justify-between items-center pt-4 border-t-2 border-slate-50">
                                 <span class="text-lg font-bold text-slate-900">Total Amount</span>

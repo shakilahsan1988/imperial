@@ -185,6 +185,10 @@ if (! function_exists('home_page_settings')) {
     function home_page_settings()
     {
         $defaults = [
+            'seo' => [
+                'page_title' => 'Imperial Health - World Class Healthcare in Bangladesh',
+                'meta_description' => 'Imperial Health brings consultations, diagnostics, preventive care, and digital health services together for patients and families in Dhaka.',
+            ],
             'hero' => [
                 'slides' => [
                     [
@@ -229,6 +233,14 @@ if (! function_exists('home_page_settings')) {
                     ],
                 ],
             ],
+            'branches' => [
+                'badge' => 'Our Branches',
+                'title_html' => 'Care Closer to <span class="text-indigo-600">You</span>',
+                'description' => 'Explore our two Dhaka branches, see each facility in full, and find the location that works best for your visit.',
+                'card_badge' => 'Imperial Location',
+                'details_button_text' => 'Explore Branch',
+                'map_button_text' => 'Open Map',
+            ],
             'about' => [
                 'badge' => 'About Imperial',
                 'title_html' => 'Redefining the <span class="text-indigo-600">Patient Experience</span>',
@@ -264,7 +276,7 @@ if (! function_exists('home_page_settings')) {
             ],
             'lab_excellence' => [
                 'badge' => 'Lab Excellence',
-                'title_html' => 'Diagnostics You Can <span class="text-emerald-600">Trust</span>',
+                'title_html' => 'Diagnostics You Can <span class="text-indigo-600">Trust</span>',
                 'description' => 'Accuracy is our top priority. Our lab team follows careful quality-control procedures at every step, from sample collection to reporting, so you can trust every result.',
                 'feature_1' => 'Quality-Checked',
                 'feature_2' => 'Trained Technicians',
@@ -335,6 +347,16 @@ if (! function_exists('home_page_settings')) {
             $merged['sections_order'] = $saved['sections_order'];
         }
 
+        // Normalize older saved homepage content that used Tailwind's
+        // emerald-600 accent instead of Imperial's primary brand color.
+        if (isset($merged['lab_excellence']['title_html'])) {
+            $merged['lab_excellence']['title_html'] = str_replace(
+                'text-emerald-600',
+                'text-indigo-600',
+                $merged['lab_excellence']['title_html']
+            );
+        }
+
         return $merged;
     }
 }
@@ -346,7 +368,7 @@ if (! function_exists('diagonostic_page_settings')) {
             'page_name' => 'Diagnostics & Lab Tests',
             'hero_title_html' => 'Precision <span class="text-indigo-400">Diagnostics</span> for Better Health',
             'hero_description' => 'Experience world-class laboratory services with international quality standards and 99.9% accuracy in results.',
-            'hero_image' => 'assets/front/images/index/diagnosis.jpg',
+            'hero_image' => 'uploads/branches/banglamotor-branch.jpg',
             'feature_1_title' => 'Quality Assured',
             'feature_1_desc' => 'International standards & ISO protocols.',
             'feature_2_title' => 'Rapid Turnaround',
@@ -378,7 +400,7 @@ if (! function_exists('health_check_page_settings')) {
             'page_name' => 'Health Check',
             'hero_title_html' => 'Invest in Your <span class="text-indigo-400">Future Health</span> Today',
             'hero_description' => 'Comprehensive health screenings designed to detect risks early and provide you with a roadmap to long-term wellness.',
-            'hero_image' => 'assets/front/images/services/services-facility.jpg',
+            'hero_image' => 'uploads/branches/hatirpool-branch.jpg',
             'feature_1_title' => 'Expert Analysis',
             'feature_1_desc' => 'Consultations with top clinical specialists.',
             'feature_2_title' => 'Affordable Care',
@@ -423,7 +445,7 @@ if (! function_exists('membership_page_settings')) {
             'page_name' => 'Membership',
             'hero_title_html' => 'Membership <span class="text-indigo-400">Plans</span>',
             'hero_description' => 'Comprehensive healthcare solutions for you and your family.',
-            'hero_image' => 'assets/front/images/services/con5.jpg',
+            'hero_image' => 'uploads/branches/banglamotor-branch.jpg',
         ]);
     }
 }
@@ -435,11 +457,11 @@ if (! function_exists('video_consultation_page_settings')) {
             'page_name' => 'Video Consultation',
             'hero_title_html' => 'Video <span class="text-indigo-400">Consultation</span>',
             'hero_description' => 'Consult our doctors from the comfort of your home.',
-            'hero_image' => 'assets/front/images/services/consult.jpg',
+            'hero_image' => 'uploads/branches/hatirpool-branch.jpg',
             'plans_section_title' => 'Affordable Video Consultation Packages',
             'plans_section_description' => 'Choose a flexible plan for regular online doctor consultations for you and your family.',
             'plans_empty_text' => 'No video consultation packages available now.',
-            'why_title' => 'Why choose Imperial Anywhere Plan?',
+            'why_title' => 'Why choose Imperial CareConnect?',
             'why_image' => 'assets/front/images/services/con4.jpg',
             'why_item_1' => 'Access to experienced, internationally trained doctors',
             'why_item_2' => 'Secure access through our own consultation platform',
@@ -465,7 +487,7 @@ if (! function_exists('about_page_settings')) {
             'page_name' => 'About Us',
             'hero_title_html' => 'Welcome to <span class="text-indigo-400">Imperial Private Health Care</span>',
             'hero_description' => 'Welcome to Imperial private health care ltd, where precision meets care, and health mysteries find solutions. We are a state-of-the-art diagnostic facility committed to providing unparalleled insights into your well-being.',
-            'hero_image' => 'assets/front/images/about/reception.jpg',
+            'hero_image' => 'uploads/branches/banglamotor-branch.jpg',
             'intro_title' => 'Our Vision',
             'intro_description' => 'Empowering individuals to take control of their health through accurate and timely diagnostics, Imperial private health care ltd envisions a future where every person has access to the information they need to make informed decisions about their well-being.',
             'intro_image' => 'assets/front/images/index/lab-directory.jpg',
@@ -490,7 +512,7 @@ if (! function_exists('services_page_settings')) {
             'page_name' => 'Our Services',
             'hero_title_html' => 'Comprehensive <span class="text-indigo-400">Healthcare</span> Solutions',
             'hero_description' => 'From primary consultations to advanced diagnostics, we provide all your outpatient needs under one professional roof.',
-            'hero_image' => 'assets/front/images/services/services.jpg',
+            'hero_image' => 'uploads/branches/hatirpool-branch.jpg',
             'section_badge' => 'Patient-Centered Care',
             'section_title' => 'Integrated Services for Everyday Health Needs',
             'section_description' => 'We combine consultation, diagnostics, preventive screening, and digital follow-up to ensure every patient receives complete and coordinated care.',
@@ -520,7 +542,7 @@ if (! function_exists('doctors_page_settings')) {
             'page_name' => 'Our Doctors',
             'hero_title_html' => 'Expert Care from <span class="text-indigo-400 whitespace-nowrap">World-Class</span> Specialists',
             'hero_description' => 'Connect with experienced specialists dedicated to personalized care.',
-            'hero_image' => 'assets/front/images/doctor/1.jpg',
+            'hero_image' => 'uploads/branches/banglamotor-branch.jpg',
         ]);
     }
 }
@@ -532,7 +554,7 @@ if (! function_exists('gallery_page_settings')) {
             'page_name' => 'Gallery',
             'hero_title_html' => 'Our <span class="text-indigo-400">Gallery</span>',
             'hero_description' => 'Explore moments from our hospital, events, and healthcare services.',
-            'hero_image' => 'assets/front/images/index/tour.jpg',
+            'hero_image' => 'uploads/branches/hatirpool-branch.jpg',
         ]);
     }
 }
@@ -544,7 +566,7 @@ if (! function_exists('mission_vision_page_settings')) {
             'page_name' => 'Mission & Vision',
             'hero_title_html' => 'Our <span class="text-indigo-400">Mission, Vision</span> & Values',
             'hero_description' => 'What we aim for, and how we try to get there every day.',
-            'hero_image' => 'assets/front/images/about/1.jpg',
+            'hero_image' => 'uploads/branches/banglamotor-branch.jpg',
         ]);
     }
 }
@@ -556,7 +578,7 @@ if (! function_exists('management_page_settings')) {
             'page_name' => 'Management',
             'hero_title_html' => 'Our <span class="text-indigo-400">Management</span> Team',
             'hero_description' => 'Meet the leadership driving patient-centered innovation.',
-            'hero_image' => 'assets/front/images/index/tour.jpg',
+            'hero_image' => 'uploads/branches/hatirpool-branch.jpg',
         ]);
     }
 }
@@ -568,7 +590,7 @@ if (! function_exists('contact_page_settings')) {
             'page_name' => 'Contact',
             'hero_title_html' => "We're Here to <span class=\"text-indigo-400\">Help</span> You",
             'hero_description' => 'Reach out for services, booking support, or feedback.',
-            'hero_image' => 'assets/front/images/about/reception.jpg',
+            'hero_image' => 'uploads/branches/banglamotor-branch.jpg',
         ]);
     }
 }
@@ -580,7 +602,7 @@ if (! function_exists('blog_page_settings')) {
             'page_name' => 'Blog',
             'hero_title_html' => 'Health <span class="text-indigo-400">Insights</span> & Stories',
             'hero_description' => 'Read expert perspectives, wellness tips, and updates from Imperial Health.',
-            'hero_image' => 'assets/front/images/services/services.jpg',
+            'hero_image' => 'uploads/branches/hatirpool-branch.jpg',
             'founder_badge' => 'Our Story',
             'founder_title' => 'Meet Our Founder & Chair of the Board',
             // Left blank on purpose: hidden until Imperial has a verified

@@ -1,240 +1,149 @@
-<!-- 
-    MODERN PREMIUM HERO SLIDER
-    Features: Ken Burns Effect, Staggered Text Animations, Progress Bar Navigation
--->
-
-<style>
-    #hero-slider {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        height: 100dvh;
-        min-height: 480px;
-        max-height: 900px;
-        overflow: hidden;
-        background-color: #0f172a;
-    }
-
-    /* --- Background & Ken Burns Effect --- */
-    .slide-bg {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        transform: scale(1);
-        transition: transform 8s linear;
-        opacity: 0;
-        z-index: 1;
-    }
-
-    .slide.active .slide-bg {
-        opacity: 1;
-        transform: scale(1.15); /* Subtile Zoom In */
-    }
-
-    /* --- Advanced Overlay --- */
-    .slide-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to right, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 50%, transparent 100%);
-        z-index: 2;
-        opacity: 0;
-        transition: opacity 1s ease;
-    }
-
-    .slide.active .slide-overlay {
-        opacity: 1;
-    }
-
-    /* --- Content Animations --- */
-    .slide-content {
-        position: relative;
-        z-index: 10;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .slide.active .slide-content {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .animate-item {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-
-    .slide.active .animate-1 { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
-    .slide.active .animate-2 { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
-    .slide.active .animate-3 { transition-delay: 0.7s; opacity: 1; transform: translateY(0); }
-    .slide.active .animate-4 { transition-delay: 0.9s; opacity: 1; transform: translateY(0); }
-
-    /* --- Navigation: Progress Lines --- */
-    .nav-container {
-        position: absolute;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 20;
-        display: flex;
-        gap: 15px;
-    }
-
-    .progress-btn {
-        width: 60px;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 2px;
-        position: relative;
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 0%;
-        background: #ffffff;
-    }
-
-    .progress-btn.active .progress-fill {
-        width: 100%;
-        transition: width 6s linear; /* Matches auto-play duration */
-    }
-
-    /* --- Arrows --- */
-    .slider-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 30;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-    }
-
-    .slider-arrow:hover {
-        background: #007caa;
-        border-color: #007caa;
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    .arrow-left { left: 30px; }
-    .arrow-right { right: 30px; }
-
-    @media (max-width: 768px) {
-        #hero-slider {
-            height: 100vh;
-            height: 100svh;
-            min-height: 420px;
-            max-height: none;
-        }
-        .slider-arrow { display: none; }
-        .slide-overlay {
-            background: rgba(15, 23, 42, 0.7);
-        }
-        .slide-content { text-align: center; justify-content: center; }
-        .nav-container { bottom: 20px; }
-    }
-
-    @media (max-width: 480px) {
-        #hero-slider { min-height: 380px; }
-    }
-</style>
-
 @php
     $slides = $homeSettings['hero']['slides'] ?? [];
 @endphp
 
 @if(count($slides))
-<section id="hero-slider">
+<style>
+    #hero-slider {
+        position: relative;
+        isolation: isolate;
+        height: clamp(620px, calc(100svh - 120px), 780px);
+        min-height: 620px;
+        overflow: hidden;
+        background: #020617;
+    }
+    #hero-slider .home-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .8s ease, visibility .8s ease;
+    }
+    #hero-slider .home-slide.active { opacity: 1; visibility: visible; }
+    #hero-slider .home-slide-image {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+        transform: scale(1.02);
+        transition: transform 7s ease-out;
+    }
+    #hero-slider .home-slide.active .home-slide-image { transform: scale(1.075); }
+    #hero-slider .home-slide-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 15% 25%, rgba(14, 165, 233, .18), transparent 28%),
+            linear-gradient(90deg, rgba(2, 6, 23, .96) 0%, rgba(2, 6, 23, .84) 38%, rgba(2, 6, 23, .28) 72%, rgba(2, 6, 23, .14) 100%);
+    }
+    #hero-slider .home-slide-content { opacity: 0; transform: translateY(24px); transition: opacity .65s ease .2s, transform .65s ease .2s; }
+    #hero-slider .home-slide.active .home-slide-content { opacity: 1; transform: translateY(0); }
+    #hero-slider .home-progress-fill { width: 0; transition: none; }
+    #hero-slider .home-progress.active .home-progress-fill { width: 100%; transition: width 6s linear; }
+    @media (max-width: 767px) {
+        #hero-slider { height: 680px; min-height: 620px; }
+        #hero-slider .home-slide-overlay {
+            background: linear-gradient(180deg, rgba(2, 6, 23, .34) 0%, rgba(2, 6, 23, .88) 58%, rgba(2, 6, 23, .98) 100%);
+        }
+        #hero-slider .home-slide-image { object-position: 62% center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        #hero-slider .home-slide-image,
+        #hero-slider .home-slide-content,
+        #hero-slider .home-progress-fill { transition: none !important; transform: none !important; }
+    }
+</style>
+
+<section id="hero-slider" aria-label="Imperial Health highlights">
     @foreach($slides as $index => $slide)
-    <div class="slide {{ $index === 0 ? 'active' : '' }} h-full w-full absolute inset-0" data-index="{{ $index }}">
-        <img
-            src="{{ asset($slide['image'] ?? '') }}"
-            onerror="this.src='https://picsum.photos/seed/h{{ $index + 1 }}/1920/1080'"
-            class="slide-bg"
-        >
-        <div class="slide-overlay"></div>
-        <div class="container mx-auto px-6 slide-content">
-            <div class="max-w-2xl">
-                <span class="animate-item animate-1 inline-block text-indigo-400 font-black uppercase tracking-[0.15em] text-[22px] md:text-[36px] mb-4">{{ $slide['badge'] ?? '' }}</span>
-                <h1 class="animate-item animate-2 text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $slide['title_html'] ?? '' !!}</h1>
-                <p class="animate-item animate-3 text-lg md:text-xl text-slate-300 font-medium leading-relaxed mb-10">{{ $slide['description'] ?? '' }}</p>
-                <div class="animate-item animate-4">
-                    <a href="{{ $slide['button_url'] ?? '#' }}" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-600 hover:text-white transition-all shadow-xl active:scale-95 inline-block">{{ $slide['button_text'] ?? 'Learn More' }}</a>
+        <article class="home-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}" aria-hidden="{{ $index === 0 ? 'false' : 'true' }}">
+            <img
+                src="{{ asset($slide['image'] ?? 'assets/front/images/index/tour.jpg') }}"
+                onerror="this.onerror=null;this.src='{{ asset('assets/front/images/index/tour.jpg') }}';"
+                alt="{{ strip_tags($slide['badge'] ?? 'Imperial Health') }}"
+                class="home-slide-image"
+            >
+            <div class="home-slide-overlay"></div>
+            <div class="container relative z-10 mx-auto flex h-full items-center px-5 pb-24 pt-16 sm:px-6 md:px-8 md:pb-28">
+                <div class="home-slide-content max-w-3xl">
+                    @if(!empty($slide['badge']))
+                        <p class="mb-5 text-xs font-black uppercase tracking-[0.22em] text-sky-300 sm:text-sm">{{ $slide['badge'] }}</p>
+                    @endif
+                    <h1 class="max-w-3xl text-4xl font-black leading-[1.06] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+                        {!! $slide['title_html'] ?? '' !!}
+                    </h1>
+                    @if(!empty($slide['description']))
+                        <p class="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">{{ $slide['description'] }}</p>
+                    @endif
+                    @if(!empty($slide['button_text']))
+                        <a href="{{ $slide['button_url'] ?? '#' }}" class="mt-9 inline-flex items-center justify-center gap-3 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-slate-950/30 transition hover:-translate-y-0.5 hover:bg-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/30">
+                            {{ $slide['button_text'] }}
+                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                        </a>
+                    @endif
                 </div>
             </div>
-        </div>
-    </div>
+        </article>
     @endforeach
 
-    <div class="nav-container">
-        @foreach($slides as $index => $slide)
-        <div class="progress-btn {{ $index === 0 ? 'active' : '' }}" onclick="jumpToSlide({{ $index }})"><div class="progress-fill"></div></div>
-        @endforeach
+    <div class="absolute inset-x-0 bottom-7 z-30">
+        <div class="container mx-auto flex items-center justify-between gap-6 px-5 sm:px-6 md:px-8">
+            <div class="flex items-center gap-2" aria-label="Choose a hero slide">
+                @foreach($slides as $index => $slide)
+                    <button type="button" class="home-progress {{ $index === 0 ? 'active' : '' }} relative h-1 w-10 overflow-hidden rounded-full bg-white/20 sm:w-14" onclick="jumpToSlide({{ $index }})" aria-label="Show slide {{ $index + 1 }}">
+                        <span class="home-progress-fill absolute inset-y-0 left-0 rounded-full bg-sky-400"></span>
+                    </button>
+                @endforeach
+            </div>
+            @if(count($slides) > 1)
+                <div class="hidden items-center gap-2 sm:flex">
+                    <button type="button" onclick="moveSlide(-1)" class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white backdrop-blur transition hover:border-sky-400 hover:bg-sky-500" aria-label="Previous slide">
+                        <i class="fa-solid fa-chevron-left text-xs" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" onclick="moveSlide(1)" class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white backdrop-blur transition hover:border-sky-400 hover:bg-sky-500" aria-label="Next slide">
+                        <i class="fa-solid fa-chevron-right text-xs" aria-hidden="true"></i>
+                    </button>
+                </div>
+            @endif
+        </div>
     </div>
-
-    <div class="slider-arrow arrow-left" onclick="moveSlide(-1)">
-        <i class="fa-solid fa-chevron-left"></i>
-    </div>
-    <div class="slider-arrow arrow-right" onclick="moveSlide(1)">
-        <i class="fa-solid fa-chevron-right"></i>
-    </div>
-
 </section>
 
 <script>
     let currentSlideIndex = 0;
-    const allSlides = document.querySelectorAll('.slide');
-    const allProgressBtns = document.querySelectorAll('.progress-btn');
+    const allSlides = document.querySelectorAll('#hero-slider .home-slide');
+    const allProgressBtns = document.querySelectorAll('#hero-slider .home-progress');
     const slideCount = allSlides.length;
     let slideTimer;
 
     function showSlide(index) {
-        allSlides.forEach(s => s.classList.remove('active'));
-        allProgressBtns.forEach(b => b.classList.remove('active'));
+        if (!slideCount) return;
+
+        allSlides.forEach(slide => {
+            slide.classList.remove('active');
+            slide.setAttribute('aria-hidden', 'true');
+        });
+        allProgressBtns.forEach(button => button.classList.remove('active'));
 
         if (index >= slideCount) currentSlideIndex = 0;
         else if (index < 0) currentSlideIndex = slideCount - 1;
         else currentSlideIndex = index;
 
         allSlides[currentSlideIndex].classList.add('active');
-        allProgressBtns[currentSlideIndex].classList.add('active');
+        allSlides[currentSlideIndex].setAttribute('aria-hidden', 'false');
+        allProgressBtns[currentSlideIndex]?.classList.add('active');
 
-        clearTimeout(slideTimer);
-        if (slideCount > 1) {
-            slideTimer = setTimeout(() => showSlide(currentSlideIndex + 1), 6000);
+        window.clearTimeout(slideTimer);
+        if (slideCount > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            slideTimer = window.setTimeout(() => showSlide(currentSlideIndex + 1), 6000);
         }
     }
 
-    function moveSlide(step) {
-        showSlide(currentSlideIndex + step);
-    }
+    function moveSlide(step) { showSlide(currentSlideIndex + step); }
+    function jumpToSlide(index) { showSlide(index); }
 
-    function jumpToSlide(index) {
-        showSlide(index);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        showSlide(0);
-    });
+    document.addEventListener('DOMContentLoaded', () => showSlide(0));
 </script>
 @endif

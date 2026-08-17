@@ -71,6 +71,24 @@ Home Settings
 
             <hr>
 
+            <h5>Homepage SEO</h5>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Browser / Search Title</label>
+                        <input type="text" name="seo[page_title]" class="form-control" value="{{ old('seo.page_title', $homeSettings['seo']['page_title']) }}" required>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label>Meta Description</label>
+                        <textarea name="seo[meta_description]" class="form-control" rows="2" required>{{ old('seo.meta_description', $homeSettings['seo']['meta_description']) }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
             <h5>Hero Section (Dynamic Slider)</h5>
             <p class="text-muted">Add/remove slides. If no slides exist, hero section will not render on homepage.</p>
             <div id="hero-slides-wrapper">
@@ -130,6 +148,48 @@ Home Settings
             <button type="button" class="btn btn-outline-primary mb-4" id="add-slide-btn">
                 <i class="fa fa-plus"></i> Add Slide
             </button>
+
+            <hr>
+            <h5>Branches Section</h5>
+            <p class="text-muted">Edit this section here. Branch names, addresses, images, maps, and descriptions are managed from the Branches module.</p>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Badge</label>
+                        <input type="text" name="branches[badge]" class="form-control" value="{{ old('branches.badge', $homeSettings['branches']['badge']) }}" required>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label>Title (HTML allowed)</label>
+                        <textarea name="branches[title_html]" class="form-control" rows="2" required>{{ old('branches.title_html', $homeSettings['branches']['title_html']) }}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="branches[description]" class="form-control" rows="3" required>{{ old('branches.description', $homeSettings['branches']['description']) }}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Card Badge</label>
+                        <input type="text" name="branches[card_badge]" class="form-control" value="{{ old('branches.card_badge', $homeSettings['branches']['card_badge']) }}" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Details Button</label>
+                        <input type="text" name="branches[details_button_text]" class="form-control" value="{{ old('branches.details_button_text', $homeSettings['branches']['details_button_text']) }}" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Map Button</label>
+                        <input type="text" name="branches[map_button_text]" class="form-control" value="{{ old('branches.map_button_text', $homeSettings['branches']['map_button_text']) }}" required>
+                    </div>
+                </div>
+            </div>
 
             <hr>
             <h5>About + Stats</h5>

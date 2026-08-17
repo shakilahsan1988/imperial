@@ -110,8 +110,8 @@ class DoctorDataSyncService
                         'branch_id' => null,
                         'name' => $doctorName,
                         'slug' => Str::slug($doctorName) . '-' . Str::lower(Str::random(6)),
-                        'phone' => $this->resolvePhoneForDoctor($created),
-                        'email' => 'doctor@iphcbd.com',
+                        'phone' => config('doctor_sync.shared_contacts.phone'),
+                        'email' => config('doctor_sync.shared_contacts.email'),
                         'commission' => 0,
                         'consultation_fee' => 0,
                         'video_consultation_fee' => null,
@@ -535,8 +535,4 @@ class DoctorDataSyncService
         return $this->resolveDoctorImageSource($imageDir, array_filter([$doctorName, $alternateName])) !== null;
     }
 
-    protected function resolvePhoneForDoctor(int $index): string
-    {
-        return $index % 2 === 0 ? '01332556541' : '01335100543';
-    }
 }

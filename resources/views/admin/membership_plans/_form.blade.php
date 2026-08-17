@@ -76,7 +76,7 @@
             <input type="hidden" name="existing_image" value="{{ old('existing_image', $plan->image ?? '') }}">
             <input type="file" name="image" class="form-control-file" accept="image/*">
             @if(!empty($plan->image))
-                <img src="{{ asset($plan->image) }}" class="img-thumbnail mt-2" style="max-height:90px;">
+                <img src="{{ asset($plan->image) }}" alt="{{ $plan->name ?? 'Membership plan image' }}" class="img-thumbnail mt-2" style="max-height:90px;">
             @endif
         </div>
     </div>

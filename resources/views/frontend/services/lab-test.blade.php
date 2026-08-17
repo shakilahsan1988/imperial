@@ -127,7 +127,7 @@
                             </td>
                             <td class="px-8 py-6 text-center">
                                 @if($s->home_visit_available)
-                                    <span class="text-emerald-600 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
+                                    <span class="text-sky-600 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
                                         <i class="fa-solid fa-circle-check"></i> Yes
                                     </span>
                                     @if($s->home_visit_price > 0)

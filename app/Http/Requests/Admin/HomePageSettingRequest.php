@@ -14,6 +14,9 @@ class HomePageSettingRequest extends FormRequest
     public function rules()
     {
         return [
+            'seo.page_title' => 'required|string|max:255',
+            'seo.meta_description' => 'required|string|max:1000',
+
             'hero_badge' => 'nullable|array',
             'hero_badge.*' => 'nullable|string|max:120',
             'hero_title_html' => 'nullable|array',
@@ -28,6 +31,13 @@ class HomePageSettingRequest extends FormRequest
             'hero_existing_image.*' => 'nullable|string|max:255',
             'hero_image' => 'nullable|array',
             'hero_image.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+
+            'branches.badge' => 'required|string|max:120',
+            'branches.title_html' => 'required|string|max:1000',
+            'branches.description' => 'required|string|max:1000',
+            'branches.card_badge' => 'required|string|max:120',
+            'branches.details_button_text' => 'required|string|max:120',
+            'branches.map_button_text' => 'required|string|max:120',
 
             'about.badge' => 'required|string|max:120',
             'about.title_html' => 'required|string|max:1000',

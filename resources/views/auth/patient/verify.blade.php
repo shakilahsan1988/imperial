@@ -7,7 +7,7 @@
     <div class="max-w-md w-full bg-white rounded-[40px] shadow-2xl border border-slate-100 overflow-hidden">
         <div class="p-10 md:p-14">
             <div class="text-center mb-10">
-                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div class="w-16 h-16 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <i class="fa-solid fa-user-shield text-2xl"></i>
                 </div>
                 <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">{{__('Verify Identity')}}</h1>

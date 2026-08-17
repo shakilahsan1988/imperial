@@ -75,10 +75,12 @@
 	
 					@yield('content')
 
-					<div class="container-login100-form-btn">
-						
-						@include('partials.socials')
-					</div>
+					@hasSection('hide_auth_support')
+					@else
+						<div class="container-login100-form-btn">
+							@include('partials.socials')
+						</div>
+					@endif
 
 				</div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', ($package->page_name ?: 'Package Details') . ' - Imperial Health Bangladesh')
+@section('title', $package->name . ' - Imperial Health Bangladesh')
 @section('meta_description', meta_excerpt($package->subtitle ?: $package->description ?? ''))
 @section('og_image', $package->image ? asset($package->image) : asset('assets/front/images/services/services-facility.jpg'))
 
@@ -13,181 +13,248 @@
 
 @section('content')
 
-    <main class="bg-white font-sans overflow-hidden">
-        <section class="relative py-20 md:py-32 bg-[#1E293B] overflow-hidden">
-            <div class="absolute inset-0 opacity-20">
-                <img src="{{ asset($package->image ?: 'assets/front/images/services/services-facility.jpg') }}" class="w-full h-full object-cover">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
+    @php
+        $packageImage = asset($package->image ?: 'assets/front/images/services/services-facility.jpg');
+        $inclusions = collect(preg_split('/\r\n|\r|\n/', (string) $package->inclusions))->filter()->values();
+        $preparationSteps = collect(preg_split('/\r\n|\r|\n/', (string) $package->preparation_steps))->filter()->values();
+        $patient = auth()->guard('patient')->user();
+    @endphp
 
-            <div class="container mx-auto px-4 relative z-10">
-                <div class="max-w-3xl">
-                    <span class="inline-block px-4 py-1.5 bg-indigo-500/20 text-indigo-300 text-[10px] font-black uppercase tracking-widest rounded-full mb-6">{{ $package->badge_text ?: 'Comprehensive Screening' }}</span>
-                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                        {{ $package->page_name }}
+    <main class="bg-white font-sans text-slate-900">
+        <section class="relative overflow-hidden bg-slate-950 py-16 md:py-24">
+            <div class="absolute inset-0 opacity-70" style="background: radial-gradient(circle at 85% 15%, rgba(14, 165, 233, .22), transparent 32%), radial-gradient(circle at 10% 100%, rgba(2, 132, 199, .16), transparent 30%);"></div>
+            <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent"></div>
+
+            <div class="container relative z-10 mx-auto px-4">
+                <nav class="mb-8 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-400" aria-label="Breadcrumb">
+                    <a href="{{ route('health-check') }}" class="transition-colors hover:text-sky-300">Health Check</a>
+                    <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
+                    <span class="text-sky-300">Package Details</span>
+                </nav>
+
+                <div class="max-w-4xl">
+                    <div class="mb-6 flex flex-wrap items-center gap-3">
+                        <span class="rounded-full border border-sky-400/25 bg-sky-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-sky-300">
+                            {{ $package->badge_text ?: 'Comprehensive Screening' }}
+                        </span>
+                        @if($package->recommended)
+                            <span class="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300">Recommended</span>
+                        @endif
+                    </div>
+
+                    <h1 class="max-w-4xl text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+                        {{ $package->name }}
                     </h1>
-                    <p class="text-xl text-slate-300 font-light leading-relaxed max-w-2xl">
-                        {{ $package->subtitle ?: 'Deep dive into our specialized health package designed to give you a complete picture of your wellness.' }}
+                    <p class="mt-6 max-w-3xl text-base leading-8 text-slate-300 md:text-lg">
+                        {{ $package->subtitle ?: 'A comprehensive health screening designed to provide a clear and reliable view of your wellbeing.' }}
                     </p>
                 </div>
             </div>
         </section>
 
-        <section class="py-24">
+        <section class="bg-slate-50 py-12 md:py-20">
             <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-                    <div class="lg:col-span-5 relative">
-                        <div class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
-                        <img src="{{ asset($package->image ?: 'assets/front/images/services/services-facility.jpg') }}" class="rounded-[40px] shadow-2xl relative z-10 w-full object-cover aspect-[4/5]">
-                        @if($package->recommended)
-                        <div class="absolute top-8 right-8 z-20">
-                            <span class="bg-white/90 backdrop-blur-md text-indigo-600 text-[11px] font-bold px-4 py-2 rounded-2xl shadow-xl uppercase tracking-wide border border-white">Recommended</span>
+                <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+                    <div class="lg:col-span-7">
+                        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
+                            <img src="{{ $packageImage }}"
+                                 alt="{{ $package->name }}"
+                                 class="block h-auto w-full rounded-2xl"
+                                 width="1653"
+                                 height="952">
                         </div>
-                        @endif
+                        <div class="mt-5 flex items-start gap-3 rounded-2xl border border-sky-100 bg-sky-50/70 px-5 py-4 text-sm leading-6 text-slate-600">
+                            <i class="fa-solid fa-circle-info mt-1 text-sky-600" aria-hidden="true"></i>
+                            <p>Review the package information and preparation guidance below. Our team will confirm your preferred appointment date after submission.</p>
+                        </div>
                     </div>
 
-                    <div class="lg:col-span-7 space-y-8">
-                        <div>
-                            <div class="flex items-center gap-3 mb-6">
-                                <span class="bg-indigo-50 text-indigo-600 text-[11px] font-bold px-3 py-1 rounded-lg uppercase tracking-tight">{{ $package->category->name ?? 'Health Package' }}</span>
-                                @if($package->immediate_availability)
-                                <span class="bg-indigo-50 text-indigo-600 text-[11px] font-bold px-3 py-1 rounded-lg uppercase tracking-tight">Immediate Availability</span>
-                                @endif
-                            </div>
-                            <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">{{ $package->name }}</h2>
-
-                            <div class="flex items-baseline gap-4 mb-8">
-                                <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ formated_price($package->price) }}</span>
-                                @if($package->old_price)
-                                <span class="text-xl text-slate-400 line-through">{{ formated_price($package->old_price) }}</span>
-                                @endif
-                                @if($package->discount_text)
-                                <span class="bg-rose-50 text-rose-600 text-[11px] font-bold px-3 py-1.5 rounded-lg uppercase">{{ $package->discount_text }}</span>
-                                @endif
-                            </div>
-
-                            <p class="text-lg text-slate-600 leading-relaxed font-medium mb-10">{{ $package->description }}</p>
+                    <aside class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8 lg:col-span-5" aria-label="Package overview">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="rounded-full bg-sky-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-sky-700">
+                                {{ $package->category->name ?? 'Health Package' }}
+                            </span>
+                            @if($package->immediate_availability)
+                                <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-700">Immediate Availability</span>
+                            @endif
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-                            <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center text-center group hover:bg-white hover:shadow-xl transition-all">
-                                <i class="fa-solid fa-clock-rotate-left text-indigo-500 text-xl mb-3"></i>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Duration</p>
-                                <p class="text-sm font-bold text-slate-900">{{ $package->duration ?: '-' }}</p>
+                        <p class="mt-7 text-xs font-black uppercase tracking-[0.16em] text-slate-400">Package price</p>
+                        <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+                            <span class="text-4xl font-extrabold tracking-tight text-slate-950">{{ formated_price($package->price) }}</span>
+                            @if($package->old_price)
+                                <span class="text-lg font-semibold text-slate-400 line-through">{{ formated_price($package->old_price) }}</span>
+                            @endif
+                            @if($package->discount_text)
+                                <span class="rounded-full bg-rose-50 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-rose-600">{{ $package->discount_text }}</span>
+                            @endif
+                        </div>
+
+                        <p class="mt-6 border-b border-slate-100 pb-7 text-base leading-7 text-slate-600">{{ $package->description }}</p>
+
+                        <dl class="divide-y divide-slate-100">
+                            <div class="flex items-center justify-between gap-4 py-4">
+                                <dt class="flex items-center gap-3 text-sm font-semibold text-slate-500">
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></span>
+                                    Duration
+                                </dt>
+                                <dd class="text-right text-sm font-bold text-slate-900">{{ $package->duration ?: 'Contact us' }}</dd>
                             </div>
-                            <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center text-center group hover:bg-white hover:shadow-xl transition-all">
-                                <i class="fa-solid fa-file-shield text-indigo-500 text-xl mb-3"></i>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Turnaround</p>
-                                <p class="text-sm font-bold text-slate-900">{{ $package->turnaround ?: '-' }}</p>
+                            <div class="flex items-center justify-between gap-4 py-4">
+                                <dt class="flex items-center gap-3 text-sm font-semibold text-slate-500">
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-file-shield" aria-hidden="true"></i></span>
+                                    Report turnaround
+                                </dt>
+                                <dd class="text-right text-sm font-bold text-slate-900">{{ $package->turnaround ?: 'Contact us' }}</dd>
                             </div>
-                            <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center text-center group hover:bg-white hover:shadow-xl transition-all">
-                                <i class="fa-solid fa-mug-hot text-indigo-500 text-xl mb-3"></i>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fasting</p>
-                                <p class="text-sm font-bold text-slate-900">{{ $package->fasting ?: '-' }}</p>
+                            <div class="flex items-center justify-between gap-4 py-4">
+                                <dt class="flex items-center gap-3 text-sm font-semibold text-slate-500">
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-mug-hot" aria-hidden="true"></i></span>
+                                    Fasting requirement
+                                </dt>
+                                <dd class="text-right text-sm font-bold text-slate-900">{{ $package->fasting ?: 'Not specified' }}</dd>
+                            </div>
+                        </dl>
+
+                        <a href="#book-package" class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-sky-600/20 transition hover:bg-sky-700">
+                            Book This Package
+                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                        </a>
+                        <p class="mt-4 text-center text-xs leading-5 text-slate-400">Submitting a request does not require online payment.</p>
+                    </aside>
+                </div>
+
+                <div id="book-package" class="scroll-mt-24 mt-12 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                    <div class="grid grid-cols-1 lg:grid-cols-12">
+                        <div class="bg-slate-950 p-7 text-white md:p-10 lg:col-span-4">
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-500/15 text-xl text-sky-300">
+                                <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+                            </span>
+                            <h2 class="mt-6 text-2xl font-extrabold tracking-tight md:text-3xl">Request an appointment</h2>
+                            <p class="mt-4 text-sm leading-7 text-slate-300">Share your details and preferred date. Our care team will contact you to confirm availability and guide you through the next steps.</p>
+                            <div class="mt-8 space-y-4 text-sm text-slate-300">
+                                <p class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400" aria-hidden="true"></i> Secure booking request</p>
+                                <p class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400" aria-hidden="true"></i> Confirmation from our care team</p>
+                                <p class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400" aria-hidden="true"></i> No advance online payment</p>
                             </div>
                         </div>
 
-                        <form action="{{ route('package-booking.submit', ['slug' => $package->slug]) }}" method="POST" class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                        <form action="{{ route('package-booking.submit', ['slug' => $package->slug]) }}" method="POST" class="p-7 md:p-10 lg:col-span-8">
                             @csrf
-                            <h4 class="font-bold text-slate-800 mb-4">Book This Package</h4>
-                            @php($patient = auth()->guard('patient')->user())
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            @if($errors->any())
+                                <div class="mb-6 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700" role="alert">
+                                    Please review the highlighted fields and try again.
+                                </div>
+                            @endif
+
+                            <div class="grid grid-cols-1 gap-x-5 gap-y-5 md:grid-cols-2">
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Patient Name</label>
-                                    <input type="text" name="patient_name" class="form-control" placeholder="Your Name" value="{{ old('patient_name', $patient->name ?? '') }}" required>
+                                    <label for="package-patient-name" class="mb-2 block text-xs font-bold text-slate-600">Patient Name <span class="text-rose-500">*</span></label>
+                                    <input id="package-patient-name" type="text" name="patient_name" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100" placeholder="Your full name" value="{{ old('patient_name', $patient->name ?? '') }}" required>
+                                    @error('patient_name')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number</label>
-                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" required>
+                                    <label for="package-phone" class="mb-2 block text-xs font-bold text-slate-600">Phone Number <span class="text-rose-500">*</span></label>
+                                    <input id="package-phone" type="text" name="phone" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100" placeholder="Phone number" value="{{ old('phone', $patient->phone ?? '') }}" required>
+                                    @error('phone')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
-                                    <input type="email" name="email" class="form-control" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                    <label for="package-email" class="mb-2 block text-xs font-bold text-slate-600">Email Address <span class="text-rose-500">*</span></label>
+                                    <input id="package-email" type="email" name="email" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100 disabled:bg-slate-50" placeholder="Email address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                    @error('email')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Date Of Birth</label>
-                                    <input type="date" name="dob" class="form-control" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
+                                    <label for="package-dob" class="mb-2 block text-xs font-bold text-slate-600">Date of Birth <span class="text-rose-500">*</span></label>
+                                    <input id="package-dob" type="date" name="dob" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
+                                    @error('dob')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Preferred Date (Optional)</label>
-                                    <input type="date" name="preferred_date" class="form-control" value="{{ old('preferred_date') }}">
+                                    <label for="package-preferred-date" class="mb-2 block text-xs font-bold text-slate-600">Preferred Date <span class="font-normal text-slate-400">(Optional)</span></label>
+                                    <input id="package-preferred-date" type="date" name="preferred_date" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100" value="{{ old('preferred_date') }}">
+                                    @error('preferred_date')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Notes (Optional)</label>
-                                    <textarea name="notes" class="form-control" rows="2" placeholder="Notes"></textarea>
+                                    <label for="package-notes" class="mb-2 block text-xs font-bold text-slate-600">Notes <span class="font-normal text-slate-400">(Optional)</span></label>
+                                    <textarea id="package-notes" name="notes" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100" rows="3" placeholder="Anything our care team should know?">{{ old('notes') }}</textarea>
+                                    @error('notes')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                             </div>
-                            <button type="submit" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-black uppercase tracking-widest text-xs transition-all">Submit Booking Request</button>
+
+                            <button type="submit" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200">
+                                Submit Booking Request
+                                <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-24 bg-slate-50">
+        <section class="border-y border-slate-100 bg-white py-16 md:py-20">
             <div class="container mx-auto px-4">
-                <div class="flex items-center gap-4 mb-16">
-                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight whitespace-nowrap">What's Included</h2>
-                    <div class="h-px bg-slate-200 flex-grow"></div>
+                <div class="mb-10 max-w-2xl">
+                    <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Package coverage</p>
+                    <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 md:text-4xl">What's included</h2>
+                    <p class="mt-3 text-base leading-7 text-slate-500">The following tests and services are included in this health package.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse(collect(preg_split('/\r\n|\r|\n/', (string) $package->inclusions))->filter()->values() as $item)
-                    <div class="bg-white p-6 rounded-[24px] border border-slate-100 flex items-center gap-5 shadow-sm group hover:border-indigo-200 transition-all">
-                        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-check text-sm"></i></div>
-                        <div>
-                            <p class="font-bold text-slate-900 leading-none mb-1 group-hover:text-indigo-600 transition-colors">{{ $item }}</p>
-                            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Included Test</p>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    @forelse($inclusions as $item)
+                        <div class="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-sm">
+                            <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-check text-sm" aria-hidden="true"></i></span>
+                            <p class="pt-1.5 font-semibold leading-6 text-slate-800">{{ $item }}</p>
                         </div>
-                    </div>
                     @empty
-                    <div class="col-span-full text-slate-400">No inclusions added.</div>
+                        <div class="col-span-full rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">No inclusions added.</div>
                     @endforelse
                 </div>
             </div>
         </section>
 
-        <section class="py-24">
+        <section class="bg-slate-50 py-16 md:py-20">
             <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                    <div>
-                        <h3 class="text-3xl font-extrabold text-slate-900 mb-10 tracking-tight">How to Prepare</h3>
-                        <div class="space-y-6">
-                            @forelse(collect(preg_split('/\r\n|\r|\n/', (string) $package->preparation_steps))->filter()->values() as $idx => $step)
-                            <div class="flex gap-6">
-                                <span class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-black flex-shrink-0">{{ $idx + 1 }}</span>
-                                <p class="text-slate-600 font-medium leading-relaxed pt-2">{{ $step }}</p>
-                            </div>
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                    <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-9">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Before your visit</p>
+                        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950">How to prepare</h2>
+                        <div class="mt-8 space-y-6">
+                            @forelse($preparationSteps as $idx => $step)
+                                <div class="flex gap-4">
+                                    <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-slate-950 text-sm font-black text-white">{{ $idx + 1 }}</span>
+                                    <p class="pt-1.5 leading-7 text-slate-600">{{ $step }}</p>
+                                </div>
                             @empty
-                            <p class="text-slate-500">No preparation steps added.</p>
+                                <p class="rounded-xl bg-slate-50 p-5 text-slate-500">No preparation steps added.</p>
                             @endforelse
                         </div>
                     </div>
 
-                    <div class="space-y-6">
-                        <h3 class="text-3xl font-extrabold text-slate-900 mb-10 tracking-tight">Common Questions</h3>
-                        @if($package->faq_1_question)
-                        <div class="group bg-slate-50 rounded-3xl border border-slate-100 overflow-hidden">
-                            <details class="peer">
-                                <summary class="flex justify-between items-center p-6 cursor-pointer list-none font-bold text-slate-700">
-                                    {{ $package->faq_1_question }}
-                                    <i class="fa-solid fa-plus text-indigo-500 transition-transform peer-open:rotate-45"></i>
-                                </summary>
-                                <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">{{ $package->faq_1_answer }}</div>
-                            </details>
+                    <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-9">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Helpful information</p>
+                        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950">Common questions</h2>
+                        <div class="mt-8 space-y-4">
+                            @if($package->faq_1_question)
+                                <details class="group overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70">
+                                    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-bold text-slate-800">
+                                        {{ $package->faq_1_question }}
+                                        <i class="fa-solid fa-plus text-sky-600 transition-transform group-open:rotate-45" aria-hidden="true"></i>
+                                    </summary>
+                                    <div class="border-t border-slate-200 px-5 py-4 text-sm leading-7 text-slate-600">{{ $package->faq_1_answer }}</div>
+                                </details>
+                            @endif
+                            @if($package->faq_2_question)
+                                <details class="group overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70">
+                                    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-bold text-slate-800">
+                                        {{ $package->faq_2_question }}
+                                        <i class="fa-solid fa-plus text-sky-600 transition-transform group-open:rotate-45" aria-hidden="true"></i>
+                                    </summary>
+                                    <div class="border-t border-slate-200 px-5 py-4 text-sm leading-7 text-slate-600">{{ $package->faq_2_answer }}</div>
+                                </details>
+                            @endif
+                            @if(!$package->faq_1_question && !$package->faq_2_question)
+                                <p class="rounded-xl bg-slate-50 p-5 text-slate-500">No frequently asked questions added.</p>
+                            @endif
                         </div>
-                        @endif
-                        @if($package->faq_2_question)
-                        <div class="group bg-slate-50 rounded-3xl border border-slate-100 overflow-hidden">
-                            <details class="peer">
-                                <summary class="flex justify-between items-center p-6 cursor-pointer list-none font-bold text-slate-700">
-                                    {{ $package->faq_2_question }}
-                                    <i class="fa-solid fa-plus text-indigo-500 transition-transform peer-open:rotate-45"></i>
-                                </summary>
-                                <div class="px-6 pb-6 text-slate-500 text-sm leading-relaxed">{{ $package->faq_2_answer }}</div>
-                            </details>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>

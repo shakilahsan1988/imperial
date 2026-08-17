@@ -18,17 +18,9 @@ class DoctorRequest extends FormRequest
     }
 
     /**
-     * Normalise contact details before validation.
-     *
-     * Two things happen here, and both matter for uniqueness:
-     *
-     *  - Empty strings become null. A blank form field posts '' which would
-     *    otherwise be stored as '' and then collide with every other doctor
-     *    who also left the field blank. Null values do not collide.
-     *
-     *  - Email is lower-cased and phone is reduced to digits, so that
-     *    "+880 1332-556541" and "01332556541" are recognised as the same
-     *    number rather than slipping past the unique rule as two values.
+     * Normalise contact details before validation. Empty strings become null,
+     * email casing is made consistent, and phone numbers retain their entered
+     * country-code format because doctors may intentionally share one contact.
      */
     protected function prepareForValidation(): void
     {
@@ -45,8 +37,8 @@ class DoctorRequest extends FormRequest
      */
     public function rules()
     {
-        // Null on create, the doctor id on update. Rule::unique()->ignore(null)
-        // ignores nothing, so a single rule set serves both cases.
+        // Doctor names identify public profiles and remain unique. Contact
+        // details are intentionally shareable (for example, a central desk).
         $doctorId = $this->route('doctor');
 
         $uploads = (array) config('doctor_sync.uploads', []);
@@ -62,19 +54,15 @@ class DoctorRequest extends FormRequest
                 Rule::unique('doctors')->ignore($doctorId)->whereNull('deleted_at'),
             ],
 
-            // Nullable, but still unique when a real value is supplied.
-            // Many doctors may have no email; no two may share one.
             'email' => [
                 'nullable',
                 'email:rfc',
                 'max:191',
-                Rule::unique('doctors')->ignore($doctorId)->whereNull('deleted_at'),
             ],
             'phone' => [
                 'nullable',
                 'string',
                 'max:191',
-                Rule::unique('doctors')->ignore($doctorId)->whereNull('deleted_at'),
             ],
 
             'doctor_specialty_id' => 'required|exists:doctor_specialties,id',
@@ -128,7 +116,7 @@ class DoctorRequest extends FormRequest
     }
 
     /**
-     * Reduce a phone number to digits, dropping the Bangladesh country code.
+     * Trim a phone number while preserving its country-code notation.
      */
     protected function normalizePhone($value): ?string
     {
@@ -136,13 +124,8 @@ class DoctorRequest extends FormRequest
             return null;
         }
 
-        $digits = preg_replace('/\D+/', '', $value) ?? '';
+        $value = trim($value);
 
-        // "8801332556541" and "01332556541" are the same subscriber.
-        if (strlen($digits) > 11 && str_starts_with($digits, '88')) {
-            $digits = substr($digits, 2);
-        }
-
-        return $digits === '' ? null : $digits;
+        return $value === '' ? null : $value;
     }
 }
