@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Services Section -->
-<section class="py-16 px-4 bg-gray-50">
+<section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
     <div class="container mx-auto max-w-7xl">
         
         <!-- Responsive Grid: 1 col mobile, 2 col tablet, 3 col desktop -->

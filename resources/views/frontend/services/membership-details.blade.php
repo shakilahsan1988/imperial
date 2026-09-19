@@ -30,9 +30,9 @@
 
         <div class="container relative z-10 mx-auto px-5 py-14 sm:px-6 md:py-20 lg:px-8 lg:py-24">
             <nav class="mb-10 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-400" aria-label="Breadcrumb">
-                <a href="{{ route('fhome') }}" class="transition-colors hover:text-sky-300">Home</a>
+                <a href="{{ route('fhome') }}" class="transition-colors hover:text-imperial-primary">Home</a>
                 <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
-                <a href="{{ route('membership') }}" class="transition-colors hover:text-sky-300">Membership</a>
+                <a href="{{ route('membership') }}" class="transition-colors hover:text-imperial-primary">Membership</a>
                 <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
                 <span class="text-sky-300">Plan details</span>
             </nav>
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="mt-9 flex flex-wrap items-center gap-3">
-                        <a href="#book-membership" class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/30">
+                        <a href="#book-membership" class="inline-flex items-center justify-center gap-2 rounded-xl bg-imperial-primary px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-imperial-dark focus:outline-none focus:ring-4 focus:ring-sky-400/30">
                             Request membership
                             <i class="fa-solid fa-arrow-down text-xs" aria-hidden="true"></i>
                         </a>
@@ -99,7 +99,7 @@
     </section>
 
     <section class="relative z-20 -mt-1 py-14 md:py-20">
-        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
                 <div class="lg:col-span-7">
                     <div class="rounded-[1.75rem] border border-slate-200/80 bg-white p-7 shadow-sm md:p-9">
@@ -153,7 +153,7 @@
                                 <dd class="max-w-[48%] text-right text-sm font-black text-slate-900">{{ $plan->service_discount ?: 'Not specified' }}</dd>
                             </div>
                         </dl>
-                        <a href="#book-membership" class="mt-5 flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-4 text-sm font-bold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-100">
+                        <a href="#book-membership" class="mt-5 flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-4 text-sm font-bold text-white transition hover:bg-imperial-primary focus:outline-none focus:ring-4 focus:ring-sky-100">
                             Request this plan
                             <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10"><i class="fa-solid fa-arrow-down text-xs" aria-hidden="true"></i></span>
                         </a>
@@ -164,7 +164,7 @@
     </section>
 
     <section id="book-membership" class="scroll-mt-24 border-y border-slate-200/70 bg-white py-16 md:py-20">
-        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
                 <div class="grid grid-cols-1 lg:grid-cols-12">
                     <div class="relative overflow-hidden bg-slate-950 p-8 text-white md:p-10 lg:col-span-4 lg:p-12">
@@ -216,12 +216,12 @@
                                 <input id="membership-phone" type="text" name="phone" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" placeholder="Phone number" value="{{ old('phone', $patient->phone ?? '') }}" required>
                             </div>
                             <div>
-                                <label for="membership-email" class="mb-2 block text-xs font-bold text-slate-600">Email Address <span class="text-rose-500">*</span></label>
-                                <input id="membership-email" type="email" name="email" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100 read-only:cursor-not-allowed read-only:text-slate-500" placeholder="Email address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                <label for="membership-email" class="mb-2 block text-xs font-bold text-slate-600">Email Address <span class="font-normal text-slate-400">(Optional)</span></label>
+                                <input id="membership-email" type="email" name="email" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100 read-only:cursor-not-allowed read-only:text-slate-500" placeholder="Email address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }}>
                             </div>
                             <div>
-                                <label for="membership-dob" class="mb-2 block text-xs font-bold text-slate-600">Date of Birth <span class="text-rose-500">*</span></label>
-                                <input id="membership-dob" type="date" name="dob" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
+                                <label for="membership-age" class="mb-2 block text-xs font-bold text-slate-600">Age <span class="font-normal text-slate-400">(Optional)</span></label>
+                                <input id="membership-age" type="number" name="age" min="0" max="150" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-100" placeholder="Age" value="{{ old('age') }}">
                             </div>
                             <div class="md:col-span-2">
                                 <label for="membership-start-date" class="mb-2 block text-xs font-bold text-slate-600">Preferred Start Date <span class="font-normal text-slate-400">(Optional)</span></label>
@@ -233,7 +233,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200">
+                        <button type="submit" class="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition hover:bg-imperial-dark focus:outline-none focus:ring-4 focus:ring-sky-200">
                             Submit booking request
                             <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                         </button>
@@ -244,7 +244,7 @@
     </section>
 
     <section id="plan-coverage" class="scroll-mt-24 py-16 md:py-20">
-        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10 max-w-2xl">
                 <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Plan coverage</p>
                 <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Know what the plan covers</h2>
@@ -313,7 +313,7 @@
 
     @if($plan->faq_1_question || $plan->faq_2_question || $plan->faq_3_question)
         <section class="border-y border-slate-200/70 bg-white py-16 md:py-20">
-            <div class="container mx-auto grid grid-cols-1 gap-10 px-5 sm:px-6 lg:grid-cols-12 lg:px-8">
+            <div class="container mx-auto grid grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
                 <div class="lg:col-span-4">
                     <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Helpful information</p>
                     <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Common questions</h2>
@@ -344,13 +344,13 @@
 
     @if($relatedPlans->isNotEmpty())
         <section class="py-16 md:py-20">
-            <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Keep exploring</p>
                         <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Related membership plans</h2>
                     </div>
-                    <a href="{{ route('membership') }}" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 transition hover:text-sky-900">
+                    <a href="{{ route('membership') }}" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 transition hover:text-imperial-dark">
                         View all plans
                         <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                     </a>
@@ -362,7 +362,7 @@
                             $relatedUrl = route('membership-details', ['id' => $related->slug ?: $related->id]);
                             $relatedImage = !empty($related->image) ? asset($related->image) : asset('assets/front/images/services/con7.jpeg');
                         @endphp
-                        <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-slate-900/10">
+                        <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-imperial-light hover:shadow-xl hover:shadow-slate-900/10">
                             <a href="{{ $relatedUrl }}" class="relative block aspect-[16/9] overflow-hidden bg-slate-100" aria-label="View {{ $related->name }}">
                                 <img src="{{ $relatedImage }}" alt="{{ $related->name }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]">
                                 @if(!empty($related->duration))
@@ -370,12 +370,12 @@
                                 @endif
                             </a>
                             <div class="flex flex-1 flex-col p-6">
-                                <h3 class="text-lg font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-sky-700">
+                                <h3 class="text-lg font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-imperial-primary">
                                     <a href="{{ $relatedUrl }}">{{ $related->name }}</a>
                                 </h3>
                                 <p class="mt-2 text-sm leading-6 text-slate-500">{{ $related->subtitle ?: 'Membership Plan' }}</p>
                                 <p class="mt-5 text-2xl font-black tracking-tight text-sky-700">{{ formated_price($related->price) }}</p>
-                                <a href="{{ $relatedUrl }}" class="mt-6 flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-600">
+                                <a href="{{ $relatedUrl }}" class="mt-6 flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-imperial-primary">
                                     Explore plan
                                     <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10"><i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i></span>
                                 </a>

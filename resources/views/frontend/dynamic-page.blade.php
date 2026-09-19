@@ -11,7 +11,7 @@
             <img src="{{ asset($page->hero_image ?: 'assets/front/images/index/tour.jpg') }}" class="w-full h-full object-cover">
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
-        <div class="container mx-auto px-4 relative z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="max-w-3xl">
                 <p class="mb-4 text-xs font-black uppercase tracking-[0.2em] text-sky-300 md:text-sm">{{ $page->title }}</p>
                 <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
@@ -25,7 +25,7 @@
     </section>
 
     <section class="py-16 md:py-20">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="dynamic-page-content mx-auto max-w-4xl text-slate-700">
                 {!! $page->body_html !!}
             </div>

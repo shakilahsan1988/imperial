@@ -17,7 +17,7 @@
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/85 to-transparent"></div>
 
-        <div class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="max-w-4xl">
                 <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-indigo-200 text-[10px] md:text-xs font-black uppercase tracking-widest mb-5">
                     <i class="fa-solid fa-book-open"></i>
@@ -35,7 +35,7 @@
     </section>
 
     <section class="py-14 md:py-20">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
 
                 <div class="lg:col-span-8">
@@ -63,7 +63,7 @@
                                 <div class="space-y-4">
                                     @foreach($relatedBlogs as $related)
                                         <a href="{{ route('blog-details', ['slug' => $related->slug]) }}" class="block group">
-                                            <p class="text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition">{{ $related->title }}</p>
+                                            <p class="text-sm font-semibold text-slate-800 group-hover:text-imperial-primary transition">{{ $related->title }}</p>
                                             <p class="text-xs text-slate-400 mt-1">{{ optional($related->published_at)->format('M d, Y') ?? optional($related->created_at)->format('M d, Y') }}</p>
                                         </a>
                                     @endforeach
@@ -71,7 +71,7 @@
                             </div>
                         @endif
 
-                        <a href="{{ route('blog') }}" class="block text-center rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 font-black uppercase tracking-widest text-xs transition">
+                        <a href="{{ route('blog') }}" class="block text-center rounded-2xl bg-indigo-600 hover:bg-imperial-dark text-white py-3.5 font-black uppercase tracking-widest text-xs transition">
                             Back To Blog List
                         </a>
                     </div>

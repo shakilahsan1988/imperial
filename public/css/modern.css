@@ -47,10 +47,35 @@ body {
 .border-imperial-primary { border-color: var(--primary) !important; }
 .text-imperial-text { color: var(--slate-700) !important; }
 
-/* hover:bg-imperial-dark was used in membership-plan.blade.php and
-   video-consultation.blade.php but never defined, so those buttons never
-   darkened on hover. */
+.text-imperial-dark { color: var(--primary-dark) !important; }
+.bg-imperial-dark { background-color: var(--primary-dark) !important; }
+.border-imperial-dark { border-color: var(--primary-dark) !important; }
+.bg-imperial-light { background-color: var(--primary-light) !important; }
+.border-imperial-light { border-color: var(--primary-light) !important; }
+
+/* Single source of truth for the site's brand hover color (--primary and its
+   shades above). Every interactive hover state — links, buttons, dropdowns,
+   cards, filters — should use one of these instead of a one-off Tailwind
+   color utility, so the whole site hovers to the same brand teal. */
+.hover\:text-imperial-primary:hover { color: var(--primary) !important; }
+.hover\:bg-imperial-primary:hover { background-color: var(--primary) !important; }
+.hover\:border-imperial-primary:hover { border-color: var(--primary) !important; }
+.hover\:text-imperial-dark:hover { color: var(--primary-dark) !important; }
 .hover\:bg-imperial-dark:hover { background-color: var(--primary-dark) !important; }
+.hover\:border-imperial-dark:hover { border-color: var(--primary-dark) !important; }
+.hover\:bg-imperial-light:hover { background-color: var(--primary-light) !important; }
+.hover\:border-imperial-light:hover { border-color: var(--primary-light) !important; }
+
+/* Same treatment for Tailwind's group-hover variant (e.g. doctor cards that
+   recolor a child element when the whole card is hovered). */
+.group:hover .group-hover\:text-imperial-primary { color: var(--primary) !important; }
+.group:hover .group-hover\:bg-imperial-primary { background-color: var(--primary) !important; }
+.group:hover .group-hover\:border-imperial-primary { border-color: var(--primary) !important; }
+.group:hover .group-hover\:text-imperial-dark { color: var(--primary-dark) !important; }
+.group:hover .group-hover\:bg-imperial-dark { background-color: var(--primary-dark) !important; }
+.group:hover .group-hover\:border-imperial-dark { border-color: var(--primary-dark) !important; }
+.group:hover .group-hover\:bg-imperial-light { background-color: var(--primary-light) !important; }
+.group:hover .group-hover\:border-imperial-light { border-color: var(--primary-light) !important; }
 
 .btn-primary { 
     background-color: var(--primary) !important; 

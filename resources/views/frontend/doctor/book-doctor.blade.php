@@ -27,18 +27,18 @@
 @endphp
 <main class="min-h-screen bg-[#F8FAFC] font-sans pb-20">
     <nav class="bg-white border-b border-slate-100 py-4 mb-8">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <ol class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                <li><a href="{{ route('fhome') }}" class="hover:text-indigo-600 transition">Home</a></li>
+                <li><a href="{{ route('fhome') }}" class="hover:text-imperial-primary transition">Home</a></li>
                 <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
-                <li><a href="{{ route('doctor') }}" class="hover:text-indigo-600 transition">Doctors</a></li>
+                <li><a href="{{ route('doctor') }}" class="hover:text-imperial-primary transition">Doctors</a></li>
                 <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
                 <li class="text-indigo-600">Book Appointment</li>
             </ol>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-8 space-y-8">
                 <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-50">
@@ -117,12 +117,12 @@
                                 <input type="text" name="phone" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Phone Number" value="{{ old('phone', $patient->phone ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
-                                <input type="email" name="email" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address <span class="normal-case font-normal text-slate-400">(Optional)</span></label>
+                                <input type="email" name="email" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Email Address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }}>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Date Of Birth</label>
-                                <input type="date" name="dob" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Age <span class="normal-case font-normal text-slate-400">(Optional)</span></label>
+                                <input type="number" name="age" min="0" max="150" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" placeholder="Age" value="{{ old('age') }}">
                             </div>
                         </div>
 
@@ -230,7 +230,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-lg shadow-slate-200/40">
-                    <button type="submit" form="doctor-booking-form" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-xl font-black uppercase tracking-widest text-xs transition-all">
+                    <button type="submit" form="doctor-booking-form" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-imperial-dark text-white py-3 px-6 rounded-xl font-black uppercase tracking-widest text-xs transition-all">
                         Submit Booking
                     </button>
                 </div>

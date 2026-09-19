@@ -1,6 +1,6 @@
 @if(!empty($homeSettings['ceo_message']['enabled']))
 <section class="py-24 bg-indigo-50 overflow-hidden">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
             <div class="lg:w-5/12 relative reveal-left">
                 <div class="relative">

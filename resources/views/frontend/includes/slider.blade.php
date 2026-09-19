@@ -78,7 +78,7 @@
                         <p class="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">{{ $slide['description'] }}</p>
                     @endif
                     @if(!empty($slide['button_text']))
-                        <a href="{{ $slide['button_url'] ?? '#' }}" class="mt-9 inline-flex items-center justify-center gap-3 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-slate-950/30 transition hover:-translate-y-0.5 hover:bg-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/30">
+                        <a href="{{ $slide['button_url'] ?? '#' }}" class="mt-9 inline-flex items-center justify-center gap-3 rounded-xl bg-imperial-primary px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-slate-950/30 transition hover:-translate-y-0.5 hover:bg-imperial-dark focus:outline-none focus:ring-4 focus:ring-sky-400/30">
                             {{ $slide['button_text'] }}
                             <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                         </a>
@@ -89,7 +89,7 @@
     @endforeach
 
     <div class="absolute inset-x-0 bottom-7 z-30">
-        <div class="container mx-auto flex items-center justify-between gap-6 px-5 sm:px-6 md:px-8">
+        <div class="container mx-auto flex items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
             <div class="flex items-center gap-2" aria-label="Choose a hero slide">
                 @foreach($slides as $index => $slide)
                     <button type="button" class="home-progress {{ $index === 0 ? 'active' : '' }} relative h-1 w-10 overflow-hidden rounded-full bg-white/20 sm:w-14" onclick="jumpToSlide({{ $index }})" aria-label="Show slide {{ $index + 1 }}">
@@ -99,10 +99,10 @@
             </div>
             @if(count($slides) > 1)
                 <div class="hidden items-center gap-2 sm:flex">
-                    <button type="button" onclick="moveSlide(-1)" class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white backdrop-blur transition hover:border-sky-400 hover:bg-sky-500" aria-label="Previous slide">
+                    <button type="button" onclick="moveSlide(-1)" class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white backdrop-blur transition hover:border-imperial-primary hover:bg-imperial-primary" aria-label="Previous slide">
                         <i class="fa-solid fa-chevron-left text-xs" aria-hidden="true"></i>
                     </button>
-                    <button type="button" onclick="moveSlide(1)" class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white backdrop-blur transition hover:border-sky-400 hover:bg-sky-500" aria-label="Next slide">
+                    <button type="button" onclick="moveSlide(1)" class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white backdrop-blur transition hover:border-imperial-primary hover:bg-imperial-primary" aria-label="Next slide">
                         <i class="fa-solid fa-chevron-right text-xs" aria-hidden="true"></i>
                     </button>
                 </div>

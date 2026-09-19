@@ -91,6 +91,7 @@ class DoctorRequest extends FormRequest
                 ),
             ],
             'remove_image' => 'nullable|boolean',
+            'is_featured' => 'nullable|boolean',
 
             'branch_schedules' => 'nullable|array',
             'branch_schedules.*.branch_id' => 'required|exists:branches,id|distinct',

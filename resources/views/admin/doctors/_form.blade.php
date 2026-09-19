@@ -198,6 +198,13 @@
               <label class="custom-control-label" for="status">{{ __('Active') }}</label>
           </div>
       </div>
+      <div class="form-group mt-2">
+          <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="is_featured" name="is_featured" value="1" @if(isset($doctor) ? $doctor->is_featured : false) checked @endif>
+              <label class="custom-control-label" for="is_featured">{{ __('Featured Doctor') }}</label>
+          </div>
+          <small class="form-text text-muted">Featured doctors appear first within their department on the Our Doctors page.</small>
+      </div>
   </div>
 
   <div class="col-lg-12">

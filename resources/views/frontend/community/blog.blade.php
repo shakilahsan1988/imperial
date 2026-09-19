@@ -12,7 +12,7 @@
             <img src="{{ asset($pageSettings['hero_image']) }}" class="w-full h-full object-cover">
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
-        <div class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="max-w-3xl">
                 <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                 <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $pageSettings['hero_title_html'] !!}</h1>
@@ -23,7 +23,7 @@
 
     @if(!empty($pageSettings['founder_description']))
     <section class="py-16 lg:py-24 bg-white">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 <div class="lg:col-span-5 order-2 lg:order-1">
                     <div class="blog-card">
@@ -61,7 +61,7 @@
     @endif
 
     <section class="py-16 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8 items-center">
                 <div class="lg:col-span-7">
                     <h1 class="text-3xl md:text-4xl font-bold text-imperial-text font-sans">{{ $pageSettings['blog_list_title'] ?? 'Blog list' }}</h1>

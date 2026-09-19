@@ -5,7 +5,7 @@
 @section('content')
     <main class="bg-white font-sans">
         <section class="py-16">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Service Details -->
                     <div class="lg:col-span-2">
@@ -181,7 +181,7 @@
                                     <textarea name="notes" class="w-full p-3 border border-slate-200 rounded-xl" rows="2" placeholder="Any special instructions..."></textarea>
                                 </div>
 
-                                <button type="submit" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                                <button type="submit" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 hover:bg-imperial-dark transition-all">
                                     Confirm Booking
                                 </button>
                             </form>

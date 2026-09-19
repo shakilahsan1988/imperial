@@ -39,7 +39,7 @@
     @endonce
 
     <section class="py-24 bg-indigo-50 overflow-hidden">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
                 <div class="max-w-3xl">
                     <span class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[15px] mb-4 block">{{ $homeSettings['doctor_carousel']['badge'] }}</span>
@@ -57,7 +57,7 @@
                         <button type="button" class="doctor-carousel-prev w-12 h-12 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-900 hover:text-white transition-all" aria-label="Previous doctors">
                             <i class="fa-solid fa-arrow-left"></i>
                         </button>
-                        <button type="button" class="doctor-carousel-next w-12 h-12 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200" aria-label="Next doctors">
+                        <button type="button" class="doctor-carousel-next w-12 h-12 rounded-2xl bg-indigo-600 text-white hover:bg-imperial-dark transition-all shadow-lg shadow-indigo-200" aria-label="Next doctors">
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
@@ -79,7 +79,7 @@
                                     <p class="text-[13px] font-black uppercase tracking-[0.15em] text-indigo-600 mb-3">
                                         {{ optional($doctor->specialty)->name ?: 'Specialist' }}
                                     </p>
-                                    <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
+                                    <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-imperial-primary transition-colors">
                                         <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}">
                                             {{ $doctor->name }}
                                         </a>
@@ -92,7 +92,7 @@
                                         <strong class="text-slate-800">{{ formated_price($doctor->consultation_fee ?? 0) }}</strong>
                                     </div>
                                     <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}"
-                                       class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-2xl font-bold text-sm tracking-wide transition-all">
+                                       class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-imperial-primary text-white rounded-2xl font-bold text-sm tracking-wide transition-all">
                                         Book Appointment
                                     </a>
                                 </div>

@@ -14,7 +14,7 @@
         <img src="{{ asset($pageSettings['hero_image']) }}" alt="Gallery" class="w-full h-full object-cover">
     </div>
     <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
-    <div class="container mx-auto px-6 relative z-10">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="max-w-3xl">
             <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
             <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">{!! $pageSettings['hero_title_html'] !!}</h1>
@@ -24,7 +24,7 @@
 </section>
 
 <section class="py-16 lg:py-24 bg-white">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold text-imperial-text mb-4">{{ $pageSettings['page_name'] }}</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">{{ strip_tags($pageSettings['hero_description']) }}</p>

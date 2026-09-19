@@ -23,7 +23,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
 
-            <div class="container mx-auto px-4 relative z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="max-w-3xl">
                     <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
@@ -59,7 +59,7 @@
 
         <!-- CONTACT & FORM SECTION -->
         <section class="py-24">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
                     
                     <!-- Form Side -->
@@ -99,7 +99,7 @@
                                     <textarea rows="4" placeholder="How can we help you?" class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-700"></textarea>
                                 </div>
 
-                                <button type="submit" class="w-full bg-slate-900 hover:bg-indigo-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3">
+                                <button type="submit" class="w-full bg-slate-900 hover:bg-imperial-primary text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3">
                                     <span>Send Message</span>
                                     <i class="fa-solid fa-paper-plane"></i>
                                 </button>
@@ -110,20 +110,38 @@
                     <!-- Info Side -->
                     <div class="lg:col-span-5 space-y-12 py-6">
                         <div>
-                            <h3 class="text-2xl font-extrabold text-slate-900 mb-6 tracking-tight">Our Location</h3>
-                            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
-                                <div class="flex gap-4">
-                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
-                                    <p class="text-slate-600 font-medium leading-relaxed">{{ $mainAddress !== '' ? $mainAddress : 'Address not configured' }}</p>
-                                </div>
-                                <div class="flex gap-4">
-                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone"></i></div>
-                                    <p class="text-slate-600 font-medium">{{ $mainPhone !== '' ? $mainPhone : 'Phone not configured' }}</p>
-                                </div>
-                                <div class="flex gap-4">
-                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div>
-                                    <p class="text-slate-600 font-medium">{{ $mainEmail !== '' ? $mainEmail : 'Email not configured' }}</p>
-                                </div>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mb-6 tracking-tight">Our Locations</h3>
+                            <div class="space-y-6">
+                                @forelse($branches as $branch)
+                                    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-5">
+                                        <h4 class="text-lg font-extrabold text-slate-900 tracking-tight">{{ $branch->name }}</h4>
+                                        <div class="flex gap-4">
+                                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
+                                            <p class="text-slate-600 font-medium leading-relaxed whitespace-pre-line">{{ $branch->address ?: 'Address not configured' }}</p>
+                                        </div>
+                                        @if(trim((string) $branch->phone) !== '')
+                                            <div class="flex gap-4">
+                                                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone"></i></div>
+                                                <p class="text-slate-600 font-medium">{{ $branch->phone }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @empty
+                                    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
+                                        <div class="flex gap-4">
+                                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
+                                            <p class="text-slate-600 font-medium leading-relaxed whitespace-pre-line">{{ $mainAddress !== '' ? $mainAddress : 'Address not configured' }}</p>
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone"></i></div>
+                                            <p class="text-slate-600 font-medium">{{ $mainPhone !== '' ? $mainPhone : 'Phone not configured' }}</p>
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                                            <p class="text-slate-600 font-medium">{{ $mainEmail !== '' ? $mainEmail : 'Email not configured' }}</p>
+                                        </div>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 

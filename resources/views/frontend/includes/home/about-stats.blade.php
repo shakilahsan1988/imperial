@@ -18,8 +18,8 @@
 
             <div class="grid gap-4 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-{{ max(1, $stats->count()) }}">
                 @foreach($stats as $stat)
-                    <article class="group rounded-2xl border border-slate-200/80 bg-slate-50 p-6 transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 sm:p-7">
-                        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-sky-600 shadow-sm transition group-hover:bg-sky-600 group-hover:text-white">
+                    <article class="group rounded-2xl border border-slate-200/80 bg-slate-50 p-6 transition hover:-translate-y-0.5 hover:border-imperial-light hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 sm:p-7">
+                        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-sky-600 shadow-sm transition group-hover:bg-imperial-primary group-hover:text-white">
                             <i class="fa-solid {{ $stat['icon'] }}" aria-hidden="true"></i>
                         </span>
                         <strong class="mt-6 block text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{{ $stat['count'] }}</strong>

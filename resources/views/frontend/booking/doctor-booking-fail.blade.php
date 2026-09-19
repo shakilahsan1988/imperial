@@ -5,18 +5,18 @@
 @section('content')
 <main class="min-h-screen bg-[#F8FAFC] font-sans pb-20">
     <nav class="bg-white border-b border-slate-100 py-4 mb-8">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <ol class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                <li><a href="{{ route('fhome') }}" class="hover:text-indigo-600 transition">Home</a></li>
+                <li><a href="{{ route('fhome') }}" class="hover:text-imperial-primary transition">Home</a></li>
                 <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
-                <li><a href="{{ route('doctor') }}" class="hover:text-indigo-600 transition">Doctors</a></li>
+                <li><a href="{{ route('doctor') }}" class="hover:text-imperial-primary transition">Doctors</a></li>
                 <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
                 <li class="text-red-500">Payment Failed</li>
             </ol>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto">
 
             {{-- Failure Header --}}
@@ -71,7 +71,7 @@
             </div>
 
             <div class="flex flex-col md:flex-row gap-4">
-                <a href="{{ route('doctor-booking.confirm', $booking->id) }}" class="flex-grow py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                <a href="{{ route('doctor-booking.confirm', $booking->id) }}" class="flex-grow py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-imperial-dark transition-all">
                     <i class="fa-solid fa-rotate-right mr-2"></i> Try Again
                 </a>
                 <a href="{{ route('fhome') }}" class="flex-grow py-4 bg-white text-slate-900 text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg border border-slate-100 hover:bg-slate-50 transition-all">

@@ -10,7 +10,6 @@ use App\Models\Doctor;
 use App\Models\DoctorConsultationBooking;
 use App\Models\DoctorConsultationSlot;
 use App\Models\DoctorDepartment;
-use App\Models\DoctorSpecialty;
 use App\Models\GalleryGroup;
 use App\Services\SslCommerzService;
 use App\Models\HealthPackage;
@@ -158,6 +157,20 @@ class FrontController extends Controller
         // Attach all services from cart
         $booking->services()->attach($pivotData);
 
+        $location = $booking->booking_type === 'home_visit'
+            ? 'your home'
+            : (optional($booking->branch)->title ?: optional($booking->branch)->name ?: 'our branch');
+
+        $this->sendBookingSms($booking->patient_phone, sprintf(
+            'Hi %s, your Imperial Health booking is confirmed for %s at %s (%s). Thank you for choosing Imperial Health.',
+            $booking->patient_name,
+            \Carbon\Carbon::parse($booking->scheduled_date)->format('d M Y'),
+            $booking->scheduled_time,
+            $location
+        ));
+        $this->sendPatientConfirmationEmail($booking->patient_email, new \App\Mail\BookingConfirmation($booking));
+        $this->sendAdminBookingNotification('booking', $booking);
+
         // Clear Cart
         session()->forget('cart');
 
@@ -241,34 +254,34 @@ class FrontController extends Controller
         $data = $request->validate([
             'patient_name' => 'required|string|max:255',
             'phone' => 'required|string|max:30',
-            'email' => 'required|email|max:255',
-            'dob' => 'required|date',
+            'email' => 'nullable|email|max:255',
+            'age' => 'nullable|integer|min:0|max:150',
             'preferred_date' => 'nullable|date|after_or_equal:today',
             'notes' => 'nullable|string|max:2000',
         ]);
 
-        $email = strtolower(trim($data['email']));
-        $patient = Patient::where('email', $email)->first();
+        $email = ! empty($data['email']) ? strtolower(trim($data['email'])) : null;
+        $patient = $email ? Patient::where('email', $email)->first() : null;
 
-        if (! $patient) {
-            $patient = Patient::create([
-                'code' => patient_code(),
-                'name' => $data['patient_name'],
-                'gender' => 'male',
-                'dob' => $data['dob'],
-                'email' => $email,
-                'phone' => $data['phone'],
-            ]);
-        } else {
-            $patient->update([
-                'name' => $data['patient_name'],
-                'phone' => $data['phone'],
-                'dob' => $data['dob'],
-            ]);
+        if ($email) {
+            if (! $patient) {
+                $patient = Patient::create([
+                    'code' => patient_code(),
+                    'name' => $data['patient_name'],
+                    'gender' => 'male',
+                    'email' => $email,
+                    'phone' => $data['phone'],
+                ]);
+            } else {
+                $patient->update([
+                    'name' => $data['patient_name'],
+                    'phone' => $data['phone'],
+                ]);
+            }
         }
 
         $data['health_package_id'] = $package->id;
-        $data['patient_id'] = $patient->id;
+        $data['patient_id'] = $patient?->id;
         $data['email'] = $email;
         $data['status'] = 'pending';
         $data['total_amount'] = $package->price;
@@ -276,7 +289,15 @@ class FrontController extends Controller
         $data['due_amount'] = $package->price;
         $data['payment_status'] = 'pending';
 
-        HealthPackageBooking::create($data);
+        $booking = HealthPackageBooking::create($data);
+
+        $this->sendBookingSms($data['phone'], sprintf(
+            'Hi %s, your booking request for the "%s" health package has been received. Our team will contact you shortly to confirm your schedule. - Imperial Health',
+            $data['patient_name'],
+            $package->name
+        ));
+        $this->sendPatientConfirmationEmail($email, new \App\Mail\HealthPackageBookingConfirmation($booking));
+        $this->sendAdminBookingNotification('health_package', $booking);
 
         return back()->with('success', 'Package booking request submitted successfully.');
     }
@@ -338,39 +359,39 @@ class FrontController extends Controller
         $data = $request->validate([
             'patient_name' => 'required|string|max:255',
             'phone' => 'required|string|max:30',
-            'email' => 'required|email|max:255',
-            'dob' => 'required|date',
+            'email' => 'nullable|email|max:255',
+            'age' => 'nullable|integer|min:0|max:150',
             'preferred_start_date' => 'nullable|date|after_or_equal:today',
             'notes' => 'nullable|string|max:2000',
         ]);
 
-        $email = strtolower(trim($data['email']));
-        $patient = Patient::where('email', $email)->first();
+        $email = ! empty($data['email']) ? strtolower(trim($data['email'])) : null;
+        $patient = $email ? Patient::where('email', $email)->first() : null;
 
-        if (! $patient) {
-            $patient = Patient::create([
-                'code' => patient_code(),
-                'name' => $data['patient_name'],
-                'gender' => 'male',
-                'dob' => $data['dob'],
-                'email' => $email,
-                'phone' => $data['phone'],
-            ]);
-        } else {
-            $patient->update([
-                'name' => $data['patient_name'],
-                'phone' => $data['phone'],
-                'dob' => $data['dob'],
-            ]);
+        if ($email) {
+            if (! $patient) {
+                $patient = Patient::create([
+                    'code' => patient_code(),
+                    'name' => $data['patient_name'],
+                    'gender' => 'male',
+                    'email' => $email,
+                    'phone' => $data['phone'],
+                ]);
+            } else {
+                $patient->update([
+                    'name' => $data['patient_name'],
+                    'phone' => $data['phone'],
+                ]);
+            }
         }
 
-        MembershipPlanBooking::create([
+        $booking = MembershipPlanBooking::create([
             'membership_plan_id' => $plan->id,
-            'patient_id' => $patient->id,
+            'patient_id' => $patient?->id,
             'patient_name' => $data['patient_name'],
             'phone' => $data['phone'],
             'email' => $email,
-            'dob' => $data['dob'],
+            'age' => $data['age'] ?? null,
             'preferred_start_date' => $data['preferred_start_date'] ?? null,
             'notes' => $data['notes'] ?? null,
             'total_amount' => $plan->price,
@@ -379,6 +400,14 @@ class FrontController extends Controller
             'payment_status' => 'pending',
             'status' => 'pending',
         ]);
+
+        $this->sendBookingSms($data['phone'], sprintf(
+            'Hi %s, your booking request for the "%s" membership plan has been received. Our team will contact you shortly to confirm. - Imperial Health',
+            $data['patient_name'],
+            $plan->name
+        ));
+        $this->sendPatientConfirmationEmail($email, new \App\Mail\MembershipPlanBookingConfirmation($booking));
+        $this->sendAdminBookingNotification('membership_plan', $booking);
 
         return back()->with('success', 'Membership plan booking submitted successfully.');
     }
@@ -462,8 +491,9 @@ class FrontController extends Controller
     public function contact()
     {
         $pageSettings = contact_page_settings();
+        $branches = Branch::orderBy('name')->get();
 
-        return view('frontend.about.contact', compact('pageSettings'));
+        return view('frontend.about.contact', compact('pageSettings', 'branches'));
     }
 
     public function client()
@@ -529,27 +559,37 @@ class FrontController extends Controller
     {
         $query = Doctor::with(['specialty', 'department', 'branchSchedules.branch'])->where('status', true);
 
-        if (request('specialty_id')) {
-            $query->where('doctor_specialty_id', request('specialty_id'));
-        }
-
         if (request('department_id')) {
             $query->where('doctor_department_id', request('department_id'));
+        }
+
+        if (request('consultation_type') === 'video') {
+            $query->where('video_consultation_available', true);
         }
 
         if (request('name')) {
             $query->where('name', 'like', '%'.request('name').'%');
         }
 
-        $doctors = $query->orderBy('name')->get();
-        $specialties = DoctorSpecialty::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
+        $doctors = $query->orderByDesc('is_featured')->orderBy('name')->get();
         $departments = DoctorDepartment::where('status', true)->orderBy('sort_order')->orderBy('name')->get();
-        $groupedDoctors = $doctors->groupBy(function ($doctor) {
-            return optional($doctor->department)->name ?: 'General';
+
+        $doctorsByDepartmentId = $doctors->groupBy(function ($doctor) {
+            return optional($doctor->department)->id ?: 0;
         });
+
+        $groupedDoctors = collect();
+        foreach ($departments as $department) {
+            if ($doctorsByDepartmentId->has($department->id)) {
+                $groupedDoctors->put($department->name, $doctorsByDepartmentId->get($department->id));
+            }
+        }
+        if ($doctorsByDepartmentId->has(0)) {
+            $groupedDoctors->put('General', $doctorsByDepartmentId->get(0));
+        }
         $pageSettings = doctors_page_settings();
 
-        return view('frontend.doctor.doctors', compact('doctors', 'specialties', 'departments', 'groupedDoctors', 'pageSettings'));
+        return view('frontend.doctor.doctors', compact('doctors', 'departments', 'groupedDoctors', 'pageSettings'));
     }
 
     public function book_doctor($doctor = null)
@@ -583,8 +623,8 @@ class FrontController extends Controller
         $data = $request->validate([
             'patient_name' => 'required|string|max:255',
             'phone' => 'required|string|max:30',
-            'email' => 'required|email|max:255',
-            'dob' => 'required|date',
+            'email' => 'nullable|email|max:255',
+            'age' => 'nullable|integer|min:0|max:150',
             'visit_type' => 'required|in:in_hub,video',
             'branch_id' => 'required_if:visit_type,in_hub|nullable|exists:branches,id',
             'appointment_date' => 'required|date|after_or_equal:today',
@@ -612,36 +652,34 @@ class FrontController extends Controller
             : $doctorModel->consultation_fee;
 
         $slot = DoctorConsultationSlot::where('status', true)->findOrFail($data['doctor_consultation_slot_id']);
-        $email = strtolower(trim($data['email']));
+        $email = ! empty($data['email']) ? strtolower(trim($data['email'])) : null;
 
         if (auth()->guard('patient')->check()) {
             $patient = auth()->guard('patient')->user();
             $data['patient_name'] = $patient->name ?: $data['patient_name'];
             $data['phone'] = $patient->phone ?: $data['phone'];
             $email = $patient->email ?: $email;
-            $data['dob'] = $patient->dob ?: $data['dob'];
             $patient->update([
                 'name' => $data['patient_name'],
                 'phone' => $data['phone'],
-                'dob' => $data['dob'],
             ]);
         } else {
-            $patient = Patient::where('email', $email)->first();
-            if (! $patient) {
-                $patient = Patient::create([
-                    'code' => patient_code(),
-                    'name' => $data['patient_name'],
-                    'gender' => 'male',
-                    'dob' => $data['dob'],
-                    'email' => $email,
-                    'phone' => $data['phone'],
-                ]);
-            } else {
-                $patient->update([
-                    'name' => $data['patient_name'],
-                    'phone' => $data['phone'],
-                    'dob' => $data['dob'],
-                ]);
+            $patient = $email ? Patient::where('email', $email)->first() : null;
+            if ($email) {
+                if (! $patient) {
+                    $patient = Patient::create([
+                        'code' => patient_code(),
+                        'name' => $data['patient_name'],
+                        'gender' => 'male',
+                        'email' => $email,
+                        'phone' => $data['phone'],
+                    ]);
+                } else {
+                    $patient->update([
+                        'name' => $data['patient_name'],
+                        'phone' => $data['phone'],
+                    ]);
+                }
             }
         }
 
@@ -654,7 +692,7 @@ class FrontController extends Controller
             'patient_name' => $data['patient_name'],
             'phone' => $data['phone'],
             'email' => $email,
-            'dob' => $data['dob'],
+            'age' => $data['age'] ?? null,
             'visit_type' => $data['visit_type'],
             'appointment_date' => $data['appointment_date'],
             'notes' => $data['notes'] ?? null,
@@ -664,6 +702,24 @@ class FrontController extends Controller
             'currency' => 'BDT',
             'status' => 'pending',
         ]);
+
+        if ($data['visit_type'] === 'video') {
+            $location = 'Online Video Consultation';
+        } else {
+            $appointmentBranch = Branch::find($data['branch_id']);
+            $location = optional($appointmentBranch)->title ?: optional($appointmentBranch)->name ?: 'our branch';
+        }
+
+        $this->sendBookingSms($data['phone'], sprintf(
+            'Hi %s, your appointment with %s is confirmed for %s at %s (%s). Thank you for choosing Imperial Health.',
+            $data['patient_name'],
+            $doctorModel->name,
+            \Carbon\Carbon::parse($data['appointment_date'])->format('d M Y'),
+            $slot->label ?: $slot->start_time,
+            $location
+        ));
+        $this->sendPatientConfirmationEmail($email, new \App\Mail\DoctorConsultationBookingConfirmation($booking));
+        $this->sendAdminBookingNotification('doctor_consultation', $booking);
 
         return redirect()->route('doctor-booking.confirm', $booking->id);
     }
@@ -846,5 +902,62 @@ class FrontController extends Controller
         $page = Page::where('status', true)->where('slug', $slug)->firstOrFail();
 
         return view('frontend.dynamic-page', compact('page'));
+    }
+
+    /**
+     * Send a booking confirmation SMS. `send_sms()` already swallows its own
+     * errors and no-ops when Twilio isn't configured, so a booking never
+     * fails because the SMS didn't go out.
+     */
+    private function sendBookingSms(?string $phone, string $message): void
+    {
+        $phone = trim((string) $phone);
+
+        if ($phone !== '') {
+            send_sms($phone, $message);
+        }
+    }
+
+    /**
+     * Send a booking confirmation email, only when the patient actually gave
+     * one (email is optional on every booking form). A mail failure (bad SMTP
+     * config, etc.) must never break the booking itself.
+     */
+    private function sendPatientConfirmationEmail(?string $email, \Illuminate\Mail\Mailable $mailable): void
+    {
+        $email = trim((string) $email);
+
+        if ($email === '') {
+            return;
+        }
+
+        try {
+            \Illuminate\Support\Facades\Mail::to($email)->send($mailable);
+        } catch (\Throwable $e) {
+            // Swallow: a broken mail transport must not fail the booking.
+        }
+    }
+
+    /**
+     * Notify the company's own contact address of every new booking,
+     * regardless of whether the patient gave an email. Uses the site's
+     * general contact email (Admin > Settings) since there is no separate
+     * "booking notifications" recipient configured.
+     */
+    private function sendAdminBookingNotification(string $type, $booking): void
+    {
+        $adminEmail = trim((string) (setting('info')['email'] ?? ''));
+
+        if ($adminEmail === '') {
+            return;
+        }
+
+        try {
+            \Illuminate\Support\Facades\Mail::to($adminEmail)->send(
+                new \App\Mail\AdminBookingNotification($type, $booking)
+            );
+        } catch (\Throwable $e) {
+            // Swallow: a broken mail transport must not fail the booking.
+        }
     }
 }

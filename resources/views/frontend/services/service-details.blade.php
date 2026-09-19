@@ -6,7 +6,7 @@
     <main>
         <!-- PAGE HEADER -->
         <section class="bg-white border-b border-gray-200 pt-20 pb-16">
-            <div class="container mx-auto px-6">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Consultations</h1>
                 <p class="text-lg text-gray-600 mt-6 max-w-3xl leading-relaxed">
                     Connect with our expert doctors for personalized care and treatment plans across a wide range of specialties.
@@ -14,7 +14,7 @@
             </div>
         </section>
 
-        <div class="container mx-auto px-6 py-12 lg:py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
             
             <!-- SECTION: Consultations -->
             <section class="mb-20">
@@ -42,7 +42,7 @@
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('book-doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
+                            <a href="{{ route('doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
                                 Book an Appointment
                             </a>
                             
@@ -85,7 +85,7 @@
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('book-doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
+                            <a href="{{ route('doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
                                 Book an Appointment
                             </a>
                             <a href="tel:3242" class="text-gray-600 hover:text-imperial-primary flex items-center gap-2 text-sm font-medium px-2 py-3">
@@ -111,7 +111,7 @@
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('book-doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
+                            <a href="{{ route('doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
                                 Book an Appointment
                             </a>
                             <a href="tel:3242" class="text-gray-600 hover:text-imperial-primary flex items-center gap-2 text-sm font-medium px-2 py-3">
@@ -149,7 +149,7 @@
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('book-doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
+                            <a href="{{ route('doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
                                 Book an Appointment
                             </a>
                             <a href="tel:3242" class="text-gray-600 hover:text-imperial-primary flex items-center gap-2 text-sm font-medium px-2 py-3">
@@ -175,7 +175,7 @@
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('book-doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
+                            <a href="{{ route('doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
                                 Book an Appointment
                             </a>
                             <a href="tel:3242" class="text-gray-600 hover:text-imperial-primary flex items-center gap-2 text-sm font-medium px-2 py-3">
@@ -213,7 +213,7 @@
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('book-doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
+                            <a href="{{ route('doctor') }}" class="inline-block border border-imperial-primary text-imperial-primary px-8 py-3 font-medium hover:bg-imperial-primary hover:text-white transition text-center whitespace-nowrap">
                                 Book an Appointment
                             </a>
                             <a href="tel:3242" class="text-gray-600 hover:text-imperial-primary flex items-center gap-2 text-sm font-medium px-2 py-3">

@@ -137,6 +137,16 @@ class DoctorsController extends Controller
             ->addColumn('action', function($doctor) {
                 return view('admin.doctors._action', compact('doctor'));
             })
+            ->filterColumn('specialty', function ($query, $keyword) {
+                $query->whereHas('specialty', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%");
+                });
+            })
+            ->filterColumn('department', function ($query, $keyword) {
+                $query->whereHas('department', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%");
+                });
+            })
             ->rawColumns(['video_consultation', 'due', 'action'])
             ->make(true);
     }
@@ -173,6 +183,7 @@ class DoctorsController extends Controller
                 ? ($request->video_consultation_fee ?? $request->consultation_fee)
                 : null;
             $data['status'] = $request->boolean('status', true);
+            $data['is_featured'] = $request->boolean('is_featured');
             $data['branch_id'] = null;
             $data['schedule_branch'] = null;
             $data['schedule_consultant'] = null;
@@ -244,6 +255,7 @@ class DoctorsController extends Controller
                 ? ($request->video_consultation_fee ?? $request->consultation_fee)
                 : null;
             $data['status'] = $request->boolean('status');
+            $data['is_featured'] = $request->boolean('is_featured');
             $data['branch_id'] = null;
             $data['schedule_branch'] = null;
             $data['schedule_consultant'] = null;

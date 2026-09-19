@@ -32,7 +32,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
 
-            <div class="container mx-auto px-4 relative z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="max-w-3xl">
                     <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] ?? 'Our Services' }}</p>
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
@@ -46,7 +46,7 @@
         </section>
 
         <!-- SERVICES OVERVIEW -->
-        <section class="container mx-auto px-4 py-24">
+        <section class="container mx-auto px-4 sm:px-6 lg:px-8 py-24">
             <div class="text-center max-w-3xl mx-auto mb-20 reveal">
                 <div class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-6">{{ $pageSettings['section_badge'] ?? 'Patient-Centered Care' }}</div>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">{{ $pageSettings['section_title'] ?? 'Integrated Services for Everyday Health Needs' }}</h2>
@@ -100,7 +100,7 @@
                 <div class="mb-8 flex flex-wrap justify-center gap-3" id="service-category-tabs">
                     @foreach($categories as $key => $label)
                         <button type="button"
-                                class="service-tab-btn px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide border border-slate-200 bg-white text-slate-600 hover:border-indigo-200 hover:text-indigo-600 transition-all"
+                                class="service-tab-btn px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide border border-slate-200 bg-white text-slate-600 hover:border-imperial-light hover:text-imperial-primary transition-all"
                                 data-category="{{ $key }}">
                             {{ $label }} ({{ $services->where('category', $key)->count() }})
                         </button>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 @foreach($categoryServices as $service)
-                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-indigo-100 transition-all duration-500 group flex flex-col">
+                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-2xl hover:border-imperial-light transition-all duration-500 group flex flex-col">
                                         <div class="mb-4">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide bg-indigo-50 text-indigo-600">
                                                 {{ ucfirst($service->category ?? 'service') }}
@@ -132,7 +132,7 @@
                                         <div class="text-sm font-semibold text-slate-500 mb-6">
                                             {{ $currencyPrefix }}{{ number_format((float) $service->price, 2) }}
                                         </div>
-                                        <a href="{{ route('lab-test') }}" class="mt-auto block w-full py-3 bg-white group-hover:bg-indigo-600 group-hover:text-white border border-slate-200 group-hover:border-indigo-600 text-slate-600 text-center rounded-xl font-bold text-xs uppercase tracking-widest transition-all">
+                                        <a href="{{ route('lab-test') }}" class="mt-auto block w-full py-3 bg-white group-hover:bg-imperial-primary group-hover:text-white border border-slate-200 group-hover:border-imperial-primary text-slate-600 text-center rounded-xl font-bold text-xs uppercase tracking-widest transition-all">
                                             View Details
                                         </a>
                                     </div>

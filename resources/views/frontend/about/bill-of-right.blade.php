@@ -14,7 +14,7 @@
                  class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/40"></div>
             
-            <div class="container mx-auto px-4 h-full flex items-center relative z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center relative z-10">
                 <div class="max-w-2xl text-white">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4">Patient Bill of Rights</h1>
                     <p class="text-lg md:text-xl opacity-90 font-roboto leading-relaxed">

@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="bg-slate-50 font-sans min-h-screen py-16">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <h1 class="text-3xl font-extrabold text-slate-900 mb-8 flex items-center gap-3">
                 <i class="fa-solid fa-calendar-check text-indigo-600"></i>
@@ -46,15 +46,15 @@
                                 Collection Method
                             </h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <label class="relative flex flex-col p-6 border-2 border-slate-100 rounded-3xl cursor-pointer hover:border-indigo-600 transition-all group">
+                                <label class="relative flex flex-col p-6 border-2 border-slate-100 rounded-3xl cursor-pointer hover:border-imperial-primary transition-all group">
                                     <input type="radio" name="booking_type" value="branch_visit" class="absolute top-6 right-6" checked onchange="toggleVisitFields()">
-                                    <i class="fa-solid fa-clinic-medical text-2xl text-slate-300 group-hover:text-indigo-600 mb-4 transition-colors"></i>
+                                    <i class="fa-solid fa-clinic-medical text-2xl text-slate-300 group-hover:text-imperial-primary mb-4 transition-colors"></i>
                                     <span class="font-black text-slate-900 uppercase tracking-tight">Branch Visit</span>
                                     <span class="text-xs text-slate-400 font-bold mt-1">Visit our collection center</span>
                                 </label>
-                                <label class="relative flex flex-col p-6 border-2 border-slate-100 rounded-3xl cursor-pointer hover:border-indigo-600 transition-all group">
+                                <label class="relative flex flex-col p-6 border-2 border-slate-100 rounded-3xl cursor-pointer hover:border-imperial-primary transition-all group">
                                     <input type="radio" name="booking_type" value="home_visit" class="absolute top-6 right-6" onchange="toggleVisitFields()">
-                                    <i class="fa-solid fa-house-chimney-medical text-2xl text-slate-300 group-hover:text-indigo-600 mb-4 transition-colors"></i>
+                                    <i class="fa-solid fa-house-chimney-medical text-2xl text-slate-300 group-hover:text-imperial-primary mb-4 transition-colors"></i>
                                     <span class="font-black text-slate-900 uppercase tracking-tight">Home Collection</span>
                                     <span class="text-xs text-slate-400 font-bold mt-1">We collect from your home</span>
                                 </label>
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="w-full mt-10 py-5 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-indigo-900/20 hover:bg-indigo-500 transition-all active:scale-95">
+                            <button type="submit" class="w-full mt-10 py-5 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-indigo-900/20 hover:bg-imperial-primary transition-all active:scale-95">
                                 Confirm & Book Now
                             </button>
 

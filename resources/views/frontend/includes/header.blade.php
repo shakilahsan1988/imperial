@@ -9,37 +9,37 @@
 <!-- TOP BAR (Desktop Only)                      -->
 <!-- ============================================ -->
 <div class="bg-white border-b border-slate-100 hidden lg:block text-sm py-2.5 relative z-[60]">
-    <div class="container mx-auto px-6 flex justify-between items-center">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div class="flex gap-8 text-slate-500 font-bold uppercase tracking-widest">
             @if($phone !== '')
             <span class="flex items-center gap-2">
                 <i class="fa-solid fa-phone text-indigo-600"></i>
-                <a href="{{ $phoneHref }}" class="hover:text-indigo-600 transition">Hotline: {{ $phone }}</a>
+                <a href="{{ $phoneHref }}" class="hover:text-imperial-primary transition">Hotline: {{ $phone }}</a>
             </span>
             @endif
             <span class="flex items-center gap-2">
                 <i class="fa-solid fa-envelope text-indigo-600"></i> 
-                <a href="mailto:{{ $email !== '' ? $email : 'support@example.com' }}" class="hover:text-indigo-600 transition">Support Center</a>
+                <a href="mailto:{{ $email !== '' ? $email : 'support@example.com' }}" class="hover:text-imperial-primary transition">Support Center</a>
             </span>
         </div>
         <div class="flex gap-8 items-center">
             <!-- MY ACCOUNT (Desktop) -->
             <div class="relative h-full flex items-center" id="account-wrapper">
                 @if(auth()->guard('patient')->check())
-                    <div id="account-trigger" class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-indigo-600 transition select-none focus:outline-none font-bold uppercase tracking-widest">
+                    <div id="account-trigger" class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-imperial-primary transition select-none focus:outline-none font-bold uppercase tracking-widest">
                         <i class="fa-regular fa-user"></i> <span>{{__('My Account')}}</span>
                         <i class="fa-solid fa-chevron-down text-[8px] ml-1"></i>
                     </div>
                     <!-- Dropdown -->
                     <div id="account-dropdown" class="hidden absolute top-full right-0 mt-2 w-48 bg-white text-slate-700 shadow-2xl rounded-2xl border border-slate-100 z-[100] overflow-hidden transition-all duration-200">
-                        <a href="{{ route('patient.index') }}" class="block px-6 py-3 hover:bg-indigo-50 hover:text-indigo-600 transition font-bold border-b border-slate-50">{{__('Dashboard')}}</a>
+                        <a href="{{ route('patient.index') }}" class="block px-6 py-3 hover:bg-imperial-light hover:text-imperial-primary transition font-bold border-b border-slate-50">{{__('Dashboard')}}</a>
                         <form action="{{ route('patient.logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="w-full text-left block px-6 py-3 hover:bg-red-50 hover:text-red-600 transition font-bold">{{__('Sign Out')}}</button>
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('patient.auth.login') }}" class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-indigo-600 transition font-bold uppercase tracking-widest">
+                    <a href="{{ route('patient.auth.login') }}" class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-imperial-primary transition font-bold uppercase tracking-widest">
                         <i class="fa-regular fa-user text-sm"></i> <span>{{__('Sign In')}}</span>
                     </a>
                 @endif

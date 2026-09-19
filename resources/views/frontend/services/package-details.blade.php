@@ -27,7 +27,7 @@
 
             <div class="container relative z-10 mx-auto px-4">
                 <nav class="mb-8 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-400" aria-label="Breadcrumb">
-                    <a href="{{ route('health-check') }}" class="transition-colors hover:text-sky-300">Health Check</a>
+                    <a href="{{ route('health-check') }}" class="transition-colors hover:text-imperial-primary">Health Check</a>
                     <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
                     <span class="text-sky-300">Package Details</span>
                 </nav>
@@ -53,7 +53,7 @@
         </section>
 
         <section class="bg-slate-50 py-12 md:py-20">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
                     <div class="lg:col-span-7">
                         <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
@@ -116,7 +116,7 @@
                             </div>
                         </dl>
 
-                        <a href="#book-package" class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-sky-600/20 transition hover:bg-sky-700">
+                        <a href="#book-package" class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-sky-600/20 transition hover:bg-imperial-dark">
                             Book This Package
                             <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                         </a>
@@ -159,14 +159,14 @@
                                     @error('phone')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
-                                    <label for="package-email" class="mb-2 block text-xs font-bold text-slate-600">Email Address <span class="text-rose-500">*</span></label>
-                                    <input id="package-email" type="email" name="email" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100 disabled:bg-slate-50" placeholder="Email address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }} required>
+                                    <label for="package-email" class="mb-2 block text-xs font-bold text-slate-600">Email Address <span class="font-normal text-slate-400">(Optional)</span></label>
+                                    <input id="package-email" type="email" name="email" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100 disabled:bg-slate-50" placeholder="Email address" value="{{ old('email', $patient->email ?? '') }}" {{ $patient ? 'readonly' : '' }}>
                                     @error('email')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
-                                    <label for="package-dob" class="mb-2 block text-xs font-bold text-slate-600">Date of Birth <span class="text-rose-500">*</span></label>
-                                    <input id="package-dob" type="date" name="dob" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100" value="{{ old('dob', (!empty($patient->dob) && strtotime($patient->dob)) ? date('Y-m-d', strtotime($patient->dob)) : '') }}" required>
-                                    @error('dob')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
+                                    <label for="package-age" class="mb-2 block text-xs font-bold text-slate-600">Age <span class="font-normal text-slate-400">(Optional)</span></label>
+                                    <input id="package-age" type="number" name="age" min="0" max="150" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100" placeholder="Age" value="{{ old('age') }}">
+                                    @error('age')<p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="md:col-span-2">
                                     <label for="package-preferred-date" class="mb-2 block text-xs font-bold text-slate-600">Preferred Date <span class="font-normal text-slate-400">(Optional)</span></label>
@@ -180,7 +180,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200">
+                            <button type="submit" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition hover:bg-imperial-dark focus:outline-none focus:ring-4 focus:ring-sky-200">
                                 Submit Booking Request
                                 <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                             </button>
@@ -191,7 +191,7 @@
         </section>
 
         <section class="border-y border-slate-100 bg-white py-16 md:py-20">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-10 max-w-2xl">
                     <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Package coverage</p>
                     <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 md:text-4xl">What's included</h2>
@@ -200,7 +200,7 @@
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     @forelse($inclusions as $item)
-                        <div class="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-sm">
+                        <div class="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-imperial-light hover:shadow-sm">
                             <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-check text-sm" aria-hidden="true"></i></span>
                             <p class="pt-1.5 font-semibold leading-6 text-slate-800">{{ $item }}</p>
                         </div>
@@ -212,7 +212,7 @@
         </section>
 
         <section class="bg-slate-50 py-16 md:py-20">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
                     <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-9">
                         <p class="text-xs font-black uppercase tracking-[0.18em] text-sky-600">Before your visit</p>

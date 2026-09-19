@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Booking Confirmation</title>
+    <title>Appointment Confirmation</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -20,55 +20,52 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Booking Confirmed!</h1>
+            <h1>Appointment Confirmed!</h1>
         </div>
-        
+
         <div class="content">
             <p>Dear <strong>{{ $booking->patient_name }}</strong>,</p>
-            
-            <p>Your booking has been confirmed. Here are your booking details:</p>
-            
+
+            <p>Your appointment has been confirmed. Here are your appointment details:</p>
+
             <div class="details">
                 <div class="detail-row">
                     <span class="label">Booking ID:</span>
-                    <span class="value">#BK-{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}</span>
+                    <span class="value">#DC-{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="label">Service{{ $booking->services->count() > 1 ? 's' : '' }}:</span>
-                    <span class="value">{{ $booking->services->pluck('name')->implode(', ') }}</span>
+                    <span class="label">Doctor:</span>
+                    <span class="value">{{ optional($booking->doctor)->name }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="label">Type:</span>
-                    <span class="value">{{ $booking->booking_type == 'home_visit' ? 'Home Visit' : 'Branch Visit' }}</span>
+                    <span class="label">Visit Type:</span>
+                    <span class="value">{{ $booking->visit_type === 'video' ? 'Online Video Consultation' : 'In-Hub Visit' }}</span>
                 </div>
+                @if($booking->visit_type === 'in_hub' && $booking->branch)
+                <div class="detail-row">
+                    <span class="label">Branch:</span>
+                    <span class="value">{{ $booking->branch->title ?: $booking->branch->name }}</span>
+                </div>
+                @endif
                 <div class="detail-row">
                     <span class="label">Date:</span>
-                    <span class="value">{{ \Carbon\Carbon::parse($booking->scheduled_date)->format('d M Y') }}</span>
+                    <span class="value">{{ \Carbon\Carbon::parse($booking->appointment_date)->format('d M Y') }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="label">Time:</span>
-                    <span class="value">{{ \Carbon\Carbon::parse($booking->scheduled_time)->format('h:i A') }}</span>
+                    <span class="value">{{ optional($booking->slot)->label ?: optional($booking->slot)->start_time }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="label">Total Amount:</span>
-                    <span class="value">৳{{ number_format($booking->total_amount, 2) }}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Payment:</span>
-                    <span class="value">{{ $booking->payment_type == 'pay_at_branch' ? 'Pay at Branch' : 'Online Payment' }}</span>
+                    <span class="label">Consultation Fee:</span>
+                    <span class="value">৳{{ number_format($booking->consultation_fee, 2) }}</span>
                 </div>
             </div>
-            
-            @if($booking->booking_type == 'home_visit' && $booking->patient_address)
-            <p><strong>Collection Address:</strong><br>
-            {{ $booking->patient_address }}</p>
-            @endif
-            
+
             <p>Please arrive 15 minutes before your scheduled time. If you need to reschedule or cancel, please contact us at least 24 hours in advance.</p>
-            
+
             <p>Thank you for choosing Imperial Health Bangladesh!</p>
         </div>
-        
+
         @php($infoSettings = setting('info') ?? [])
         <div class="footer">
             <p>&copy; {{ date('Y') }} Imperial Health Bangladesh. All rights reserved.</p>

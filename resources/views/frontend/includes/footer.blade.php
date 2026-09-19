@@ -8,10 +8,11 @@
     $footerText = trim((string) ($infoSettings['footer'] ?? ''));
     $logoSrc = !empty($infoSettings['logo']) ? asset('img/' . $infoSettings['logo']) : asset('assets/front/images/logo.png');
     $phoneHref = $phone !== '' ? ('tel:' . preg_replace('/\s+/', '', $phone)) : '#';
+    $footerBranches = \App\Models\Branch::orderBy('name')->get();
 @endphp
 
 <footer class="bg-[#0F172A] text-slate-400 pt-20 pb-10">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-16">
             
             <!-- Brand & Newsletter -->
@@ -23,7 +24,7 @@
                 
                 <form class="relative group" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
                     <input type="email" placeholder="Your email address" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-5 py-3.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all outline-none">
-                    <button type="submit" class="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 rounded-lg transition-all">
+                    <button type="submit" class="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-imperial-dark text-white px-4 rounded-lg transition-all">
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </form>
@@ -33,11 +34,11 @@
             <div>
                 <h4 class="text-white font-bold mb-6 tracking-tight uppercase text-sm">Our Services</h4>
                 <ul class="space-y-4 text-sm font-medium">
-                    <li><a href="{{ route('lab-test') }}" class="hover:text-indigo-600 transition-colors">Diagnostics & Lab</a></li>
-                    <li><a href="{{ route('health-check') }}" class="hover:text-indigo-600 transition-colors">Health Packages</a></li>
-                    <li><a href="{{ route('membership') }}" class="hover:text-indigo-600 transition-colors">Membership Plans</a></li>
-                    <li><a href="{{ route('video-consultation') }}" class="hover:text-indigo-600 transition-colors">Virtual Consultations</a></li>
-                    <li><a href="{{ route('branches') }}" class="hover:text-indigo-600 transition-colors">Our Branches</a></li>
+                    <li><a href="{{ route('lab-test') }}" class="hover:text-imperial-primary transition-colors">Diagnostics & Lab</a></li>
+                    <li><a href="{{ route('health-check') }}" class="hover:text-imperial-primary transition-colors">Health Packages</a></li>
+                    <li><a href="{{ route('membership') }}" class="hover:text-imperial-primary transition-colors">Membership Plans</a></li>
+                    <li><a href="{{ route('video-consultation') }}" class="hover:text-imperial-primary transition-colors">Virtual Consultations</a></li>
+                    <li><a href="{{ route('branches') }}" class="hover:text-imperial-primary transition-colors">Our Branches</a></li>
                 </ul>
             </div>
 
@@ -50,7 +51,7 @@
                             $url = $item['url'] ?? '#';
                             $href = preg_match('/^https?:\\/\\//i', $url) ? $url : url($url);
                         @endphp
-                        <li><a href="{{ $href }}" class="hover:text-indigo-600 transition-colors" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>{{ $item['label'] ?? 'Menu' }}</a></li>
+                        <li><a href="{{ $href }}" class="hover:text-imperial-primary transition-colors" {{ !empty($item['new_tab']) ? 'target=_blank rel=noopener' : '' }}>{{ $item['label'] ?? 'Menu' }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -63,7 +64,16 @@
                         <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0 text-indigo-400">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <span class="leading-relaxed">{{ $address !== '' ? $address : 'Address not configured' }}</span>
+                        <div class="space-y-4">
+                            @forelse($footerBranches as $branch)
+                                <div>
+                                    <p class="text-white font-bold text-xs uppercase tracking-wide mb-1">{{ $branch->name }}</p>
+                                    <p class="leading-relaxed whitespace-pre-line">{{ $branch->address ?: 'Address not configured' }}</p>
+                                </div>
+                            @empty
+                                <p class="leading-relaxed whitespace-pre-line">{{ $address !== '' ? $address : 'Address not configured' }}</p>
+                            @endforelse
+                        </div>
                     </li>
                     <li class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0 text-indigo-400">
@@ -74,22 +84,22 @@
                 </ul>
                 <div class="flex gap-3 mt-8">
                     @if(!empty($socials['facebook']))
-                        <a href="{{ $socials['facebook'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                        <a href="{{ $socials['facebook'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-imperial-primary text-white transition-all transform hover:-translate-y-1">
                             <i class="fa-brands fa-facebook-f text-sm"></i>
                         </a>
                     @endif
                     @if(!empty($socials['twitter']))
-                        <a href="{{ $socials['twitter'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                        <a href="{{ $socials['twitter'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-imperial-primary text-white transition-all transform hover:-translate-y-1">
                             <i class="fa-brands fa-twitter text-sm"></i>
                         </a>
                     @endif
                     @if(!empty($socials['youtube']))
-                        <a href="{{ $socials['youtube'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                        <a href="{{ $socials['youtube'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-imperial-primary text-white transition-all transform hover:-translate-y-1">
                             <i class="fa-brands fa-youtube text-sm"></i>
                         </a>
                     @endif
                     @if(!empty($socials['instagram']))
-                        <a href="{{ $socials['instagram'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-indigo-600 text-white transition-all transform hover:-translate-y-1">
+                        <a href="{{ $socials['instagram'] }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-imperial-primary text-white transition-all transform hover:-translate-y-1">
                             <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
                     @endif
@@ -115,7 +125,7 @@
 
 <!-- Floating Book Appointment Button (Mobile) -->
 <div class="fixed bottom-8 right-6 z-40 md:hidden">
-    <a href="{{ route('book-doctor') }}" class="flex items-center justify-center bg-indigo-600 text-white w-16 h-16 rounded-2xl shadow-2xl shadow-indigo-500/50 hover:bg-indigo-700 transition-all animate-bounce">
+    <a href="{{ route('doctor') }}" class="flex items-center justify-center bg-indigo-600 text-white w-16 h-16 rounded-2xl shadow-2xl shadow-indigo-500/50 hover:bg-imperial-dark transition-all animate-bounce">
         <i class="fa-solid fa-calendar-plus text-2xl"></i>
     </a>
 </div>

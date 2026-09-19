@@ -15,6 +15,7 @@ class DoctorConsultationBooking extends Model
         'phone',
         'email',
         'dob',
+        'age',
         'visit_type',
         'appointment_date',
         'notes',

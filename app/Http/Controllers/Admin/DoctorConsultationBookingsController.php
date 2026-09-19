@@ -30,8 +30,9 @@ class DoctorConsultationBookingsController extends Controller
             'status' => 'required|in:pending,confirmed,completed,cancelled',
         ]);
 
-        if (!$doctor_consultation_booking->patient_id && in_array($data['status'], ['confirmed', 'completed'])) {
-            $email = strtolower(trim((string) $doctor_consultation_booking->email));
+        $email = strtolower(trim((string) $doctor_consultation_booking->email));
+
+        if (!$doctor_consultation_booking->patient_id && $email !== '' && in_array($data['status'], ['confirmed', 'completed'])) {
             $patient = Patient::where('email', $email)->first();
 
             if (!$patient) {

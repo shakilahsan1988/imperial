@@ -92,7 +92,7 @@
         .stat-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 28px -6px rgba(0, 122, 170, 0.2);
-            border-left-color: #0e7490;
+            border-left-color: var(--primary-dark);
         }
 
         /* Modern Buttons */
@@ -126,7 +126,7 @@
             transition: all 0.3s ease;
         }
         .btn-outline:hover {
-            background: #007caa;
+            background: var(--primary);
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 8px 20px -4px rgba(0, 122, 170, 0.3);
@@ -537,8 +537,8 @@
         }
         
         #labTestsTable .btn-primary:hover {
-            background-color: #0e7490 !important;
-            border-color: #0e7490 !important;
+            background-color: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
             transform: translateY(-1px);
         }
         
@@ -586,8 +586,8 @@
         
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
             background: #f3f4f6 !important;
-            border-color: #007caa !important;
-            color: #007caa !important;
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
@@ -597,8 +597,8 @@
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-            background: #0e7490 !important;
-            border-color: #0e7490 !important;
+            background: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
             color: white !important;
         }
         
@@ -636,7 +636,7 @@
         .btn-add-to-cart:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 122, 170, 0.4);
-            background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+            background: var(--primary-dark);
         }
 
         .btn-add-to-cart i {
@@ -669,7 +669,7 @@
         .health-check-table .btn-add-to-cart:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 122, 170, 0.4);
-            background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+            background: var(--primary-dark);
         }
 
         .health-check-table .btn-add-to-cart i {
@@ -755,7 +755,7 @@
         }
 
         .richtext-cont a:hover {
-            color: #0e7490;
+            color: var(--primary-dark);
         }
 
         .richtext-cont blockquote {

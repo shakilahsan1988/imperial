@@ -168,7 +168,7 @@
                                                     <i class="fas fa-search-location"></i>
                                                   </span>
                                                 </div>
-                                                <input type="text" name="address" id="address" class="form-control" value="{{$settings['address']}}" required>
+                                                <textarea name="address" id="address" class="form-control" rows="3" required>{{ $settings['address'] }}</textarea>
                                               </div>
                                             </div>
                                             <div class="col-lg-6">

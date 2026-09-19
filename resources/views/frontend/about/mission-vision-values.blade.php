@@ -13,7 +13,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
-            <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                 <div class="max-w-4xl mx-auto">
                     <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                     <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">
@@ -30,7 +30,7 @@
 
         <!-- MISSION & VISION SECTION -->
         <section class="py-24 bg-slate-50">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     
                     <!-- Mission Card -->
@@ -71,7 +71,7 @@
 
         <!-- VALUES SECTION -->
         <section class="py-24">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-16">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">The Imperial Standard</h2>
                     <p class="text-slate-500 font-medium leading-relaxed">Four commitments we hold ourselves to, at every visit.</p>
@@ -80,7 +80,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                     <!-- SHOW UP PREPARED -->
-                    <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-indigo-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                    <div class="group bg-white rounded-3xl p-8 border border-slate-100 hover:border-imperial-light hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-clipboard-list text-xl"></i>
@@ -137,12 +137,12 @@
 
         <!-- CTA SECTION -->
         <section class="py-20 bg-slate-900">
-            <div class="container mx-auto px-4 text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="max-w-3xl mx-auto">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6 tracking-tight">Experience Healthcare the Right Way</h2>
                     <p class="text-slate-400 text-lg mb-10 leading-relaxed">Schedule an appointment today and see how our mission, vision, and values translate into exceptional patient care.</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="{{ route('book-doctor') }}" class="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 text-white font-bold rounded-2xl hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-600/30">
+                        <a href="{{ route('doctor') }}" class="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 text-white font-bold rounded-2xl hover:bg-imperial-primary transition-colors shadow-lg shadow-indigo-600/30">
                             <i class="fa-solid fa-calendar-check mr-3"></i>
                             Book Appointment
                         </a>

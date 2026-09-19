@@ -5,18 +5,18 @@
 @section('content')
 <main class="min-h-screen bg-[#F8FAFC] font-sans pb-20">
     <nav class="bg-white border-b border-slate-100 py-4 mb-8">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <ol class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                <li><a href="{{ route('fhome') }}" class="hover:text-indigo-600 transition">Home</a></li>
+                <li><a href="{{ route('fhome') }}" class="hover:text-imperial-primary transition">Home</a></li>
                 <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
-                <li><a href="{{ route('doctor') }}" class="hover:text-indigo-600 transition">Doctors</a></li>
+                <li><a href="{{ route('doctor') }}" class="hover:text-imperial-primary transition">Doctors</a></li>
                 <li><i class="fa-solid fa-chevron-right text-[8px]"></i></li>
                 <li class="text-indigo-600">Booking Confirmation</li>
             </ol>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto">
 
             {{-- Success Header --}}
@@ -121,9 +121,9 @@
                     {{-- Cash Payment --}}
                     <form action="{{ route('doctor-booking.confirm-cash', $booking->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full text-left p-6 border-2 border-slate-100 rounded-2xl hover:border-indigo-600 hover:bg-indigo-50 transition-all group cursor-pointer">
+                        <button type="submit" class="w-full text-left p-6 border-2 border-slate-100 rounded-2xl hover:border-imperial-primary hover:bg-imperial-light transition-all group cursor-pointer">
                             <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 bg-indigo-50 group-hover:bg-indigo-100 rounded-xl flex items-center justify-center transition">
+                                <div class="w-14 h-14 bg-indigo-50 group-hover:bg-imperial-light rounded-xl flex items-center justify-center transition">
                                     <i class="fa-solid fa-money-bill-wave text-indigo-600 text-xl"></i>
                                 </div>
                                 <div>
@@ -138,9 +138,9 @@
                     @if($sslEnabled && $booking->consultation_fee > 0)
                     <form action="{{ route('doctor-booking.pay-online', $booking->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full text-left p-6 border-2 border-slate-100 rounded-2xl hover:border-indigo-600 hover:bg-indigo-50 transition-all group cursor-pointer">
+                        <button type="submit" class="w-full text-left p-6 border-2 border-slate-100 rounded-2xl hover:border-imperial-primary hover:bg-imperial-light transition-all group cursor-pointer">
                             <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 bg-indigo-50 group-hover:bg-indigo-100 rounded-xl flex items-center justify-center transition">
+                                <div class="w-14 h-14 bg-indigo-50 group-hover:bg-imperial-light rounded-xl flex items-center justify-center transition">
                                     <i class="fa-solid fa-credit-card text-indigo-600 text-xl"></i>
                                 </div>
                                 <div>
@@ -168,7 +168,7 @@
                 <a href="{{ route('fhome') }}" class="flex-grow py-4 bg-white text-slate-900 text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg border border-slate-100 hover:bg-slate-50 transition-all">
                     Back to Home
                 </a>
-                <a href="{{ route('doctor') }}" class="flex-grow py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                <a href="{{ route('doctor') }}" class="flex-grow py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-imperial-dark transition-all">
                     <i class="fa-solid fa-calendar-plus mr-2"></i> Book Another Appointment
                 </a>
             </div>

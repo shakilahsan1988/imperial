@@ -18,7 +18,7 @@
             <img src="{{ asset($branch->feature_image ?: 'assets/front/images/about/reception.jpg') }}" class="w-full h-full object-cover">
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/85 to-transparent"></div>
-        <div class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:items-end">
                 <div class="xl:col-span-7 max-w-4xl">
                     <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">Branch Details</p>
@@ -45,7 +45,7 @@
                             </div>
                             <div>
                                 <p class="text-xs uppercase tracking-[0.2em] text-indigo-300 font-black mb-3">Google Map Location</p>
-                                <a href="{{ $branch->google_map_location }}" target="_blank" class="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white text-slate-900 font-bold hover:bg-indigo-50 transition-all">
+                                <a href="{{ $branch->google_map_location }}" target="_blank" class="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white text-slate-900 font-bold hover:bg-imperial-light transition-all">
                                     Open Location <i class="fa-solid fa-location-arrow text-xs"></i>
                                 </a>
                             </div>
@@ -57,7 +57,7 @@
     </section>
 
     <section class="py-24 bg-white">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="space-y-10">
                 <div class="bg-slate-50 rounded-[32px] p-8 md:p-10 border border-slate-100">
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-6">About This Branch</h2>
@@ -75,7 +75,7 @@
                             </a>
                             <div class="p-6 flex flex-col flex-1">
                                 <div class="mb-4">
-                                    <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                                    <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-imperial-primary transition-colors">
                                         <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}">{{ $doctor->name }}</a>
                                     </h3>
                                     <p class="text-sm text-slate-500 font-medium leading-snug">{{ $doctor->designation ?: 'Consultant' }}</p>
@@ -99,7 +99,7 @@
                                         </strong>
                                     </div>
                                 </div>
-                                <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}" class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-xl font-bold text-sm tracking-wide transition-all">
+                                <a href="{{ route('book-doctor', ['doctor' => $doctor->slug ?: $doctor->id]) }}" class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-imperial-primary text-white rounded-xl font-bold text-sm tracking-wide transition-all">
                                     Book Appointment
                                 </a>
                             </div>

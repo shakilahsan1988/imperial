@@ -13,6 +13,7 @@ class MembershipPlanBooking extends Model
         'phone',
         'email',
         'dob',
+        'age',
         'preferred_start_date',
         'notes',
         'total_amount',

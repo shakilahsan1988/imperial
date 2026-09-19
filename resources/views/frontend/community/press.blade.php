@@ -10,7 +10,7 @@
     {{-- FrontController::press()). Restore with verified Imperial press --}}
     {{-- content once available. --}}
     <section class="py-24">
-        <div class="container mx-auto px-6 text-center">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-gray-500">This page is temporarily unavailable.</p>
         </div>
     </section>

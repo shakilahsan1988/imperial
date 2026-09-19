@@ -26,10 +26,10 @@
             <dd class="col-sm-9">{{ $booking->phone }}</dd>
 
             <dt class="col-sm-3">Email</dt>
-            <dd class="col-sm-9">{{ $booking->email }}</dd>
+            <dd class="col-sm-9">{{ $booking->email ?: '-' }}</dd>
 
-            <dt class="col-sm-3">DOB</dt>
-            <dd class="col-sm-9">{{ $booking->dob ?: '-' }}</dd>
+            <dt class="col-sm-3">Age</dt>
+            <dd class="col-sm-9">{{ $booking->age ?: '-' }}</dd>
 
             <dt class="col-sm-3">Visit Type</dt>
             <dd class="col-sm-9">{{ $booking->visit_type === 'in_hub' ? 'In-Hub Visit' : 'Video Consult' }}</dd>

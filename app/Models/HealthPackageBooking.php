@@ -13,6 +13,7 @@ class HealthPackageBooking extends Model
         'phone',
         'email',
         'dob',
+        'age',
         'preferred_date',
         'notes',
         'total_amount',

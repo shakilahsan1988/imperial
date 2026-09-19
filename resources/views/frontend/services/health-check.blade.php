@@ -41,7 +41,7 @@
         <div class="container relative z-10 mx-auto px-5 py-20 sm:px-6 md:py-28 lg:px-8 lg:py-32">
             <div class="max-w-3xl">
                 <nav class="mb-8 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-400" aria-label="Breadcrumb">
-                    <a href="{{ route('fhome') }}" class="transition-colors hover:text-sky-300">Home</a>
+                    <a href="{{ route('fhome') }}" class="transition-colors hover:text-imperial-primary">Home</a>
                     <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
                     <span class="text-sky-300">{{ $healthCheckSettings['page_name'] ?? 'Health Check' }}</span>
                 </nav>
@@ -58,7 +58,7 @@
 
                 <div class="mt-9 flex flex-wrap items-center gap-3">
                     @if($activeCategories->isNotEmpty())
-                        <a href="#health-category-{{ $activeCategories->first()->id }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/30">
+                        <a href="#health-category-{{ $activeCategories->first()->id }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-imperial-primary px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-imperial-dark focus:outline-none focus:ring-4 focus:ring-sky-400/30">
                             Browse packages
                             <i class="fa-solid fa-arrow-down text-xs" aria-hidden="true"></i>
                         </a>
@@ -76,13 +76,13 @@
     </section>
 
     @if($activeCategories->isNotEmpty())
-        <section class="relative z-20 -mt-7 px-4 sm:px-6" aria-label="Health check categories">
+        <section class="relative z-20 -mt-7 px-4 sm:px-6 lg:px-8" aria-label="Health check categories">
             <div class="container mx-auto">
                 <div class="flex items-center gap-3 overflow-x-auto rounded-2xl border border-slate-200/80 bg-white p-3 shadow-xl shadow-slate-900/5 sm:p-4">
                     <span class="hidden flex-shrink-0 px-2 text-xs font-black uppercase tracking-[0.16em] text-slate-400 sm:inline">Explore</span>
                     <span class="hidden h-6 w-px flex-shrink-0 bg-slate-200 sm:inline"></span>
                     @foreach($activeCategories as $category)
-                        <a href="#health-category-{{ $category->id }}" class="flex flex-shrink-0 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50 hover:text-sky-700">
+                        <a href="#health-category-{{ $category->id }}" class="flex flex-shrink-0 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:border-imperial-light hover:bg-imperial-light hover:text-imperial-primary">
                             {{ $category->name }}
                             <span class="rounded-md bg-white px-2 py-0.5 text-[11px] font-black text-slate-500 shadow-sm">{{ $category->packages->count() }}</span>
                         </a>
@@ -93,11 +93,11 @@
     @endif
 
     <section class="pb-6 pt-14 md:pb-8 md:pt-16" aria-label="Health check benefits">
-        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 @foreach($features as $feature)
-                    <article class="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-lg hover:shadow-slate-900/5 sm:p-6">
-                        <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 transition group-hover:bg-sky-600 group-hover:text-white">
+                    <article class="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-imperial-light hover:shadow-lg hover:shadow-slate-900/5 sm:p-6">
+                        <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 transition group-hover:bg-imperial-primary group-hover:text-white">
                             <i class="fa-solid {{ $feature['icon'] }} text-lg" aria-hidden="true"></i>
                         </span>
                         <span>
@@ -112,7 +112,7 @@
 
     @forelse($activeCategories as $category)
         <section id="health-category-{{ $category->id }}" class="scroll-mt-24 py-16 md:py-20 {{ $loop->odd ? 'bg-slate-50' : 'border-y border-slate-100 bg-white' }}">
-            <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-9 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-12">
                     <div>
                         <p class="mb-2 text-xs font-black uppercase tracking-[0.18em] text-sky-600">
@@ -132,7 +132,7 @@
                             $packageImage = asset($package->image ?: 'assets/front/images/services/services-facility.jpg');
                         @endphp
 
-                        <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-2xl hover:shadow-slate-900/10">
+                        <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-imperial-light hover:shadow-2xl hover:shadow-slate-900/10">
                             <a href="{{ $detailsUrl }}" class="relative block aspect-[4/3] overflow-hidden bg-slate-100" aria-label="View {{ $package->name }}">
                                 <img src="{{ $packageImage }}" alt="{{ $package->name }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]">
                                 <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/45 to-transparent"></div>
@@ -143,7 +143,7 @@
 
                             <div class="flex flex-1 flex-col p-5 sm:p-6">
                                 <div class="mb-5">
-                                    <h3 class="text-lg font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-sky-700">
+                                    <h3 class="text-lg font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-imperial-primary">
                                         <a href="{{ $detailsUrl }}">{{ $package->name }}</a>
                                     </h3>
                                     <p class="mt-2 text-xs font-medium text-slate-500">{{ $category->name }}</p>
@@ -154,7 +154,7 @@
                                 </div>
 
                                 <div class="mt-auto">
-                                    <a href="{{ $detailsUrl }}" class="flex w-full items-center justify-between rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-100">
+                                    <a href="{{ $detailsUrl }}" class="flex w-full items-center justify-between rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-imperial-primary focus:outline-none focus:ring-4 focus:ring-sky-100">
                                         Explore package
                                         <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10">
                                             <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
@@ -169,7 +169,7 @@
         </section>
     @empty
         <section class="bg-white py-24">
-            <div class="container mx-auto px-5 text-center sm:px-6">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
                     <i class="fa-solid fa-heart-pulse text-2xl" aria-hidden="true"></i>
                 </div>
@@ -180,7 +180,7 @@
     @endforelse
 
     <section class="border-t border-slate-100 bg-white py-16 md:py-20">
-        <div class="container mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div class="mb-10 text-center md:mb-12">
                 <p class="mb-3 text-xs font-black uppercase tracking-[0.18em] text-sky-600">Good to know</p>
                 <h2 class="text-3xl font-black tracking-tight text-slate-950 md:text-4xl">{{ $healthCheckSettings['faq_title'] ?? 'Common Questions' }}</h2>
@@ -191,7 +191,7 @@
                 @foreach($faqs as $faq)
                     @if($faq['question'])
                         <details class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-50 transition open:border-sky-200 open:bg-white open:shadow-lg open:shadow-slate-900/5">
-                            <summary class="flex cursor-pointer list-none items-center justify-between gap-5 p-5 text-sm font-bold text-slate-800 transition hover:text-sky-700 sm:p-6 sm:text-base">
+                            <summary class="flex cursor-pointer list-none items-center justify-between gap-5 p-5 text-sm font-bold text-slate-800 transition hover:text-imperial-primary sm:p-6 sm:text-base">
                                 <span>{{ $faq['question'] }}</span>
                                 <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-white text-sky-600 shadow-sm">
                                     <i class="fa-solid fa-plus text-xs transition group-open:rotate-45" aria-hidden="true"></i>

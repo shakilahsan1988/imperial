@@ -50,7 +50,7 @@
 
     <!-- Simple Header for Login Page -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <!-- Logo -->
             <a href="http://localhost/" class="flex-shrink-0">
                 <img src="/assets/logo.jpg" alt="Imperial Health Logo" class="h-8 w-auto" onerror="this.src='https://placehold.co/150x50/8A2061/ffffff?text=imperial+Health'">
@@ -64,7 +64,7 @@
     </header>
 
     <!-- Main Content: Split Layout -->
-    <main class="flex-grow flex items-center justify-center py-12 px-4">
+    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto">
             <div class="flex flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden max-w-5xl mx-auto min-h-[600px]">
                 
@@ -176,7 +176,7 @@
 
     <!-- Footer (Simplified) -->
     <footer class="bg-gray-200 pt-8 pb-6 text-center">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-center gap-6 mb-6">
                 <a href="#" class="text-gray-600 hover:text-imperial-primary transition"><i class="fa-brands fa-facebook-f"></i></a>
                 <a href="#" class="text-gray-600 hover:text-imperial-primary transition"><i class="fa-brands fa-linkedin-in"></i></a>

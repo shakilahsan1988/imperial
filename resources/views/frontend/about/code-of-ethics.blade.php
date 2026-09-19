@@ -112,7 +112,7 @@
                             Employees and stakeholders are encouraged to report any concerns or suspected violations of this Code. We ensure confidentiality to the extent possible by law and protect whistleblowers from retaliation.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="mailto:{{ $infoSettings['email'] ?? '' }}" class="flex items-center gap-2 text-white bg-imperial-primary hover:bg-blue-700 px-6 py-3 rounded font-bold transition text-center">
+                            <a href="mailto:{{ $infoSettings['email'] ?? '' }}" class="flex items-center gap-2 text-white bg-imperial-primary hover:bg-imperial-dark px-6 py-3 rounded font-bold transition text-center">
                                 <i class="fa-solid fa-envelope"></i> Report via Email
                             </a>
                             <a href="tel:{{ preg_replace('/\s+/', '', $infoSettings['phone'] ?? '') }}" class="flex items-center gap-2 text-imperial-primary border border-imperial-primary hover:bg-imperial-light px-6 py-3 rounded font-bold transition text-center">

@@ -41,10 +41,12 @@ class Doctor extends Model
         'schedule_days',
         'schedule_time',
         'status',
+        'is_featured',
     ];
 
     protected $casts = [
         'status' => 'boolean',
+        'is_featured' => 'boolean',
         'video_consultation_available' => 'boolean',
         'commission' => 'decimal:2',
         'consultation_fee' => 'decimal:2',

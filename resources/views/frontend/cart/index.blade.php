@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="bg-slate-50 font-sans min-h-screen py-16">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-extrabold text-slate-900 mb-8 flex items-center gap-3">
             <i class="fa-solid fa-cart-shopping text-indigo-600"></i>
             Your Selection
@@ -15,13 +15,13 @@
                 <!-- Cart Items -->
                 <div class="lg:col-span-2 space-y-4">
                     @foreach($cart as $id => $details)
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center group hover:border-indigo-200 transition-all" id="cart-item-{{ $id }}">
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center group hover:border-imperial-light transition-all" id="cart-item-{{ $id }}">
                             <div class="flex gap-6 items-center">
                                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-bold">
                                     {{ strtoupper(substr($details['category'], 0, 1)) }}
                                 </div>
                                 <div>
-                                    <h3 class="font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors">{{ $details['name'] }}</h3>
+                                    <h3 class="font-extrabold text-slate-900 group-hover:text-imperial-primary transition-colors">{{ $details['name'] }}</h3>
                                     <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{{ $details['category'] }}</p>
                                     
                                     @if(isset($details['components']) && count($details['components']) > 0)
@@ -71,7 +71,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('cart.checkout') }}" class="block w-full py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-1 transition-all active:scale-95">
+                        <a href="{{ route('cart.checkout') }}" class="block w-full py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-sm shadow-lg shadow-indigo-200 hover:bg-imperial-dark hover:-translate-y-1 transition-all active:scale-95">
                             Proceed to Booking
                         </a>
                         
@@ -89,7 +89,7 @@
                 </div>
                 <h2 class="text-2xl font-black text-slate-900 mb-2">Your cart is empty</h2>
                 <p class="text-slate-500 mb-8 max-w-sm mx-auto">Looks like you haven't added any diagnostic tests to your selection yet.</p>
-                <a href="{{ route('lab-test') }}" class="inline-block px-10 py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                <a href="{{ route('lab-test') }}" class="inline-block px-10 py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-imperial-dark transition-all">
                     Browse All Tests
                 </a>
             </div>

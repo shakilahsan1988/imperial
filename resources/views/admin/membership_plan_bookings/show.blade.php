@@ -26,10 +26,10 @@
             <dd class="col-sm-9">{{ $booking->phone }}</dd>
 
             <dt class="col-sm-3">Email</dt>
-            <dd class="col-sm-9">{{ $booking->email }}</dd>
+            <dd class="col-sm-9">{{ $booking->email ?: '-' }}</dd>
 
-            <dt class="col-sm-3">DOB</dt>
-            <dd class="col-sm-9">{{ optional($booking->dob)->format('Y-m-d') ?: '-' }}</dd>
+            <dt class="col-sm-3">Age</dt>
+            <dd class="col-sm-9">{{ $booking->age ?: '-' }}</dd>
 
             <dt class="col-sm-3">Preferred Start Date</dt>
             <dd class="col-sm-9">{{ optional($booking->preferred_start_date)->format('Y-m-d') ?: '-' }}</dd>

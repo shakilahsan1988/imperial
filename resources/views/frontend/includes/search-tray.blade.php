@@ -3,7 +3,7 @@
     <div id="search-tray" class="fixed inset-x-0 top-0 bg-white z-[60] shadow-2xl transform -translate-y-[110%] transition-transform duration-300 ease-in-out">
         
         <!-- Container for content -->
-        <div class="container mx-auto px-6 py-10 md:py-16 relative max-w-5xl">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative max-w-5xl">
             
             <!-- Close Button -->
             <button id="close-search-tray" class="absolute top-6 right-6 text-gray-400 hover:text-imperial-primary transition text-3xl focus:outline-none">

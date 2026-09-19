@@ -5,7 +5,7 @@
 @section('content')
     <main class="bg-white font-sans">
         <section class="py-20">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-8">My Bookings</h1>
 
                 @if($bookings->isEmpty())

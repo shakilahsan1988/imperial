@@ -13,7 +13,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
-            <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                 <div class="max-w-4xl mx-auto">
                     <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-8 tracking-tight leading-tight">
                         {!! $pageSettings['hero_title_html'] ?? 'Redefining the <span class="text-indigo-400">Patient Experience</span>' !!}
@@ -27,7 +27,7 @@
 
         <!-- CORE VALUES / DIFFERENTIATORS -->
         <section class="py-24 bg-slate-50">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <div class="relative">
                         <div class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
@@ -85,7 +85,7 @@
 
         <!-- MANAGEMENT TEAM -->
         <section class="py-24">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-16">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">{{ $pageSettings['leadership_title'] ?? 'Our Leadership' }}</h2>
                     <p class="text-slate-500 font-medium leading-relaxed">{{ $pageSettings['leadership_description'] ?? 'Our diverse management team brings together decades of local and international expertise in medicine, technology, and business.' }}</p>
@@ -104,7 +104,7 @@
                             @endif
                         </div>
                         <div class="p-6 text-center">
-                            <h3 class="font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $member->name }}</h3>
+                            <h3 class="font-bold text-slate-900 mb-1 group-hover:text-imperial-primary transition-colors">{{ $member->name }}</h3>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{{ $member->designation }}</p>
                             <a href="{{ route('management-details', $member->slug) }}" class="inline-flex items-center gap-2 text-[10px] font-black uppercase text-indigo-600 group-hover:gap-3 transition-all">
                                 Profile <i class="fa-solid fa-arrow-right"></i>
@@ -122,7 +122,7 @@
 
         <!-- CORPORATE PARTNERS -->
         <section class="py-24 bg-slate-900">
-            <div class="container mx-auto px-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 class="text-white text-2xl font-bold mb-2">{{ $pageSettings['partners_title'] ?? 'Trusted by Industry Leaders' }}</h2>
                     <p class="text-slate-500 text-sm font-medium uppercase tracking-[0.3em]">{{ $pageSettings['partners_subtitle'] ?? 'Corporate Health Partners' }}</p>

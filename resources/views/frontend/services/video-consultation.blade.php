@@ -40,7 +40,7 @@
         <div class="container relative z-10 mx-auto px-5 py-20 sm:px-6 md:py-28 lg:px-8 lg:py-32">
             <div class="max-w-3xl">
                 <nav class="mb-8 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-400" aria-label="Breadcrumb">
-                    <a href="{{ route('fhome') }}" class="transition-colors hover:text-sky-300">Home</a>
+                    <a href="{{ route('fhome') }}" class="transition-colors hover:text-imperial-primary">Home</a>
                     <i class="fa-solid fa-chevron-right text-[9px] text-slate-600" aria-hidden="true"></i>
                     <span class="text-sky-300">{{ $pageSettings['page_name'] ?? 'Video Consultation' }}</span>
                 </nav>
@@ -57,7 +57,7 @@
 
                 <div class="mt-9 flex flex-wrap items-center gap-3">
                     @if($plans->isNotEmpty())
-                        <a href="#consultation-plans" class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/30">
+                        <a href="#consultation-plans" class="inline-flex items-center justify-center gap-2 rounded-xl bg-imperial-primary px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/30 transition hover:-translate-y-0.5 hover:bg-imperial-dark focus:outline-none focus:ring-4 focus:ring-sky-400/30">
                             Browse plans
                             <i class="fa-solid fa-arrow-down text-xs" aria-hidden="true"></i>
                         </a>
@@ -74,7 +74,7 @@
         </div>
     </section>
 
-    <section class="relative z-20 -mt-7 px-4 sm:px-6" aria-label="Video consultation highlights">
+    <section class="relative z-20 -mt-7 px-4 sm:px-6 lg:px-8" aria-label="Video consultation highlights">
         <div class="container mx-auto">
             <div class="grid overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-900/5 md:grid-cols-3">
                 @foreach($whyItems->take(3) as $item)
@@ -90,7 +90,7 @@
     </section>
 
     <section id="consultation-plans" class="scroll-mt-24 py-16 md:py-20">
-        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10 flex flex-col justify-between gap-5 md:mb-12 md:flex-row md:items-end">
                 <div class="max-w-3xl">
                     <p class="mb-3 text-xs font-black uppercase tracking-[0.18em] text-sky-600">Care that travels with you</p>
@@ -113,7 +113,7 @@
                             && strtoupper(trim((string) $plan->service_discount)) !== 'N/A';
                     @endphp
 
-                    <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-2xl hover:shadow-slate-900/10">
+                    <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-imperial-light hover:shadow-2xl hover:shadow-slate-900/10">
                         <a href="{{ $detailsUrl }}" class="relative block aspect-[16/9] overflow-hidden bg-slate-100" aria-label="View {{ $plan->name }}">
                             <img src="{{ $planImage }}" alt="{{ $plan->name }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]">
                             <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/50 to-transparent"></div>
@@ -133,7 +133,7 @@
 
                         <div class="flex flex-1 flex-col p-6 sm:p-7">
                             <div class="mb-5">
-                                <h3 class="text-xl font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-sky-700">
+                                <h3 class="text-xl font-black leading-snug tracking-tight text-slate-950 transition-colors group-hover:text-imperial-primary">
                                     <a href="{{ $detailsUrl }}">{{ $plan->name }}</a>
                                 </h3>
                                 <p class="mt-2 text-sm leading-6 text-slate-500">{{ $plan->subtitle ?: 'Flexible online doctor consultations' }}</p>
@@ -173,7 +173,7 @@
                             @endif
 
                             <div class="mt-auto">
-                                <a href="{{ $detailsUrl }}" class="flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-100">
+                                <a href="{{ $detailsUrl }}" class="flex w-full items-center justify-between rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-imperial-primary focus:outline-none focus:ring-4 focus:ring-sky-100">
                                     Explore plan
                                     <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10">
                                         <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
@@ -196,7 +196,7 @@
     </section>
 
     <section class="border-y border-slate-100 bg-white py-16 md:py-20">
-        <div class="container mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
                 <div class="relative">
                     <div class="absolute -left-5 -top-5 h-24 w-24 rounded-[2rem] bg-sky-100"></div>
@@ -236,7 +236,7 @@
     </section>
 
     <section class="py-16 md:py-20">
-        <div class="container mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
+        <div class="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div class="mb-10 text-center md:mb-12">
                 <p class="mb-3 text-xs font-black uppercase tracking-[0.18em] text-sky-600">Good to know</p>
                 <h2 class="text-3xl font-black tracking-tight text-slate-950 md:text-4xl">{{ $pageSettings['faq_title'] ?? 'Frequently Asked Questions' }}</h2>
@@ -247,7 +247,7 @@
                 @foreach($faqs as $faq)
                     @if($faq['question'])
                         <details class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white transition open:border-sky-200 open:shadow-lg open:shadow-slate-900/5">
-                            <summary class="flex cursor-pointer list-none items-center justify-between gap-5 p-5 text-sm font-bold text-slate-800 transition hover:text-sky-700 sm:p-6 sm:text-base">
+                            <summary class="flex cursor-pointer list-none items-center justify-between gap-5 p-5 text-sm font-bold text-slate-800 transition hover:text-imperial-primary sm:p-6 sm:text-base">
                                 <span>{{ $faq['question'] }}</span>
                                 <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-slate-50 text-sky-600 shadow-sm">
                                     <i class="fa-solid fa-plus text-xs transition group-open:rotate-45" aria-hidden="true"></i>

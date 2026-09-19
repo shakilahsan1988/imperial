@@ -197,7 +197,7 @@
 
                                 <!-- Submit Button (Span 12) -->
                                 <div class="md:col-span-12 mt-2 form-anim">
-                                    <button type="submit" class="w-full bg-imperial-primary hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md shadow transition duration-300 flex justify-center items-center">
+                                    <button type="submit" class="w-full bg-imperial-primary hover:bg-imperial-dark text-white font-bold py-3 px-6 rounded-md shadow transition duration-300 flex justify-center items-center">
                                         Continue
                                     </button>
                                 </div>

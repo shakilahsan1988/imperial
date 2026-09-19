@@ -57,7 +57,7 @@
 
                             <!-- Job Footer: Apply Button & Short Desc -->
                             <div class="job-footer">
-                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSecn_HEcGnHkPp7FA8v9oKVx8eQyB3rLbVkKNUA6wpAXH2vtQ/viewform?usp=pp_url&entry.543597064=Executive,%20Corporate%20Sales&entry.994170229=JN00283" target="_blank" class="btn-link block w-full text-center bg-imperial-primary hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-colors mb-4">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSecn_HEcGnHkPp7FA8v9oKVx8eQyB3rLbVkKNUA6wpAXH2vtQ/viewform?usp=pp_url&entry.543597064=Executive,%20Corporate%20Sales&entry.994170229=JN00283" target="_blank" class="btn-link block w-full text-center bg-imperial-primary hover:bg-imperial-dark text-white font-bold py-3 px-6 rounded-lg shadow transition-colors mb-4">
                                     Apply Job
                                 </a>
                                 

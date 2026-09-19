@@ -18,6 +18,7 @@
             <div class="form-group">
                 <label>Sort Order</label>
                 <input type="number" name="sort_order" class="form-control" min="0" value="0">
+                <small class="form-text text-muted">Lower numbers appear first on the Our Doctors page.</small>
             </div>
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="status" name="status" value="1" checked>

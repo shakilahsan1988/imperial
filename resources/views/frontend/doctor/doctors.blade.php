@@ -12,7 +12,7 @@
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
 
-        <div class="container mx-auto px-4 relative z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="max-w-3xl">
                 <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $pageSettings['page_name'] }}</p>
                 <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
@@ -25,19 +25,18 @@
         </div>
     </section>
 
-    <section class="relative z-20 -mt-12 px-4">
+    <section class="relative z-20 -mt-12 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto">
             <div class="bg-white rounded-2xl shadow-2xl p-4 md:p-6 border border-slate-100">
                 <form action="{{ route('doctor') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="relative group">
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">Specialty</label>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">Consultation Type</label>
                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                             <i class="fa-solid fa-stethoscope text-indigo-500 mr-3"></i>
-                            <select name="specialty_id" class="w-full bg-transparent border-none focus:ring-0 text-slate-700 text-sm font-medium">
-                                <option value="">All Specialties</option>
-                                @foreach($specialties as $specialty)
-                                <option value="{{ $specialty->id }}" {{ request('specialty_id') == $specialty->id ? 'selected' : '' }}>{{ $specialty->name }}</option>
-                                @endforeach
+                            <select name="consultation_type" class="w-full bg-transparent border-none focus:ring-0 text-slate-700 text-sm font-medium">
+                                <option value="">All Doctors</option>
+                                <option value="in_hub" {{ request('consultation_type') == 'in_hub' ? 'selected' : '' }}>In-Hub Doctor</option>
+                                <option value="video" {{ request('consultation_type') == 'video' ? 'selected' : '' }}>Online Video Consultancy Doctor</option>
                             </select>
                         </div>
                     </div>
@@ -64,7 +63,7 @@
                     </div>
 
                     <div class="flex items-end">
-                        <button type="submit" class="w-full h-[54px] bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all">
+                        <button type="submit" class="w-full h-[54px] bg-indigo-600 hover:bg-imperial-dark text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all">
                             Find Specialists
                         </button>
                     </div>
@@ -73,7 +72,7 @@
         </div>
     </section>
 
-    <section class="container mx-auto px-4 py-16">
+    <section class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         @forelse($groupedDoctors as $departmentName => $doctorsInDept)
         <div class="mb-16">
             <div class="flex items-baseline gap-4 mb-8">
@@ -94,12 +93,17 @@
                     });
                 @endphp
                 <div class="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative flex flex-col h-full">
+                    @if($doc->is_featured)
+                        <span class="absolute top-3 left-3 z-10 bg-imperial-primary text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+                            <i class="fa-solid fa-star mr-1"></i>Featured
+                        </span>
+                    @endif
                     <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="block aspect-[4/5] overflow-hidden bg-slate-100">
                         <img src="{{ $doc->effective_image_url }}" alt="{{ $doc->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </a>
                     <div class="p-6 flex flex-col flex-1">
                         <div class="mb-4">
-                            <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                            <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-imperial-primary transition-colors">
                                 <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}">{{ $doc->name }}</a>
                             </h3>
                             <p class="text-sm text-slate-500 font-medium leading-snug">{{ $doc->designation ?: 'Consultant' }}</p>
@@ -123,7 +127,7 @@
                                 </strong>
                             </div>
                         </div>
-                        <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-indigo-600 text-white rounded-xl font-bold text-sm tracking-wide transition-all">
+                        <a href="{{ route('book-doctor', ['doctor' => $doc->slug ?: $doc->id]) }}" class="mt-auto flex items-center justify-center w-full py-3 bg-slate-900 group-hover:bg-imperial-primary text-white rounded-xl font-bold text-sm tracking-wide transition-all">
                             Book Appointment
                         </a>
                     </div>

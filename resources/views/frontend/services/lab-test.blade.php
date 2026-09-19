@@ -13,7 +13,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#1E293B]/80 to-transparent"></div>
             
-            <div class="container mx-auto px-4 relative z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="max-w-3xl">
                     <p class="text-xs md:text-sm text-indigo-300 uppercase tracking-[0.2em] font-black mb-4">{{ $diagSettings['page_name'] }}</p>
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
@@ -27,7 +27,7 @@
         </section>
 
         <!-- FEATURE CARDS -->
-        <section class="relative z-20 -mt-12 px-4">
+        <section class="relative z-20 -mt-12 px-4 sm:px-6 lg:px-8">
             <div class="container mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     @php
@@ -53,7 +53,7 @@
         </section>
 
         <!-- SEARCH & FILTER CONSOLE -->
-        <section class="container mx-auto px-4 py-16">
+        <section class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="bg-slate-50 rounded-3xl p-6 mb-10 border border-slate-100 shadow-sm">
                 <div class="flex flex-col md:flex-row gap-6 items-center">
                     <!-- Search -->
@@ -70,9 +70,9 @@
                         <span class="text-xs font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">Filter by:</span>
                         <div class="flex-grow flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                             <button onclick="filterTable('', this)" class="category-btn active px-6 py-2 bg-indigo-600 text-white rounded-full text-xs font-bold shadow-lg shadow-indigo-100 transition-all whitespace-nowrap">{{ $diagSettings['all_tests_label'] }}</button>
-                            <button onclick="filterTable('laboratory', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">{{ $diagSettings['laboratory_label'] }}</button>
-                            <button onclick="filterTable('imaging', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">{{ $diagSettings['imaging_label'] }}</button>
-                            <button onclick="filterTable('procedure', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-indigo-500 transition-all whitespace-nowrap">{{ $diagSettings['procedures_label'] }}</button>
+                            <button onclick="filterTable('laboratory', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-imperial-primary transition-all whitespace-nowrap">{{ $diagSettings['laboratory_label'] }}</button>
+                            <button onclick="filterTable('imaging', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-imperial-primary transition-all whitespace-nowrap">{{ $diagSettings['imaging_label'] }}</button>
+                            <button onclick="filterTable('procedure', this)" class="category-btn px-6 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-bold hover:border-imperial-primary transition-all whitespace-nowrap">{{ $diagSettings['procedures_label'] }}</button>
                         </div>
                     </div>
                 </div>
@@ -103,12 +103,12 @@
                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-3">
                                     @if($hasComponents)
-                                        <button onclick="toggleAccordion({{$s->id}}, this)" class="w-6 h-6 flex items-center justify-center rounded-lg bg-slate-100 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all toggle-btn">
+                                        <button onclick="toggleAccordion({{$s->id}}, this)" class="w-6 h-6 flex items-center justify-center rounded-lg bg-slate-100 text-slate-400 hover:bg-imperial-light hover:text-imperial-primary transition-all toggle-btn">
                                             <i class="fa-solid fa-chevron-right text-[10px]"></i>
                                         </button>
                                     @endif
                                     <div>
-                                        <p class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors test-name-text">{{$s->name}}</p>
+                                        <p class="font-bold text-slate-900 group-hover:text-imperial-primary transition-colors test-name-text">{{$s->name}}</p>
                                         <div class="flex items-center gap-2 mt-1">
                                             <p class="text-[10px] text-slate-400 font-medium">
                                                 {{ $s->subCategory->name ?? ($s->serviceCategory->name ?? 'Diagnostic Test') }}
@@ -141,7 +141,7 @@
                                 <span class="text-base font-black text-slate-900">{{ formated_price($s->price) }}</span>
                             </td>
                             <td class="px-8 py-6 text-center">
-                                <button onclick="addToCart({{$s->id}})" class="group/btn inline-flex w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl items-center justify-center hover:bg-indigo-600 transition-all transform active:scale-90">
+                                <button onclick="addToCart({{$s->id}})" class="group/btn inline-flex w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl items-center justify-center hover:bg-imperial-primary transition-all transform active:scale-90">
                                     <i class="fa-solid fa-plus text-xs group-hover/btn:text-white"></i>
                                 </button>
                             </td>

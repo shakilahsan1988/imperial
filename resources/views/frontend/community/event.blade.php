@@ -5,7 +5,7 @@
 @section('content')
 <!-- Community Events Section -->
 <section class="py-16 lg:py-24 bg-white">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Section Header -->
         <div class="mb-12">

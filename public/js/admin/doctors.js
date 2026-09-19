@@ -52,18 +52,18 @@
          {data:"id"},
          {data:"code"},
          {data:"name"},
-         {data:"specialty"},
-         {data:"department"},
+         {data:"specialty"}, // searched via a server-side filterColumn (relation name, not a real doctors column)
+         {data:"department"}, // searched via a server-side filterColumn (relation name, not a real doctors column)
          {data:"phone"},
          {data:"email"},
-         {data:"schedule"},
+         {data:"schedule",searchable:false}, // computed from related branch schedules, no matching column
          {data:"consultation_fee"},
          {data:"video_consultation_fee"},
-         {data:"video_consultation"},
+         {data:"video_consultation",searchable:false}, // computed Yes/No badge, no matching column
          {data:"commission"},
-         {data:"total"},
-         {data:"paid"},
-         {data:"due"},
+         {data:"total",searchable:false}, // computed accessor (sum of commissions), not a real column
+         {data:"paid",searchable:false}, // computed accessor (sum of expenses), not a real column
+         {data:"due",searchable:false}, // computed accessor (total - paid), not a real column
          {data:"action",searchable:false,orderable:false,sortable:false}//action
       ],
       "language": {

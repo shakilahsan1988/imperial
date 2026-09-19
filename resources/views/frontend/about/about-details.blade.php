@@ -10,7 +10,7 @@
     {{-- Restore with verified Imperial leadership content once available. --}}
     <main class="min-h-screen bg-white font-sans text-imperial-text pb-12">
         <section class="py-24">
-            <div class="container mx-auto px-4 text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <p class="text-gray-500">This page is temporarily unavailable.</p>
                 <a href="{{ route('management') }}" class="text-imperial-primary font-bold">Back to Management Team</a>
             </div>

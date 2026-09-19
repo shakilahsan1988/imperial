@@ -25,6 +25,9 @@
             <dt class="col-sm-3">Email</dt>
             <dd class="col-sm-9">{{ $booking->email ?: '-' }}</dd>
 
+            <dt class="col-sm-3">Age</dt>
+            <dd class="col-sm-9">{{ $booking->age ?: '-' }}</dd>
+
             <dt class="col-sm-3">Preferred Date</dt>
             <dd class="col-sm-9">{{ optional($booking->preferred_date)->format('Y-m-d') ?: '-' }}</dd>
 

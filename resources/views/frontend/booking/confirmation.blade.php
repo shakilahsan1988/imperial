@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="bg-slate-50 font-sans min-h-screen py-16">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto">
             
             {{-- Success Animation & Header --}}
@@ -92,7 +92,7 @@
                 <a href="{{ route('fhome') }}" class="flex-grow py-4 bg-white text-slate-900 text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg border border-slate-100 hover:bg-slate-50 transition-all">
                     Back to Home
                 </a>
-                <a href="{{ route('bookings.receipt', $booking->id) }}" target="_blank" class="flex-grow py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                <a href="{{ route('bookings.receipt', $booking->id) }}" target="_blank" class="flex-grow py-4 bg-indigo-600 text-white text-center rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-200 hover:bg-imperial-dark transition-all">
                     <i class="fa-solid fa-print mr-2"></i> Print Receipt
                 </a>
             </div>
