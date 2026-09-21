@@ -101,6 +101,7 @@
                 <a class="nav-link"  data-toggle="pill" href="#reports_settings" role="tab" aria-controls="reports_settings" aria-selected="true"><i class="fas fa-file-alt"></i> {{__('Reports Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#menu_settings" role="tab" aria-controls="menu_settings" aria-selected="true"><i class="fas fa-bars"></i> {{__('Menu Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#payment_settings" role="tab" aria-controls="payment_settings" aria-selected="true"><i class="fas fa-credit-card"></i> {{__('Payment Settings')}}</a>
+                <a class="nav-link"  data-toggle="pill" href="#sms_settings" role="tab" aria-controls="sms_settings" aria-selected="true"><i class="fas fa-sms"></i> {{__('SMS Settings')}}</a>
 
               </div>
             </div>
@@ -1660,6 +1661,131 @@
                     </div>
                 </div>
                 <!-- \Payment Settings (SSLCommerz) -->
+
+                <!-- SMS Settings -->
+                <div class="tab-pane text-left fade show" id="sms_settings" role="tabpanel" aria-labelledby="sms_settings">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-sms mr-1"></i> {{__('SMS Settings')}}</h3>
+                        </div>
+                        <form action="{{route('admin.settings.sms_submit')}}" method="POST">
+                            @csrf
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="active_gateway">{{__('Active SMS Gateway')}}</label>
+                                            <select name="active_gateway" id="active_gateway" class="form-control select2">
+                                                <option value="twilio" @if(($sms_settings['active_gateway'] ?? 'twilio') == 'twilio') selected @endif>Twilio</option>
+                                                <option value="bulksmsbd" @if(($sms_settings['active_gateway'] ?? '') == 'bulksmsbd') selected @endif>BulkSMSBD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="twilio_gateway_fields" class="row">
+                                    <div class="col-lg-12"><h5>{{__('Twilio Credentials')}}</h5></div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="twilio_sid">{{__('SID')}}</label>
+                                            <input type="text" name="gateways[twilio][sid]" id="twilio_sid" class="form-control" value="{{ $sms_settings['gateways']['twilio']['sid'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="twilio_token">{{__('Token')}}</label>
+                                            <input type="text" name="gateways[twilio][token]" id="twilio_token" class="form-control" value="{{ $sms_settings['gateways']['twilio']['token'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="twilio_from">{{__('From Number')}}</label>
+                                            <input type="text" name="gateways[twilio][from]" id="twilio_from" class="form-control" value="{{ $sms_settings['gateways']['twilio']['from'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="bulksmsbd_gateway_fields" class="row" style="display:none;">
+                                    <div class="col-lg-12"><h5>{{__('BulkSMSBD Credentials')}}</h5></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="bulksmsbd_api_key">{{__('API Key')}}</label>
+                                            <input type="text" name="gateways[bulksmsbd][api_key]" id="bulksmsbd_api_key" class="form-control" value="{{ $sms_settings['gateways']['bulksmsbd']['api_key'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="bulksmsbd_sender_id">{{__('Sender ID')}}</label>
+                                            <input type="text" name="gateways[bulksmsbd][sender_id]" id="bulksmsbd_sender_id" class="form-control" value="{{ $sms_settings['gateways']['bulksmsbd']['sender_id'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card card-primary card-tabs">
+                                            <div class="card-header p-0 pt-1">
+                                                <ul class="nav nav-tabs" id="sms-custom-tabs-tab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="sms_patient_code_tab" data-toggle="pill" href="#sms_patient_code" role="tab" aria-controls="sms_patient_code" aria-selected="true">{{__('Patient Code')}}</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="sms_tests_notification_tab" data-toggle="pill" href="#sms_tests_notification" role="tab" aria-controls="sms_tests_notification" aria-selected="true">{{__('Tests Notification')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="tab-content" id="sms-custom-tabs-tabContent">
+                                                    <div class="tab-pane fade show active" id="sms_patient_code" role="tabpanel" aria-labelledby="sms_patient_code_tab">
+                                                        <div class="row">
+                                                            <div class="form-group">
+                                                                <input name="patient_code[active]" type="checkbox" @if(!empty($sms_settings['patient_code']['active'])) checked @endif netliva-switch data-active-text="{{__('Active')}}" data-passive-text=" {{__('Deactive')}}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <p class="text-danger">{{__('Do not change variables')}}:<br>{patient_code} <br> {patient_name}</p>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="sms_patient_code_message">{{__('Message')}}</label>
+                                                                    <textarea class="form-control" name="patient_code[message]" id="sms_patient_code_message" rows="4">{{ $sms_settings['patient_code']['message'] ?? '' }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="sms_tests_notification" role="tabpanel" aria-labelledby="sms_tests_notification_tab">
+                                                        <div class="row">
+                                                            <div class="form-group">
+                                                                <input name="tests_notification[active]" type="checkbox" @if(!empty($sms_settings['tests_notification']['active'])) checked @endif netliva-switch data-active-text="{{__('Active')}}" data-passive-text=" {{__('Deactive')}}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <p class="text-danger">{{__('Do not change variables')}}:<br>{patient_code} <br> {patient_name}</p>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="sms_tests_notification_message">{{__('Message')}}</label>
+                                                                    <textarea class="form-control" name="tests_notification[message]" id="sms_tests_notification_message" rows="4">{{ $sms_settings['tests_notification']['message'] ?? '' }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {{__('Save')}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- \SMS Settings -->
 
             </div>
           </div>

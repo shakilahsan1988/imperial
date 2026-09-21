@@ -53,11 +53,35 @@ if (! function_exists('send_sms')) {
     function send_sms($to, $message)
     {
         $sms_setting = setting('sms');
+        $gateway = $sms_setting['active_gateway'] ?? 'twilio';
 
-        if (! empty($sms_setting['sid']) && ! empty($sms_setting['token']) && ! empty($sms_setting['from'])) {
+        if ($gateway === 'bulksmsbd') {
+            $bulksmsbd = $sms_setting['gateways']['bulksmsbd'] ?? [];
+
+            if (! empty($bulksmsbd['api_key']) && ! empty($bulksmsbd['sender_id'])) {
+                try {
+                    \Illuminate\Support\Facades\Http::get('http://bulksmsbd.net/api/smsapi', [
+                        'api_key' => $bulksmsbd['api_key'],
+                        'type' => 'text',
+                        'number' => $to,
+                        'senderid' => $bulksmsbd['sender_id'],
+                        'message' => $message,
+                    ]);
+                } catch (\Exception $e) {
+                    // error
+                }
+            }
+
+            return;
+        }
+
+        // default / 'twilio'
+        $twilio = $sms_setting['gateways']['twilio'] ?? [];
+
+        if (! empty($twilio['sid']) && ! empty($twilio['token']) && ! empty($twilio['from'])) {
             // Your Account SID and Auth Token from twilio.com/console
-            $sid = $sms_setting['sid'];
-            $token = $sms_setting['token'];
+            $sid = $twilio['sid'];
+            $token = $twilio['token'];
             $client = new Client($sid, $token);
 
             // Use the client to do fun stuff like send text messages!
@@ -67,7 +91,7 @@ if (! function_exists('send_sms')) {
                     $to,
                     [
                         // A Twilio phone number you purchased at twilio.com/console
-                        'from' => $sms_setting['from'],
+                        'from' => $twilio['from'],
                         // the body of the text message you'd like to send
                         'body' => $message,
                     ]

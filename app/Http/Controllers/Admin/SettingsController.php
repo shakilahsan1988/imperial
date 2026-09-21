@@ -245,15 +245,33 @@ class SettingsController extends Controller
     public function sms_submit(SmsSettingRequest $request)
     {
         try {
-            $settings=$request->except('_method','_token');
+            $settings = [
+                'active_gateway' => $request->input('active_gateway', 'twilio'),
+                'gateways' => [
+                    'twilio' => [
+                        'sid' => trim((string) $request->input('gateways.twilio.sid', '')),
+                        'token' => trim((string) $request->input('gateways.twilio.token', '')),
+                        'from' => trim((string) $request->input('gateways.twilio.from', '')),
+                    ],
+                    'bulksmsbd' => [
+                        'api_key' => trim((string) $request->input('gateways.bulksmsbd.api_key', '')),
+                        'sender_id' => trim((string) $request->input('gateways.bulksmsbd.sender_id', '')),
+                    ],
+                ],
+                'patient_code' => [
+                    'active' => $request->has('patient_code.active'),
+                    'message' => $request->input('patient_code.message', ''),
+                ],
+                'tests_notification' => [
+                    'active' => $request->has('tests_notification.active'),
+                    'message' => $request->input('tests_notification.message', ''),
+                ],
+            ];
 
-            $settings['patient_code']['active']=($request->has('patient_code.active'))?true:false;
-            $settings['tests_notification']['active']=($request->has('tests_notification.active'))?true:false;
-        
-            $sms=Setting::where('key','sms')->firstOrFail();
-            $sms->update([
-                'value'=>$settings
-            ]);
+            Setting::updateOrCreate(
+                ['key' => 'sms'],
+                ['value' => json_encode($settings)]
+            );
 
             return redirect()->route('admin.settings.index')->with('success', __('Settings Updated successfully'));
         } catch (\Exception $e) {

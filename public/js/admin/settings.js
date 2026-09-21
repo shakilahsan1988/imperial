@@ -9,6 +9,20 @@
     //select2
     $('.select2').select2();
 
+    // SMS gateway fieldset toggle
+    function toggleSmsGatewayFields() {
+        var gateway = $('#active_gateway').val();
+        if (gateway === 'bulksmsbd') {
+            $('#twilio_gateway_fields').hide();
+            $('#bulksmsbd_gateway_fields').show();
+        } else {
+            $('#twilio_gateway_fields').show();
+            $('#bulksmsbd_gateway_fields').hide();
+        }
+    }
+    $('#active_gateway').on('change', toggleSmsGatewayFields);
+    toggleSmsGatewayFields();
+
     //Colorpicker for email header
     $('#header_color').colorpicker();
     

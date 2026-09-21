@@ -24,9 +24,15 @@ class SmsSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'sid'=>'required',
-            'token'=>'required',
-            'from'=>'required',
+            'active_gateway' => 'required|in:twilio,bulksmsbd',
+
+            'gateways.twilio.sid' => 'required_if:active_gateway,twilio',
+            'gateways.twilio.token' => 'required_if:active_gateway,twilio',
+            'gateways.twilio.from' => 'required_if:active_gateway,twilio',
+
+            'gateways.bulksmsbd.api_key' => 'required_if:active_gateway,bulksmsbd',
+            'gateways.bulksmsbd.sender_id' => 'required_if:active_gateway,bulksmsbd',
+
             'patient_code.message'=>'regex:/{patient_code}/|regex:/{patient_name}/',
             'tests_notification.message'=>'regex:/{patient_code}/|regex:/{patient_name}/'
         ];
@@ -40,9 +46,12 @@ class SmsSettingRequest extends FormRequest
     public function attributes()
     {
         return [
-            'sid'=>'Twilio sid',
-            'token'=>'Twilio token',
-            'from' => 'Twilio from number',
+            'active_gateway' => 'active SMS gateway',
+            'gateways.twilio.sid'=>'Twilio SID',
+            'gateways.twilio.token'=>'Twilio token',
+            'gateways.twilio.from' => 'Twilio from number',
+            'gateways.bulksmsbd.api_key' => 'BulkSMSBD API key',
+            'gateways.bulksmsbd.sender_id' => 'BulkSMSBD sender ID',
             'patient_code.message' => 'Patient code sms message',
             'tests_notification.message' => 'Tests notification sms message',
         ];
