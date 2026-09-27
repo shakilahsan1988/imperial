@@ -11,8 +11,8 @@
 
     // SMS gateway fieldset toggle
     function toggleSmsGatewayFields() {
-        var gateway = $('#active_gateway').val() || 'twilio';
-        $('#twilio_gateway_fields, #bulksmsbd_gateway_fields, #mram_gateway_fields').hide();
+        var gateway = $('#active_gateway').val() || 'mram';
+        $('#bulksmsbd_gateway_fields, #mram_gateway_fields').hide();
         $('#' + gateway + '_gateway_fields').show();
     }
     $('#active_gateway').on('change', toggleSmsGatewayFields);

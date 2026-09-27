@@ -1676,32 +1676,9 @@
                                         <div class="form-group">
                                             <label for="active_gateway">{{__('Active SMS Gateway')}}</label>
                                             <select name="active_gateway" id="active_gateway" class="form-control select2">
-                                                <option value="twilio" @if(($sms_settings['active_gateway'] ?? 'twilio') == 'twilio') selected @endif>Twilio</option>
+                                                <option value="mram" @if(($sms_settings['active_gateway'] ?? 'mram') != 'bulksmsbd') selected @endif>MRAM SMS</option>
                                                 <option value="bulksmsbd" @if(($sms_settings['active_gateway'] ?? '') == 'bulksmsbd') selected @endif>BulkSMSBD</option>
-                                                <option value="mram" @if(($sms_settings['active_gateway'] ?? '') == 'mram') selected @endif>MRAM SMS</option>
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div id="twilio_gateway_fields" class="row">
-                                    <div class="col-lg-12"><h5>{{__('Twilio Credentials')}}</h5></div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="twilio_sid">{{__('SID')}}</label>
-                                            <input type="text" name="gateways[twilio][sid]" id="twilio_sid" class="form-control" value="{{ $sms_settings['gateways']['twilio']['sid'] ?? '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="twilio_token">{{__('Token')}}</label>
-                                            <input type="text" name="gateways[twilio][token]" id="twilio_token" class="form-control" value="{{ $sms_settings['gateways']['twilio']['token'] ?? '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="twilio_from">{{__('From Number')}}</label>
-                                            <input type="text" name="gateways[twilio][from]" id="twilio_from" class="form-control" value="{{ $sms_settings['gateways']['twilio']['from'] ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
@@ -1722,7 +1699,7 @@
                                     </div>
                                 </div>
 
-                                <div id="mram_gateway_fields" class="row" style="display:none;">
+                                <div id="mram_gateway_fields" class="row">
                                     <div class="col-lg-12"><h5>{{__('MRAM SMS Credentials')}}</h5></div>
                                     <div class="col-lg-4">
                                         <div class="form-group">

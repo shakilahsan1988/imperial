@@ -6,7 +6,6 @@ use App\Models\Doctor;
 use App\Models\Group;
 use App\Models\Patient;
 use App\Models\Setting;
-use Twilio\Rest\Client;
 
 // get system currency
 if (! function_exists('get_currency')) {
@@ -53,17 +52,7 @@ if (! function_exists('send_sms')) {
     function send_sms($to, $message)
     {
         $sms_setting = setting('sms');
-        $gateway = $sms_setting['active_gateway'] ?? 'twilio';
-
-        if ($gateway === 'mram') {
-            $mram = \App\Services\MramSmsService::fromSettings();
-
-            if ($mram->isConfigured()) {
-                $mram->send($to, $message);
-            }
-
-            return;
-        }
+        $gateway = $sms_setting['active_gateway'] ?? 'mram';
 
         if ($gateway === 'bulksmsbd') {
             $bulksmsbd = $sms_setting['gateways']['bulksmsbd'] ?? [];
@@ -85,32 +74,12 @@ if (! function_exists('send_sms')) {
             return;
         }
 
-        // default / 'twilio'
-        $twilio = $sms_setting['gateways']['twilio'] ?? [];
+        // default / 'mram'
+        $mram = \App\Services\MramSmsService::fromSettings();
 
-        if (! empty($twilio['sid']) && ! empty($twilio['token']) && ! empty($twilio['from'])) {
-            // Your Account SID and Auth Token from twilio.com/console
-            $sid = $twilio['sid'];
-            $token = $twilio['token'];
-            $client = new Client($sid, $token);
-
-            // Use the client to do fun stuff like send text messages!
-            try {
-                $client->messages->create(
-                    // the number you'd like to send the message to
-                    $to,
-                    [
-                        // A Twilio phone number you purchased at twilio.com/console
-                        'from' => $twilio['from'],
-                        // the body of the text message you'd like to send
-                        'body' => $message,
-                    ]
-                );
-            } catch (\Exception $e) {
-                // error
-            }
+        if ($mram->isConfigured()) {
+            $mram->send($to, $message);
         }
-
     }
 }
 

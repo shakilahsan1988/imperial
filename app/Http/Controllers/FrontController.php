@@ -943,7 +943,7 @@ class FrontController extends Controller
 
     /**
      * Send a booking confirmation SMS. `send_sms()` already swallows its own
-     * errors and no-ops when Twilio isn't configured, so a booking never
+     * errors and no-ops when the SMS gateway isn't configured, so a booking never
      * fails because the SMS didn't go out.
      */
     private function sendBookingSms(?string $phone, string $message): void

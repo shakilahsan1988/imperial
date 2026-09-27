@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
  * MRAM SMS gateway (msg.mram.com.bd).
  *
  * Credentials live in the `sms` setting under gateways.mram, alongside the
- * Twilio and BulkSMSBD credentials. send() never throws, so a failed SMS can
+ * BulkSMSBD credentials. send() never throws, so a failed SMS can
  * never break the booking or notification that triggered it; every attempt is
  * logged so failures are traceable in storage/logs.
  */

@@ -246,13 +246,8 @@ class SettingsController extends Controller
     {
         try {
             $settings = [
-                'active_gateway' => $request->input('active_gateway', 'twilio'),
+                'active_gateway' => $request->input('active_gateway', 'mram'),
                 'gateways' => [
-                    'twilio' => [
-                        'sid' => trim((string) $request->input('gateways.twilio.sid', '')),
-                        'token' => trim((string) $request->input('gateways.twilio.token', '')),
-                        'from' => trim((string) $request->input('gateways.twilio.from', '')),
-                    ],
                     'bulksmsbd' => [
                         'api_key' => trim((string) $request->input('gateways.bulksmsbd.api_key', '')),
                         'sender_id' => trim((string) $request->input('gateways.bulksmsbd.sender_id', '')),
