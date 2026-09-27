@@ -30,9 +30,14 @@
                 @if($booking->payment_method === 'sslcommerz' && $booking->payment_status === 'paid')
                     <h1 class="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">Payment Successful!</h1>
                     <p class="text-slate-500 font-medium text-lg">Your payment was successful and appointment has been scheduled.</p>
-                @elseif($booking->payment_method === 'cash' && $booking->payment_status === 'paid')
+                @elseif(in_array($booking->payment_method, ['cash', 'pay_later']) && $booking->payment_status !== 'paid')
                     <h1 class="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">Booking Confirmed!</h1>
-                    <p class="text-slate-500 font-medium text-lg">Your appointment has been confirmed. Please pay at the clinic.</p>
+                    @if($booking->payment_method === 'pay_later')
+                    <p class="text-slate-500 font-medium text-lg">Your appointment is confirmed. Payment is pending — our team will contact you for payment before the video call.</p>
+                    @else
+                    <p class="text-slate-500 font-medium text-lg">Your appointment is confirmed. Payment is pending — please pay at the clinic.</p>
+                    @endif
+                    <span class="mt-4 inline-block px-4 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest">Payment Status: Pending</span>
                 @else
                     <h1 class="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">Booking Confirmed!</h1>
                     <p class="text-slate-500 font-medium text-lg">Your appointment request has been received.</p>

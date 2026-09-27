@@ -60,4 +60,26 @@ class DoctorConsultationBookingsController extends Controller
 
         return redirect()->route('admin.doctor_consultation_bookings.index')->with('success', 'Consultation booking updated successfully.');
     }
+
+    /**
+     * Record that a pending payment (cash at the counter, bKash, etc.) was received.
+     */
+    public function markPaid(DoctorConsultationBooking $doctor_consultation_booking)
+    {
+        $booking = $doctor_consultation_booking;
+
+        if ($booking->payment_status === 'paid') {
+            return back()->with('success', 'This booking is already marked as paid.');
+        }
+
+        $booking->update([
+            'status' => $booking->status === 'pending' ? 'confirmed' : $booking->status,
+            'payment_method' => $booking->payment_method ?: 'cash',
+            'payment_status' => 'paid',
+            'paid_amount' => $booking->consultation_fee,
+            'payment_date' => now(),
+        ]);
+
+        return back()->with('success', 'Payment marked as paid.');
+    }
 }

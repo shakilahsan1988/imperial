@@ -66,6 +66,27 @@ class DoctorConsultationBooking extends Model
             ?: optional($this->slot)->start_time;
     }
 
+    public function getPaymentStatusLabelAttribute(): string
+    {
+        return match ($this->payment_status) {
+            'paid' => 'Paid',
+            'failed' => 'Failed',
+            'cancelled' => 'Cancelled',
+            default => 'Pending',
+        };
+    }
+
+    public function getPaymentMethodLabelAttribute(): string
+    {
+        return match ($this->payment_method) {
+            'sslcommerz' => 'Online (SSLCommerz)',
+            'cash' => 'Cash',
+            'pay_later' => 'Pay Later',
+            null, '' => '-',
+            default => ucfirst($this->payment_method),
+        };
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class);

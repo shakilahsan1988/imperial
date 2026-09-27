@@ -117,22 +117,30 @@
                 </div>
                 @endif
 
+                @php($isVideo = $booking->visit_type === 'video')
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {{-- Cash Payment --}}
+                    {{-- Cash Payment (in-hub) / Pay Later (video, only when online payment is off) --}}
+                    @if(! $isVideo || ! $sslEnabled)
                     <form action="{{ route('doctor-booking.confirm-cash', $booking->id) }}" method="POST">
                         @csrf
                         <button type="submit" class="w-full text-left p-6 border-2 border-slate-100 rounded-2xl hover:border-imperial-primary hover:bg-imperial-light transition-all group cursor-pointer">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 bg-indigo-50 group-hover:bg-imperial-light rounded-xl flex items-center justify-center transition">
-                                    <i class="fa-solid fa-money-bill-wave text-indigo-600 text-xl"></i>
+                                    <i class="fa-solid {{ $isVideo ? 'fa-clock' : 'fa-money-bill-wave' }} text-indigo-600 text-xl"></i>
                                 </div>
                                 <div>
+                                    @if($isVideo)
+                                    <p class="text-sm font-black text-slate-900">Confirm &amp; Pay Later</p>
+                                    <p class="text-[11px] text-slate-500 font-medium">Our team will contact you for payment before the video call</p>
+                                    @else
                                     <p class="text-sm font-black text-slate-900">Cash Payment</p>
                                     <p class="text-[11px] text-slate-500 font-medium">Pay at the clinic when you visit</p>
+                                    @endif
                                 </div>
                             </div>
                         </button>
                     </form>
+                    @endif
 
                     {{-- Online Payment (SSLCommerz) --}}
                     @if($sslEnabled && $booking->consultation_fee > 0)

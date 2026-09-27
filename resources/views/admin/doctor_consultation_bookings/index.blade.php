@@ -19,6 +19,7 @@
                         <th>Visit</th>
                         <th>Slot</th>
                         <th>Status</th>
+                        <th>Payment</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
@@ -53,12 +54,26 @@
                                 <button class="btn btn-sm btn-primary">Update</button>
                             </form>
                         </td>
+                        <td>
+                            @php($paymentColors = ['paid' => 'badge-success', 'failed' => 'badge-danger', 'cancelled' => 'badge-dark'])
+                            <span class="badge {{ $paymentColors[$booking->payment_status] ?? 'badge-warning' }}">{{ $booking->payment_status_label }}</span>
+                            @if($booking->payment_method)
+                              <div class="small text-muted">{{ $booking->payment_method_label }}</div>
+                            @endif
+                            @if($booking->payment_status !== 'paid')
+                              <form action="{{ route('admin.doctor_consultation_bookings.mark_paid', $booking->id) }}" method="POST" class="mt-1" onsubmit="return confirm('Mark this booking as paid ({{ formated_price($booking->consultation_fee ?? 0) }})?')">
+                                  @csrf
+                                  @method('PUT')
+                                  <button class="btn btn-xs btn-outline-success">Mark as Paid</button>
+                              </form>
+                            @endif
+                        </td>
                         <td class="text-right">
                             <a href="{{ route('admin.doctor_consultation_bookings.show', $booking->id) }}" class="btn btn-sm btn-info">View</a>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="7" class="text-center text-muted">No consultation bookings found.</td></tr>
+                    <tr><td colspan="8" class="text-center text-muted">No consultation bookings found.</td></tr>
                 @endforelse
                 </tbody>
             </table>

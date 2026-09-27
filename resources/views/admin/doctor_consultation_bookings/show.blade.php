@@ -63,11 +63,7 @@
         <dl class="row mb-0">
             <dt class="col-sm-3">Payment Method</dt>
             <dd class="col-sm-9">
-                @if($booking->payment_method === 'sslcommerz')
-                    <span class="badge badge-primary">Online (SSLCommerz)</span>
-                @else
-                    <span class="badge badge-secondary">{{ ucfirst($booking->payment_method ?: 'Cash') }}</span>
-                @endif
+                <span class="badge {{ $booking->payment_method === 'sslcommerz' ? 'badge-primary' : 'badge-secondary' }}">{{ $booking->payment_method_label }}</span>
             </dd>
 
             <dt class="col-sm-3">Payment Status</dt>
@@ -81,8 +77,15 @@
                     ];
                 @endphp
                 <span class="badge {{ $paymentStatusColors[$booking->payment_status] ?? 'badge-secondary' }}">
-                    {{ ucfirst($booking->payment_status) }}
+                    {{ $booking->payment_status_label }}
                 </span>
+                @if($booking->payment_status !== 'paid')
+                    <form action="{{ route('admin.doctor_consultation_bookings.mark_paid', $booking->id) }}" method="POST" class="d-inline ml-2" onsubmit="return confirm('Mark this booking as paid ({{ formated_price($booking->consultation_fee ?? 0) }})?')">
+                        @csrf
+                        @method('PUT')
+                        <button class="btn btn-xs btn-outline-success">Mark as Paid</button>
+                    </form>
+                @endif
             </dd>
 
             @if($booking->paid_amount > 0)

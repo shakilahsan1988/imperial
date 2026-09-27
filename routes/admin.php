@@ -234,4 +234,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
     Route::resource('doctor_departments', DoctorDepartmentsController::class)->except(['show']);
     Route::resource('doctor_consultation_slots', DoctorConsultationSlotsController::class)->except(['show']);
     Route::resource('doctor_consultation_bookings', DoctorConsultationBookingsController::class)->only(['index', 'show', 'update']);
+    Route::put('doctor_consultation_bookings/{doctor_consultation_booking}/mark-paid', [DoctorConsultationBookingsController::class, 'markPaid'])->name('doctor_consultation_bookings.mark_paid');
 });

@@ -66,6 +66,7 @@ class SslCommerzController extends Controller
                 }
 
                 $booking->update([
+                    'status' => $booking->status === 'pending' ? 'confirmed' : $booking->status,
                     'payment_status' => 'paid',
                     'transaction_id' => $validation['transaction_id'],
                     'bank_transaction_id' => $validation['bank_transaction_id'],
@@ -238,6 +239,7 @@ class SslCommerzController extends Controller
                 }
 
                 $booking->update([
+                    'status' => $booking->status === 'pending' ? 'confirmed' : $booking->status,
                     'payment_status' => 'paid',
                     'transaction_id' => $validation['transaction_id'],
                     'bank_transaction_id' => $validation['bank_transaction_id'],

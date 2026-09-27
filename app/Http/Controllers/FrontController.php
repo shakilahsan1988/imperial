@@ -774,12 +774,20 @@ class FrontController extends Controller
     public function confirmCashPayment(Request $request, $id)
     {
         $booking = DoctorConsultationBooking::whereIn('payment_status', ['unpaid', 'cancelled'])->findOrFail($id);
+        $isVideo = $booking->visit_type === 'video';
 
+        // A video patient is at home and can't pay cash: they pay online, or
+        // (when online payment is off) confirm now and staff collect later.
+        if ($isVideo && app(SslCommerzService::class)->isEnabled()) {
+            return back()->with('error', 'Cash payment is not available for video consultation. Please pay online.');
+        }
+
+        // The booking is confirmed, but no money has been received yet, so the
+        // payment stays pending until an admin marks it as paid.
         $booking->update([
-            'payment_method' => 'cash',
-            'payment_status' => 'paid',
-            'paid_amount' => $booking->consultation_fee,
-            'payment_date' => now(),
+            'status' => $booking->status === 'pending' ? 'confirmed' : $booking->status,
+            'payment_method' => $isVideo ? 'pay_later' : 'cash',
+            'payment_status' => 'unpaid',
         ]);
 
         $booking->load(['doctor.specialty', 'doctor.department', 'slot', 'branch']);
