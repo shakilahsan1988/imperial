@@ -41,7 +41,7 @@
             <dd class="col-sm-9">{{ optional($booking->appointment_date)->format('Y-m-d') }}</dd>
 
             <dt class="col-sm-3">Time Slot</dt>
-            <dd class="col-sm-9">{{ optional($booking->slot)->label ?: '-' }}</dd>
+            <dd class="col-sm-9">{{ $booking->time_label ?: '-' }}</dd>
 
             <dt class="col-sm-3">Fee</dt>
             <dd class="col-sm-9">{{ formated_price($booking->consultation_fee) }}</dd>

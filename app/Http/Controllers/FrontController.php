@@ -628,7 +628,7 @@ class FrontController extends Controller
             'visit_type' => 'required|in:in_hub,video',
             'branch_id' => 'required_if:visit_type,in_hub|nullable|exists:branches,id',
             'appointment_date' => 'required|date|after_or_equal:today',
-            'doctor_consultation_slot_id' => 'required|exists:doctor_consultation_slots,id',
+            'doctor_consultation_slot_id' => 'nullable|exists:doctor_consultation_slots,id',
             'notes' => 'nullable|string|max:2000',
         ]);
 
@@ -651,7 +651,35 @@ class FrontController extends Controller
             ? ($doctorModel->video_consultation_fee ?? $doctorModel->consultation_fee)
             : $doctorModel->consultation_fee;
 
-        $slot = DoctorConsultationSlot::where('status', true)->findOrFail($data['doctor_consultation_slot_id']);
+        // In-hub bookings use the doctor's schedule time for the chosen branch;
+        // video bookings pick one of the doctor's branch schedule times. A
+        // global slot is only used when the doctor has no schedule time set.
+        $slot = null;
+        if ($data['visit_type'] === 'in_hub') {
+            $appointmentTime = trim((string) optional($doctorModel->branchSchedules->firstWhere('branch_id', (int) $data['branch_id']))->schedule_time);
+        } else {
+            $videoTimes = $doctorModel->scheduleTimes();
+            $requestedTime = trim((string) $request->input('appointment_time'));
+            $appointmentTime = in_array($requestedTime, $videoTimes, true)
+                ? $requestedTime
+                : (count($videoTimes) === 1 ? $videoTimes[0] : '');
+
+            if ($appointmentTime === '' && $videoTimes !== []) {
+                return back()->withInput()->withErrors([
+                    'appointment_time' => 'Please select a time slot.',
+                ]);
+            }
+        }
+
+        if ($appointmentTime === '') {
+            if (empty($data['doctor_consultation_slot_id'])) {
+                return back()->withInput()->withErrors([
+                    'doctor_consultation_slot_id' => 'Please select a time slot.',
+                ]);
+            }
+            $slot = DoctorConsultationSlot::where('status', true)->findOrFail($data['doctor_consultation_slot_id']);
+        }
+
         $email = ! empty($data['email']) ? strtolower(trim($data['email'])) : null;
 
         if (auth()->guard('patient')->check()) {
@@ -687,7 +715,8 @@ class FrontController extends Controller
             'consultation_fee' => $consultationFee,
             'doctor_id' => $doctorModel->id,
             'patient_id' => $patient->id ?? null,
-            'doctor_consultation_slot_id' => $slot->id,
+            'doctor_consultation_slot_id' => $slot?->id,
+            'appointment_time' => $appointmentTime !== '' ? $appointmentTime : null,
             'branch_id' => $data['visit_type'] === 'in_hub' ? $data['branch_id'] : null,
             'patient_name' => $data['patient_name'],
             'phone' => $data['phone'],
@@ -715,7 +744,7 @@ class FrontController extends Controller
             $data['patient_name'],
             $doctorModel->name,
             \Carbon\Carbon::parse($data['appointment_date'])->format('d M Y'),
-            $slot->label ?: $slot->start_time,
+            $booking->time_label ?: '-',
             $location
         ));
         $this->sendPatientConfirmationEmail($email, new \App\Mail\DoctorConsultationBookingConfirmation($booking));

@@ -71,7 +71,7 @@
                             <p class="text-xs font-bold text-slate-400 uppercase">Date & Time Slot</p>
                             <p class="font-black text-slate-900">
                                 {{ optional($booking->appointment_date)->format('d M, Y') }}
-                                @if($booking->slot) - {{ $booking->slot->label }} @endif
+                                @if($booking->time_label) - {{ $booking->time_label }} @endif
                             </p>
                         </div>
                         <div>

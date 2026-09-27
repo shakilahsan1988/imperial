@@ -107,7 +107,7 @@ class AdminBookingNotification extends Mailable
                 'Visit Type' => $b->visit_type === 'video' ? 'Online Video Consultation' : 'In-Hub Visit',
                 'Branch' => $b->visit_type === 'in_hub' ? (optional($b->branch)->title ?: optional($b->branch)->name ?: '-') : '-',
                 'Appointment Date' => optional($b->appointment_date)->format('d M Y') ?: (string) $b->appointment_date,
-                'Slot' => optional($b->slot)->label ?: optional($b->slot)->start_time ?: '-',
+                'Slot' => $b->time_label ?: '-',
                 'Consultation Fee' => formated_price($b->consultation_fee),
             ],
             default => $base,

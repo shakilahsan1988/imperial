@@ -100,6 +100,21 @@ class Doctor extends Model
         return $this->hasMany(DoctorBranchSchedule::class)->with('branch')->orderBy('branch_id');
     }
 
+    /**
+     * Distinct non-empty schedule times across the doctor's branches.
+     *
+     * @return array<int, string>
+     */
+    public function scheduleTimes(): array
+    {
+        return $this->branchSchedules
+            ->map(fn ($schedule) => trim((string) $schedule->schedule_time))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+    }
+
     public function branches(): BelongsToMany
     {
         return $this->belongsToMany(Branch::class, 'doctor_branch_schedules')

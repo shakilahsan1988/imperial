@@ -53,7 +53,7 @@
                 </div>
                 <div class="detail-row">
                     <span class="label">Time:</span>
-                    <span class="value">{{ optional($booking->slot)->label ?: optional($booking->slot)->start_time }}</span>
+                    <span class="value">{{ $booking->time_label }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="label">Consultation Fee:</span>

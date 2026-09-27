@@ -191,10 +191,25 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Time Slot</label>
-                                <div class="grid grid-cols-2 gap-2 max-h-[180px] overflow-auto pr-1">
+                                <div id="schedule-slot-wrap" class="grid grid-cols-1 gap-2">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" id="schedule-slot-radio" name="time_choice" value="schedule" class="peer sr-only" checked>
+                                        <span id="schedule-slot-label" class="block text-center p-3 rounded-xl border-2 border-slate-100 text-xs font-semibold text-slate-700 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">{{ $defaultSchedule['schedule_time'] ?? '' }}</span>
+                                    </label>
+                                </div>
+                                @php($videoTimes = $model->scheduleTimes())
+                                <div id="video-slots-wrap" class="grid grid-cols-1 gap-2" style="display:none">
+                                    @foreach($videoTimes as $index => $time)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="appointment_time" value="{{ $time }}" class="peer sr-only video-slot-radio" {{ old('appointment_time', $index === 0 ? $time : null) === $time ? 'checked' : '' }} disabled>
+                                        <span class="block text-center p-3 rounded-xl border-2 border-slate-100 text-xs font-semibold text-slate-700 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">{{ $time }}</span>
+                                    </label>
+                                    @endforeach
+                                </div>
+                                <div id="global-slots-wrap" class="grid grid-cols-2 gap-2 max-h-[180px] overflow-auto pr-1">
                                     @foreach($slots as $slot)
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="doctor_consultation_slot_id" value="{{ $slot->id }}" class="peer sr-only" {{ old('doctor_consultation_slot_id') == $slot->id ? 'checked' : '' }} required>
+                                        <input type="radio" name="doctor_consultation_slot_id" value="{{ $slot->id }}" class="peer sr-only global-slot-radio" {{ old('doctor_consultation_slot_id') == $slot->id ? 'checked' : '' }} required>
                                         <span class="block text-center p-3 rounded-xl border-2 border-slate-100 text-xs font-semibold text-slate-700 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">{{ $slot->label }}</span>
                                     </label>
                                     @endforeach
@@ -258,6 +273,13 @@
   const summaryTime = document.getElementById('summary-time');
   const doctorScheduleDays = document.getElementById('doctor-schedule-days');
   const doctorScheduleTime = document.getElementById('doctor-schedule-time');
+  const scheduleSlotWrap = document.getElementById('schedule-slot-wrap');
+  const scheduleSlotRadio = document.getElementById('schedule-slot-radio');
+  const scheduleSlotLabel = document.getElementById('schedule-slot-label');
+  const globalSlotsWrap = document.getElementById('global-slots-wrap');
+  const globalSlotRadios = document.querySelectorAll('.global-slot-radio');
+  const videoSlotsWrap = document.getElementById('video-slots-wrap');
+  const videoSlotRadios = document.querySelectorAll('.video-slot-radio');
   const inHubFee = @json(formated_price($model->consultation_fee ?? 0));
   const videoFee = @json($model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A');
   function updateBranchSchedule() {
@@ -270,6 +292,38 @@
     if (summaryTime) summaryTime.textContent = scheduleTime;
     if (doctorScheduleDays) doctorScheduleDays.textContent = scheduleDays;
     if (doctorScheduleTime) doctorScheduleTime.textContent = scheduleTime;
+    updateTimeSlots();
+  }
+  function updateTimeSlots() {
+    const visit = document.querySelector('input[name="visit_type"]:checked');
+    const inHub = visit && visit.value === 'in_hub';
+    const selectedBranch = document.querySelector('.branch-radio:checked');
+    const branchTime = inHub && selectedBranch ? (selectedBranch.dataset.scheduleTime || '').trim() : '';
+    const useSchedule = branchTime !== '';
+    const useVideoTimes = !inHub && videoSlotRadios.length > 0;
+    const useGlobal = !useSchedule && !useVideoTimes;
+    if (scheduleSlotWrap) scheduleSlotWrap.style.display = useSchedule ? '' : 'none';
+    if (scheduleSlotRadio) {
+      scheduleSlotRadio.disabled = !useSchedule;
+      scheduleSlotRadio.checked = useSchedule;
+    }
+    if (scheduleSlotLabel) scheduleSlotLabel.textContent = branchTime;
+    if (videoSlotsWrap) videoSlotsWrap.style.display = useVideoTimes ? '' : 'none';
+    videoSlotRadios.forEach((input) => {
+      input.disabled = !useVideoTimes;
+      input.required = useVideoTimes;
+    });
+    if (useVideoTimes && !document.querySelector('.video-slot-radio:checked')) {
+      videoSlotRadios[0].checked = true;
+    }
+    if (useVideoTimes && summaryTime) {
+      summaryTime.textContent = document.querySelector('.video-slot-radio:checked').value;
+    }
+    if (globalSlotsWrap) globalSlotsWrap.style.display = useGlobal ? '' : 'none';
+    globalSlotRadios.forEach((input) => {
+      input.disabled = !useGlobal;
+      input.required = useGlobal;
+    });
   }
   function toggleBranch(){
     const selected = document.querySelector('input[name="visit_type"]:checked');
@@ -301,6 +355,7 @@
   }
   radios.forEach(r => r.addEventListener('change', toggleBranch));
   branchInputs.forEach((input) => input.addEventListener('change', updateBranchSchedule));
+  videoSlotRadios.forEach((input) => input.addEventListener('change', updateTimeSlots));
   toggleBranch();
 
   if (appointmentDate) {

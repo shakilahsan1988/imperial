@@ -40,7 +40,7 @@
                               <div class="small text-muted">{{ $booking->branch->name }}</div>
                             @endif
                         </td>
-                        <td>{{ optional($booking->slot)->label }}</td>
+                        <td>{{ $booking->time_label }}</td>
                         <td>
                             <form action="{{ route('admin.doctor_consultation_bookings.update', $booking->id) }}" method="POST" class="form-inline">
                                 @csrf

@@ -18,6 +18,7 @@ class DoctorConsultationBooking extends Model
         'age',
         'visit_type',
         'appointment_date',
+        'appointment_time',
         'notes',
         'consultation_fee',
         'commission_percentage',
@@ -53,6 +54,16 @@ class DoctorConsultationBooking extends Model
     public function slot()
     {
         return $this->belongsTo(DoctorConsultationSlot::class, 'doctor_consultation_slot_id');
+    }
+
+    /**
+     * Branch schedule time for in-hub bookings, otherwise the global slot label.
+     */
+    public function getTimeLabelAttribute(): ?string
+    {
+        return $this->appointment_time
+            ?: optional($this->slot)->label
+            ?: optional($this->slot)->start_time;
     }
 
     public function branch()
