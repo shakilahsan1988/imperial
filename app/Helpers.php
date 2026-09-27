@@ -55,6 +55,16 @@ if (! function_exists('send_sms')) {
         $sms_setting = setting('sms');
         $gateway = $sms_setting['active_gateway'] ?? 'twilio';
 
+        if ($gateway === 'mram') {
+            $mram = \App\Services\MramSmsService::fromSettings();
+
+            if ($mram->isConfigured()) {
+                $mram->send($to, $message);
+            }
+
+            return;
+        }
+
         if ($gateway === 'bulksmsbd') {
             $bulksmsbd = $sms_setting['gateways']['bulksmsbd'] ?? [];
 

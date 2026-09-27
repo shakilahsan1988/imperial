@@ -4,6 +4,7 @@ use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\ServiceSubCategory;
 use App\Services\DoctorDataSyncService;
+use App\Services\MramSmsService;
 use Database\Seeders\ServiceSeeder;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -46,6 +47,28 @@ Artisan::command('logs:clean', function () {
     Artisan::call('activitylog:clean');
     $this->comment('Old logs removed.');
 })->purpose('Clean up activity logs to save database space');
+
+/**
+ * Send one SMS through MRAM directly (regardless of the active gateway) to
+ * verify the credentials saved in admin settings.
+ */
+Artisan::command('sms:test-mram {number} {message?}', function () {
+    $mram = MramSmsService::fromSettings();
+
+    if (! $mram->isConfigured()) {
+        $this->error('MRAM SMS is not configured. Set the API key and sender ID in Admin > Settings > SMS Settings.');
+
+        return self::FAILURE;
+    }
+
+    $result = $mram->send($this->argument('number'), $this->argument('message') ?: 'Test SMS from Imperial Health via MRAM.');
+
+    $this->line('OK: '.($result['ok'] ? 'yes' : 'no'));
+    $this->line('HTTP status: '.($result['status'] ?? '-'));
+    $this->line('Response: '.$result['body']);
+
+    return $result['ok'] ? self::SUCCESS : self::FAILURE;
+})->purpose('Send a test SMS through the MRAM SMS gateway');
 
 Artisan::command('catalog:import-lab-tests', function () {
     $this->info('Importing lab-test catalog from the lab-test directory...');

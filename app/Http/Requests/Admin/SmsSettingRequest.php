@@ -24,7 +24,7 @@ class SmsSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'active_gateway' => 'required|in:twilio,bulksmsbd',
+            'active_gateway' => 'required|in:twilio,bulksmsbd,mram',
 
             'gateways.twilio.sid' => 'required_if:active_gateway,twilio',
             'gateways.twilio.token' => 'required_if:active_gateway,twilio',
@@ -32,6 +32,10 @@ class SmsSettingRequest extends FormRequest
 
             'gateways.bulksmsbd.api_key' => 'required_if:active_gateway,bulksmsbd',
             'gateways.bulksmsbd.sender_id' => 'required_if:active_gateway,bulksmsbd',
+
+            'gateways.mram.api_key' => 'required_if:active_gateway,mram',
+            'gateways.mram.sender_id' => 'required_if:active_gateway,mram',
+            'gateways.mram.type' => 'nullable|in:text,unicode',
 
             'patient_code.message'=>'regex:/{patient_code}/|regex:/{patient_name}/',
             'tests_notification.message'=>'regex:/{patient_code}/|regex:/{patient_name}/'
@@ -52,6 +56,9 @@ class SmsSettingRequest extends FormRequest
             'gateways.twilio.from' => 'Twilio from number',
             'gateways.bulksmsbd.api_key' => 'BulkSMSBD API key',
             'gateways.bulksmsbd.sender_id' => 'BulkSMSBD sender ID',
+            'gateways.mram.api_key' => 'MRAM SMS API key',
+            'gateways.mram.sender_id' => 'MRAM SMS sender ID',
+            'gateways.mram.type' => 'MRAM SMS default type',
             'patient_code.message' => 'Patient code sms message',
             'tests_notification.message' => 'Tests notification sms message',
         ];

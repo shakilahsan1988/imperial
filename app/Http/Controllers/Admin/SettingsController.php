@@ -257,6 +257,11 @@ class SettingsController extends Controller
                         'api_key' => trim((string) $request->input('gateways.bulksmsbd.api_key', '')),
                         'sender_id' => trim((string) $request->input('gateways.bulksmsbd.sender_id', '')),
                     ],
+                    'mram' => [
+                        'api_key' => trim((string) $request->input('gateways.mram.api_key', '')),
+                        'sender_id' => trim((string) $request->input('gateways.mram.sender_id', '')),
+                        'type' => $request->input('gateways.mram.type') === 'unicode' ? 'unicode' : 'text',
+                    ],
                 ],
                 'patient_code' => [
                     'active' => $request->has('patient_code.active'),

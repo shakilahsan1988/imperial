@@ -1678,6 +1678,7 @@
                                             <select name="active_gateway" id="active_gateway" class="form-control select2">
                                                 <option value="twilio" @if(($sms_settings['active_gateway'] ?? 'twilio') == 'twilio') selected @endif>Twilio</option>
                                                 <option value="bulksmsbd" @if(($sms_settings['active_gateway'] ?? '') == 'bulksmsbd') selected @endif>BulkSMSBD</option>
+                                                <option value="mram" @if(($sms_settings['active_gateway'] ?? '') == 'mram') selected @endif>MRAM SMS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1717,6 +1718,31 @@
                                         <div class="form-group">
                                             <label for="bulksmsbd_sender_id">{{__('Sender ID')}}</label>
                                             <input type="text" name="gateways[bulksmsbd][sender_id]" id="bulksmsbd_sender_id" class="form-control" value="{{ $sms_settings['gateways']['bulksmsbd']['sender_id'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="mram_gateway_fields" class="row" style="display:none;">
+                                    <div class="col-lg-12"><h5>{{__('MRAM SMS Credentials')}}</h5></div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="mram_api_key">{{__('API Key')}}</label>
+                                            <input type="text" name="gateways[mram][api_key]" id="mram_api_key" class="form-control" value="{{ $sms_settings['gateways']['mram']['api_key'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="mram_sender_id">{{__('Sender ID')}}</label>
+                                            <input type="text" name="gateways[mram][sender_id]" id="mram_sender_id" class="form-control" value="{{ $sms_settings['gateways']['mram']['sender_id'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="mram_type">{{__('Default Type')}}</label>
+                                            <select name="gateways[mram][type]" id="mram_type" class="form-control">
+                                                <option value="text" @if(($sms_settings['gateways']['mram']['type'] ?? 'text') == 'text') selected @endif>{{__('Text (English)')}}</option>
+                                                <option value="unicode" @if(($sms_settings['gateways']['mram']['type'] ?? '') == 'unicode') selected @endif>{{__('Unicode (Bangla)')}}</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
