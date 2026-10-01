@@ -186,7 +186,13 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Appointment Date</label>
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Select Appointment Date</label>
+                                    <span id="available-days-pill" aria-live="polite" class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-700 whitespace-nowrap">
+                                        <span class="availability-dot" aria-hidden="true"></span>
+                                        <span id="available-days-text">Checking availability</span>
+                                    </span>
+                                </div>
                                 <input type="date" id="appointment_date" name="appointment_date" class="w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition" min="{{ date('Y-m-d') }}" value="{{ old('appointment_date') }}" required>
                             </div>
                             <div>
@@ -256,13 +262,82 @@
 </main>
 @endsection
 
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+<style>
+    /* Booking availability styling. Scoped to .flatpickr-calendar (the popup we
+       added) and to the availability pill, so the existing form design is
+       untouched. */
+    .flatpickr-calendar .flatpickr-day.day-available {
+        background: #10b981;
+        border-color: #10b981;
+        color: #fff;
+        cursor: pointer;
+    }
+    .flatpickr-calendar .flatpickr-day.day-available:hover,
+    .flatpickr-calendar .flatpickr-day.day-available:focus {
+        background: #059669;
+        border-color: #059669;
+        color: #fff;
+    }
+    /* Every available day is solid green, so the chosen one needs a stronger
+       treatment to stay distinguishable. */
+    .flatpickr-calendar .flatpickr-day.day-available.selected {
+        background: #047857;
+        border-color: #047857;
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px #10b981;
+    }
+    /* Flatpickr ships rgba(57,57,57,0.1), which is faint enough to look like a
+       rendering fault rather than a closed day. */
+    .flatpickr-calendar .flatpickr-day.flatpickr-disabled { color: rgba(57, 57, 57, 0.35); }
+
+    .availability-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 9999px;
+        background: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+        animation: availabilityPulse 1.8s ease-in-out infinite;
+        flex: none;
+    }
+    @keyframes availabilityPulse {
+        0%, 100% { box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18); }
+        50%      { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.05); }
+    }
+    #available-days-pill.is-empty {
+        border-color: #fde68a;
+        background: #fffbeb;
+        color: #b45309;
+    }
+    #available-days-pill.is-empty .availability-dot {
+        background: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+        animation: none;
+    }
+
+    /* Green flash when a bookable date is chosen. */
+    .green-light-flash { animation: greenLightFlash 700ms ease-out; }
+    @keyframes greenLightFlash {
+        0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); border-color: #10b981; }
+        60%  { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); border-color: #10b981; }
+        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .availability-dot, .green-light-flash { animation: none; }
+    }
+</style>
+@endpush
+
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
 <script>
 (function(){
   const radios = document.querySelectorAll('input[name="visit_type"]');
   const branchWrap = document.getElementById('branch-wrap');
   const branchInputs = document.querySelectorAll('.branch-radio');
   const appointmentDate = document.getElementById('appointment_date');
+  const availableDaysPill = document.getElementById('available-days-pill');
+  const availableDaysText = document.getElementById('available-days-text');
   const bookingForm = document.getElementById('doctor-booking-form');
   const summaryFeeLabel = document.getElementById('summary-fee-label');
   const summaryFeeValue = document.getElementById('summary-fee-value');
@@ -282,6 +357,18 @@
   const videoSlotRadios = document.querySelectorAll('.video-slot-radio');
   const inHubFee = @json(formated_price($model->consultation_fee ?? 0));
   const videoFee = @json($model->video_consultation_available ? formated_price($model->video_consultation_fee ?? $model->consultation_fee ?? 0) : 'N/A');
+  const allowedWeekdaysByBranch = @json($allowedWeekdaysByBranch);
+  const videoWeekdays = @json($videoWeekdays);
+  // Copied verbatim from #appointment_date so the Flatpickr field is styled
+  // identically to the native input it replaces. Must be set explicitly:
+  // Flatpickr's default altInputClass is "form-control input" (Bootstrap).
+  const dateFieldClasses = 'w-full h-[52px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition';
+  let picker = null;
+  // Only flash the green light for a date the patient actually picked. Without
+  // this, Flatpickr replays onChange while initialising and an old() value from
+  // a validation redirect would flash the field on page load.
+  let calendarOpened = false;
+  let flashTimer = null;
   function updateBranchSchedule() {
     const selectedBranch = document.querySelector('.branch-radio:checked');
     const branchName = selectedBranch ? selectedBranch.dataset.branchName : '-';
@@ -293,6 +380,11 @@
     if (doctorScheduleDays) doctorScheduleDays.textContent = scheduleDays;
     if (doctorScheduleTime) doctorScheduleTime.textContent = scheduleTime;
     updateTimeSlots();
+    // Runs here rather than only in toggleBranch(): the branch radio's own
+    // change listener calls updateBranchSchedule() directly, so this is the
+    // only path that fires when the patient switches branch.
+    applyDateRules();
+    renderAvailabilityPill();
   }
   function updateTimeSlots() {
     const visit = document.querySelector('input[name="visit_type"]:checked');
@@ -353,6 +445,126 @@
     }
     updateBranchSchedule();
   }
+  function startOfToday() {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+  const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function currentAllowedWeekdays() {
+    const visit = document.querySelector('input[name="visit_type"]:checked');
+    if (visit && visit.value === 'video') return videoWeekdays || [];
+    const selectedBranch = document.querySelector('.branch-radio:checked');
+    if (!selectedBranch) return [];
+    return allowedWeekdaysByBranch[String(selectedBranch.value)] || [];
+  }
+  function weekdayOf(value) {
+    const parts = String(value).split('-');
+    if (parts.length !== 3) return null;
+    // Parse as local midnight. new Date('2026-10-05') is parsed as UTC and
+    // would shift the weekday for anyone west of Greenwich.
+    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    return isNaN(d.getTime()) ? null : d.getDay();
+  }
+  function dateErrorMessage() {
+    const visit = document.querySelector('input[name="visit_type"]:checked');
+    return (visit && visit.value === 'video')
+      ? 'The selected date is not available for this doctor.'
+      : 'The selected date is not available for this doctor at this branch.';
+  }
+  function dateIsAllowed() {
+    if (!appointmentDate.value) return true;
+    const days = currentAllowedWeekdays();
+    if (days.length === 0) return false;
+    const weekday = weekdayOf(appointmentDate.value);
+    return weekday !== null && days.indexOf(weekday) !== -1;
+  }
+  function renderAvailabilityPill() {
+    if (!availableDaysPill || !availableDaysText) return;
+    const days = currentAllowedWeekdays();
+    const valid = (days || []).filter(function (d) { return Number.isInteger(d) && d >= 0 && d <= 6; });
+    if (valid.length === 0) {
+      // Fail closed, matching DoctorScheduleDays: no schedule means nothing is
+      // bookable, so say so instead of showing an empty list.
+      availableDaysText.textContent = 'No schedule published';
+      availableDaysPill.classList.add('is-empty');
+      availableDaysPill.setAttribute('title', 'This doctor has no published schedule for the selected branch, so no date can be booked.');
+      return;
+    }
+    availableDaysPill.classList.remove('is-empty');
+    availableDaysPill.removeAttribute('title');
+    // Monday to Sunday: the order patients read a week in.
+    const ordered = valid.slice().sort(function (a, b) {
+      const ma = a === 0 ? 7 : a;
+      const mb = b === 0 ? 7 : b;
+      return ma - mb;
+    });
+    availableDaysText.textContent = 'Available: ' + ordered.map(function (d) { return DAY_LABELS[d]; }).join(' · ');
+  }
+  function flashGreenLight() {
+    const field = picker && picker.altInput ? picker.altInput : appointmentDate;
+    if (!field) return;
+    field.classList.remove('green-light-flash');
+    // Force a reflow so re-picking the same date restarts the animation.
+    void field.offsetWidth;
+    field.classList.add('green-light-flash');
+    if (flashTimer) clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { field.classList.remove('green-light-flash'); }, 750);
+  }
+  function buildDisable(days) {
+    const start = startOfToday();
+    // Fail closed, matching DoctorScheduleDays::allowsDate() server-side: with
+    // no recorded schedule for this branch every date is disabled. This used to
+    // disable only dates >= today, which left past dates selectable.
+    if (!days || days.length === 0) {
+      return [function () { return true; }];
+    }
+    return [
+      function (date) { return date < start; },
+      function (date) { return days.indexOf(date.getDay()) === -1; }
+    ];
+  }
+  function applyDateRules() {
+    // Flatpickr not initialised (blocked CDN): leave the native input alone.
+    // The server-side allowsDate() check is what actually enforces the rule.
+    if (!picker) return;
+    picker.set('disable', buildDisable(currentAllowedWeekdays()));
+    // Changing branch or visit type can invalidate a date already chosen.
+    if (appointmentDate.value && !dateIsAllowed()) picker.clear();
+  }
+  // Initialised before toggleBranch() below, because toggleBranch() configures
+  // the disabled days for the initially selected branch.
+  if (appointmentDate && window.flatpickr) {
+    picker = window.flatpickr(appointmentDate, {
+      altInput: true,
+      altInputClass: dateFieldClasses,
+      dateFormat: 'Y-m-d',
+      altFormat: 'd M Y',
+      disable: buildDisable(currentAllowedWeekdays()),
+      onReady: function (selectedDates, dateStr, instance) {
+        // Flatpickr wraps the input in <span class="flatpickr"> (display:inline).
+        // Force it to block so the w-full field still spans the grid column.
+        if (instance.element.parentNode) {
+          instance.element.parentNode.style.display = 'block';
+        }
+      },
+      onOpen: function () { calendarOpened = true; },
+      onChange: function (selectedDates, dateStr) {
+        // Only a bookable date earns the green light.
+        if (calendarOpened && selectedDates && selectedDates.length && dateIsAllowed()) {
+          flashGreenLight();
+        }
+      },
+      onDayCreate: function (selectedDates, dateStr, instance, dayElement) {
+        // Flatpickr already tags unavailable days with .flatpickr-disabled, so
+        // the class list tells us bookability directly. Spill-over days from
+        // the neighbouring months stay faint.
+        if (!dayElement || dayElement.classList.contains('flatpickr-disabled')) return;
+        if (dayElement.classList.contains('prevMonthDay') || dayElement.classList.contains('nextMonthDay')) return;
+        dayElement.classList.add('day-available');
+      }
+    });
+  }
   radios.forEach(r => r.addEventListener('change', toggleBranch));
   branchInputs.forEach((input) => input.addEventListener('change', updateBranchSchedule));
   videoSlotRadios.forEach((input) => input.addEventListener('change', updateTimeSlots));
@@ -377,6 +589,13 @@
         e.preventDefault();
         alert('Past dates are not allowed for appointment booking.');
         appointmentDate.focus();
+        return;
+      }
+      if (!dateIsAllowed()) {
+        e.preventDefault();
+        alert(dateErrorMessage());
+        // picker is null when the Flatpickr CDN is blocked.
+        if (picker) { picker.clear(); picker.focus(); }
       }
     });
   }

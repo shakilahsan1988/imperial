@@ -22,6 +22,7 @@ use App\Models\Page;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\TeamMember;
+use App\Support\DoctorScheduleDays;
 use Illuminate\Http\Request;
 
 class FrontController extends Controller
@@ -609,7 +610,22 @@ class FrontController extends Controller
         $slots = DoctorConsultationSlot::where('status', true)->orderBy('sort_order')->orderBy('start_time')->get();
         $branches = $model->branches()->orderBy('name')->get();
 
-        return view('frontend.doctor.book-doctor', compact('model', 'slots', 'branches'));
+        // Weekday sets the datepicker uses to grey out non-scheduled days, keyed
+        // by branch id. Normalised here on the server so the browser never has to
+        // re-parse the admin's free-text "Sun, Wed" schedule strings.
+        $allowedWeekdaysByBranch = $model->branchSchedules
+            ->mapWithKeys(fn ($schedule) => [
+                $schedule->branch_id => DoctorScheduleDays::weekdayNumbers(
+                    DoctorScheduleDays::forBranch($model, $schedule->branch_id)
+                ),
+            ])
+            ->all();
+
+        $videoWeekdays = DoctorScheduleDays::weekdayNumbers(DoctorScheduleDays::forVideo($model));
+
+        return view('frontend.doctor.book-doctor', compact(
+            'model', 'slots', 'branches', 'allowedWeekdaysByBranch', 'videoWeekdays'
+        ));
     }
 
     public function submit_doctor_booking(Request $request, $doctor)
@@ -644,6 +660,22 @@ class FrontController extends Controller
         ) {
             return back()->withInput()->withErrors([
                 'branch_id' => 'Selected branch is not available for this doctor.',
+            ]);
+        }
+
+        // The datepicker already prevents picking an unscheduled day, but the
+        // request is what actually has to hold - a crafted POST bypasses any
+        // client-side check. Runs before the booking is created so a rejected date
+        // never sends the confirmation SMS/email or the admin notification.
+        $allowedDays = $data['visit_type'] === 'in_hub'
+            ? DoctorScheduleDays::forBranch($doctorModel, (int) $data['branch_id'])
+            : DoctorScheduleDays::forVideo($doctorModel);
+
+        if (! DoctorScheduleDays::allowsDate($allowedDays, $data['appointment_date'])) {
+            return back()->withInput()->withErrors([
+                'appointment_date' => $data['visit_type'] === 'in_hub'
+                    ? 'The selected date is not available for this doctor at this branch.'
+                    : 'The selected date is not available for this doctor.',
             ]);
         }
 
