@@ -1008,25 +1008,51 @@ class FrontController extends Controller
     }
 
     /**
-     * Notify the company's own contact address of every new booking,
-     * regardless of whether the patient gave an email. Uses the site's
-     * general contact email (Admin > Settings) since there is no separate
-     * "booking notifications" recipient configured.
+     * Notify the configured admin recipients of every new booking, regardless of
+     * whether the patient gave an email. Recipients come from
+     * Admin > Software Settings > Booking Notifications.
      */
     private function sendAdminBookingNotification(string $type, $booking): void
     {
-        $adminEmail = trim((string) (setting('info')['email'] ?? ''));
+        $recipients = $this->bookingNotificationRecipients();
 
-        if ($adminEmail === '') {
+        if ($recipients === []) {
             return;
         }
 
         try {
-            \Illuminate\Support\Facades\Mail::to($adminEmail)->send(
+            \Illuminate\Support\Facades\Mail::to($recipients)->send(
                 new \App\Mail\AdminBookingNotification($type, $booking)
             );
         } catch (\Throwable $e) {
             // Swallow: a broken mail transport must not fail the booking.
         }
+    }
+
+    /**
+     * Admin recipients for new-booking notifications.
+     *
+     * The two "no addresses" cases mean different things and are kept distinct:
+     *  - row absent (never saved) -> fall back to the general contact email, so
+     *    installs that never touched the new form behave exactly as before.
+     *  - row saved as an empty list -> an admin deliberately turned these
+     *    notifications off. This is the only way to disable them.
+     */
+    private function bookingNotificationRecipients(): array
+    {
+        $configured = setting('booking_notification_emails');
+
+        if (is_array($configured)) {
+            return array_values(array_filter(array_map(
+                function ($email) {
+                    return strtolower(trim((string) $email));
+                },
+                $configured
+            )));
+        }
+
+        $fallback = trim((string) (setting('info')['email'] ?? ''));
+
+        return $fallback === '' ? [] : [$fallback];
     }
 }

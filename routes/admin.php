@@ -169,6 +169,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'Ad
         Route::post('api_keys', [SettingsController::class, 'api_keys_submit'])->name('api_keys_submit');
         Route::post('menus', [SettingsController::class, 'menus_submit'])->name('menus_submit');
         Route::post('sslcommerz', [SettingsController::class, 'sslcommerz_submit'])->name('sslcommerz_submit');
+        Route::post('booking_notifications', [SettingsController::class, 'booking_notifications_submit'])->name('booking_notifications_submit');
     });
 
     // Page Settings

@@ -13,6 +13,7 @@ use App\Http\Requests\Admin\SmsSettingRequest;
 use App\Http\Requests\Admin\WhatsappSettingRequest;
 use App\Http\Requests\Admin\ApiSettingRequest;
 use App\Http\Requests\Admin\SslCommerzSettingRequest;
+use App\Http\Requests\Admin\BookingNotificationSettingRequest;
 use App\Models\Service;
 use App\Models\Doctor;
 use App\Models\Page;
@@ -68,6 +69,12 @@ class SettingsController extends Controller
         //sslcommerz
         $sslcommerz_settings=setting('sslcommerz');
 
+        // Admin recipients for new-booking notifications. Null means the row has
+        // never been saved, which is what tells the booking flow to fall back to
+        // the general contact email. An empty array means an admin deliberately
+        // turned these emails off.
+        $booking_notification_emails = setting('booking_notification_emails');
+
         // Extra for menu builder
         $services = Service::select('id', 'name')->get();
         $doctors = Doctor::select('id', 'name')->get();
@@ -83,6 +90,7 @@ class SettingsController extends Controller
             'api_keys_settings',
             'menu_settings',
             'sslcommerz_settings',
+            'booking_notification_emails',
             'services',
             'doctors',
             'pages'
@@ -406,5 +414,42 @@ class SettingsController extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->with('error', __('Failed to update payment settings: ') . $e->getMessage());
         }
+    }
+
+    /**
+     * update the admin recipients for new-booking notifications
+     */
+    public function booking_notifications_submit(BookingNotificationSettingRequest $request)
+    {
+        try {
+            Setting::updateOrCreate(
+                ['key' => 'booking_notification_emails'],
+                ['value' => json_encode($this->normaliseRecipientEmails(
+                    $request->input('booking_notification_emails', [])
+                ))]
+            );
+
+            return redirect()->route('admin.settings.index')->with('success', __('Booking notification recipients updated successfully'));
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', __('Failed to update booking notification recipients: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Lowercase, drop blanks and de-duplicate before persisting, so the stored
+     * list is canonical and Mail::to() cannot deliver the same message twice.
+     * Blank rows are already skipped by the `nullable` rule, but the input can
+     * still arrive as a non-array if the field is tampered with.
+     */
+    private function normaliseRecipientEmails($emails): array
+    {
+        return collect(is_array($emails) ? $emails : [])
+            ->map(function ($email) {
+                return strtolower(trim((string) $email));
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 }

@@ -102,6 +102,7 @@
                 <a class="nav-link"  data-toggle="pill" href="#menu_settings" role="tab" aria-controls="menu_settings" aria-selected="true"><i class="fas fa-bars"></i> {{__('Menu Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#payment_settings" role="tab" aria-controls="payment_settings" aria-selected="true"><i class="fas fa-credit-card"></i> {{__('Payment Settings')}}</a>
                 <a class="nav-link"  data-toggle="pill" href="#sms_settings" role="tab" aria-controls="sms_settings" aria-selected="true"><i class="fas fa-sms"></i> {{__('SMS Settings')}}</a>
+                <a class="nav-link"  data-toggle="pill" href="#booking_notification_settings" role="tab" aria-controls="booking_notification_settings" aria-selected="false"><i class="fas fa-bell"></i> {{__('Admin Notification Email')}}</a>
 
               </div>
             </div>
@@ -1789,6 +1790,86 @@
                     </div>
                 </div>
                 <!-- \SMS Settings -->
+
+                <!-- Booking Notifications -->
+                <div class="tab-pane text-left fade show" id="booking_notification_settings" role="tabpanel" aria-labelledby="booking_notification_settings">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-bell mr-1"></i> {{__('Booking Notifications')}}</h3>
+                        </div>
+                        <form action="{{route('admin.settings.booking_notifications_submit')}}" method="POST">
+                            @csrf
+                            <div class="card-body">
+                                <p class="text-muted">
+                                    {{ __('Every new booking sends an internal notification to the addresses below. This covers lab, health package, membership plan and doctor appointment bookings. Leave every row empty to stop these emails entirely.') }}
+                                </p>
+                                <p class="text-muted small">
+                                    {{ __('Until this form is saved for the first time, notifications fall back to the general contact email set in General Settings.') }}
+                                </p>
+
+                                @error('booking_notification_emails')
+                                    <div class="alert alert-danger p-2">{{ $message }}</div>
+                                @enderror
+
+                                <div id="booking-email-rows">
+                                    @php
+                                        // old() wins on a validation bounce so the in-progress
+                                        // rows survive. Keys are deliberately preserved: they line
+                                        // up with the validation error keys. A row the admin left
+                                        // blank comes back as null (ConvertEmptyStringsToNull) and
+                                        // must keep its slot, otherwise the error message would
+                                        // render against the wrong row.
+                                        $bookingRecipients = old('booking_notification_emails', $booking_notification_emails ?? []);
+                                        $bookingRecipients = is_array($bookingRecipients) ? $bookingRecipients : [];
+                                    @endphp
+
+                                    @forelse($bookingRecipients as $index => $recipient)
+                                    <div class="form-row align-items-center booking-email-row mb-2">
+                                        <div class="col-lg-8 col-md-7">
+                                            <input type="email" name="booking_notification_emails[]" class="form-control @error('booking_notification_emails.'.$index) is-invalid @enderror" value="{{ $recipient }}" placeholder="name@example.com" autocomplete="off">
+                                            @error('booking_notification_emails.'.$index)
+                                                <span class="text-danger small d-block">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-4 col-md-5">
+                                            <button type="button" class="btn btn-outline-danger btn-sm remove-booking-email">
+                                                <i class="fas fa-trash mr-1"></i> {{__('Remove')}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @empty
+                                    @endforelse
+                                </div>
+
+                                <p id="booking-email-empty" class="text-muted mb-2" @if(count($bookingRecipients) > 0) style="display:none" @endif>
+                                    {{ __('No recipients configured. New bookings will not send an admin notification email.') }}
+                                </p>
+
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="add-booking-email">
+                                    <i class="fas fa-plus mr-1"></i> {{__('Add Email')}}
+                                </button>
+
+                                {{-- Cloned by public/js/admin/settings.js to append a row. --}}
+                                <div id="booking-email-row-template" style="display:none">
+                                    <div class="form-row align-items-center booking-email-row mb-2">
+                                        <div class="col-lg-8 col-md-7">
+                                            <input type="email" name="booking_notification_emails[]" class="form-control" value="" placeholder="name@example.com" autocomplete="off">
+                                        </div>
+                                        <div class="col-lg-4 col-md-5">
+                                            <button type="button" class="btn btn-outline-danger btn-sm remove-booking-email">
+                                                <i class="fas fa-trash mr-1"></i> {{__('Remove')}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {{__('Save')}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- \Booking Notifications -->
 
             </div>
           </div>

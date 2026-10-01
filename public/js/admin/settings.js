@@ -70,5 +70,31 @@
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
 
+    // Booking notification recipient rows: add/remove without a dependency.
+    var $bookingEmailRows = $('#booking-email-rows');
+    var $bookingEmailTemplate = $('#booking-email-row-template');
+
+    function syncBookingEmailEmptyNote() {
+        var empty = $bookingEmailRows.find('.booking-email-row').length === 0;
+        $('#booking-email-empty').toggle(empty);
+    }
+
+    $('#add-booking-email').on('click', function () {
+        // Keep the template's name="booking_notification_emails[]". PHP assigns
+        // sequential integer keys to repeated [] names on every submit, so the
+        // keys stay contiguous even after a row is removed. Handing out explicit
+        // [N] indices here would collide with an existing row and silently drop
+        // an address.
+        $bookingEmailRows.append($($bookingEmailTemplate.html()));
+        syncBookingEmailEmptyNote();
+    });
+
+    $bookingEmailRows.on('click', '.remove-booking-email', function () {
+        $(this).closest('.booking-email-row').remove();
+        syncBookingEmailEmptyNote();
+    });
+
+    syncBookingEmailEmptyNote();
+
 })(jQuery);
  
